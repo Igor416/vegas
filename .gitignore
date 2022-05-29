@@ -1,0 +1,4 @@
+vegas/vegas/.env
+vegas/**/__pycache__/
+vegas/**/migrations/
+vegas/db.sqlite3
