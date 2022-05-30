@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'vegas_api.apps.VegasApiConfig',
+    'frontend.apps.FrontendConfig',
     'rest_framework',
     'corsheaders',
 ]

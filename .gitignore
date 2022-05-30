@@ -2,3 +2,6 @@ vegas/vegas/.env
 vegas/**/__pycache__/
 vegas/**/migrations/
 vegas/db.sqlite3
+.node
+node_modules/
+__pycache__/
