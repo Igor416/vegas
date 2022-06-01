@@ -36,14 +36,16 @@ export default class Header extends Component {
             <i className="h4 fal fa-phone"></i>
           </span>
           <br />
-          <span className="h6">Закажите сейчас: 079 40-70-66</span>
+          <span className="h6">Закажите сейчас: 079 40-70-32</span>
         </div>
         <div className="col-1 text-center text-primary">
-          <span>
-            <i className="h4 fal fa-shopping-cart"></i>
-          </span>
-          <br />
-          <span id="priceAmount" className="h6">0.00 MDL (0)</span>
+          <button type="button" className="p-0 bg-white border-0 outline-0 no-hover" data-bs-toggle="offcanvas" data-bs-target="#sideBar">
+            <span>
+              <i className="h4 fal fa-shopping-cart"></i>
+            </span>
+            <br />
+            <span id="priceAmount" className="h6">0.00 MDL (0)</span>
+          </button>
         </div>
         <div className="col-1"></div>
       </header>

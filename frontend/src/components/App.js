@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Header from "./Header.js"
+import SideBar from "./SideBar.js"
+import Footer from "./Footer.js"
 import { createRoot } from 'react-dom/client';
 
 export default class App extends Component {
@@ -9,7 +11,11 @@ export default class App extends Component {
 
   render() {
     return (
-      <Header></Header>
+      <div>
+        <Header></Header>
+        <SideBar></SideBar>
+        <Footer></Footer>
+      </div>
     );
   }
 }
