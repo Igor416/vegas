@@ -1,2 +1,1 @@
-from django.shortcuts import render, HttpResponse
-from .models import Mattrass
+from django.shortcuts import render
