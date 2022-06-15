@@ -1,18 +1,6 @@
 from django.db import models
 
 # Create your models here.
-class Type(models.Model):
-    products = [("Mattrass", "Матрас"), ("Pillow", "Подушка")]
-
-    product = models.CharField(verbose_name="Товар", choices=products, max_length=20)
-    type = models.CharField(verbose_name="Вид", max_length=255)
-
-    def __str__(self):
-        return f'Type: "{self.type}" for {self.product}'
-
-    class Meta:
-        verbose_name = 'type'
-        verbose_name_plural = 'types'
 
 class Mattrass(models.Model):
     rigidities = [("middlehard", "среднежесткий"), ("average", "средний")]
