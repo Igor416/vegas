@@ -2,15 +2,6 @@ from turtle import distance
 from django.db import models
 
 # Create your models here.
-def toString(queryset):
-    s = ''
-
-    for record in queryset:
-        s += record.name + ', '
-
-    return s[0:-2]
-
-
 class Product(models.Model):
     name = models.CharField("Название", max_length=32)
     vendor_code = models.CharField("Артикул", max_length=8, blank=True)
@@ -30,7 +21,7 @@ class Choice(models.Model):
     property = models.CharField("Вариант выбора", max_length=32)
 
     def __str__(self):
-        return f'Вариант выбора для "{self.name}" в "{toString(self.product.all())}": "{self.property}"'
+        return f'Вариант выбора для "{self.name}" в "{self.product}": "{self.property}"'
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
