@@ -11,6 +11,18 @@
   box-shadow: none !important;
 }
 
+.transition-s {
+  transition: 0.4s;
+}
+
+.transition-m {
+  transition: 0.7s;
+}
+
+.transition-l {
+  transition: 1s;
+}
+
 :root {
   --blue: rgb(48, 68, 98);
   --dark-grey: #444;

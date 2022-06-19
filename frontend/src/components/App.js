@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./Header.js"
 import SideBar from "./SideBar.js"
 import Footer from "./Footer.js"
+import Menu from "./Menu.js";
 import { createRoot } from 'react-dom/client';
 
 export default class App extends Component {
@@ -13,6 +14,7 @@ export default class App extends Component {
     return (
       <div>
         <Header></Header>
+        <Menu></Menu>
         <SideBar></SideBar>
         <Footer></Footer>
       </div>

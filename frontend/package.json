@@ -12,6 +12,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.18.2",
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
     "babel-loader": "^8.2.5",
@@ -22,6 +23,7 @@
   },
   "dependencies": {
     "@material-ui/icons": "^4.11.3",
+    "aphrodite": "^2.4.0",
     "react-router-dom": "^6.3.0"
   }
 }
