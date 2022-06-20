@@ -1,16 +1,26 @@
+from unicodedata import category
 from django import forms
-from .models import Product, Choice, Mattrass, Pillow, MattressPads, Blanket, BedSheets, Bed, Stand, Basis
+from . import models
+
+class ChoiceForm(forms.ModelForm):
+    class Meta:
+        model = models.Choice
+        exclude = ['category']
 
 class ProductForm(forms.ModelForm):
     def __init__(self, name, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         for field in self.fields.values():
             if hasattr(field, 'queryset'):
-                field.queryset = Choice.objects.filter(product=name, name=field.label)
+                if field.label == 'Категория':
+                    field.initial = models.Category.objects.get(name=name)
+                    field.disabled = True
+                    continue
+                field.queryset = models.Choice.objects.filter(name=field.label)
 
 class MattrassForm(ProductForm):
     class Meta:
-        model = Mattrass
+        model = models.Mattrass
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -19,7 +29,7 @@ class MattrassForm(ProductForm):
 
 class PillowForm(ProductForm):
     class Meta:
-        model = Pillow
+        model = models.Pillow
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -28,7 +38,7 @@ class PillowForm(ProductForm):
 
 class MattressPadsForm(ProductForm):
     class Meta:
-        model = MattressPads
+        model = models.MattressPads
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -37,7 +47,7 @@ class MattressPadsForm(ProductForm):
 
 class BlanketForm(ProductForm):
     class Meta:
-        model = Blanket
+        model = models.Blanket
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -45,7 +55,7 @@ class BlanketForm(ProductForm):
 
 class BedSheetsForm(ProductForm):
     class Meta:
-        model = BedSheets
+        model = models.BedSheets
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -54,7 +64,7 @@ class BedSheetsForm(ProductForm):
 
 class BedForm(ProductForm):
     class Meta:
-        model = Bed
+        model = models.Bed
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -63,7 +73,7 @@ class BedForm(ProductForm):
 
 class StandForm(ProductForm):
     class Meta:
-        model = Stand
+        model = models.Stand
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
@@ -72,7 +82,7 @@ class StandForm(ProductForm):
 
 class BasisForm(ProductForm):
     class Meta:
-        model = Basis
+        model = models.Basis
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
