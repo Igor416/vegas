@@ -1,32 +1,128 @@
 from turtle import distance
+from unicodedata import category
 from django.db import models
 
-# Create your models here.
+ALL_CATEGORIES = ['Матрас', 'Подушка', 'Наматрасник', 'Одеяло', 'Постельное белье', 'Кровать', 'Тумба', 'Основание']
+
+COMMON_CATEGORIES  = {
+    'Для возраста': ['Матрас', 'Подушка', 'Одеяло'],
+    'Страна производства': ALL_CATEGORIES,
+    'Упаковка': ['Матрас', 'Подушка', 'Одеяло', 'Постельное белье'],
+    'Ткань чехла': ['Подушка', 'Наматрассник', 'Одеяло'],
+    'Материал обивки': ['Кровать', 'Тумба'],
+}
+
+PROPERTIES = [
+    ('ОБЩИЕ', 'ОБЩИЕ'),
+    ('Для возраста', 'Для возраста'),
+    ('Страна производства', 'Страна производства'),
+    ('Упаковка', 'Упаковка'),
+    ('Ткань чехла', 'Ткань чехла'),
+    ('Материал обивки', 'Материал обивки'),
+
+    ('', ''),
+    ('Матрас', 'ТОЛЬКО МАТРАСЫ'),
+    ('Коллекция', 'Коллекция'),
+    ('Конструкция', 'Конструкция'),
+    ('Уровень жесткости стороны 1', 'Уровень жесткости стороны 1'),
+    ('Уровень жесткости стороны 2', 'Уровень жесткости стороны 2'),
+    ('Пружинный блок', 'Пружинный блок'),
+    ('Тип матраса', 'Тип матраса'),
+
+    ('', ''),
+    ('Подушка', 'ТОЛЬКО ПОДУШКИ'),
+    ('Материал наполнения', 'Материал наполнения'),
+
+    ('', ''),
+    ('Наматрасник', 'ТОЛЬКО НАМАТРАСНИКИ'),
+    ('Тип наматрасника', 'Тип наматрасника'),
+    ('Крепление', 'Крепление'),
+
+    ('', ''),
+    ('Одеяло', 'ТОЛЬКО ОДЕЯЛА'),
+    ('Цвет одеяла', 'Цвет одеяла'),
+    ('Тип одеяла', 'Тип одеяла'),
+    ('Наполнитель', 'Наполнитель'),
+
+    ('', ''),
+    ('Белье', 'ТОЛЬКОПОСТЕЛЬНОЕ БЕЛЬЕ'),
+    ('Тип комплекта', 'Тип комплекта'),
+    ('Цвет комплекта', 'Цвет комплекта'),
+
+    ('', ''),
+    ('Кровати', 'ТОЛЬКО КРОВАТИ'),
+    ('Вид кровати', 'Вид кровати'),
+    ('Порода древесины', 'Порода древесины')
+]
+
+class ProductManager(models.Manager):
+    def get_child_products(self):
+        products = {}
+        for model in self.model.__subclasses__():
+            products.update({model.__name__: model.products.get_self_products()})
+        return products
+
+    def get_self_products(self):
+        products = {}
+        for product in super().get_queryset().all():
+            products.update({product.name: product})
+        return products
+
+class Category(models.Model):
+    products = [("Матрас", "Матрас"), ("Подушка", "Подушка"), ("Наматрасник", "Наматрасник"), ("Одеяло", "Одеяло"), ("Постельное белье", "Постельное белье"), ("Кровать", "Кровать"), ("Тумба", "Тумба"), ("Основание", "Основание")]
+
+    name = models.CharField("Название", max_length=32, choices=products, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'категория'
+        verbose_name_plural = 'категории'
+
 class Product(models.Model):
     name = models.CharField("Название", max_length=32)
-    vendor_code = models.CharField("Артикул", max_length=8, blank=True)
+    category = models.ForeignKey(Category, related_name="categoryP", on_delete=models.CASCADE, verbose_name="Категория")
+    products = ProductManager()
 
     def __str__(self):
         return f'Продукт: "{self.name}"'
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
-        super(Choice, self).__init__(*args, **kwargs)
+        super(Choice, self).save(*args, **kwargs)
 
 class Choice(models.Model):
-    products = [("Матрас", "Матрас"), ("Подушка", "Подушка"), ("Наматрасник", "Наматрасник"), ("Одеяло", "Одеяло"), ("Постельное белье", "Постельное белье"), ("Кровать", "Кровать"), ("Тумба", "Тумба"), ("Основание", "Основание")]
-
-    name = models.CharField("Характеристика", max_length=32)
-    product = models.CharField("Продукт", max_length=16, choices=products)
+    name = models.CharField("Характеристика", choices=PROPERTIES, max_length=32)
+    category = models.ManyToManyField(Category, related_name="categoryC", verbose_name="Категория")
     property = models.CharField("Вариант выбора", max_length=32)
 
     def __str__(self):
-        return f'Вариант выбора для "{self.name}" в "{self.product}": "{self.property}"'
+        categories = self.category.all()
+        lst = list(map(lambda ctg: str(ctg), self.category.all()))
+        s = ', '.join(lst)
+        return f'Вариант выбора для "{self.name}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property}"'
 
     def save(self, *args, **kwargs):
-        self.name = self.name.title()
-        self.property = self.property.lowercase()
-        super(Choice, self).__init__(*args, **kwargs)
+        if self.name.startswith('ТОЛЬКО') and self.name == 'ОБЩИЕ':
+            return
+        self.property = self.property.lower()
+        super(Choice, self).save(*args, **kwargs)
+        self.set_category()
+        super(Choice, self).save(*args, **kwargs)
+
+    def set_category(self):
+        print(self, self.name, self.name == 'lol')
+        categories = COMMON_CATEGORIES.get(self.name)
+        if not categories:
+            index = PROPERTIES.index((self.name, self.name))
+            for i in range(index, 0, -1):
+                if PROPERTIES[i][1].startswith('ТОЛЬКО'):
+                    categories = [PROPERTIES[i][0]]
+                    break
+
+        for category in categories:
+            self.category.add(Category.objects.get(name=category))
 
     class Meta:
         verbose_name = 'вариант выбора'
@@ -85,7 +181,7 @@ class MattressPads(Product):
 class Blanket(Product):
     type = models.ManyToManyField(Choice, related_name="typeBl", verbose_name="Тип одеяла")
     age = models.ManyToManyField(Choice, related_name="ageBl", verbose_name="Для возраста")
-    filling = models.ForeignKey(Choice, related_name="fillingBl", on_delete=models.CASCADE, verbose_name="Крепление")
+    filling = models.ForeignKey(Choice, related_name="fillingBl", on_delete=models.CASCADE, verbose_name="Наполнитель")
     density = models.IntegerField("Плотность наполнения")
     package = models.ForeignKey(Choice, related_name="packageBl", on_delete=models.CASCADE, verbose_name="Упаковка")
     tissue = models.ManyToManyField(Choice, related_name="tissueBl", verbose_name="Ткань чехла")
@@ -97,10 +193,10 @@ class Blanket(Product):
         verbose_name_plural = "одеяла"   
 
 class BedSheets(Product):
-    type = models.ManyToManyField(Choice, related_name="typeBS", verbose_name="Тип матраса")
+    type = models.ManyToManyField(Choice, related_name="typeBS", verbose_name="Тип комплекта")
     material = models.ForeignKey(Choice, related_name="materialBS", on_delete=models.CASCADE, verbose_name="Материал наполнения")
     package = models.ForeignKey(Choice, related_name="packageBS", on_delete=models.CASCADE, verbose_name="Упаковка")
-    color = models.ForeignKey(Choice, related_name="colorBS", on_delete=models.CASCADE, verbose_name="Цвет одеяла")
+    color = models.ForeignKey(Choice, related_name="colorBS", on_delete=models.CASCADE, verbose_name="Цвет комплекта")
     country = models.ForeignKey(Choice, related_name="countryBS", on_delete=models.CASCADE, verbose_name="Страна производства")
 
 
@@ -141,7 +237,7 @@ class Basis(Product):
     garanty = models.IntegerField("Гарантийный срок")
     distance = models.IntegerField("Расстяоние межда ламелями")
     width = models.IntegerField("Ширина ламели")
-    recomended = models.ManyToManyField(Choice, related_name="recomendedBa", verbose_name="Рекомендовано для матрассов")
+    recomended = models.ManyToManyField(Mattrass, related_name="recomendedBa", verbose_name="Рекомендовано для матрассов")
     country = models.ForeignKey(Choice, related_name="countryBa", on_delete=models.CASCADE, verbose_name="Страна производства")
 
     class Meta:
