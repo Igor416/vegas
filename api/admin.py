@@ -1,37 +1,39 @@
 from django.contrib import admin
-from .models import Choice, Mattrass, Pillow, MattressPads, Blanket, BedSheets, Bed, Stand, Basis
-from .forms import MattrassForm, PillowForm, MattressPadsForm, BlanketForm, BedSheetsForm, BedForm, StandForm, BasisForm
+from . import models
+from . import forms
 
-admin.site.register(Choice)
+@admin.register(models.Choice)
+class ChoiceAdmin(admin.ModelAdmin):
+    form = forms.ChoiceForm
 
-@admin.register(Mattrass)
+@admin.register(models.Mattrass)
 class MattrassAdmin(admin.ModelAdmin):
-    form = MattrassForm
+    form = forms.MattrassForm
 
-@admin.register(Pillow)
+@admin.register(models.Pillow)
 class PillowAdmin(admin.ModelAdmin):
-    form = PillowForm
+    form = forms.PillowForm
 
-@admin.register(MattressPads)
+@admin.register(models.MattressPads)
 class MattressPadsAdmin(admin.ModelAdmin):
-    form = MattressPadsForm
+    form = forms.MattressPadsForm
 
-@admin.register(Blanket)
+@admin.register(models.Blanket)
 class BlanketAdmin(admin.ModelAdmin):
-    form = BlanketForm
+    form = forms.BlanketForm
 
-@admin.register(BedSheets)
+@admin.register(models.BedSheets)
 class BedSheetsAdmin(admin.ModelAdmin):
-    form = BedSheetsForm
+    form = forms.BedSheetsForm
 
-@admin.register(Bed)
+@admin.register(models.Bed)
 class BedAdmin(admin.ModelAdmin):
-    form = BedForm
+    form = forms.BedForm
 
-@admin.register(Stand)
+@admin.register(models.Stand)
 class StandAdmin(admin.ModelAdmin):
-    form = StandForm
+    form = forms.StandForm
 
-@admin.register(Basis)
+@admin.register(models.Basis)
 class BasisAdmin(admin.ModelAdmin):
-    form = BasisForm
+    form = forms.BasisForm
