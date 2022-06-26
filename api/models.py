@@ -55,19 +55,6 @@ PROPERTIES = [
     ('Порода древесины', 'Порода древесины')
 ]
 
-class ProductManager(models.Manager):
-    def get_child_products(self):
-        products = {}
-        for model in self.model.__subclasses__():
-            products.update({model.__name__: model.products.get_self_products()})
-        return products
-
-    def get_self_products(self):
-        products = {}
-        for product in super().get_queryset().all():
-            products.update({product.name: product})
-        return products
-
 class Category(models.Model):
     products = [("Матрас", "Матрас"), ("Подушка", "Подушка"), ("Наматрасник", "Наматрасник"), ("Одеяло", "Одеяло"), ("Постельное белье", "Постельное белье"), ("Кровать", "Кровать"), ("Тумба", "Тумба"), ("Основание", "Основание")]
 
@@ -79,18 +66,6 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
-
-class Product(models.Model):
-    name = models.CharField("Название", max_length=32)
-    category = models.ForeignKey(Category, related_name="categoryP", on_delete=models.CASCADE, verbose_name="Категория")
-    products = ProductManager()
-
-    def __str__(self):
-        return f'Продукт: "{self.name}"'
-
-    def save(self, *args, **kwargs):
-        self.name = self.name.title()
-        super(Choice, self).save(*args, **kwargs)
 
 class Choice(models.Model):
     name = models.CharField("Характеристика", choices=PROPERTIES, max_length=32)
@@ -127,6 +102,20 @@ class Choice(models.Model):
     class Meta:
         verbose_name = 'вариант выбора'
         verbose_name_plural = 'варианты выбора'
+
+class Product(models.Model):
+    name = models.CharField("Название", max_length=32)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+
+    def __str__(self):
+        return f'Продукт: "{self.name}"'
+
+    def save(self, *args, **kwargs):
+        self.name = self.name.title()
+        super(Choice, self).save(*args, **kwargs)
+
+    class Meta:
+        abstract = True
 
 class Mattrass(Product):
     type = models.ManyToManyField(Choice, related_name="typeM", verbose_name="Тип матраса")
@@ -198,7 +187,6 @@ class BedSheets(Product):
     package = models.ForeignKey(Choice, related_name="packageBS", on_delete=models.CASCADE, verbose_name="Упаковка")
     color = models.ForeignKey(Choice, related_name="colorBS", on_delete=models.CASCADE, verbose_name="Цвет комплекта")
     country = models.ForeignKey(Choice, related_name="countryBS", on_delete=models.CASCADE, verbose_name="Страна производства")
-
 
     class Meta:
         verbose_name = "постельное белье"

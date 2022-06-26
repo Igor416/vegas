@@ -2,6 +2,8 @@ from django.contrib import admin
 from . import models
 from . import forms
 
+admin.site.register(models.Category)
+
 @admin.register(models.Choice)
 class ChoiceAdmin(admin.ModelAdmin):
     form = forms.ChoiceForm
