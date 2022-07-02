@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import SearchBar from "./SearchBar.js";
-import Menu from "./Menu.js";
 
 export default class Navbar extends Component {
   constructor(props) {

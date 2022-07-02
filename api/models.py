@@ -6,16 +6,14 @@ ALL_CATEGORIES = ['Матрас', 'Подушка', 'Наматрасник', '�
 
 COMMON_CATEGORIES  = {
     'Для возраста': ['Матрас', 'Подушка', 'Одеяло'],
-    'Страна производства': ALL_CATEGORIES,
     'Упаковка': ['Матрас', 'Подушка', 'Одеяло', 'Постельное белье'],
     'Ткань чехла': ['Подушка', 'Наматрассник', 'Одеяло'],
     'Материал обивки': ['Кровать', 'Тумба'],
 }
 
-PROPERTIES = [
+ALL_PROPERTIES = [
     ('ОБЩИЕ', 'ОБЩИЕ'),
     ('Для возраста', 'Для возраста'),
-    ('Страна производства', 'Страна производства'),
     ('Упаковка', 'Упаковка'),
     ('Ткань чехла', 'Ткань чехла'),
     ('Материал обивки', 'Материал обивки'),
@@ -55,6 +53,37 @@ PROPERTIES = [
     ('Порода древесины', 'Порода древесины')
 ]
 
+PROPERTIES = {
+    'Матрас': {
+        'Коллекции': 'self.model.objects.filter(name="Коллекция")',
+        'Беспружинные': ['Все беспружинные', 'Латексные матрасы', 'Матрасы в рулонной упаковке'],
+        'На основе пружинных блоков': 'self.model.objects.filter(name="Пружинный блок")',
+        'Возрастная категория': 'self.model.objects.filter(name="Для возраста")',
+        'Степень жесткости и материалы': ''
+    },
+    'Подушка': {
+        
+    },
+    'Наматрасник': {
+        
+    },
+    'Одеяло': {
+        
+    },
+    'Постельное белье': {
+        
+    },
+    'Кровать': {
+        
+    },
+    'Тумба': {
+        
+    },
+    'Основание': {
+        
+    }
+}
+
 class Category(models.Model):
     products = [("Матрас", "Матрас"), ("Подушка", "Подушка"), ("Наматрасник", "Наматрасник"), ("Одеяло", "Одеяло"), ("Постельное белье", "Постельное белье"), ("Кровать", "Кровать"), ("Тумба", "Тумба"), ("Основание", "Основание")]
 
@@ -67,10 +96,22 @@ class Category(models.Model):
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
 
+class ProductsManager(models.Manager):
+    def all_categories(self):
+        products = dict.fromkeys(ALL_CATEGORIES, {})
+        for category, sub_categories in products.items():
+            for sub_category, values in PROPERTIES[category].items():
+                if isinstance(values, str):
+                    sub_categories.update({sub_category: map(lambda val: val.property, eval(values))})
+                else:
+                    sub_categories.update({sub_category: values})
+        return products
+
 class Choice(models.Model):
-    name = models.CharField("Характеристика", choices=PROPERTIES, max_length=32)
+    name = models.CharField("Характеристика", choices=ALL_PROPERTIES, max_length=32)
     category = models.ManyToManyField(Category, related_name="categoryC", verbose_name="Категория")
     property = models.CharField("Вариант выбора", max_length=32)
+    objects = ProductsManager()
 
     def __str__(self):
         categories = self.category.all()
@@ -90,10 +131,10 @@ class Choice(models.Model):
         print(self, self.name, self.name == 'lol')
         categories = COMMON_CATEGORIES.get(self.name)
         if not categories:
-            index = PROPERTIES.index((self.name, self.name))
+            index = ALL_PROPERTIES.index((self.name, self.name))
             for i in range(index, 0, -1):
-                if PROPERTIES[i][1].startswith('ТОЛЬКО'):
-                    categories = [PROPERTIES[i][0]]
+                if ALL_PROPERTIES[i][1].startswith('ТОЛЬКО'):
+                    categories = [ALL_PROPERTIES[i][0]]
                     break
 
         for category in categories:
@@ -106,6 +147,7 @@ class Choice(models.Model):
 class Product(models.Model):
     name = models.CharField("Название", max_length=32)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
+    best = models.BooleanField("Лидер продаж", default=False)
 
     def __str__(self):
         return f'Продукт: "{self.name}"'
@@ -125,15 +167,14 @@ class Mattrass(Product):
     max_pressure = models.IntegerField("Макс. нагрузка")
     rigidity1 = models.ForeignKey(Choice, related_name="rigidity1M", on_delete=models.CASCADE, verbose_name="Уровень жесткости стороны 1")
     rigidity2 = models.ForeignKey(Choice, related_name="rigidity2M", on_delete=models.CASCADE, verbose_name="Уровень жесткости стороны 2")
-    springs = models.IntegerField("Кол-во пружин")
+    springs = models.IntegerField("Кол-во пружин в двуспальном матрасе", default=0)
     lifetime = models.IntegerField("Срок Службы")
     collection = models.ForeignKey(Choice, related_name="collectionM", on_delete=models.CASCADE, verbose_name="Коллекция")
     springblock = models.ForeignKey(Choice, related_name="springblockM", on_delete=models.CASCADE, verbose_name="Пружинный блок")
     package = models.ForeignKey(Choice, related_name="packageM", on_delete=models.CASCADE, verbose_name="Упаковка")
     construction = models.ManyToManyField(Choice, related_name="constructionM", verbose_name="Конструкция")
     cover = models.BooleanField("Съемный чехол")
-    country = models.ForeignKey(Choice, related_name="countryM", on_delete=models.CASCADE, verbose_name="Страна производства")
-    
+
     class Meta:
         verbose_name = 'матрас'
         verbose_name_plural = 'матрасы'
@@ -148,8 +189,7 @@ class Pillow(Product):
     package = models.ForeignKey(Choice, related_name="packageP", on_delete=models.CASCADE, verbose_name="Упаковка")
     cover = models.BooleanField("Съемный чехол")
     tissue = models.ManyToManyField(Choice, related_name="tissueP", verbose_name="Ткань чехла")
-    country = models.ForeignKey(Choice, related_name="countryP", on_delete=models.CASCADE, verbose_name="Страна производства")
-
+ 
     class Meta:
         verbose_name = "подушка"
         verbose_name_plural = "подушки"
@@ -161,7 +201,6 @@ class MattressPads(Product):
     cover = models.BooleanField("Съемный чехол")
     binding = models.ForeignKey(Choice, related_name="bindingMP", on_delete=models.CASCADE, verbose_name="Крепление")
     tissue = models.ManyToManyField(Choice, related_name="tissueMP", verbose_name="Ткань чехла")
-    country = models.ForeignKey(Choice, related_name="countryMP", on_delete=models.CASCADE, verbose_name="Страна производства")
 
     class Meta:
         verbose_name = "наматрасник"
@@ -175,7 +214,6 @@ class Blanket(Product):
     package = models.ForeignKey(Choice, related_name="packageBl", on_delete=models.CASCADE, verbose_name="Упаковка")
     tissue = models.ManyToManyField(Choice, related_name="tissueBl", verbose_name="Ткань чехла")
     color = models.ForeignKey(Choice, related_name="colorBl", on_delete=models.CASCADE, verbose_name="Цвет одеяла")
-    country = models.ForeignKey(Choice, related_name="countryBl", on_delete=models.CASCADE, verbose_name="Страна производства")
 
     class Meta:
         verbose_name = "одеяло"
@@ -186,8 +224,7 @@ class BedSheets(Product):
     material = models.ForeignKey(Choice, related_name="materialBS", on_delete=models.CASCADE, verbose_name="Материал наполнения")
     package = models.ForeignKey(Choice, related_name="packageBS", on_delete=models.CASCADE, verbose_name="Упаковка")
     color = models.ForeignKey(Choice, related_name="colorBS", on_delete=models.CASCADE, verbose_name="Цвет комплекта")
-    country = models.ForeignKey(Choice, related_name="countryBS", on_delete=models.CASCADE, verbose_name="Страна производства")
-
+ 
     class Meta:
         verbose_name = "постельное белье"
         verbose_name_plural = "постельное белье"   
@@ -203,8 +240,7 @@ class Bed(Product):
     lifetime = models.IntegerField("Срок Службы")
     mattrass_included = models.BooleanField("Матрас в комплекте")
     basis_included  = models.BooleanField("Основание в комплекте")
-    country = models.ForeignKey(Choice, related_name="countryB", on_delete=models.CASCADE, verbose_name="Страна производства")
-
+ 
     class Meta:
         verbose_name = 'мебель'
         verbose_name_plural = 'мебель'
@@ -215,8 +251,7 @@ class Stand(Product):
     width = models.IntegerField("Ширина")
     length = models.IntegerField("Длина")
     height = models.IntegerField("Высота изголовья")
-    country = models.ForeignKey(Choice, related_name="countryS", on_delete=models.CASCADE, verbose_name="Страна производства")
-
+ 
     class Meta:
         verbose_name = 'тумба'
         verbose_name_plural = 'тумбы'
@@ -226,8 +261,7 @@ class Basis(Product):
     distance = models.IntegerField("Расстяоние межда ламелями")
     width = models.IntegerField("Ширина ламели")
     recomended = models.ManyToManyField(Mattrass, related_name="recomendedBa", verbose_name="Рекомендовано для матрассов")
-    country = models.ForeignKey(Choice, related_name="countryBa", on_delete=models.CASCADE, verbose_name="Страна производства")
-
+ 
     class Meta:
         verbose_name = 'основание'
         verbose_name_plural = 'основания'

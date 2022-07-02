@@ -2,55 +2,86 @@ import React, { Component } from "react";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
+import { CATEGORIES } from "./header/linksJson.js";
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.links = ["МАТРАСЫ", "ПОДУШКИ", "НАМАТРАСНИКИ", "АКСЕССУАРЫ", "ДЕТЯМ", "МЕБЕЛЬ", "ОСНОВАНИЯ", "МАГАЗИНЫ"]
+    this.categories = Object.keys(CATEGORIES)
     this.inMenu = false;
     this.state = {
-      toggle: this.links.map(link => false), //[false, false, false ...]
-      active: null
+      category: null,
+      sub_category: null,
+      actual_link: null
     };
 
     this.onMouseEnter = this.onMouseEnter.bind(this);
     this.onMouseLeave = this.onMouseLeave.bind(this);
   }
   
-  onMouseEnter(inMenu, index) {
-    let toggle = this.state.toggle
-    let active = this.state.active
+  onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false, actual_link=null) {
+    let category_temp = this.state.category
+    let sub_category_temp = this.state.sub_category
+    let actual_link_temp = this.state.actual_link
     if (!inMenu) {
-      active = this.links[index]
-      toggle = this.links.map((link, i) => {return i == index})
+      category_temp = category
+    }
+    else {
+      if (actual_link) {
+        actual_link_temp = actual_link
+      }
+      else if (sub_category) {
+        sub_category_temp = sub_category
+      }
     }
     this.setState({
-      toggle: toggle,
-      active: active
-    }, () => {this.inMenu = inMenu})
+      category: category_temp,
+      sub_category: sub_category_temp,
+      actual_link: actual_link_temp
+    }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
   
-  onMouseLeave(inMenu, index) {
-    this.inMenu = false
+  onMouseLeave(inSubCategories=false, sub_category=null, inActualLinks=false, actual_link=null) {
+    this.inMenu = inSubCategories
+    this.inActualLinks = inActualLinks
+    if (actual_link) {
+      this.setState({
+        actual_link: null
+      })
+    }
+    if (inActualLinks ^ Boolean(actual_link)) {
+      this.setState({
+        sub_category: null
+      })
+    }
     setTimeout(() => {
-      if (!this.inMenu) {
-        let toggle = this.state.toggle
-        toggle[this.links.indexOf(this.state.active)] = false
+      if ((inSubCategories ^ Boolean(sub_category)) && !this.inActualLinks) {
         this.setState({
-          toggle: toggle,
-          active: null
+          sub_category: null
+        })
+      }
+      if (!this.inMenu) {
+        this.setState({
+          category: null,
+          sub_category: null,
+          actual_link: null
         })
       }
     }, 20)
   }
 
   render() {
+    let props = {
+      onMouseEnter: this.onMouseEnter,
+      onMouseLeave: this.onMouseLeave,
+      state: this.state
+    }
     return (
       <div className="container-fluid">
         <Navbar></Navbar>
         <nav className="sticky-top bg-white">
-          <Links onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} state={this.state} links={this.links}></Links>
-          <Menu onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} state={this.state}></Menu>
+          <Links categories={this.categories} props={props}></Links>
+          <Menu categories={CATEGORIES} props={props}></Menu>
         </nav>
       </div>
     );
