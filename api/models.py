@@ -1,148 +1,78 @@
-from turtle import distance
-from unicodedata import category
+from tabnanny import verbose
+from django.core.exceptions import ValidationError
 from django.db import models
+from .catalog import Manager
 
-ALL_CATEGORIES = ['Матрас', 'Подушка', 'Наматрасник', 'Одеяло', 'Постельное белье', 'Кровать', 'Тумба', 'Основание']
+manager = Manager()
 
-COMMON_CATEGORIES  = {
-    'Для возраста': ['Матрас', 'Подушка', 'Одеяло'],
-    'Упаковка': ['Матрас', 'Подушка', 'Одеяло', 'Постельное белье'],
-    'Ткань чехла': ['Подушка', 'Наматрассник', 'Одеяло'],
-    'Материал обивки': ['Кровать', 'Тумба'],
-}
-
-ALL_PROPERTIES = [
-    ('ОБЩИЕ', 'ОБЩИЕ'),
-    ('Для возраста', 'Для возраста'),
-    ('Упаковка', 'Упаковка'),
-    ('Ткань чехла', 'Ткань чехла'),
-    ('Материал обивки', 'Материал обивки'),
-
-    ('', ''),
-    ('Матрас', 'ТОЛЬКО МАТРАСЫ'),
-    ('Коллекция', 'Коллекция'),
-    ('Конструкция', 'Конструкция'),
-    ('Уровень жесткости стороны 1', 'Уровень жесткости стороны 1'),
-    ('Уровень жесткости стороны 2', 'Уровень жесткости стороны 2'),
-    ('Пружинный блок', 'Пружинный блок'),
-    ('Тип матраса', 'Тип матраса'),
-
-    ('', ''),
-    ('Подушка', 'ТОЛЬКО ПОДУШКИ'),
-    ('Материал наполнения', 'Материал наполнения'),
-
-    ('', ''),
-    ('Наматрасник', 'ТОЛЬКО НАМАТРАСНИКИ'),
-    ('Тип наматрасника', 'Тип наматрасника'),
-    ('Крепление', 'Крепление'),
-
-    ('', ''),
-    ('Одеяло', 'ТОЛЬКО ОДЕЯЛА'),
-    ('Цвет одеяла', 'Цвет одеяла'),
-    ('Тип одеяла', 'Тип одеяла'),
-    ('Наполнитель', 'Наполнитель'),
-
-    ('', ''),
-    ('Белье', 'ТОЛЬКОПОСТЕЛЬНОЕ БЕЛЬЕ'),
-    ('Тип комплекта', 'Тип комплекта'),
-    ('Цвет комплекта', 'Цвет комплекта'),
-
-    ('', ''),
-    ('Кровати', 'ТОЛЬКО КРОВАТИ'),
-    ('Вид кровати', 'Вид кровати'),
-    ('Порода древесины', 'Порода древесины')
-]
-
-PROPERTIES = {
-    'Матрас': {
-        'Коллекции': 'self.model.objects.filter(name="Коллекция")',
-        'Беспружинные': ['Все беспружинные', 'Латексные матрасы', 'Матрасы в рулонной упаковке'],
-        'На основе пружинных блоков': 'self.model.objects.filter(name="Пружинный блок")',
-        'Возрастная категория': 'self.model.objects.filter(name="Для возраста")',
-        'Степень жесткости и материалы': ''
-    },
-    'Подушка': {
-        
-    },
-    'Наматрасник': {
-        
-    },
-    'Одеяло': {
-        
-    },
-    'Постельное белье': {
-        
-    },
-    'Кровать': {
-        
-    },
-    'Тумба': {
-        
-    },
-    'Основание': {
-        
+def create_related_field(prop, postfix='', plural=False):
+    kwargs = {
+        'to': Choice,
+        'related_name': prop + postfix,
+        'verbose_name': manager.get_prop_trans(prop)
     }
-}
+
+    if plural:
+        field = models.ManyToManyField
+    else:
+        field = models.ForeignKey
+        kwargs.update({'on_delete': models.CASCADE})
+    
+    return field(**kwargs)
+        
 
 class Category(models.Model):
-    products = [("Матрас", "Матрас"), ("Подушка", "Подушка"), ("Наматрасник", "Наматрасник"), ("Одеяло", "Одеяло"), ("Постельное белье", "Постельное белье"), ("Кровать", "Кровать"), ("Тумба", "Тумба"), ("Основание", "Основание")]
+    choices = manager.get_pr_choices()
 
-    name = models.CharField("Название", max_length=32, choices=products, unique=True)
+    name = models.CharField("Название", max_length=32, choices=choices, unique=True)
 
     def __str__(self):
-        return self.name
+        return manager.get_pr_trans(self.name)
 
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
 
-class ProductsManager(models.Manager):
-    def all_categories(self):
-        products = dict.fromkeys(ALL_CATEGORIES, {})
-        for category, sub_categories in products.items():
-            for sub_category, values in PROPERTIES[category].items():
-                if isinstance(values, str):
-                    sub_categories.update({sub_category: map(lambda val: val.property, eval(values))})
-                else:
-                    sub_categories.update({sub_category: values})
-        return products
-
 class Choice(models.Model):
-    name = models.CharField("Характеристика", choices=ALL_PROPERTIES, max_length=32)
+    choices = manager.get_prop_choices()
+
+    name = models.CharField("Характеристика", choices=choices, max_length=32)
     category = models.ManyToManyField(Category, related_name="categoryC", verbose_name="Категория")
-    property = models.CharField("Вариант выбора", max_length=32)
-    objects = ProductsManager()
+    property_ru = models.CharField("Вариант выбора (ru)", max_length=32)
+    property_ro = models.CharField("Вариант выбора (ro)", max_length=32)
 
     def __str__(self):
-        categories = self.category.all()
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
         s = ', '.join(lst)
-        return f'Вариант выбора для "{self.name}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property}"'
+        return f'Вариант выбора для "{manager.get_prop_trans(self.name)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
     def save(self, *args, **kwargs):
-        if self.name.startswith('ТОЛЬКО') and self.name == 'ОБЩИЕ':
-            return
-        self.property = self.property.lower()
+        self.property_ru = self.property_ru.lower()
+        self.property_ro = self.property_ro.lower()
         super(Choice, self).save(*args, **kwargs)
-        self.set_category()
-        super(Choice, self).save(*args, **kwargs)
-
-    def set_category(self):
-        print(self, self.name, self.name == 'lol')
-        categories = COMMON_CATEGORIES.get(self.name)
-        if not categories:
-            index = ALL_PROPERTIES.index((self.name, self.name))
-            for i in range(index, 0, -1):
-                if ALL_PROPERTIES[i][1].startswith('ТОЛЬКО'):
-                    categories = [ALL_PROPERTIES[i][0]]
-                    break
-
-        for category in categories:
+        self.set_category(*args, **kwargs)
+    
+    def set_category(self, *args, **kwargs):
+        for category in manager.get_categories(self.name):
             self.category.add(Category.objects.get(name=category))
-
+        super(Choice, self).save(*args, **kwargs)
+    
     class Meta:
         verbose_name = 'вариант выбора'
         verbose_name_plural = 'варианты выбора'
+
+class Size(models.Model):
+    width = models.SmallIntegerField('Ширина')
+    length = models.SmallIntegerField('Длина')
+    priceEUR = models.SmallIntegerField('Цена (евро)')
+    priceMDL = models.SmallIntegerField('Цена (леи)')
+
+    def __str__(self):
+        return f'Размер {self.width}x{self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
+
+    class Meta:
+        verbose_name = "размер"
+        verbose_name_plural = "размеры"   
 
 class Product(models.Model):
     name = models.CharField("Название", max_length=32)
@@ -150,7 +80,7 @@ class Product(models.Model):
     best = models.BooleanField("Лидер продаж", default=False)
 
     def __str__(self):
-        return f'Продукт: "{self.name}"'
+        return self.__name__ + ': ' + self.name
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
@@ -160,108 +90,79 @@ class Product(models.Model):
         abstract = True
 
 class Mattrass(Product):
-    type = models.ManyToManyField(Choice, related_name="typeM", verbose_name="Тип матраса")
-    age = models.ManyToManyField(Choice, related_name="ageM", verbose_name="Для возраста")
-    garanty = models.IntegerField("Гарантийный срок")
     height = models.IntegerField("Высота")
-    max_pressure = models.IntegerField("Макс. нагрузка")
-    rigidity1 = models.ForeignKey(Choice, related_name="rigidity1M", on_delete=models.CASCADE, verbose_name="Уровень жесткости стороны 1")
-    rigidity2 = models.ForeignKey(Choice, related_name="rigidity2M", on_delete=models.CASCADE, verbose_name="Уровень жесткости стороны 2")
     springs = models.IntegerField("Кол-во пружин в двуспальном матрасе", default=0)
+    max_pressure = models.IntegerField("Макс. нагрузка")
     lifetime = models.IntegerField("Срок Службы")
-    collection = models.ForeignKey(Choice, related_name="collectionM", on_delete=models.CASCADE, verbose_name="Коллекция")
-    springblock = models.ForeignKey(Choice, related_name="springblockM", on_delete=models.CASCADE, verbose_name="Пружинный блок")
-    package = models.ForeignKey(Choice, related_name="packageM", on_delete=models.CASCADE, verbose_name="Упаковка")
-    construction = models.ManyToManyField(Choice, related_name="constructionM", verbose_name="Конструкция")
     cover = models.BooleanField("Съемный чехол")
-
-    class Meta:
-        verbose_name = 'матрас'
-        verbose_name_plural = 'матрасы'
+    sizes = models.ManyToManyField(Size, related_name="sizesM", verbose_name="Размеры")
+    
+    mattras_type = create_related_field('mattrass_type', '', True)
+    age = create_related_field('age', 'M', True)
+    rigidity1 = create_related_field('rigidity1')
+    rigidity2 = create_related_field('rigidity2')
+    collection = create_related_field('collection')
+    springblock = create_related_field('springblock')
+    package = create_related_field('package', 'M')
+    construction = create_related_field('construction', '', True)
 
 class Pillow(Product):
-    age = models.ManyToManyField(Choice, related_name="ageP", verbose_name="Для возраста")
-    material = models.ForeignKey(Choice, related_name="materialP", on_delete=models.CASCADE, verbose_name="Материал наполнения")
-    garanty = models.IntegerField("Гарантийный срок")
     width = models.IntegerField("Ширина")
     length = models.IntegerField("Длина")
     height = models.IntegerField("Справочная высота")
-    package = models.ForeignKey(Choice, related_name="packageP", on_delete=models.CASCADE, verbose_name="Упаковка")
     cover = models.BooleanField("Съемный чехол")
-    tissue = models.ManyToManyField(Choice, related_name="tissueP", verbose_name="Ткань чехла")
- 
-    class Meta:
-        verbose_name = "подушка"
-        verbose_name_plural = "подушки"
 
-class MattressPads(Product):
-    type = models.ManyToManyField(Choice, related_name="typeMP", verbose_name="Тип наматрасника")
-    garanty = models.IntegerField("Гарантийный срок")
+    age = create_related_field('age', 'P', True)
+    material_filler = create_related_field('material_filler')
+    cover = create_related_field('cover', 'P', True)
+
+
+class MattrassPad(Product):
     height = models.IntegerField("Высота")
     cover = models.BooleanField("Съемный чехол")
-    binding = models.ForeignKey(Choice, related_name="bindingMP", on_delete=models.CASCADE, verbose_name="Крепление")
-    tissue = models.ManyToManyField(Choice, related_name="tissueMP", verbose_name="Ткань чехла")
+    sizes = models.ManyToManyField(Size, related_name="sizesMP", verbose_name="Размеры")
 
-    class Meta:
-        verbose_name = "наматрасник"
-        verbose_name_plural = "наматрасники"
+    mattrasspad_type = create_related_field('mattrasspad_type', '', True)
+    binding = create_related_field('binding')
+    cover = create_related_field('cover', 'MP', True)
 
 class Blanket(Product):
-    type = models.ManyToManyField(Choice, related_name="typeBl", verbose_name="Тип одеяла")
-    age = models.ManyToManyField(Choice, related_name="ageBl", verbose_name="Для возраста")
-    filling = models.ForeignKey(Choice, related_name="fillingBl", on_delete=models.CASCADE, verbose_name="Наполнитель")
     density = models.IntegerField("Плотность наполнения")
-    package = models.ForeignKey(Choice, related_name="packageBl", on_delete=models.CASCADE, verbose_name="Упаковка")
-    tissue = models.ManyToManyField(Choice, related_name="tissueBl", verbose_name="Ткань чехла")
-    color = models.ForeignKey(Choice, related_name="colorBl", on_delete=models.CASCADE, verbose_name="Цвет одеяла")
-
-    class Meta:
-        verbose_name = "одеяло"
-        verbose_name_plural = "одеяла"   
+    sizes = models.ManyToManyField(Size, related_name="sizesBl", verbose_name="Размеры")
+    
+    blanket_type = create_related_field('blanket_type', '', True)
+    age = create_related_field('age', 'Bl', True)
+    filling = create_related_field('filling')
+    package = create_related_field('package', 'Bl')
+    blanket_color = create_related_field('blanket_color')
 
 class BedSheets(Product):
-    type = models.ManyToManyField(Choice, related_name="typeBS", verbose_name="Тип комплекта")
-    material = models.ForeignKey(Choice, related_name="materialBS", on_delete=models.CASCADE, verbose_name="Материал наполнения")
-    package = models.ForeignKey(Choice, related_name="packageBS", on_delete=models.CASCADE, verbose_name="Упаковка")
-    color = models.ForeignKey(Choice, related_name="colorBS", on_delete=models.CASCADE, verbose_name="Цвет комплекта")
- 
-    class Meta:
-        verbose_name = "постельное белье"
-        verbose_name_plural = "постельное белье"   
+    sizes = models.ManyToManyField(Size, related_name="sizesBS", verbose_name="Размеры")
+    
+    bedsheets_type = create_related_field('bedsheets_type', '', True)
+    package = create_related_field('package', 'BS')
+    bedsheets_color = create_related_field('bedsheets_color')
+    tissue = create_related_field('tissue')
 
 class Bed(Product):
-    type = models.ManyToManyField(Choice, related_name="typeB", verbose_name="Вид кровати")
-    material = models.ForeignKey(Choice, related_name="materialB", on_delete=models.CASCADE, verbose_name="Материал обивки", blank=True)
-    wood = models.ForeignKey(Choice, related_name="woodB", on_delete=models.CASCADE, verbose_name="Порода древесины")
-    garanty = models.IntegerField("Гарантийный срок")
-    width = models.IntegerField("Ширина")
-    length = models.IntegerField("Длина")
     height = models.IntegerField("Высота изголовья")
-    lifetime = models.IntegerField("Срок Службы")
-    mattrass_included = models.BooleanField("Матрас в комплекте")
-    basis_included  = models.BooleanField("Основание в комплекте")
- 
-    class Meta:
-        verbose_name = 'мебель'
-        verbose_name_plural = 'мебель'
+    sizes = models.ManyToManyField(Size, related_name="sizesB", verbose_name="Размеры")
+
+    bed_type = create_related_field('bed_type', '', True)
 
 class Stand(Product):
-    material = models.ForeignKey(Choice, related_name="materialS", on_delete=models.CASCADE, verbose_name="Материал обивки", blank=True)
-    garanty = models.IntegerField("Гарантийный срок")
     width = models.IntegerField("Ширина")
     length = models.IntegerField("Длина")
-    height = models.IntegerField("Высота изголовья")
- 
-    class Meta:
-        verbose_name = 'тумба'
-        verbose_name_plural = 'тумбы'
+    height = models.IntegerField("Высота")
+
+    material = create_related_field('material')
 
 class Basis(Product):
-    garanty = models.IntegerField("Гарантийный срок")
     distance = models.IntegerField("Расстяоние межда ламелями")
     width = models.IntegerField("Ширина ламели")
+    height = models.IntegerField("Высота")
+    legs_height = models.IntegerField("Высота ножек")
     recomended = models.ManyToManyField(Mattrass, related_name="recomendedBa", verbose_name="Рекомендовано для матрассов")
- 
-    class Meta:
-        verbose_name = 'основание'
-        verbose_name_plural = 'основания'
+    sizes = models.ManyToManyField(Size, related_name="sizesBa", verbose_name="Размеры")
+
+    basis_type = create_related_field('basis_type', '', True)

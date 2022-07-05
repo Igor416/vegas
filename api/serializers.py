@@ -10,16 +10,13 @@ class MattrassSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.Mattrass
 
-
 class PillowSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.Pillow
 
-
-class MattressPadsSerializer(ProductSerializer):
+class MattrassPadSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
-        model = models.MattressPads
-
+        model = models.MattrassPad
 
 class BlanketSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
@@ -29,17 +26,14 @@ class BedSheetsSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.BedSheets
 
-
 class BedSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.Bed
-
 
 class StandSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.Stand
         
-
 class BasisSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         model = models.Basis
