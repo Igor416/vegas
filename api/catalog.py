@@ -12,8 +12,7 @@ BASIS = 'Basis'
 MATTRASS_TYPE = 'mattrass_type'
 COLLECTION = 'collection'
 CONSTRUCTION = 'construction'
-RIGIDITY1 = 'rigidity1'
-RIGIDITY2 = 'rigidity2'
+RIGIDITY = 'rigidity'
 SPRINGBLOCK = 'springblock'
 AGE = 'age'
 PACKAGE = 'package'
@@ -38,7 +37,7 @@ COMMON_PROPERTIES  = {
 }
 
 CATALOG = {
-    MATTRASS: [MATTRASS_TYPE, COLLECTION, CONSTRUCTION, RIGIDITY1, RIGIDITY2, SPRINGBLOCK],
+    MATTRASS: [MATTRASS_TYPE, COLLECTION, CONSTRUCTION, RIGIDITY, SPRINGBLOCK],
     PILLOW: [MATERIAL_FILLER,],
     MATTRASSPAD: [MATTRASSPAD_TYPE, BINDING],
     BLANKET: [BLANKET_TYPE, BLANKET_COLOR, FILLING],
@@ -70,6 +69,9 @@ class Manager:
     
     def get_all_products(self):
         return list(CATALOG.keys())
+
+    def get_all_props(self, product):
+        return CATALOG[product] + [prop for prop, prs in COMMON_PROPERTIES.items() if product in prs]
 
     def is_product(self, value):
         return value in self.get_all_products()
