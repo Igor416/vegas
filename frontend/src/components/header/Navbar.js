@@ -11,7 +11,7 @@ export default class Navbar extends Component {
       <div className="row px-5 pt-4">
         <div className="col-1"></div>
         <div className="col-2">
-          <img style={{ maxWidth: '80%' }} src="static/images/logo_menu.svg"/>
+          <img style={{ maxWidth: '80%' }} src="/static/images/logo_menu.svg"/>
         </div>
         <div className="col-3 ps-0">
           <SearchBar />
@@ -25,10 +25,10 @@ export default class Navbar extends Component {
         </div>
         <div className="col-1 d-flex justify-content-center border-1 border-end">
           <button className="p-2 bg-white border-0 outline-0 no-hover">
-            <img className="border border-1" style={{ width: "3vw" }}src="static/images/romanian.png"/>
+            <img className="border border-1" style={{ width: "3vw" }}src="/static/images/romanian.png"/>
           </button>
           <button className="p-2 bg-white border-0 no-hover">
-            <img className="border border-1" style={{ width: "3vw" }} src="static/images/russian.png"/>
+            <img className="border border-1" style={{ width: "3vw" }} src="/static/images/russian.png"/>
           </button>
         </div>
         <div className="col-2 text-center">
