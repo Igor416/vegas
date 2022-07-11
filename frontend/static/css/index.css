@@ -2,10 +2,15 @@
   box-sizing: border-box;
 }
 
+.no-link {
+  text-decoration: none !important;
+  color: var(--bs-dark) !important;
+}
+
 .no-hover:hover, .no-hover:focus {
   cursor: pointer;
   text-decoration: none !important;
-  color: black !important;
+  color: var(--bs-dark) !important;
   border: none !important;
   outline: none !important;
   box-shadow: none !important;

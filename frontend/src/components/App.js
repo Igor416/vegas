@@ -1,7 +1,7 @@
 import React, { Component } from "react";
+import { Outlet } from "react-router-dom";
 import Header from "./Header.js"
 import Footer from "./Footer.js"
-import { createRoot } from 'react-dom/client';
 
 export default class App extends Component {
   constructor(props) {
@@ -12,12 +12,9 @@ export default class App extends Component {
     return (
       <div>
         <Header></Header>
+        <Outlet/>
         <Footer></Footer>
       </div>
     );
   }
 }
-
-const appDiv = document.getElementById('app');
-const root = createRoot(appDiv);
-root.render(<App />);
