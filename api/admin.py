@@ -6,7 +6,11 @@ from .forms import ProductForm
 manager = Manager()
 
 admin.site.register(models.Category)
-admin.site.register(models.Size)
+
+@admin.register(models.Size)
+class SizeAdmin(admin.ModelAdmin):
+    ordering = ['category', 'width']
+    exclude = ['category']
 
 @admin.register(models.Choice)
 class ChoiceAdmin(admin.ModelAdmin):
