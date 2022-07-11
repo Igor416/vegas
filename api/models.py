@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.core.exceptions import ValidationError
 from django.db import models
 from .catalog import Manager
@@ -8,8 +7,7 @@ manager = Manager()
 def create_related_field(prop, postfix='', plural=False):
     kwargs = {
         'to': Choice,
-        'related_name': prop + postfix,
-        'verbose_name': manager.get_prop_trans(prop)
+        'related_name': prop + postfix
     }
 
     if plural:
@@ -20,6 +18,8 @@ def create_related_field(prop, postfix='', plural=False):
     
     return field(**kwargs)
         
+def has_multiple_rels(model, field):
+    return hasattr(getattr(model, field), 'rel')
 
 class Category(models.Model):
     choices = manager.get_pr_choices()
@@ -39,7 +39,7 @@ class Choice(models.Model):
     name = models.CharField("Характеристика", choices=choices, max_length=32)
     category = models.ManyToManyField(Category, related_name="categoryC", verbose_name="Категория")
     property_ru = models.CharField("Вариант выбора (ru)", max_length=32)
-    property_ro = models.CharField("Вариант выбора (ro)", max_length=32)
+    property_ro = models.CharField("Вариант выбора (ro)", max_length=32, blank=True)
 
     def __str__(self):
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
@@ -48,7 +48,10 @@ class Choice(models.Model):
 
     def save(self, *args, **kwargs):
         self.property_ru = self.property_ru.lower()
-        self.property_ro = self.property_ro.lower()
+        if self.property_ro == '':
+            self.property_ro = self.property_ru
+        else:
+            self.property_ro = self.property_ro.lower()
         super(Choice, self).save(*args, **kwargs)
         self.set_category(*args, **kwargs)
     
@@ -62,29 +65,43 @@ class Choice(models.Model):
         verbose_name_plural = 'варианты выбора'
 
 class Size(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория", null=True)
     width = models.SmallIntegerField('Ширина')
     length = models.SmallIntegerField('Длина')
     priceEUR = models.SmallIntegerField('Цена (евро)')
     priceMDL = models.SmallIntegerField('Цена (леи)')
 
     def __str__(self):
-        return f'Размер {self.width}x{self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
+        return f'Размер в категории {self.category}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
 
     class Meta:
         verbose_name = "размер"
         verbose_name_plural = "размеры"   
 
+from . import managers
 class Product(models.Model):
-    name = models.CharField("Название", max_length=32)
+    name = models.CharField("Название", max_length=32, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name="Категория")
     best = models.BooleanField("Лидер продаж", default=False)
 
+    @classmethod
+    def set_manager(cls):
+        cls.objects = getattr(managers, cls.get_name() + 'Manager')(cls)
+
+    @classmethod
+    def get_name(cls):
+        return cls.__name__
+
     def __str__(self):
-        return self.__name__ + ': ' + self.name
+        return self._meta.verbose_name + ': ' + self.name
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
-        super(Choice, self).save(*args, **kwargs)
+        super(Product, self).save(*args, **kwargs)
+        if hasattr(self, 'sizes'):
+            for size in self.sizes.all():
+                size.caterogory = self.category
+                size.save()
 
     class Meta:
         abstract = True
@@ -93,11 +110,11 @@ class Mattrass(Product):
     height = models.IntegerField("Высота")
     springs = models.IntegerField("Кол-во пружин в двуспальном матрасе", default=0)
     max_pressure = models.IntegerField("Макс. нагрузка")
-    lifetime = models.IntegerField("Срок Службы")
-    cover = models.BooleanField("Съемный чехол")
+    lifetime = models.IntegerField("Срок Службы", default=10)
+    cover = models.BooleanField("Съемный чехол", default=True)
     sizes = models.ManyToManyField(Size, related_name="sizesM", verbose_name="Размеры")
     
-    mattras_type = create_related_field('mattrass_type', '', True)
+    mattrass_type = create_related_field('mattrass_type', '', True)
     age = create_related_field('age', 'M', True)
     rigidity1 = create_related_field('rigidity1')
     rigidity2 = create_related_field('rigidity2')
@@ -110,7 +127,7 @@ class Pillow(Product):
     width = models.IntegerField("Ширина")
     length = models.IntegerField("Длина")
     height = models.IntegerField("Справочная высота")
-    cover = models.BooleanField("Съемный чехол")
+    cover = models.BooleanField("Съемный чехол", default=True)
 
     age = create_related_field('age', 'P', True)
     material_filler = create_related_field('material_filler')
@@ -119,7 +136,7 @@ class Pillow(Product):
 
 class MattrassPad(Product):
     height = models.IntegerField("Высота")
-    cover = models.BooleanField("Съемный чехол")
+    cover = models.BooleanField("Съемный чехол", default=True)
     sizes = models.ManyToManyField(Size, related_name="sizesMP", verbose_name="Размеры")
 
     mattrasspad_type = create_related_field('mattrasspad_type', '', True)
