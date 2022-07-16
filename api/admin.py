@@ -6,6 +6,8 @@ from .forms import ProductForm
 manager = Manager()
 
 admin.site.register(models.Category)
+admin.site.register(models.Image)
+admin.site.register(models.Video)
 
 @admin.register(models.Size)
 class SizeAdmin(admin.ModelAdmin):

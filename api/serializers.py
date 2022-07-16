@@ -14,21 +14,36 @@ class SizeSerializer(ModelSerializer):
         exclude = ['id', 'category']
         model = models.Size
 
+class ImageSerializer(ModelSerializer):
+    class Meta:
+        exclude = ['id']
+        model = models.Image
+
+class VideoSerializer(ModelSerializer):
+    class Meta:
+        exclude = ['id']
+        model = models.Video
+
 class RecomendedSerializer(ModelSerializer):
     class Meta:
         fields = ['name']
         model = models.Basis
 
-def create_serializer(model):
+def create_serializer(model, detail_view=False):
     class Meta:
-        exclude = ['category']
+        exclude = ['category'] if detail_view else ['category', 'images', 'videos']
         depth = 1
         
     setattr(Meta, 'model', model)
 
     fields = {
-        'Meta': Meta
+        'Meta': Meta,
+        'shortcut': ImageSerializer()
     }
+
+    if detail_view:
+        fields.update({'images': ImageSerializer(many=True)})
+        fields.update({'videos': VideoSerializer(many=True)})
 
     for prop in manager.get_all_props(model.get_name()):
         if prop == 'rigidity':
