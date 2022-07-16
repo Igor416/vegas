@@ -26,6 +26,7 @@ class Category(models.Model):
     choices = manager.get_pr_choices()
 
     name = models.CharField('Название', max_length=32, choices=choices, unique=True)
+    desc = models.TextField('Описание')
 
     def __str__(self):
         return manager.get_pr_trans(self.name)

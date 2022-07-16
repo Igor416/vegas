@@ -4,6 +4,11 @@ from .catalog import Manager
 
 manager = Manager()
 
+class CategorySerializer(ModelSerializer):
+    class Meta:
+        fields = ['desc']
+        model = models.Category
+
 class ChoiceSerializer(ModelSerializer):
     class Meta:
         fields = ['property_ru', 'property_ro']
@@ -35,7 +40,7 @@ class RecomendedSerializer(ModelSerializer):
 
 def create_serializer(model, detail_view=False):
     class Meta:
-        exclude = ['category'] if detail_view else ['category', 'images', 'videos']
+        exclude = ['category'] if detail_view else ['images', 'videos']
         depth = 1
         
     setattr(Meta, 'model', model)
@@ -48,6 +53,8 @@ def create_serializer(model, detail_view=False):
     if detail_view:
         fields.update({'images': ImageSerializer(many=True)})
         fields.update({'videos': VideoSerializer(many=True)})
+    else:
+        fields.update({'category': CategorySerializer()})
 
     for prop in manager.get_all_props(model.get_name()):
         if prop == 'rigidity':
