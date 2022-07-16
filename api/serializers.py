@@ -40,7 +40,7 @@ class RecomendedSerializer(ModelSerializer):
 
 def create_serializer(model, detail_view=False):
     class Meta:
-        exclude = ['category'] if detail_view else ['images', 'videos']
+        exclude = ['category'] if detail_view else ['category', 'images', 'videos']
         depth = 1
         
     setattr(Meta, 'model', model)
@@ -53,8 +53,6 @@ def create_serializer(model, detail_view=False):
     if detail_view:
         fields.update({'images': ImageSerializer(many=True)})
         fields.update({'videos': VideoSerializer(many=True)})
-    else:
-        fields.update({'category': CategorySerializer()})
 
     for prop in manager.get_all_props(model.get_name()):
         if prop == 'rigidity':
