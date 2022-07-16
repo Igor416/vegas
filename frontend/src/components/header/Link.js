@@ -29,7 +29,7 @@ export default class Link extends Component {
     if (props.link) {
       href += 'catalog/' + props.link
       if (props.actual_link) {
-        href += '/' + props.text
+        href += '/' + props.text.replace(/ /g, '_')
       }
     }
     return (

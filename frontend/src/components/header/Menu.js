@@ -70,7 +70,7 @@ export default class Menu extends Component {
               onMouseEnter={() => props.onMouseEnter(true, state.category, state.sub_category, true, actual_link)}
               onMouseLeave={() => props.onMouseLeave(true, state.sub_category, true, actual_link)}
             >
-              <Link link={state.sub_category.split(';')[0]} text={actual_link} isActive={state.actual_link == actual_link} actual_link={true}></Link>
+              <Link link={state.sub_category.split(';')[1]} text={actual_link} isActive={state.actual_link == actual_link} actual_link={true}></Link>
             </div>
             )
           })}

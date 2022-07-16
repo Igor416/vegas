@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
 import Link from './Link.js';
 
@@ -21,8 +22,8 @@ export default class Links extends Component {
     props.categories = this.props.categories
     return (
       <div className="row px-5 pt-4">
-        <div className="col-1 nav-item"></div>
-        <div className="col-10 nav-item h6 m-0">
+        <div className="col-1"></div>
+        <div className="col-10 h6 m-0">
           <div id="categories" className="d-flex flex-inline justify-content-between">
             <div>
               <span>ГЛАВНАЯ &nbsp;</span>
@@ -37,14 +38,17 @@ export default class Links extends Component {
               >
                 <Link text={category} isActive={props.state.category == category}></Link>
                 <div>
-                  <span>&nbsp;<i className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s far fa-angle-down"}></i></span>
+                  <span>
+                    &nbsp;
+                    <FontAwesomeIcon className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s far fa-angle-down"} icon='angle-down' /> 
+                  </span>
                 </div>
               </div>
               )
             })}
           </div>
         </div>
-        <div className="col-1 nav-item"></div>
+        <div className="col-1"></div>
       </div>
     );
   }

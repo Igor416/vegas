@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from "./SearchBar.js";
 
 export default class Navbar extends Component {
@@ -18,7 +19,7 @@ export default class Navbar extends Component {
         </div>
         <div className="col-1 text-center border-1 border-end">
           <span>
-            <i className="h4 fal fa-arrow-circle-right"></i>
+            <FontAwesomeIcon icon='arrow-circle-right'/>
           </span>
           <br />
           <span className="h6">К оплате</span>
@@ -33,7 +34,7 @@ export default class Navbar extends Component {
         </div>
         <div className="col-2 text-center">
           <span>
-            <i className="h4 fal fa-phone"></i>
+            <FontAwesomeIcon icon='phone'/>
           </span>
           <br />
           <span className="h6">Закажите сейчас: 079 40-70-32</span>
@@ -41,7 +42,7 @@ export default class Navbar extends Component {
         <div className="col-1 text-center text-primary">
           <button type="button" className="p-0 bg-white border-0 outline-0 no-hover" data-bs-toggle="offcanvas" data-bs-target="#sideBar">
             <span>
-              <i className="h4 fal fa-shopping-cart"></i>
+              <FontAwesomeIcon icon='cart-shopping'/>
             </span>
             <br />
             <span id="priceAmount" className="h6">0.00 MDL (0)</span>

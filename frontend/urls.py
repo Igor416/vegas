@@ -5,5 +5,6 @@ urlpatterns = [
     path('', index),
     path(r'<string>', index),
     path(r'<string>/<string1>', index),
-    path(r'<string>/<string1>/<string2>', index)
+    path(r'<string>/<string1>/<string2>', index),
+    path(r'<string>/<string1>/<string2>/<string3>', index)
 ]
