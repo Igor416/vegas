@@ -1,6 +1,7 @@
 from django.db.models import Manager
 from .models import Choice, Size
 from . import catalog as ct
+from .translations import RU, RO
 
 class ProductManager(Manager):
     def __init__(self, model, *args, **kwargs):
@@ -12,10 +13,16 @@ class ProductManager(Manager):
         return self.objs.all()
 
     def get_by_name(self, name):
-        return self.objs.get(name=name)
+        print(name)
+        return self.objs.filter(name=name)
 
-    def get_prop(self, name, property):
-        return Choice.objects.get(name=name, property=property)
+    def get_prop(self, name, property, lang=RU):
+        property = property.lower()
+        if lang == RU:
+            queryset = Choice.objects.get(name=name, property_ru=property)
+        if lang == RO:
+            queryset = Choice.objects.get(name=name, property_ro=property)
+        return queryset
 
     def get_all_by_size(self, width, height):
         return Size.objects.get(category=self.category, width=width, height=height)
@@ -26,15 +33,16 @@ class MattrassManager(ProductManager):
 
     def get_by_collection(self, filter):
         filter = filter.replace('Матрасы ', '') #'Матрасы Modern' -> 'Modern'
-        return self.objs.filter(collection=filter)
+        collection = self.get_prop(ct.COLLECTION, filter)
+        return self.objs.filter(collection=collection)
 
     def get_by_springless(self, filter):
         queryset = self.objs.filter(springs=0)
         if filter == 'Латексные матрасы':
             collection = self.get_prop(ct.COLLECTION, 'ecolatex')
             queryset.filter(collection=collection)
-            queryset += self.get_by_name('Prince')
-            queryset += self.get_by_name('Cocolatex')
+            queryset = queryset | self.get_by_name('Prince')
+            queryset = queryset | self.get_by_name('Cocolatex')
         elif filter == 'Матрасы в рулонной упаковке':
             package = self.get_prop(ct.PACKAGE, 'в скрутке (рулоне)')
             queryset.filter(package=package)
