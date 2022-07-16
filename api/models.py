@@ -83,6 +83,9 @@ class File(models.Model):
     def get_name(self):
         return self.image.name.split('/')[-1].split('.')[0] #media/images/[name].jpg -> [name]
 
+    def get_absolute_url(self):
+        return '/' + self.image.name
+
     def __str__(self):
         name = self.get_name()
         if '_' in name:

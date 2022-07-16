@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 from . import models
 from .catalog import Manager
 
@@ -15,13 +15,17 @@ class SizeSerializer(ModelSerializer):
         model = models.Size
 
 class ImageSerializer(ModelSerializer):
+    image = CharField(source='get_absolute_url', read_only=True)
+
     class Meta:
-        exclude = ['id']
+        fields = ['image']
         model = models.Image
 
 class VideoSerializer(ModelSerializer):
+    video = CharField(source='get_absolute_url', read_only=True)
+
     class Meta:
-        exclude = ['id']
+        fields = ['video']
         model = models.Video
 
 class RecomendedSerializer(ModelSerializer):
