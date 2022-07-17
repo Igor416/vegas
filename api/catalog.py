@@ -47,10 +47,10 @@ CATALOG = {
     BASIS: [BASIS_TYPE]
 }
 
-from .translations import RU, RO
+from .translations import EN, RU, RO
 class Manager:
     def get_pr_choices(self):
-        return [(key, self.get_pr_trans(key)) for key in CATALOG.keys()]
+        return [(key, self.get_pr_trans(key, RU, False)) for key in CATALOG.keys()]
 
     def get_prop_choices(self):
         choices = [
@@ -62,9 +62,9 @@ class Manager:
 
         for pr, props in CATALOG.items():
             choices.append(('', ''))
-            choices.append((pr, 'ТОЛЬКО ' + self.get_pr_trans(pr).upper()))
+            choices.append((pr, 'ТОЛЬКО ' + self.get_pr_trans(pr, RU, False).upper()))
             for prop in props:
-                choices.append((prop, self.get_prop_trans(prop)))
+                choices.append((prop, self.get_prop_trans(prop, RU)))
         return choices
     
     def get_all_products(self):
@@ -85,10 +85,10 @@ class Manager:
                     break
         return categories
     
-    def get_pr_trans(self, product, plural=False, lang=RU):
+    def get_pr_trans(self, product, lang, plural):
         from .translations import products
         return products.get(product)[lang][int(plural)]
     
-    def get_prop_trans(self, property, lang=RU):
+    def get_prop_trans(self, property, lang):
         from .translations import properties
         return properties.get(property)[lang]
