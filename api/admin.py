@@ -2,12 +2,16 @@ from django.contrib import admin
 from . import models
 from .catalog import Manager
 from .forms import ProductForm
+from .translations import RU
 
 manager = Manager()
 
-admin.site.register(models.Category)
 admin.site.register(models.Image)
 admin.site.register(models.Video)
+
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
+    fields = ['name', 'desc_en', 'desc_ru', 'desc_ro']
 
 @admin.register(models.Size)
 class SizeAdmin(admin.ModelAdmin):
@@ -22,8 +26,8 @@ class ChoiceAdmin(admin.ModelAdmin):
 for product_name in manager.get_all_products():
     form = type(product_name + 'Form', (ProductForm,), {})
     model = getattr(models, product_name)
-    model._meta.verbose_name = manager.get_pr_trans(product_name)
-    model._meta.verbose_name_plural = manager.get_pr_trans(product_name, True)
+    model._meta.verbose_name = manager.get_pr_trans(product_name, RU, False)
+    model._meta.verbose_name_plural = manager.get_pr_trans(product_name, RU, True)
     setattr(form, 'model', model)
     admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), {'form': form})
     admin.site.register(model, admin_model)
