@@ -1,12 +1,13 @@
 from django.db.models import Manager
 from .models import Choice, Size
 from . import catalog as ct
-from .translations import RU, RO
+from .translations import EN, RU, RO
 
 class ProductManager(Manager):
     def __init__(self, model, *args, **kwargs):
         super(ProductManager, self).__init__(*args, **kwargs)
         self.model = model
+        self.lang = EN
         self.objs = model.objects.all()
 
     def get_all(self):
@@ -16,11 +17,13 @@ class ProductManager(Manager):
         print(name)
         return self.objs.filter(name=name)
 
-    def get_prop(self, name, property, lang=RU):
+    def get_prop(self, name, property):
         property = property.lower()
-        if lang == RU:
+        if self.lang == EN:
+            queryset = Choice.objects.get(name=name, property_en=property)
+        elif self.lang == RU:
             queryset = Choice.objects.get(name=name, property_ru=property)
-        if lang == RO:
+        elif self.lang == RO:
             queryset = Choice.objects.get(name=name, property_ro=property)
         return queryset
 
@@ -104,10 +107,31 @@ class MattrassManager(ProductManager):
     def get_by_sizes(self, filter):
         width, length = filter.replace('Матрасы', '').split(' x ')#english x (eks)
         return self.get_by_sizes(width, length)
+        
+class PillowManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(PillowManager, self).__init__(*args, **kwargs)
 
+class MattrassPadManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(MattrassPadManager, self).__init__(*args, **kwargs)
+
+class BlanketManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(BlanketManager, self).__init__(*args, **kwargs)
+
+class BedSheetsManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(BedSheetsManager, self).__init__(*args, **kwargs)
+
+class BedManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(BedManager, self).__init__(*args, **kwargs)
+
+class StandManager(ProductManager):
+    def __init__(self, *args, **kwargs):
+        super(StandManager, self).__init__(*args, **kwargs)
 
 class BasisManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(BasisManager, self).__init__(*args, **kwargs)
-
-
