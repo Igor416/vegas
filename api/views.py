@@ -5,16 +5,16 @@ from .translations import EN, RU, RO
 from . import models
 
 langs = {
-    'EN': EN,
-    'RU': RU,
-    'RO': RO
+    'en': EN,
+    'ru': RU,
+    'ro': RO
 }
 
 class CategoryView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, name):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        lang = request.GET.get(self.lookup_url_kwarg)
         category = models.Category.objects.get(name=name)
 
         serializer = CategorySerializer(lang, category)
@@ -24,7 +24,7 @@ class ProductsView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, product, category, filter=None):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        lang = request.GET.get(self.lookup_url_kwarg)
         model = getattr(models, product.title())
 
         if filter == None:
