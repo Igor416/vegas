@@ -4,15 +4,35 @@ from .catalog import Manager
 
 manager = Manager()
 
+langs = ['en', 'ru', 'ro']
+
 class CategorySerializer(ModelSerializer):
     class Meta:
-        fields = ['desc']
+        exclude = ['id', 'name']
         model = models.Category
 
+    def __init__(self, *args, **kwargs):
+        self.lang, *args = args
+        super(CategorySerializer, self).__init__(*args, **kwargs)
+
+    def to_representation(self, obj):
+        return {
+            'name_s': getattr(obj, f'name_{self.lang}_s'),
+            'name_pl': getattr(obj, f'name_{self.lang}_pl'),
+            'desc': getattr(obj, f'desc_{self.lang}'),
+        }
+    
 class ChoiceSerializer(ModelSerializer):
     class Meta:
-        fields = ['property_ru', 'property_ro']
+        exclude = ['name', 'category']
         model = models.Choice
+
+    def __init__(self, lang, *args, **kwargs):
+        super(ChoiceSerializer, self).__init__(*args, **kwargs)
+        self.lang = lang
+
+    def to_representation(self, obj):
+        return getattr(obj, 'property_' + self.lang)
 
 class SizeSerializer(ModelSerializer):
     class Meta:
@@ -26,6 +46,9 @@ class ImageSerializer(ModelSerializer):
         fields = ['image']
         model = models.Image
 
+    def to_representation(self, obj):
+        return obj.image.name
+
 class VideoSerializer(ModelSerializer):
     video = CharField(source='get_absolute_url', read_only=True)
 
@@ -33,12 +56,15 @@ class VideoSerializer(ModelSerializer):
         fields = ['video']
         model = models.Video
 
+    def to_representation(self, obj):
+        return obj.video.name
+
 class RecomendedSerializer(ModelSerializer):
     class Meta:
         fields = ['name']
         model = models.Basis
 
-def create_serializer(model, detail_view=False):
+def create_serializer(model, lang, detail_view=False):
     class Meta:
         exclude = ['category'] if detail_view else ['category', 'images', 'videos']
         depth = 1
@@ -55,21 +81,18 @@ def create_serializer(model, detail_view=False):
         fields.update({'videos': VideoSerializer(many=True)})
 
     for prop in manager.get_all_props(model.get_name()):
-        if prop == 'rigidity':
-            fields.update({prop + '1': ChoiceSerializer()})
-            fields.update({prop + '2': ChoiceSerializer()})
-            continue
         many = models.has_multiple_rels(model, prop)
-        fields.update({prop: ChoiceSerializer(many=many)})
+        serializer = ChoiceSerializer(lang, many=many)
+
+        if prop == 'rigidity':
+            fields.update({prop + '1': serializer})
+            fields.update({prop + '2': serializer})
+        else:
+            fields.update({prop: serializer})
 
     if hasattr(model, 'sizes'):
         fields.update({'sizes': SizeSerializer(many=True)})
 
     serializer = type(model.get_name() + 'Serializer', (ModelSerializer, ), fields)
-
-    return serializer
-
-
-            
 
     return serializer
