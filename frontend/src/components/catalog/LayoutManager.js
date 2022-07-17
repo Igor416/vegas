@@ -10,7 +10,7 @@ export default class LayoutManager extends Component {
     Mattrass: MattrassLayout
   };
   render() {
-     const LayoutName = this.components[this.props.product];
-     return <LayoutName products={this.props.products} isGrid={this.props.isGrid}/>
+    const LayoutName = this.components[this.props.category];
+    return <LayoutName products={this.props.products} isGrid={this.props.isGrid}/>
   }
 }

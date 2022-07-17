@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
-import { CATEGORIES } from "./header/LinksJson.js";
+import CATEGORIES from "./header/LinksJson.js";
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.categories = Object.keys(CATEGORIES)
     this.inMenu = false;
     this.state = {
       category: null,
@@ -71,17 +70,18 @@ export default class Header extends Component {
   }
 
   render() {
-    let props = {
+    let props = Object.assign({
       onMouseEnter: this.onMouseEnter,
       onMouseLeave: this.onMouseLeave,
+      categories: CATEGORIES[this.props.lang],
       state: this.state
-    }
+    }, this.props)
     return (
       <div className="container-fluid">
-        <Navbar></Navbar>
+        <Navbar updateGlobals={this.props.updateGlobals} lang={this.props.lang} currency={this.props.currency}></Navbar>
         <nav className="sticky-top bg-white">
-          <Links categories={this.categories} props={props}></Links>
-          <Menu categories={CATEGORIES} props={props}></Menu>
+          <Links props={props}></Links>
+          <Menu props={props}></Menu>
         </nav>
       </div>
     );

@@ -23,8 +23,8 @@ export default class Menu extends Component {
   render() {
     let props = this.props.props
     let state = props.state
-    let categories = this.props.categories
-
+    let categories = props.categories
+    
     let get_link = (sub_category) => {
       if (categories[state.category][sub_category].length == 0) {
         return sub_category.split(';')[1]

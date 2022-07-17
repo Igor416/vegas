@@ -15,21 +15,30 @@ const angleStyles = StyleSheet.create({
 export default class Links extends Component {
   constructor(props) {
     super(props);
+
+    this.translations = {
+      en: 'HOME',
+      ru: 'ГЛАВНАЯ',
+      ro: 'ACASA'
+    }
   }
   
   render() {
     let props = this.props.props
-    props.categories = this.props.categories
+    
     return (
       <div className="row px-5 pt-4">
         <div className="col-1"></div>
         <div className="col-10 h6 m-0">
-          <div id="categories" className="d-flex flex-inline justify-content-between">
+          <div
+            id="categories"
+            className="d-flex flex-inline justify-content-between transition-s"
+          >
             <div>
-              <span>ГЛАВНАЯ &nbsp;</span>
+              <span>{this.translations[props.lang]} &nbsp;</span>
             </div>
-            {props.categories.map((category, index) => {
-              return (
+            {Object.keys(props.categories).map((category, index) => {
+            return (
               <div
                 className="d-flex flex-row pb-2"
                 key={index}
@@ -44,8 +53,7 @@ export default class Links extends Component {
                   </span>
                 </div>
               </div>
-              )
-            })}
+            )})}
           </div>
         </div>
         <div className="col-1"></div>

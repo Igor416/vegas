@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
-  faArrowCircleRight,
+  faHandHoldingUsd,
   faPhone,
   faShoppingCart,
   faAngleDown,
@@ -12,7 +12,7 @@ import {
 import App from "./components/App";
 import Catalog from "./components/Catalog"
 
-library.add(faArrowCircleRight, faPhone, faShoppingCart, faAngleDown, faAngleUp);
+library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp);
 
 const appDiv = document.getElementById('app');
 const root = createRoot(appDiv);
@@ -20,7 +20,7 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App/>}>
-        <Route path="catalog/:product/:category/" element={<Catalog/>}>
+        <Route path="catalog/:category/:sub_category/" element={<Catalog/>}>
           <Route path=":filter/" element={<Catalog/>} />
         </Route>
       </Route>

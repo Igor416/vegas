@@ -42,7 +42,7 @@ export default class Sorting extends Component {
   }
   
   render() {
-    let isGrid = this.props.gridView;
+    let isGrid = this.props.isGrid;
 
     return (
       <div className="d-flex justify-content-between align-items-center">

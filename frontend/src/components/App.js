@@ -1,28 +1,37 @@
 import React, { Component } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+import LocationListener from "./LocationListener.js";
 import Header from "./Header.js"
-import SectionImage from "./SectionImage.js"
 import Footer from "./Footer.js"
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+    let lang = navigator.language
+    if (lang.includes('-')) {
+      lang = lang.split('-')[0]
+    }
+    this.state = {
+      lang: lang,
+      currency: 'MDL'
+    }
+
+    this.updateState = this.updateState.bind(this)
+  }
+
+  updateState(lang=null, currency=null) {
+    this.setState({
+      lang: lang ? lang : this.state.lang,
+      currency: currency ? currency : this.state.currency
+    })
   }
 
   render() {
     return (
       <div>
-        <Header />
-        <SectionImage />
-        <div className="container-fluid">
-          <div className="row px-5 py-4">
-            <div className="col-1"></div>
-            <div className="col-10">
-              <Outlet />
-            </div>
-            <div className="col-1"></div>
-          </div>
-        </div>
+        <LocationListener locationChanged={this.updateState}/>
+        <Header updateGlobals={this.updateState} lang={this.state.lang} currency={this.state.currency}/>
+        <Outlet />
         <Footer />
       </div>
     );
