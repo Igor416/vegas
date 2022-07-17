@@ -2,6 +2,7 @@ from django.template.defaultfilters import slugify
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from .catalog import Manager
+from .translations import EN, RU, RO
 
 manager = Manager()
 
@@ -20,16 +21,35 @@ def create_related_field(prop, postfix='', plural=False):
     return field(**kwargs)
         
 def has_multiple_rels(model, field):
+    if field == 'rigidity':
+        return False
     return hasattr(getattr(model, field), 'rel')
 
 class Category(models.Model):
     choices = manager.get_pr_choices()
-
+    
     name = models.CharField('Название', max_length=32, choices=choices, unique=True)
-    desc = models.TextField('Описание')
+    name_en_s = models.CharField(max_length=32)
+    name_en_pl = models.CharField(max_length=32)
+    name_ru_s = models.CharField(max_length=32)
+    name_ru_pl = models.CharField(max_length=32)
+    name_ro_s = models.CharField(max_length=32)
+    name_ro_pl = models.CharField(max_length=32)
+    desc_en = models.TextField('Описание (en)')
+    desc_ru = models.TextField('Описание (ru)')
+    desc_ro = models.TextField('Описание (ro)')
 
     def __str__(self):
-        return manager.get_pr_trans(self.name)
+        return self.name_ru_s
+
+    def save(self, *args, **kwargs):
+        self.name_en_s = manager.get_pr_trans(self.name, EN, False)
+        self.name_en_pl = manager.get_pr_trans(self.name, EN, True)
+        self.name_ru_s = manager.get_pr_trans(self.name, RU, False)
+        self.name_ru_pl = manager.get_pr_trans(self.name, RU, True)
+        self.name_ro_s = manager.get_pr_trans(self.name, RO, False)
+        self.name_ro_pl = manager.get_pr_trans(self.name, RO, True)
+        super(Category, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'категория'
@@ -39,21 +59,26 @@ class Choice(models.Model):
     choices = manager.get_prop_choices()
 
     name = models.CharField('Характеристика', choices=choices, max_length=32)
-    category = models.ManyToManyField(Category, related_name='categoryC', verbose_name='Категория')
+    category = models.ManyToManyField(Category, related_name='categoryC')
+    property_en = models.CharField('Вариант выбора (en)', max_length=32, blank=True)
     property_ru = models.CharField('Вариант выбора (ru)', max_length=32)
     property_ro = models.CharField('Вариант выбора (ro)', max_length=32, blank=True)
 
     def __str__(self):
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
         s = ', '.join(lst)
-        return f'Вариант выбора для "{manager.get_prop_trans(self.name)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
+        return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
     def save(self, *args, **kwargs):
-        self.property_ru = self.property_ru.lower()
+        self.property_ru = self.property_ru.lower().strip()
+        if self.property_en == '':
+            self.property_en = self.property_ru
+        else:
+            self.property_en = self.property_en.lower().strip()
         if self.property_ro == '':
             self.property_ro = self.property_ru
         else:
-            self.property_ro = self.property_ro.lower()
+            self.property_ro = self.property_ro.lower().strip()
         super(Choice, self).save(*args, **kwargs)
         self.set_category(*args, **kwargs)
     
@@ -67,7 +92,7 @@ class Choice(models.Model):
         verbose_name_plural = 'варианты выбора'
 
 class Size(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     width = models.SmallIntegerField('Ширина')
     length = models.SmallIntegerField('Длина')
     priceEUR = models.SmallIntegerField('Цена (евро)')
