@@ -40,24 +40,20 @@ class SizeSerializer(ModelSerializer):
         model = models.Size
 
 class ImageSerializer(ModelSerializer):
-    image = CharField(source='get_absolute_url', read_only=True)
-
     class Meta:
         fields = ['image']
         model = models.Image
 
     def to_representation(self, obj):
-        return obj.image.name
+        return obj.get_absolute_url()
 
 class VideoSerializer(ModelSerializer):
-    video = CharField(source='get_absolute_url', read_only=True)
-
     class Meta:
         fields = ['video']
         model = models.Video
 
     def to_representation(self, obj):
-        return obj.video.name
+        return obj.get_absolute_url()
 
 class RecomendedSerializer(ModelSerializer):
     class Meta:
