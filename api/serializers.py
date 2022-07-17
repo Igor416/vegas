@@ -60,21 +60,59 @@ class RecomendedSerializer(ModelSerializer):
         fields = ['name']
         model = models.Basis
 
-def create_serializer(model, lang, detail_view=False):
+class ProductSerializer(ModelSerializer):
+    def to_representation(self, instance):
+        r = super().to_representation(instance)
+        r['desc'] = r.pop('desc_' + self.lang)
+        return r
+
+class ProductListSerializer(ProductSerializer):
+    def __init__(self, *args, **kwargs):
+        super(ProductSerializer, self).__init__(*args, **kwargs)
+
+        all_props = manager.get_all_props(self.model.get_name())
+
+        for field in list(self.fields.keys()):
+            if field in all_props or field.startswith('rigidity'):
+                self.fields.pop(field)
+            elif field.startswith('desc') and not field.endswith(self.lang):
+                self.fields.pop(field)
+
+def create_serializer(model, lang):
     class Meta:
-        exclude = ['category'] if detail_view else ['category', 'images', 'videos']
+        exclude = ['category', 'images', 'videos']
+        depth = 1
+
+    setattr(Meta, 'model', model)
+
+    fields = {
+        'Meta': Meta,
+        'model': model,
+        'lang': lang,
+        'shortcut': ImageSerializer()
+    }
+
+    if hasattr(model, 'sizes'):
+        fields.update({'sizes': SizeSerializer(many=True)})
+
+    serializer = type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
+
+    return serializer
+
+
+def create_detailed_serializer(model, lang):
+    class Meta:
+        exclude = ['id', 'category']
         depth = 1
         
     setattr(Meta, 'model', model)
 
     fields = {
         'Meta': Meta,
-        'shortcut': ImageSerializer()
+        'shortcut': ImageSerializer(),
+        'images': ImageSerializer(many=True),
+        'videos': VideoSerializer(many=True)
     }
-
-    if detail_view:
-        fields.update({'images': ImageSerializer(many=True)})
-        fields.update({'videos': VideoSerializer(many=True)})
 
     for prop in manager.get_all_props(model.get_name()):
         many = models.has_multiple_rels(model, prop)
@@ -89,6 +127,6 @@ def create_serializer(model, lang, detail_view=False):
     if hasattr(model, 'sizes'):
         fields.update({'sizes': SizeSerializer(many=True)})
 
-    serializer = type(model.get_name() + 'Serializer', (ModelSerializer, ), fields)
+    serializer = type(model.get_name() + 'Serializer', (ProductSerializer, ), fields)
 
     return serializer

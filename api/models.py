@@ -145,7 +145,9 @@ from . import managers
 class Product(models.Model):
     name = models.CharField('Название', max_length=32, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    desc = models.TextField('Описание')
+    desc_en = models.TextField('Описание (en)')
+    desc_ru = models.TextField('Описание (ru)')
+    desc_ro = models.TextField('Описание (ro)')
     discount = models.SmallIntegerField('Скидка (%)', default=0)
     shortcut = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL, verbose_name='Фото на каталог')
     images = models.ManyToManyField(Image, related_name='images%(class)s', verbose_name='Фотографии товара')

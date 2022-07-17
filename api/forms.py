@@ -1,6 +1,7 @@
 from django import forms
 from . import models
 from .catalog import Manager
+from .translations import RU
 
 manager = Manager()
 
@@ -34,10 +35,10 @@ class ProductForm(forms.ModelForm):
                     continue
                 elif name.startswith('rigidity'):
                     field.queryset = models.Choice.objects.filter(name=name[:-1])
-                    field.label = manager.get_prop_trans(name[:-1]) + ' ' + name[-1]
+                    field.label = manager.get_prop_trans(name[:-1], RU) + ' ' + name[-1]
                     continue
                 elif name == 'recomended':
                     continue
-                field.label = manager.get_prop_trans(name)
+                field.label = manager.get_prop_trans(name, RU)
                 field.queryset = models.Choice.objects.filter(name=name)
         setattr(self.Meta, 'model', self.model)
