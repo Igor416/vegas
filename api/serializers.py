@@ -17,6 +17,7 @@ class CategorySerializer(ModelSerializer):
 
     def to_representation(self, obj):
         return {
+            'name': obj.name,
             'name_s': getattr(obj, f'name_{self.lang}_s'),
             'name_pl': getattr(obj, f'name_{self.lang}_pl'),
             'desc': getattr(obj, f'desc_{self.lang}'),
@@ -71,6 +72,7 @@ class ProductListSerializer(ProductSerializer):
         super(ProductSerializer, self).__init__(*args, **kwargs)
 
         all_props = manager.get_all_props(self.model.get_name())
+        all_props.remove(self.default_filtering)
 
         for field in list(self.fields.keys()):
             if field in all_props or field.startswith('rigidity'):
@@ -89,8 +91,11 @@ def create_serializer(model, lang):
         'Meta': Meta,
         'model': model,
         'lang': lang,
-        'shortcut': ImageSerializer()
+        'shortcut': ImageSerializer(),
+        'default_filtering': 'collection'
     }
+
+    fields.update({'collection': ChoiceSerializer(lang)})
 
     if hasattr(model, 'sizes'):
         fields.update({'sizes': SizeSerializer(many=True)})
