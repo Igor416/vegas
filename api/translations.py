@@ -23,7 +23,6 @@ properties = {
     ct.RIGIDITY: ('Rigidity level of side', 'Уровень жесткости стороны', 'Duritatea laterala'),
     ct.SPRINGBLOCK: ('Spring block', 'Пружинный блок', 'Bloc de Arc'),
     ct.AGE: ('Age Category', 'Для возраста', 'Pentru varsta'),
-    ct.PACKAGE: ('Package', 'Упаковка', 'Ambalare'),
     ct.MATERIAL_FILLER: ('Material Filler', 'Материал наполнения', 'Material de Umplere'),
     ct.COVER: ('Cover', 'Ткань чехла', 'Material de Acoperire'),
     ct.MATTRESSPAD_TYPE: ('Mattress Pad Type', 'Тип наматрасника', 'Tipul de Husa'),

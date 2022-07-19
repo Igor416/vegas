@@ -35,9 +35,9 @@ class Category(models.Model):
     name_ru_pl = models.CharField(max_length=32)
     name_ro_s = models.CharField(max_length=32)
     name_ro_pl = models.CharField(max_length=32)
-    desc_en = models.TextField('Описание (en)')
-    desc_ru = models.TextField('Описание (ru)')
-    desc_ro = models.TextField('Описание (ro)')
+    desc_en = models.TextField('Описание (en)', blank=True)
+    desc_ru = models.TextField('Описание (ru)', blank=True)
+    desc_ro = models.TextField('Описание (ro)', blank=True)
 
     def __str__(self):
         return self.name_ru_s
@@ -70,15 +70,15 @@ class Choice(models.Model):
         return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
     def save(self, *args, **kwargs):
-        self.property_ru = self.property_ru.lower().strip()
+        self.property_ru = self.property_ru.strip()
         if self.property_en == '':
             self.property_en = self.property_ru
         else:
-            self.property_en = self.property_en.lower().strip()
+            self.property_en = self.property_en.strip()
         if self.property_ro == '':
             self.property_ro = self.property_ru
         else:
-            self.property_ro = self.property_ro.lower().strip()
+            self.property_ro = self.property_ro.strip()
         super(Choice, self).save(*args, **kwargs)
         self.set_category(*args, **kwargs)
     
@@ -193,7 +193,6 @@ class Mattress(Product):
     rigidity2 = create_related_field('rigidity2')
     collection = create_related_field('collection')
     springblock = create_related_field('springblock')
-    package = create_related_field('package', 'M')
     construction = create_related_field('construction', '', True)
 
 class Pillow(Product):
@@ -223,14 +222,12 @@ class Blanket(Product):
     blanket_type = create_related_field('blanket_type', '', True)
     age = create_related_field('age', 'Bl', True)
     filling = create_related_field('filling')
-    package = create_related_field('package', 'Bl')
     blanket_color = create_related_field('blanket_color')
 
 class BedSheets(Product):
     sizes = models.ManyToManyField(Size, related_name='sizesBS', verbose_name='Размеры')
     
     bedsheets_type = create_related_field('bedsheets_type', '', True)
-    package = create_related_field('package', 'BS')
     bedsheets_color = create_related_field('bedsheets_color')
     tissue = create_related_field('tissue')
 
