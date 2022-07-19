@@ -30,9 +30,9 @@ class ProductManager(Manager):
     def get_all_by_size(self, width, height):
         return Size.objects.get(category=self.category, width=width, height=height)
 
-class MattrassManager(ProductManager):
+class MattressManager(ProductManager):
     def __init__(self, *args, **kwargs):
-        super(MattrassManager, self).__init__(*args, **kwargs)
+        super(MattressManager, self).__init__(*args, **kwargs)
 
     def get_by_collection(self, filter):
         filter = filter.replace('Матрасы ', '') #'Матрасы Modern' -> 'Modern'
@@ -52,7 +52,7 @@ class MattrassManager(ProductManager):
         return queryset
 
     def get_by_springblock(self, filter):
-        type = self.get_prop(ct.MATTRASS_TYPE, filter)
+        type = self.get_prop(ct.MATTRESS_TYPE, filter)
         return self.objs.filter(type=type)
     
     def get_by_age(self, filter):
@@ -112,9 +112,9 @@ class PillowManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(PillowManager, self).__init__(*args, **kwargs)
 
-class MattrassPadManager(ProductManager):
+class MattressPadManager(ProductManager):
     def __init__(self, *args, **kwargs):
-        super(MattrassPadManager, self).__init__(*args, **kwargs)
+        super(MattressPadManager, self).__init__(*args, **kwargs)
 
 class BlanketManager(ProductManager):
     def __init__(self, *args, **kwargs):

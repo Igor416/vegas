@@ -6,9 +6,9 @@ RU = 1
 RO = 2
 
 products = {
-    ct.MATTRASS: ((('Mattrass', 'Mattrasses'), ('Матрас', 'Матрасы'), ('Saltea', 'Saltele'))),
+    ct.MATTRESS: ((('Mattress', 'Mattresses'), ('Матрас', 'Матрасы'), ('Saltea', 'Saltele'))),
     ct.PILLOW: ((('Pillow', 'Pillows'), ('Подушка', 'Подушки'), ('Perna', 'Perne'))),
-    ct.MATTRASSPAD: ((('Mattrass Pad', 'Mattrass Pads'), ('Наматрасник', 'Наматрасники'), ('Husa', 'Huse'))),
+    ct.MATTRESSPAD: ((('Mattress Pad', 'Mattress Pads'), ('Наматрасник', 'Наматрасники'), ('Husa', 'Huse'))),
     ct.BLANKET: ((('Blanket', 'Blankets'), ('Одеяло', 'Одеяла'), ('Plapuma', 'Plapume'))),
     ct.BEDSHEETS: ((('Bed Sheets', 'Bed Sheets'), ('Постельное белье', 'Постельно белье'), ('Lenjerie de Pat', 'Lenjerie de Pat'))),
     ct.BED: ((('Bed', 'Beds'), ('Кровать', 'Кровати'), ('Pat', 'Paturi'))),
@@ -17,7 +17,7 @@ products = {
 }
 
 properties = {
-    ct.MATTRASS_TYPE: ('Mattrass Type', 'Тип матраса', 'Tipul de Saltea'),
+    ct.MATTRESS_TYPE: ('Mattress Type', 'Тип матраса', 'Tipul de Saltea'),
     ct.COLLECTION: ('Collection', 'Коллекция', 'Collectie'),
     ct.CONSTRUCTION: ('Construction', 'Конструкция', 'Constructie'),
     ct.RIGIDITY: ('Rigidity level of side', 'Уровень жесткости стороны', 'Duritatea laterala'),
@@ -26,7 +26,7 @@ properties = {
     ct.PACKAGE: ('Package', 'Упаковка', 'Ambalare'),
     ct.MATERIAL_FILLER: ('Material Filler', 'Материал наполнения', 'Material de Umplere'),
     ct.COVER: ('Cover', 'Ткань чехла', 'Material de Acoperire'),
-    ct.MATTRASSPAD_TYPE: ('Mattrass Pad Type', 'Тип наматрасника', 'Tipul de Husa'),
+    ct.MATTRESSPAD_TYPE: ('Mattress Pad Type', 'Тип наматрасника', 'Tipul de Husa'),
     ct.BINDING: ('Binding', 'Крепление', 'Fixare'),
     ct.BLANKET_TYPE: ('Blanket Type', 'Тип одеяла', 'Tipul de Plapume'),
     ct.BLANKET_COLOR: ('Blanket Color', 'Цвет одеяла', 'Culoare de Plapuma'),

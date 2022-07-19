@@ -179,7 +179,7 @@ class Product(models.Model):
     class Meta:
         abstract = True
 
-class Mattrass(Product):
+class Mattress(Product):
     height = models.IntegerField('Высота')
     springs = models.IntegerField('Кол-во пружин в двуспальном матрасе', default=0)
     max_pressure = models.IntegerField('Макс. нагрузка')
@@ -187,7 +187,7 @@ class Mattrass(Product):
     cover = models.BooleanField('Съемный чехол', default=True)
     sizes = models.ManyToManyField(Size, related_name='sizesM', verbose_name='Размеры')
     
-    mattrass_type = create_related_field('mattrass_type', '', True)
+    mattress_type = create_related_field('mattress_type', '', True)
     age = create_related_field('age', 'M', True)
     rigidity1 = create_related_field('rigidity1')
     rigidity2 = create_related_field('rigidity2')
@@ -207,12 +207,12 @@ class Pillow(Product):
     cover = create_related_field('cover', 'P', True)
 
 
-class MattrassPad(Product):
+class MattressPad(Product):
     height = models.IntegerField('Высота')
     cover = models.BooleanField('Съемный чехол', default=True)
     sizes = models.ManyToManyField(Size, related_name='sizesMP', verbose_name='Размеры')
 
-    mattrasspad_type = create_related_field('mattrasspad_type', '', True)
+    mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
     cover = create_related_field('cover', 'MP', True)
 
@@ -252,7 +252,7 @@ class Basis(Product):
     width = models.IntegerField('Ширина ламели')
     height = models.IntegerField('Высота')
     legs_height = models.IntegerField('Высота ножек')
-    recomended = models.ManyToManyField(Mattrass, related_name='recomendedBa', verbose_name='Рекомендовано для матрассов')
+    recomended = models.ManyToManyField(Mattress, related_name='recomendedBa', verbose_name='Рекомендовано для матрассов')
     sizes = models.ManyToManyField(Size, related_name='sizesBa', verbose_name='Размеры')
 
     basis_type = create_related_field('basis_type', '', True)

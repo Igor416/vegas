@@ -1,7 +1,7 @@
 #Products
-MATTRASS = 'Mattrass'
+MATTRESS = 'Mattress'
 PILLOW = 'Pillow'
-MATTRASSPAD = 'MattrassPad'
+MATTRESSPAD = 'MattressPad'
 BLANKET = 'Blanket'
 BEDSHEETS = 'BedSheets'
 BED = 'Bed'
@@ -9,7 +9,7 @@ STAND= 'Stand'
 BASIS = 'Basis'
 
 #Properties
-MATTRASS_TYPE = 'mattrass_type'
+MATTRESS_TYPE = 'mattress_type'
 COLLECTION = 'collection'
 CONSTRUCTION = 'construction'
 RIGIDITY = 'rigidity'
@@ -18,7 +18,7 @@ AGE = 'age'
 PACKAGE = 'package'
 MATERIAL_FILLER = 'material_filler'
 COVER = 'cover'
-MATTRASSPAD_TYPE = 'mattrasspad_type'
+MATTRESSPAD_TYPE = 'mattresspad_type'
 BINDING = 'binding'
 BLANKET_TYPE = 'blanket_type'
 BLANKET_COLOR = 'blanket_color'
@@ -31,20 +31,13 @@ MATERIAL = 'material'
 BASIS_TYPE = 'basis_type'
 
 COMMON_PROPERTIES  = {
-    AGE: [MATTRASS, PILLOW, BLANKET],
-    PACKAGE: [MATTRASS, BLANKET, BEDSHEETS],
-    COVER: [PILLOW, MATTRASSPAD]
+    AGE: [MATTRESS, PILLOW, BLANKET],
+    PACKAGE: [MATTRESS, BLANKET, BEDSHEETS],
+    COVER: [PILLOW, MATTRESSPAD]
 }
 
 CATALOG = {
-    MATTRASS: [MATTRASS_TYPE, COLLECTION, CONSTRUCTION, RIGIDITY, SPRINGBLOCK],
-    PILLOW: [MATERIAL_FILLER,],
-    MATTRASSPAD: [MATTRASSPAD_TYPE, BINDING],
-    BLANKET: [BLANKET_TYPE, BLANKET_COLOR, FILLING],
-    BEDSHEETS: [BEDSHEETS_TYPE, BEDSHEETS_COLOR, TISSUE],
-    BED: [BED_TYPE],
-    STAND: [MATERIAL],
-    BASIS: [BASIS_TYPE]
+    
 }
 
 from .translations import EN, RU, RO
