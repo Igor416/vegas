@@ -64,7 +64,7 @@ class RecomendedSerializer(ModelSerializer):
 class ProductSerializer(ModelSerializer):
     def to_representation(self, instance):
         r = super().to_representation(instance)
-        r['desc'] = r.pop('desc_' + self.lang)
+        r['desc'] = r.pop('desc_' + self.lang).split('\n')[0]
         return r
 
 class ProductListSerializer(ProductSerializer):
