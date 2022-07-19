@@ -124,7 +124,7 @@ class File(models.Model):
         abstract = True
 
 class Image(File):
-    image = models.ImageField('Фото товара', upload_to='media/images')
+    image = models.ImageField('Фото товара', upload_to='images')
 
     def is_shortcut(self):
         return not '_' in self.get_name()
@@ -135,7 +135,7 @@ class Image(File):
 
 class Video(File):
     validators = [FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])]
-    video = models.FileField('Видео о товаре', upload_to='media/videos', validators=validators)
+    video = models.FileField('Видео о товаре', upload_to='videos', validators=validators)
 
     class Meta:
         verbose_name = 'видео'
