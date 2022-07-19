@@ -14,7 +14,7 @@ class CategoryView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, name):
-        lang = request.GET.get(self.lookup_url_kwarg)
+        lang = request.GET.get(self.lookup_url_kwarg).lower()
         category = models.Category.objects.get(name=name)
 
         serializer = CategorySerializer(lang, category)
@@ -24,7 +24,7 @@ class ProductsView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, product, category, filter=None):
-        lang = request.GET.get(self.lookup_url_kwarg)
+        lang = request.GET.get(self.lookup_url_kwarg).lower()
         model = getattr(models, product.title())
 
         if filter == None:
