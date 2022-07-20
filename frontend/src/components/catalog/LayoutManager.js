@@ -1,16 +1,10 @@
-import React, { Component } from "react";
-import MattrassLayout from "./layouts/MattrassLayout.js";
+import React from "react";
+import MattressLayout from "./layouts/MattressLayout.js";
 
-export default class LayoutManager extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  components = {
-    Mattrass: MattrassLayout
+export default function LayoutManager(props) {
+  const components = {
+    Mattress: MattressLayout
   };
-  render() {
-    const LayoutName = this.components[this.props.category];
-    return <LayoutName products={this.props.products} isGrid={this.props.isGrid}/>
-  }
+  const LayoutName = components[props.category_name];
+  return <LayoutName {...props}/>
 }
