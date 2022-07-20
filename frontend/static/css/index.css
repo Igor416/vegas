@@ -2,6 +2,17 @@
   box-sizing: border-box;
 }
 
+:root {
+  --blue: rgb(48, 68, 98);
+  --dark-grey: #444;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--bs-primary);
+  cursor: pointer;
+}
+
 .no-link {
   text-decoration: none !important;
   color: var(--bs-dark) !important;
@@ -26,11 +37,6 @@
 
 .transition-l {
   transition: 1s;
-}
-
-:root {
-  --blue: rgb(48, 68, 98);
-  --dark-grey: #444;
 }
 
 body {
