@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
-import Link from './Link.js';
+import CustomLink from '../reusables/CustomLink.js';
 
 const angleStyles = StyleSheet.create({
   hide: {
@@ -24,7 +24,7 @@ export default class Links extends Component {
   }
   
   render() {
-    let props = this.props.props
+    let props = this.props
     
     return (
       <div className="row px-5 pt-4">
@@ -35,7 +35,7 @@ export default class Links extends Component {
             className="d-flex flex-inline justify-content-between transition-s"
           >
             <div>
-              <span>{this.translations[props.lang]} &nbsp;</span>
+             <CustomLink link='/' text={this.translations[props.lang]} isActive={false} />
             </div>
             {Object.keys(props.categories).map((category, index) => {
             return (
@@ -45,7 +45,7 @@ export default class Links extends Component {
                 onMouseEnter={() => props.onMouseEnter(false, category)}
                 onMouseLeave={() => props.onMouseLeave()}
               >
-                <Link text={category} isActive={props.state.category == category}></Link>
+                <CustomLink link=''  text={category} isActive={props.state.category == category} />
                 <div>
                   <span>
                     &nbsp;

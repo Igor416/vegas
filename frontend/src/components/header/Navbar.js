@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from "./SearchBar.js";
 
@@ -15,17 +16,20 @@ export default class Navbar extends Component {
       en: {
         search: 'Search products...',
         order: 'Order now',
-        credit: 'Buy via loan',
+        credit1: 'Buy now,',
+        credit2: 'pay later',
       },
       ru: {
         search: 'Искать товары...',
         order: 'Закажите сейчас',
-        credit: 'Купи в кредит',
+        credit1: 'Купи сейчас,',
+        credit2: 'плати позже',
       },
       ro: {
         search: 'Cauta bunuri...',
         order: 'Comanda acum',
-        credit: 'Cumpara pe credit',
+        credit1: 'Cumpara acum,',
+        credit2: 'achita apoi',
       }
     }
   }
@@ -41,41 +45,33 @@ export default class Navbar extends Component {
           <img style={{ maxWidth: '80%' }} src="/static/images/logo_menu.svg"/>
         </div>
         <div className="col-3 ps-0">
-          <SearchBar search={lang_version.search}/>
+          <SearchBar search={lang_version.search} />
         </div>
         <div className="col-1 d-flex flex-column justify-content-center">
           {Object.keys(langs).map((lang, index) => {
           return (
-            <button
-              onClick={() => this.props.updateGlobals(lang)}
-              key={index}
-              className="p-2 bg-white border-0 outline-0 no-hover">
-              <img className="border border-1" style={{ width: "3vw" }} src={"/static/images/" + langs[lang] + ".png"}/>
-            </button>
+            <Link key={index} to={location.pathname + '?lang=' + lang}>
+              <button
+                onClick={() => this.props.updateLang(lang)}
+                className="p-2 bg-white border-0 outline-0 no-hover">
+                <img className="border border-1" style={{ width: "3vw" }} src={"/static/images/" + langs[lang] + ".png"}/>
+              </button>
+            </Link>
           )})}
         </div>
         <div className="col-2 text-center border-1 border-start border-end">
           <span>
-            <FontAwesomeIcon icon='phone'/>
+            <FontAwesomeIcon icon='phone' />
           </span>
           <br />
           <span className="h6">{lang_version.order}: <br/>079 40-70-32</span>
         </div>
-        <div className="col-1 text-center">
+        <div className="col-2 text-center">
           <span>
-            <FontAwesomeIcon icon='hand-holding-usd'/>
+            <FontAwesomeIcon icon='hand-holding-usd' />
           </span>
           <br />
-          <span className="h6">{lang_version.credit}</span>
-        </div>
-        <div className="col-1 text-center text-primary">
-          <button type="button" className="p-0 bg-white border-0 outline-0 no-hover" data-bs-toggle="offcanvas" data-bs-target="#sideBar">
-            <span>
-              <FontAwesomeIcon icon='cart-shopping'/>
-            </span>
-            <br />
-            <span id="priceAmount" className="h6">0.00 MDL (0)</span>
-          </button>
+          <span className="h6">{lang_version.credit1} <br/> {lang_version.credit2} </span>
         </div>
         <div className="col-1"></div>
       </div>

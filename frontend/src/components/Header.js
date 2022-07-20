@@ -78,10 +78,10 @@ export default class Header extends Component {
     }, this.props)
     return (
       <div className="container-fluid">
-        <Navbar updateGlobals={this.props.updateGlobals} lang={this.props.lang} currency={this.props.currency}></Navbar>
+        <Navbar updateLang={this.props.updateLang} lang={this.props.lang} currency={this.props.currency}></Navbar>
         <nav className="sticky-top bg-white">
-          <Links props={props}></Links>
-          <Menu props={props}></Menu>
+          <Links {...props}></Links>
+          <Menu {...props}></Menu>
         </nav>
       </div>
     );
