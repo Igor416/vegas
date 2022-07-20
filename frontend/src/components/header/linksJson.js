@@ -22,49 +22,49 @@ const Shops = {
 
 const CATEGORIES =  {
   en: {
-    'MATTRASSES': {
-      'All Mattrasses;Mattrass/all': [],
-      'Collections;Mattrass/collection': [
-        'Mattrasses Modern',
-        'Mattrasses Exclusive',
-        'Mattrasses Comfort',
-        'Mattrasses Ecolatex',
-        'Mattrasses Active',
-        'Mattrasses Practic',
-        'Mattrasses Esleep',
+    'MATTRESSES': {
+      'All Mattresses;Mattress/all': [],
+      'Collections;Mattress/collection': [
+        'Mattresses Modern',
+        'Mattresses Exclusive',
+        'Mattresses Comfort',
+        'Mattresses Ecolatex',
+        'Mattresses Active',
+        'Mattresses Practic',
+        'Mattresses Esleep',
         'Vegas Kids'
       ],
-      'Springless;Mattrass/springless': [
-        'All springless Mattrasses',
-        'Mattrasses with latex',
-        'Mattrasses in roll packaging'
+      'Springless;Mattress/springless': [
+        'All springless Mattresses',
+        'Mattresses with latex',
+        'Mattresses in roll packaging'
       ],
-      'By springlocks;Mattrass/springblock': [
+      'By springlocks;Mattress/springblock': [
         'Independent springs',
         '7-zonal block Medizone'
       ],
-      'By age;Mattrass/age': [
-        'Mattrasses for children',
-        'Mattrasses for teenagers',
-        'Mattrasses for adults'
+      'By age;Mattress/age': [
+        'Mattresses for children',
+        'Mattresses for teenagers',
+        'Mattresses for adults'
       ],
-      'By rigidity levels and materials;Mattrass/rigidity': [
-        'Hard Mattrasses',
-        'Mattrasses semi-hard',
-        'Soft Mattrasses',
-        'Non-symmetrical Mattrasses',
-        'Mattrasses with latex',
-        'Mattrasses with coconut coir',
-        'Mattrasses with memory effect'
+      'By rigidity levels and materials;Mattress/rigidity': [
+        'Hard Mattresses',
+        'Mattresses semi-hard',
+        'Soft Mattresses',
+        'Non-symmetrical Mattresses',
+        'Mattresses with latex',
+        'Mattresses with coconut coir',
+        'Mattresses with memory effect'
       ],
-      'Popular sizes;Mattrass/sizes': [
-        'Mattrasses 80 x 190',
-        'Mattrasses 80 x 200',
-        'Mattrasses 90 x 190',
-        'Mattrasses 90 x 200',
-        'Mattrasses 140 x 200',
-        'Mattrasses 160 x 200',
-        'Mattrasses 180 x 200'
+      'Popular sizes;Mattress/sizes': [
+        'Mattresses 80 x 190',
+        'Mattresses 80 x 200',
+        'Mattresses 90 x 190',
+        'Mattresses 90 x 200',
+        'Mattresses 140 x 200',
+        'Mattresses 160 x 200',
+        'Mattresses 180 x 200'
       ] //english x (eks)
     },
     'PILLOWS': {
@@ -80,7 +80,7 @@ const CATEGORIES =  {
         'Made from foam with memory effect Memory Foam',
         'Pillows with cooling gel'
       ],
-      'By age;Mattrass/age': [
+      'By age;Mattress/age': [
         'Pillows for children',
         'Pillows for teenagers',
         'Pillows for adults'
@@ -92,7 +92,7 @@ const CATEGORIES =  {
       ]
     },
     'ACCESSORIES': {
-      'Mattrass Pads': [
+      'Mattress Pads': [
         'Transform',
         'Protect'
       ],
@@ -105,13 +105,13 @@ const CATEGORIES =  {
       'Bedspreads': []
     },
     'FOR KIDS': {
-      'Mattrasses': [
-        'All Mattrasses for children',
+      'Mattresses': [
+        'All Mattresses for children',
         'With springs',
         'Springless'
       ],
       'Beds': [],
-      'Child mattrass pads': [],
+      'Child mattress pads': [],
       'Pillows for children': [],
       'Blankets for children': [
         'All child Blankets',
@@ -148,8 +148,8 @@ const CATEGORIES =  {
   },
   ru: {
     'МАТРАСЫ': {
-      'Все матрасы;Mattrass/all': [],
-      'Коллекции;Mattrass/collection': [
+      'Все матрасы;Mattress/all': [],
+      'Коллекции;Mattress/collection': [
         'Матрасы Modern',
         'Матрасы Exclusive',
         'Матрасы Comfort',
@@ -159,21 +159,21 @@ const CATEGORIES =  {
         'Матрасы Esleep',
         'Vegas Kids'
       ],
-      'Беспружинные;Mattrass/springless': [
+      'Беспружинные;Mattress/springless': [
         'Все беспружинные матрасы',
         'Латексные матрасы',
         'Матрасы в рулонной упаковке'
       ],
-      'На основе пружинных блоков;Mattrass/springblock': [
+      'На основе пружинных блоков;Mattress/springblock': [
         'Независимые пружины',
         '7-зональный блок Medizone'
       ],
-      'Возрастная категория;Mattrass/age': [
+      'Возрастная категория;Mattress/age': [
         'Матрасы для детей',
         'Матрасы для подростков',
         'Матрасы для взрослых'
       ],
-      'Степень жесткости и материалы;Mattrass/rigidity': [
+      'Степень жесткости и материалы;Mattress/rigidity': [
         'Жесткие матрасы',
         'Матрасы средней жесткости',
         'Мягкие матрасы',
@@ -182,7 +182,7 @@ const CATEGORIES =  {
         'Матрасы с кокосовой койрой',
         'Матрасы с эффектом «памяти»'
       ],
-      'Популярные размеры;Mattrass/sizes': [
+      'Популярные размеры;Mattress/sizes': [
         'Матрасы 80 x 190',
         'Матрасы 80 x 200',
         'Матрасы 90 x 190',
@@ -206,9 +206,9 @@ const CATEGORIES =  {
         'Подушки с охлаждающим гелем'
       ],
       'Возрастная категория': [
-        'Матрасы для детей',
-        'Матрасы для подростков',
-        'Матрасы для взрослых'
+        'Подушки для детей',
+        'Подушки для подростков',
+        'Подушки для взрослых'
       ],
       'Специальные Подушки': [
         'Подушка Beauty для красоты и молодости',
@@ -274,8 +274,8 @@ const CATEGORIES =  {
   },
   ro: {
     'SALTELE': {
-      'Toate Saltele;Mattrass/all': [],
-      'Colectii;Mattrass/collection': [
+      'Toate Saltele;Mattress/all': [],
+      'Colecții;Mattress/collection': [
         'Saltele Modern',
         'Saltele Exclusive',
         'Saltele Comfort',
@@ -285,30 +285,30 @@ const CATEGORIES =  {
         'Saltele Esleep',
         'Vegas Kids'
       ],
-      'Fara arcuri;Mattrass/springless': [
-        'Toate saltele fara arcuri',
+      'Fără arcuri;Mattress/springless': [
+        'Toate saltele fără arcuri',
         'Saltele din latex',
-        'Saltele in ambalaj rulou'
+        'Saltele in rolă'
       ],
-      'Dupa blocuri de arcuri ;Mattrass/springblock': [
-        'Arcuri independenti',
-        'Bloc Medizone cu 7 zone'
+      'Pe bază blocuri cu arc;Mattress/springblock': [
+        'Arcuri independente',
+        'Medizone bloc cu 7 zone'
       ],
-      'Dupa varsta;Mattrass/age': [
+      'Pe baza vârstei;Mattress/age': [
         'Saltele pentru copii',
-        'Saltele pentru adolescenti',
-        'Saltele pentru adultii'
+        'Saltele pentru adolescenți',
+        'Saltele pentru adulți'
       ],
-      'Dupa duritatea si materiale;Mattrass/rigidity': [
-        'Saltele greu',
-        'Saltele semi-greu',
-        'Saltele moale',
-        'Saltele asimetric',
+      'Pe baza rigidității și materialelor;Mattress/rigidity': [
+        'Saltele dure',
+        'Saltele fermitate medie',
+        'Saltele moi',
+        'Saltele asimetrice',
         'Saltele cu latex',
-        'Saltele cu nuca de cocos',
-        'Saltele cu efect de memorie'
+        'Saltele cu nucă de cocos',
+        'Saltele Memory'
       ],
-      'Dimensiuni populare;Mattrass/sizes': [
+      'Dimensiuni populare;Mattress/sizes': [
         'Saltele 80 x 190',
         'Saltele 80 x 200',
         'Saltele 90 x 190',
@@ -319,27 +319,27 @@ const CATEGORIES =  {
       ] //english x (eks)
     },
     'PERNE': {
-      'Toate Perne': [],
-      'Dupa tipuri si forme': [
+      'Toate pernele': [],
+      'După tipuri și formă': [
         'Forma classica',
-        'Forma ergonomica cu suporturi',
+        'Formă ergonomică cu suporturi',
         'Alte Perne',
         'Perne pentru femeile insarcinate'
       ],
-      'Dupa materiale': [
+      'Pe bază materialelor': [
         'Din latex',
-        'Dim spuma cu efect de memorie Memory Foam',
-        'Perne cu gel de racire'
+        'Spumă cu memorie "Memory Foam"',
+        'Perne cu gel răcoritor'
       ],
-      'Dupa varsta': [
+      'Pe baza vârstei': [
         'Saltele pentru copii',
-        'Saltele pentru adolescenti',
-        'Saltele pentru adultii'
+        'Saltele pentru adolescenți',
+        'Saltele pentru adulți'
       ],
       'Perne speciale': [
-        'Perna Beauty pentru frumusete si tinirete',
-        'Perna Baby Boom pentru femeile insarcinate si alaptare',
-        'Perna Travel pentru calatorii'
+        'Perna Beauty pentru frumusețe si tinirețe',
+        'Perna Baby Boom pentru femeile insarcinate si alăptare',
+        'Perna Travel pentru călătorie'
       ]
     },
     'ACCESORII': {
@@ -350,39 +350,38 @@ const CATEGORIES =  {
       'Plapume': [
         'Plapume Bamboo',
         'Plapume SumWin',
-        'Lana de oaie',
-        
+        'Lână de oaie'
       ],
-      'Lenjerie de pat': [],
+      'Cearceafuri': [],
       'Cuverturi de pat': []
     },
-    'Pentru copii': {
+    'PENTRU COPII': {
       'Saltele': [
-        'Toate Saltele pentru copii',
+        'Toate saltelele pentru copii',
         'Cu arcuri',
-        'Fara arcuri'
+        'Fără arcuri'
       ],
       'Paturi': [],
       'Huse pentru copii': [],
       'Perne pentru copii': [],
       'Plapume pentru copii': [
         'Toate plapume pentru copii',
-        'Plapuma usoara',
-        'Plapuma pentru to sezonul',
-        'Plapuma captusita',
+        'Plapuma ușoara',
+        'Plapuma pentru orice vreme',
+        'Plapuma captușita',
         'plapuma dublu (2 in 1)'
       ]
     },
     'MOBILA': {
       'Paturi': [
-        'Toate Paturile',
+        'Toate paturile',
         'Paturi de lemn',
-        'Paturi cu tapiterie moale',
+        'Paturi tapițate',
         'Paturi pentru copii'
       ],
       'Noptiere de pat': [
         'Noptiere de lemn',
-        'Noptiere cu tapiterie moale'
+        'Noptiere tapițate'
       ],
       'Sifonierele': [],
       'Canapele': [],
