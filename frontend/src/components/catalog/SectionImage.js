@@ -20,8 +20,8 @@ export default class SectionImage extends Component {
             opacity: 0.7,
             height: '30vh'
           }}>
-          <span className="h4">{this.props.category.name}</span>
-          <span className="text-center">{this.props.category.description}</span>
+          <span className="h4">{this.props.category.name_pl}</span>
+          <span className="text-center">{this.props.category.desc}</span>
         </div>
       </div>
     );

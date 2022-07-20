@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
+import Hoverable from '../reusables/Hoverable.js';
 
 const switchMenu = {
   display: 'flex',
@@ -40,12 +41,14 @@ export default class Sorting extends Component {
   constructor(props) {
     super(props);
   }
-  
+
   render() {
-    let isGrid = this.props.isGrid;
+    const currencies = ['MDL', 'EUR']
+    let props = this.props;
+    let isGrid = props.isGrid;
 
     return (
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center h6">
         <div className="d-flex justify-start">
           <div>
             <span>Сортировать по:</span>
@@ -78,7 +81,20 @@ export default class Sorting extends Component {
             </span>
           </div>
         </div>
-        <div>
+        <div className="d-flex flex-row align-items-center">
+          <div className="d-flex flex-row me-5 align-items-center">
+            {currencies.map((currency, index) => {
+            return (
+              <div
+                onClick={() => props.updateCurrency(currency)}
+                className={"d-flex flex-row " + (currency != props.currency && "link")}
+                key={index}
+              >
+                <Hoverable text={currency} />
+                <span>&nbsp;</span>
+              </div>
+            )})}
+          </div>
           <div
             onClick={this.props.changeLayout}
             className={css(isGrid ? switchStyles.grid : switchStyles.column) + ' transition-s'}>
