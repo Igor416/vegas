@@ -109,9 +109,6 @@ class File(models.Model):
     def get_name(self):
         return self.image.name.split('/')[-1].split('.')[0] #media/images/[name].jpg -> [name]
 
-    def get_absolute_url(self):
-        return '/' + self.image.name
-
     def __str__(self):
         name = self.get_name()
         if '_' in name:
@@ -125,6 +122,9 @@ class File(models.Model):
 
 class Image(File):
     image = models.ImageField('Фото товара', upload_to='images')
+
+    def get_absolute_url(self):
+        return '/media/' + self.image.name.replace('media/', '')
 
     def is_shortcut(self):
         return not '_' in self.get_name()
