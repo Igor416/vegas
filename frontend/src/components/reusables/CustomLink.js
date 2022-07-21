@@ -11,11 +11,7 @@ export default function CustomLink(props) {
     );
   }
 
-  let href = props.link
-  
-  if (props.actual_link) {
-    href += '/' + props.text.replace(/ /g, '_')
-  }
+  let href = props.link.replace(/ /g, '_')
   
   href += location.search
 

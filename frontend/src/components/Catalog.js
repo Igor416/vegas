@@ -29,6 +29,23 @@ class Catalog extends Component {
     this.changeLayout = this.changeLayout.bind(this);
   }
 
+  updateProducts(path) {
+    let lang = path.search.replace('?lang=', '');
+    let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
+
+    this.setState({
+      lang: lang || this.state.lang,
+      category: {
+        name: params[1]
+      },
+      sub_category: params[2],
+      filter: params.length == 4 ? params[3] : null
+    }, () => {
+      this.getCategory();
+      this.getProducts();
+    })
+  }
+
   getCategory() {
     let url = `/api/category/${this.state.category.name}/${location.search}`
     fetch(url).then((response) => response.json()).then((data) => {
@@ -50,23 +67,6 @@ class Catalog extends Component {
         products: data
       });
     });
-  }
-
-  updateProducts(path) {
-    let lang = path.search.replace('?lang=', '');
-    let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
-
-    this.setState({
-      lang: lang || this.state.lang,
-      category: {
-        name: params[1]
-      },
-      sub_category: params[2],
-      filter: params.length == 4 ? params[3] : null
-    }, () => {
-      this.getCategory();
-      this.getProducts();
-    })
   }
 
   updateCurrency(currency) {

@@ -25,9 +25,23 @@ export default class Menu extends Component {
     let state = props.state
     let categories = props.categories
     
-    let get_link = (sub_category, actual_link=false) => {
-      if (categories[sub_category].length == 0 || actual_link) {
-        return '/catalog/' + sub_category.split(';')[1]
+    let get_link = (sub_category, link) => {
+      if (categories[sub_category].length == 0 || link) {
+        let url = '/catalog/' + sub_category.split(';')[1]
+        if (link) {
+          if (props.lang == 'en') {
+            url += '/' + link
+          }
+          else {
+            let keys = categories[sub_category]
+            for (let link_id = 0; link_id < keys.length; link_id++) {
+              if (keys[link_id] == link) {
+                url += '/' + Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
+              }
+            }
+          }
+        }
+        return url
       }
       return ''
     }
@@ -67,7 +81,7 @@ export default class Menu extends Component {
               className="d-flex pb-2"
               key={index}
             >
-              <CustomLink link={get_link(state.sub_category, true)} text={link} actual_link={true}/>
+              <CustomLink link={get_link(state.sub_category, link)} text={link}/>
             </div>
           )})}
         </div>

@@ -10,6 +10,7 @@ export default class Header extends Component {
     this.inMenu = false;
     this.state = {
       category: null,
+      categoryEN: null,
       sub_category: null
     };
 
@@ -31,6 +32,7 @@ export default class Header extends Component {
     }
     this.setState({
       category: category_temp,
+      categoryEN: this.getEnCategory(category_temp),
       sub_category: sub_category_temp
     }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
@@ -52,15 +54,31 @@ export default class Header extends Component {
       if (!this.inMenu) {
         this.setState({
           category: null,
+          categoriesEN: null,
           sub_category: null
         })
       }
     }, 20)
   }
 
+  getEnCategory(category) {
+    if (this.props.lang == 'en') {
+      return category
+    }
+
+    let categories = CATEGORIES[this.props.lang]
+    let keys = Object.keys(categories)
+    let categoriesEn = CATEGORIES.en
+    
+    for (let i = 0; i < keys.length; i++) {
+      if (category == keys[i]) {
+        return Object.keys(categoriesEn)[i]
+      }
+    }
+  }
+
   render() {
     let categories = CATEGORIES[this.props.lang];
-    
     return (
       <div className="container-fluid">
         <Navbar
@@ -79,6 +97,8 @@ export default class Header extends Component {
           <Menu
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
+            lang={this.props.lang}
+            categoriesEn={CATEGORIES.en[this.state.categoryEN]}
             categories={categories[this.state.category]}
             state={this.state}
           />
