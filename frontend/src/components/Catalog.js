@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useOutletContext } from "react-router-dom";
+import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./catalog/SectionImage.js"
 import Sorting from "./catalog/Sorting.js";
 import LayoutManager from "./catalog/LayoutManager.js";
 
 function withParams(Component) {
-  return props => <Component {...props} params={useParams()} />;
+  return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
 }
 
 class Catalog extends Component {
@@ -13,41 +14,74 @@ class Catalog extends Component {
     super(props);
 
     this.state = {
-      products: [],
-      isGrid: true
+      isGrid: true,
+      lang: this.props.context.lang,
+      currency: this.props.context.currency,
+      category: {
+        name: this.props.params.category
+      },
+      sub_category: this.props.params.sub_category,
+      filter: this.props.params.filter
     }
-    this.category = {
-      name: this.props.params.category
-    }
-    this.sub_category = this.props.params.sub_category
-    this.filter = this.props.params.filter;
-    this.getCategory()
-    this.getproducts();
 
+    this.updateProducts = this.updateProducts.bind(this);
+    this.updateCurrency = this.updateCurrency.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
   }
 
+  componentDidMount() {
+    console.log('lol')
+    this.updateProducts(location)
+  }
+
+  updateProducts(path) {
+    console.log(path)
+    let lang = path.search.replace('?lang=', '');
+    let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
+
+    this.setState({
+      lang: lang || this.state.lang,
+      category: {
+        name: params[1]
+      },
+      sub_category: params[2],
+      filter: params.length == 4 ? params[3] : null
+    }, () => {
+      this.getCategory();
+      this.getProducts();
+    })
+  }
+
   getCategory() {
-    let url = `/api/category/${this.category.name}/${location.search}`
+    console.log(location.search)
+    let url = `/api/category/${this.state.category.name}/${location.search}`
     fetch(url).then((response) => response.json()).then((data) => {
-      console.log(data)
-      this.category.description = data.desc
+      this.setState({
+        category: data
+      })
     });
   }
 
   getproducts() {
-    let url = `/api/products/${this.category.name}/${this.sub_category}/`
-    if (this.filter) {
-      url += this.filter + '/'
+    console.log(location.search)
+    let url = `/api/products/${this.state.category.name}/${this.state.sub_category}`
+    if (this.state.filter) {
+      url += this.state.filter
     }
     url += location.search
 
     fetch(url).then((response) => response.json()).then((data) => {
-      console.log(data)
       this.setState({
         products: data
       });
     });
+  }
+
+  updateCurrency(currency) {
+    this.setState({
+      currency: currency
+    })
+    this.props.context.updateCurrency(currency)
   }
 
   changeLayout() {
@@ -57,15 +91,25 @@ class Catalog extends Component {
   }
 
   render() {
+    let props = {
+      currency: this.state.currency,
+      isGrid: this.state.isGrid
+    }
+    let extended_props = Object.assign({
+      lang: this.state.lang,
+      products: this.state.products
+    }, props)
+
     return (
       <div>
-        <SectionImage category={this.category}/>
+        <LocationListener locationChanged={this.updateProducts} />
+        <SectionImage category={this.state.category} />
         <div className="container-fluid">
           <div className="row px-5 py-4">
             <div className="col-1"></div>
             <div className="col-10">
-              <Sorting changeLayout={this.changeLayout} isGrid={this.state.isGrid} />
-              <LayoutManager category={this.category.name} products={this.state.products} isGrid={this.state.isGrid}/>
+              <Sorting updateCurrency={this.updateCurrency} changeLayout={this.changeLayout} {...props} />
+              <LayoutManager category_name={this.state.category.name} {...extended_props} />
             </div>
             <div className="col-1"></div>
           </div>
