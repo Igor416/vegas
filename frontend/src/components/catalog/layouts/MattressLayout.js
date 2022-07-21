@@ -69,7 +69,6 @@ export default class MattressLayout extends Component {
   }
 
   render() {
-    console.log(this.props)
     let mattresses = sortMattresses(this.props.products);
     let lang_version = this.translations[this.props.lang];
     let currency = this.props.currency

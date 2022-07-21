@@ -13,7 +13,7 @@ export default function CustomLink(props) {
 
   let href = props.link
   
-  if (props.menu_link) {
+  if (props.actual_link) {
     href += '/' + props.text.replace(/ /g, '_')
   }
   
