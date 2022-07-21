@@ -1,80 +1,50 @@
 import React, { Component } from "react";
-import { useParams, useOutletContext } from "react-router-dom";
-import LocationListener from "./reusables/LocationListener.js";
+import { useParams } from "react-router-dom";
 import SectionImage from "./catalog/SectionImage.js"
 import Sorting from "./catalog/Sorting.js";
 import LayoutManager from "./catalog/LayoutManager.js";
 
 function withParams(Component) {
-  return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
+  return props => <Component {...props} params={useParams()} />;
 }
 
 class Catalog extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       products: [],
-      isGrid: true,
-      lang: this.props.context.lang,
-      currency: this.props.context.currency,
-      category: {
-        name: this.props.params.category
-      },
-      sub_category: this.props.params.sub_category,
-      filter: this.props.params.filter
+      isGrid: true
     }
+    this.category = {
+      name: this.props.params.category
+    }
+    this.sub_category = this.props.params.sub_category
+    this.filter = this.props.params.filter;
+    this.getCategory()
+    this.getproducts();
 
-    this.updateProducts = this.updateProducts.bind(this);
-    this.updateCurrency = this.updateCurrency.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
   }
 
-  updateProducts(path) {
-    let lang = path.search.replace('?lang=', '');
-    let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
-
-    this.setState({
-      lang: lang || this.state.lang,
-      category: {
-        name: params[1]
-      },
-      sub_category: params[2],
-      filter: params.length == 4 ? params[3] : null
-    }, () => {
-      
-      this.getCategory();
-      this.getProducts();
-    })
-  }
-  
   getCategory() {
-    let url = `/api/category/${this.state.category.name}/?lang=${this.state.lang}`
+    let url = `/api/category/${this.category.name}/`
     fetch(url).then((response) => response.json()).then((data) => {
-      this.setState({
-        category: data
-      })
+      this.category.description = data.desc
     });
   }
 
-  getProducts() {
-    let url = `/api/products/${this.state.category.name}/${this.state.sub_category}`
-    if (this.state.filter) {
-      url += this.state.filter
+  getproducts() {
+    let url = `/api/products/${this.category.name}/${this.sub_category}/`
+    if (this.filter) {
+      url += this.filter + '/'
     }
-    url += `/?lang=${this.state.lang}`
 
     fetch(url).then((response) => response.json()).then((data) => {
       this.setState({
         products: data
       });
     });
-  }
-
-  updateCurrency(currency) {
-    this.setState({
-      currency: currency
-    })
-    this.props.context.updateCurrency(currency)
   }
 
   changeLayout() {
@@ -84,25 +54,15 @@ class Catalog extends Component {
   }
 
   render() {
-    let props = {
-      currency: this.state.currency,
-      isGrid: this.state.isGrid
-    }
-    let extended_props = Object.assign({
-      lang: this.state.lang,
-      products: this.state.products
-    }, props)
-
     return (
       <div>
-        <LocationListener locationChanged={this.updateProducts} />
-        <SectionImage category={this.state.category} />
+        <SectionImage category={this.category}/>
         <div className="container-fluid">
           <div className="row px-5 py-4">
             <div className="col-1"></div>
             <div className="col-10">
-              <Sorting updateCurrency={this.updateCurrency} changeLayout={this.changeLayout} {...props} />
-              <LayoutManager category_name={this.state.category.name} {...extended_props} />
+              <Sorting changeLayout={this.changeLayout} isGrid={this.state.isGrid} />
+              <LayoutManager category={this.category.name} products={this.state.products} isGrid={this.state.isGrid}/>
             </div>
             <div className="col-1"></div>
           </div>
