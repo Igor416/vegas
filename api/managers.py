@@ -1,13 +1,11 @@
 from django.db.models import Manager
 from .models import Choice, Size
 from . import catalog as ct
-from .translations import EN, RU, RO
 
 class ProductManager(Manager):
     def __init__(self, model, *args, **kwargs):
         super(ProductManager, self).__init__(*args, **kwargs)
         self.model = model
-        self.lang = EN
         self.objs = model.objects.all()
 
     def get_all(self):
@@ -18,13 +16,7 @@ class ProductManager(Manager):
         return self.objs.filter(name=name)
 
     def get_prop(self, name, property):
-        property = property.lower()
-        if self.lang == EN:
-            queryset = Choice.objects.get(name=name, property_en=property)
-        elif self.lang == RU:
-            queryset = Choice.objects.get(name=name, property_ru=property)
-        elif self.lang == RO:
-            queryset = Choice.objects.get(name=name, property_ro=property)
+        queryset = Choice.objects.get(name=name, property_en=property)
         return queryset
 
     def get_all_by_size(self, width, height):
@@ -35,7 +27,7 @@ class MattressManager(ProductManager):
         super(MattressManager, self).__init__(*args, **kwargs)
 
     def get_by_collection(self, filter):
-        filter = filter.replace('Матрасы ', '') #'Матрасы Modern' -> 'Modern'
+        filter = filter.replace('Mattresses ', '') #'Матрасы Modern' -> 'Modern'
         collection = self.get_prop(ct.COLLECTION, filter)
         return self.objs.filter(collection=collection)
 

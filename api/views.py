@@ -31,7 +31,6 @@ class ProductsView(APIView):
             queryset = model.objects.get_all()
         else:
             filter = filter.replace('_', ' ')
-            model.objects.lang = langs[lang]
             queryset = getattr(model.objects, 'get_by_' + category)(filter)
         
         serializer = create_serializer(model, lang)(queryset, many=True)
