@@ -19,12 +19,12 @@ export default class Links extends Component {
     this.translations = {
       en: 'HOME',
       ru: 'ГЛАВНАЯ',
-      ro: 'ACASA'
+      ro: 'ACASĂ'
     }
   }
   
   render() {
-    let props = this.props
+    let lang_version = this.translations[this.props.lang];
     
     return (
       <div className="row px-5 pt-4">
@@ -35,21 +35,21 @@ export default class Links extends Component {
             className="d-flex flex-inline justify-content-between transition-s"
           >
             <div>
-             <CustomLink link='/' text={this.translations[props.lang]} isActive={false} />
+             <CustomLink link='/' text={lang_version}/>
             </div>
-            {Object.keys(props.categories).map((category, index) => {
+            {Object.keys(this.props.categories).map((category, index) => {
             return (
               <div
                 className="d-flex flex-row pb-2"
                 key={index}
-                onMouseEnter={() => props.onMouseEnter(false, category)}
-                onMouseLeave={() => props.onMouseLeave()}
+                onMouseEnter={() => this.props.updateCategory(category)}
+                onMouseLeave={() => this.props.updateCategory()}
               >
-                <CustomLink link=''  text={category} isActive={props.state.category == category} />
+                <CustomLink link='' text={category} />
                 <div>
                   <span>
                     &nbsp;
-                    <FontAwesomeIcon className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s far fa-angle-down"} icon='angle-down' /> 
+                    <FontAwesomeIcon className={css(this.props.category == category ? angleStyles.show : angleStyles.hide) + " transition-s far fa-angle-down"} icon='angle-down' /> 
                   </span>
                 </div>
               </div>

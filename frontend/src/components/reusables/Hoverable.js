@@ -19,7 +19,7 @@ const lineStyles = StyleSheet.create({
 
 
 export default function Hoverable(props) {
-  const [isActive, setIsActive] = useState(props.isActive);
+  const [isActive, setIsActive] = useState(false);
 
   return (
     <div
