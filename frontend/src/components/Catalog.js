@@ -29,13 +29,30 @@ class Catalog extends Component {
     this.changeLayout = this.changeLayout.bind(this);
   }
 
-  componentDidMount() {
-    console.log('lol')
-    this.updateProducts(location)
+  getCategory() {
+    let url = `/api/category/${this.state.category.name}/${location.search}`
+    fetch(url).then((response) => response.json()).then((data) => {
+      this.setState({
+        category: data
+      })
+    });
+  }
+
+  getProducts() {
+    let url = `/api/products/${this.state.category.name}/${this.state.sub_category}/`
+    if (this.state.filter) {
+      url += this.state.filter + '/'
+    }
+    url += location.search
+
+    fetch(url).then((response) => response.json()).then((data) => {
+      this.setState({
+        products: data
+      });
+    });
   }
 
   updateProducts(path) {
-    console.log(path)
     let lang = path.search.replace('?lang=', '');
     let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
 
@@ -50,31 +67,6 @@ class Catalog extends Component {
       this.getCategory();
       this.getProducts();
     })
-  }
-
-  getCategory() {
-    console.log(location.search)
-    let url = `/api/category/${this.state.category.name}/${location.search}`
-    fetch(url).then((response) => response.json()).then((data) => {
-      this.setState({
-        category: data
-      })
-    });
-  }
-
-  getproducts() {
-    console.log(location.search)
-    let url = `/api/products/${this.state.category.name}/${this.state.sub_category}`
-    if (this.state.filter) {
-      url += this.state.filter
-    }
-    url += location.search
-
-    fetch(url).then((response) => response.json()).then((data) => {
-      this.setState({
-        products: data
-      });
-    });
   }
 
   updateCurrency(currency) {
@@ -109,7 +101,9 @@ class Catalog extends Component {
             <div className="col-1"></div>
             <div className="col-10">
               <Sorting updateCurrency={this.updateCurrency} changeLayout={this.changeLayout} {...props} />
+              {this.state.products && 
               <LayoutManager category_name={this.state.category.name} {...extended_props} />
+              }
             </div>
             <div className="col-1"></div>
           </div>
