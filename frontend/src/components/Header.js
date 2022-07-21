@@ -1,61 +1,66 @@
 import React, { Component } from "react";
-import { StyleSheet, css } from 'aphrodite';
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
 import CATEGORIES from "./header/LinksJson.js";
 
-const menuStyles = StyleSheet.create({
-  hide: {
-    opacity: '0',
-    height: '0%'
-  },
-  show: {
-    opacity: '1',
-    padding: '1rem 3rem',
-    borderTop: '1px solid var(--bs-light)',
-    height: '100%'
-  }
-})
-
 export default class Header extends Component {
   constructor(props) {
     super(props);
-    this.inMenu = false
+    this.inMenu = false;
     this.state = {
-      category: null
+      category: null,
+      sub_category: null
     };
 
-    this.updateCategory = this.updateCategory.bind(this);
-    this.updateInMenu = this.updateInMenu.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+  }
+
+  onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
+    let category_temp = this.state.category
+    let sub_category_temp = this.state.sub_category
+
+    if (!inMenu) {
+      category_temp = category
+    }
+    else {
+      if (sub_category) {
+        sub_category_temp = sub_category
+      }
+    }
+    this.setState({
+      category: category_temp,
+      sub_category: sub_category_temp
+    }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
   
-  updateCategory(category=null) {
-    if (category) {
+  onMouseLeave(inSubCategories=false, sub_category=null, inActualLinks=false) {
+    this.inMenu = inSubCategories
+    this.inActualLinks = inActualLinks
+    if (inActualLinks) {
       this.setState({
-        category: category
+        sub_category: null
       })
-      return
     }
-
     setTimeout(() => {
-      this.setState({
-        category: this.inMenu ? this.state.category : null
-      })
-    }, 50)
-  }
-
-  updateInMenu(inMenu=false) {
-    this.inMenu = inMenu
-    this.setState({
-      category: inMenu ? this.state.category : null
-    })
+      if ((inSubCategories ^ Boolean(sub_category)) && !this.inActualLinks) {
+        this.setState({
+          sub_category: null
+        })
+      }
+      if (!this.inMenu) {
+        this.setState({
+          category: null,
+          sub_category: null
+        })
+      }
+    }, 20)
   }
 
   render() {
     let categories = CATEGORIES[this.props.lang];
-    let category = this.state.category;
-
+    
     return (
       <div className="container-fluid">
         <Navbar
@@ -65,18 +70,18 @@ export default class Header extends Component {
         />
         <nav className="sticky-top bg-white">
           <Links
-            updateCategory={this.updateCategory}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
             categories={categories}
-            category={category}
             lang={this.props.lang}
+            state={this.state}
           />
-          <div className={css(category ? menuStyles.show : menuStyles.hide) + " transition-s"}>
-            <Menu
-              updateInMenu={this.updateInMenu}
-              categories={categories[category]}
-              category={category}
-            />
-          </div>
+          <Menu
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            categories={categories[this.state.category]}
+            state={this.state}
+          />
         </nav>
       </div>
     );

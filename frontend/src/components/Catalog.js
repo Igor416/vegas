@@ -28,8 +28,9 @@ class Catalog extends Component {
   }
 
   getCategory() {
-    let url = `/api/category/${this.category.name}/`
+    let url = `/api/category/${this.category.name}/${location.search}`
     fetch(url).then((response) => response.json()).then((data) => {
+      console.log(data)
       this.category.description = data.desc
     });
   }
@@ -39,8 +40,10 @@ class Catalog extends Component {
     if (this.filter) {
       url += this.filter + '/'
     }
+    url += location.search
 
     fetch(url).then((response) => response.json()).then((data) => {
+      console.log(data)
       this.setState({
         products: data
       });
