@@ -60,14 +60,17 @@ class Choice(models.Model):
 
     name = models.CharField('Характеристика', choices=choices, max_length=32)
     category = models.ManyToManyField(Category, related_name='categoryC')
-    property_en = models.CharField('Вариант выбора (en)', max_length=32, blank=True)
-    property_ru = models.CharField('Вариант выбора (ru)', max_length=32)
-    property_ro = models.CharField('Вариант выбора (ro)', max_length=32, blank=True)
+    property_en = models.CharField('Вариант выбора (en)', max_length=64, blank=True)
+    property_ru = models.CharField('Вариант выбора (ru)', max_length=64)
+    property_ro = models.CharField('Вариант выбора (ro)', max_length=64, blank=True)
 
     def __str__(self):
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
         s = ', '.join(lst)
         return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
+
+    def __eq__(self, obj):
+        return self.name == obj.name and self.property_en == obj.property_en
 
     def save(self, *args, **kwargs):
         self.property_ru = self.property_ru.strip()
@@ -150,7 +153,7 @@ class Product(models.Model):
     desc_ro = models.TextField('Описание (ro)')
     discount = models.SmallIntegerField('Скидка (%)', default=0)
     shortcut = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL, verbose_name='Фото на каталог')
-    images = models.ManyToManyField(Image, related_name='images%(class)s', verbose_name='Фотографии товара')
+    images = models.ManyToManyField(Image, related_name='images%(class)s', verbose_name='Фотографии товара', blank=True)
     videos = models.ManyToManyField(Video, related_name='videos%(class)s', verbose_name='Видео товара', blank=True)
     best = models.BooleanField('Лидер продаж', default=False)
 
@@ -202,7 +205,7 @@ class Pillow(Product):
     cover = models.BooleanField('Съемный чехол', default=True)
 
     age = create_related_field('age', 'P', True)
-    material_filler = create_related_field('material_filler')
+    material_filler = create_related_field('material_filler', '', True)
     cover = create_related_field('cover', 'P', True)
 
 

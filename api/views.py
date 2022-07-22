@@ -27,11 +27,8 @@ class ProductsView(APIView):
         lang = request.GET.get(self.lookup_url_kwarg).lower()
         model = getattr(models, product.title())
 
-        if filter == None:
-            queryset = model.objects.get_all()
-        else:
-            filter = filter.replace('_', ' ')
-            queryset = getattr(model.objects, 'get_by_' + category)(filter)
+        filter = filter.replace('_', ' ') if filter else None
+        queryset = model.objects.get_filtered(category, filter)
         
         serializer = create_serializer(model, lang)(queryset, many=True)
         return Response(serializer.data)
