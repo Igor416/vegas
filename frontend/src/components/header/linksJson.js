@@ -36,8 +36,7 @@ const CATEGORIES =  {
       ],
       'Springless;Mattress/springless': [
         'All springless Mattresses',
-        'Mattresses with latex',
-        'Mattresses in roll packaging'
+        'Mattresses with latex'
       ],
       'By springlocks;Mattress/springblock': [
         'Independent springs',
@@ -49,9 +48,9 @@ const CATEGORIES =  {
         'Mattresses for adults'
       ],
       'By rigidity levels and materials;Mattress/rigidity': [
-        'Hard Mattresses',
-        'Mattresses semi-hard',
-        'Soft Mattresses',
+        'Hard mattresses',
+        'Medium firm mattresses',
+        'Soft mattresses',
         'Non-symmetrical Mattresses',
         'Mattresses with latex',
         'Mattresses with coconut coir',
@@ -68,52 +67,52 @@ const CATEGORIES =  {
       ] //english x (eks)
     },
     'PILLOWS': {
-      'All pillows': [],
-      'By types and forms': [
+      'All pillows;Pillow/all': [],
+      'By types and forms;Pillow/types and forms': [
         'Classic form',
         'Ergonomic form with rollers',
         'Others',
         'Pillows for pregnants'
       ],
-      'By materials': [
+      'By materials;Pillow/materials': [
         'With latex',
         'Made from foam with memory effect Memory Foam',
         'Pillows with cooling gel'
       ],
-      'By age;Mattress/age': [
+      'By age;Pillow/age': [
         'Pillows for children',
         'Pillows for teenagers',
         'Pillows for adults'
       ],
-      'Special pillows': [
+      'Special pillows;Pillow/special': [
         'Pillow Beauty for beauty and youngness',
         'Pillow Baby Boom for pregnants and breastfeeding',
         'Pillow Travel for trips'
       ]
     },
     'ACCESSORIES': {
-      'Mattress Pads': [
+      'Mattress Pads;MattressPad': [
         'Transform',
         'Protect'
       ],
-      'Blankets': [
+      'Blankets;Blankets': [
         'Blankets Bamboo',
         'Blankets SumWin',
         'Sheep\'s wool'
       ],
-      'Bedsheets': [],
-      'Bedspreads': []
+      'Bedsheets;BedSheets/all': [],
+      'BedSpreads': []
     },
     'FOR KIDS': {
-      'Mattresses': [
+      'Mattresses;Mattress/children': [
         'All Mattresses for children',
         'With springs',
         'Springless'
       ],
-      'Beds': [],
-      'Child mattress pads': [],
-      'Pillows for children': [],
-      'Blankets for children': [
+      'Beds;Bed/children': [],
+      'Mattress pads;MattressPad/children': [],
+      'Pillows for children;Pillow/children': [],
+      'Blankets for children;Blanket/children': [
         'All child Blankets',
         'Light blanket',
         'All season blanket',
@@ -122,14 +121,14 @@ const CATEGORIES =  {
       ]
     },
     'FURNITURE': {
-      'Beds': [
+      'Beds;Beds': [
         'All beds',
         'Wooden beds',
         'Beds with soft upholstery',
         'Beds for children'
       ],
-      'Stands for beds': [
-        'Wooedn stands',
+      'Stands for beds;Stand': [
+        'Wooden stands',
         'Stands with soft upholstery'
       ],
       'Dressers': [],
@@ -140,9 +139,9 @@ const CATEGORIES =  {
       ]
     },
     'BASISES': {
-      'Basis \'Lux\'': [],
-      'Basis \SuperLux\'': [],
-      'Basis \'Premium\'': []
+      'Basis \'Lux\';Basis/Lux': [],
+      'Basis \SuperLux\';Basis/SuperLux': [],
+      'Basis \'Premium\';Basis/Premium': []
     },
     'SHOPS': Shops
   },
@@ -161,8 +160,7 @@ const CATEGORIES =  {
       ],
       'Беспружинные;Mattress/springless': [
         'Все беспружинные матрасы',
-        'Латексные матрасы',
-        'Матрасы в рулонной упаковке'
+        'Латексные матрасы'
       ],
       'На основе пружинных блоков;Mattress/springblock': [
         'Независимые пружины',
@@ -193,53 +191,53 @@ const CATEGORIES =  {
       ] //english x (eks)
     },
     'ПОДУШКИ': {
-      'Все Подушки': [],
-      'По типам и форме': [
+      'Все Подушки;Pillow/all': [],
+      'По типам и форме;Pillow/types and forms': [
         'Классическая форма',
         'Эргономичная форма с валиками',
         'Прочие Подушки',
         'Подушка для беременных'
       ],
-      'По материалам': [
+      'По материалам;Pillow/materials': [
         'Из латекса',
         'Из пены с эффектом «памяти» Memory Foam',
         'Подушки с охлаждающим гелем'
       ],
-      'Возрастная категория': [
+      'Возрастная категория;Pillow/age': [
         'Подушки для детей',
         'Подушки для подростков',
         'Подушки для взрослых'
       ],
-      'Специальные Подушки': [
+      'Специальные Подушки;Pillow/special': [
         'Подушка Beauty для красоты и молодости',
         'Подушка Baby Boom для беременных и кормления',
         'Подушка Travel для путешествий'
       ]
     },
     'АКСЕССУАРЫ': {
-      'Наматрассники': [
+      'Наматрассники;MattressPad': [
         'Transform',
         'Protect'
       ],
-      'Одеяла': [
+      'Одеяла;Blankets': [
         'Одеяла Bamboo',
         'Одеяла SumWin',
         'Овечья Шерсть',
         
       ],
-      'Постельное белье': [],
+      'Постельное белье;BedSheets/all': [],
       'Покрывала': []
     },
     'ДЕТЯМ': {
-      'Матрасы': [
+      'Матрасы;Mattress/children': [
         'Все матрасы для детей',
         'Пружинные',
         'Беспружинные'
       ],
-      'Кровати': [],
-      'Детские наматрасники': [],
-      'Pillows для детей': [],
-      'Одеяла для детей': [
+      'Кровати;Bed/children': [],
+      'Детские наматрасники;MattressPad/children': [],
+      'Подушки для детей;Pillow/children': [],
+      'Одеяла для детей;Blanket/children': [
         'Все детские одеяла',
         'Легкое одеяло',
         'Всесезонное одеяло',
@@ -248,13 +246,13 @@ const CATEGORIES =  {
       ]
     },
     'МЕБЕЛЬ': {
-      'Кровати': [
+      'Кровати;Beds': [
         'Все кровати',
         'Деревянные кровати',
         'Кровати с мягкой обивкой',
         'Кровати для детей'
       ],
-      'Тумбы прикроватные': [
+      'Тумбы прикроватные;Stand': [
         'Тумбы из дерева',
         'Тумбы с мягкой обивкой'
       ],
@@ -266,9 +264,9 @@ const CATEGORIES =  {
       ]
     },
     'ОСНОВАНИЯ': {
-      'Основание Люкс': [],
-      'Основание СуперЛюкс': [],
-      'Основание Премиум': []
+      'Основание Люкс;Basis/Lux': [],
+      'Основание СуперЛюкс;Basis/SuperLux': [],
+      'Основание Премиум;Basis/Premium': []
     },
     'МАГАЗИНЫ': Shops
   },
@@ -287,8 +285,7 @@ const CATEGORIES =  {
       ],
       'Fără arcuri;Mattress/springless': [
         'Toate saltele fără arcuri',
-        'Saltele din latex',
-        'Saltele in rolă'
+        'Saltele din latex'
       ],
       'Pe bază blocuri cu arc;Mattress/springblock': [
         'Arcuri independente',
@@ -319,52 +316,52 @@ const CATEGORIES =  {
       ] //english x (eks)
     },
     'PERNE': {
-      'Toate pernele': [],
-      'După tipuri și formă': [
+      'Toate pernele;Pillow/all': [],
+      'După tipuri și formă;Pillow/types and forms': [
         'Forma classica',
         'Formă ergonomică cu suporturi',
         'Alte Perne',
         'Perne pentru femeile insarcinate'
       ],
-      'Pe bază materialelor': [
+      'Pe bază materialelor;Pillow/materials': [
         'Din latex',
         'Spumă cu memorie "Memory Foam"',
         'Perne cu gel răcoritor'
       ],
-      'Pe baza vârstei': [
+      'Pe baza vârstei;Pillow/age': [
         'Saltele pentru copii',
         'Saltele pentru adolescenți',
         'Saltele pentru adulți'
       ],
-      'Perne speciale': [
+      'Perne speciale;Pillow/special': [
         'Perna Beauty pentru frumusețe si tinirețe',
         'Perna Baby Boom pentru femeile insarcinate si alăptare',
         'Perna Travel pentru călătorie'
       ]
     },
     'ACCESORII': {
-      'Huse': [
+      'Huse;MattressPad': [
         'Transform',
         'Protect'
       ],
-      'Plapume': [
+      'Plapume;Blankets': [
         'Plapume Bamboo',
         'Plapume SumWin',
         'Lână de oaie'
       ],
-      'Cearceafuri': [],
+      'Cearceafuri;BedSheets/all': [],
       'Cuverturi de pat': []
     },
     'PENTRU COPII': {
-      'Saltele': [
+      'Saltele;Mattress/children': [
         'Toate saltelele pentru copii',
         'Cu arcuri',
         'Fără arcuri'
       ],
-      'Paturi': [],
-      'Huse pentru copii': [],
-      'Perne pentru copii': [],
-      'Plapume pentru copii': [
+      'Paturi;Bed/children': [],
+      'Huse pentru copii;MattressPad/children': [],
+      'Perne pentru copii;Pillow/children': [],
+      'Plapume pentru copii;Blanket/children': [
         'Toate plapume pentru copii',
         'Plapuma ușoara',
         'Plapuma pentru orice vreme',
@@ -373,13 +370,13 @@ const CATEGORIES =  {
       ]
     },
     'MOBILA': {
-      'Paturi': [
+      'Paturi;Beds': [
         'Toate paturile',
         'Paturi de lemn',
         'Paturi tapițate',
         'Paturi pentru copii'
       ],
-      'Noptiere de pat': [
+      'Noptiere de pat;Stand': [
         'Noptiere de lemn',
         'Noptiere tapițate'
       ],
@@ -391,9 +388,9 @@ const CATEGORIES =  {
       ]
     },
     'SOMIERE': {
-      'Somiera Lux': [],
-      'Somiera SuperLux': [],
-      'Somiera Premium': []
+      'Somiera Lux;Basis/Lux': [],
+      'Somiera SuperLux;Basis/SuperLux': [],
+      'Somiera Premium;Basis/Premium': []
     },
     'MAGAZINE': Shops
   }
