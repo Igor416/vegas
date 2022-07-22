@@ -71,8 +71,8 @@ const CATEGORIES =  {
       'By types and forms;Pillow/types and forms': [
         'Classic form',
         'Ergonomic form with rollers',
+        'Pillows for pregnants',
         'Others',
-        'Pillows for pregnants'
       ],
       'By materials;Pillow/materials': [
         'With latex',
@@ -110,14 +110,19 @@ const CATEGORIES =  {
         'Springless'
       ],
       'Beds;Bed/children': [],
-      'Mattress pads;MattressPad/children': [],
+      'Mattress pads;MattressPad/children': [
+        'Size 55 x 115',
+        'Size 60 x 120',
+        'Size 65 x 125',
+        'Size 70 x 140'
+      ],
       'Pillows for children;Pillow/children': [],
       'Blankets for children;Blanket/children': [
         'All child Blankets',
         'Light blanket',
         'All season blanket',
         'Insulated blanket',
-        'Blanket double (2 in 1)'
+        'Double blanket (2 in 1)'
       ]
     },
     'FURNITURE': {
@@ -131,16 +136,11 @@ const CATEGORIES =  {
         'Wooden stands',
         'Stands with soft upholstery'
       ],
-      'Dressers': [],
-      'Sofas': [],
-      'Others': [
-        'Tables',
-        'Chairs'
-      ]
+      'Dressers': []
     },
     'BASISES': {
       'Basis \'Lux\';Basis/Lux': [],
-      'Basis \SuperLux\';Basis/SuperLux': [],
+      'Basis \'SuperLux\';Basis/SuperLux': [],
       'Basis \'Premium\';Basis/Premium': []
     },
     'SHOPS': Shops
@@ -195,8 +195,8 @@ const CATEGORIES =  {
       'По типам и форме;Pillow/types and forms': [
         'Классическая форма',
         'Эргономичная форма с валиками',
-        'Прочие Подушки',
-        'Подушка для беременных'
+        'Подушка для беременных',
+        'Прочие Подушки'
       ],
       'По материалам;Pillow/materials': [
         'Из латекса',
@@ -235,7 +235,12 @@ const CATEGORIES =  {
         'Беспружинные'
       ],
       'Кровати;Bed/children': [],
-      'Детские наматрасники;MattressPad/children': [],
+      'Детские наматрасники;MattressPad/children': [
+        'Размер 55x115',
+        'Размер 60x120',
+        'Размер 65x125',
+        'Размер 70x140'
+      ],
       'Подушки для детей;Pillow/children': [],
       'Одеяла для детей;Blanket/children': [
         'Все детские одеяла',
@@ -256,12 +261,7 @@ const CATEGORIES =  {
         'Тумбы из дерева',
         'Тумбы с мягкой обивкой'
       ],
-      'Комоды': [],
-      'Диваны': [],
-      'Другие предметы мебели': [
-        'Столы',
-        'Стулья'
-      ]
+      'Комоды': []
     },
     'ОСНОВАНИЯ': {
       'Основание Люкс;Basis/Lux': [],
@@ -320,8 +320,8 @@ const CATEGORIES =  {
       'După tipuri și formă;Pillow/types and forms': [
         'Forma classica',
         'Formă ergonomică cu suporturi',
-        'Alte Perne',
-        'Perne pentru femeile insarcinate'
+        'Perne pentru femeile insarcinate',
+        'Alte perne'
       ],
       'Pe bază materialelor;Pillow/materials': [
         'Din latex',
@@ -359,7 +359,12 @@ const CATEGORIES =  {
         'Fără arcuri'
       ],
       'Paturi;Bed/children': [],
-      'Huse pentru copii;MattressPad/children': [],
+      'Huse pentru copii;MattressPad/children': [
+        'Marimea 55x115',
+        'Marimea 60x120',
+        'Marimea 65x125',
+        'Marimea 70x140'
+      ],
       'Perne pentru copii;Pillow/children': [],
       'Plapume pentru copii;Blanket/children': [
         'Toate plapume pentru copii',
@@ -380,12 +385,7 @@ const CATEGORIES =  {
         'Noptiere de lemn',
         'Noptiere tapițate'
       ],
-      'Sifonierele': [],
-      'Canapele': [],
-      'Altele': [
-        'Mese',
-        'Scaune'
-      ]
+      'Sifonierele': []
     },
     'SOMIERE': {
       'Somiera Lux;Basis/Lux': [],
