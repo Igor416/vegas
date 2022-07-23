@@ -1,4 +1,6 @@
-from rest_framework.serializers import ModelSerializer, CharField
+from tkinter import Image
+from django import shortcuts
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from . import models
 from .catalog import Manager
 
@@ -61,55 +63,70 @@ class RecomendedSerializer(ModelSerializer):
         fields = ['name']
         model = models.Basis
 
-class ProductSerializer(ModelSerializer):
-    def to_representation(self, obj):
-        r = super().to_representation(obj)
-        r['desc'] = r.pop('desc_' + self.lang).split('\n')[0]
-        return r
+class ProductListSerializer(ModelSerializer):
+    desc_en = SerializerMethodField()
+    desc_ru = SerializerMethodField()
+    desc_ro = SerializerMethodField()
 
-class ProductListSerializer(ProductSerializer):
+    shortcut = ImageSerializer()
+    sizes = SizeSerializer(many=True)
+
     def __init__(self, *args, **kwargs):
-        super(ProductSerializer, self).__init__(*args, **kwargs)
-        
-        all_props = manager.get_all_props(self.model.get_name())
-        all_props.remove(self.model.default_filtering)
+        super(ProductListSerializer, self).__init__(*args, **kwargs)
 
-        for field in list(self.fields.keys()):
-            if field in all_props or field.startswith('rigidity'):
-                self.fields.pop(field)
-            elif field.startswith('desc') and not field.endswith(self.lang):
-                self.fields.pop(field)
+        self.fields.update({'desc': self.fields['desc_' + self.lang]})
+        for lang in langs:
+            self.fields.pop('desc_' + lang)
 
-    def to_representation(self, obj):
-        r = super().to_representation(obj)
-        r['default_filtering'] = obj.default_filtering
-        return r
+    def get_short_desc(self, desc):
+        shortened = ''
 
-def create_serializer(model, lang):
+        symbols = 256
+        words = 0
+        for sent in desc.split('.'):
+            words += len(sent.strip())
+            if words <= symbols:
+                shortened += sent + '.'
+            else:
+                return shortened.strip()
+
+    def get_desc_en(self, obj):
+        return self.get_short_desc(obj.desc_en)
+
+    def get_desc_ru(self, obj):
+        return self.get_short_desc(obj.desc_ru)
+
+    def get_desc_ro(self, obj):
+        return self.get_short_desc(obj.desc_ro)
+
+def create_list_serializer(model, lang):
     class Meta:
-        exclude = ['category', 'images', 'videos']
+        fields = ['name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
+        fields += ['sizes', 'shortcut', 'default_filtering', model.default_filtering]
         depth = 1
 
     setattr(Meta, 'model', model)
+
+    many = models.has_multiple_rels(model, model.default_filtering)
 
     fields = {
         'Meta': Meta,
         'model': model,
         'lang': lang,
-        'shortcut': ImageSerializer()
+        model.default_filtering: ChoiceSerializer(lang, many=many)
     }
-
-    fields.update({model.default_filtering: ChoiceSerializer(lang, many=True)})
-
-    if hasattr(model, 'sizes'):
-        fields.update({'sizes': SizeSerializer(many=True)})
 
     serializer = type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
 
     return serializer
 
+class ProductDetailSerializer(ModelSerializer):
+    sizes = SizeSerializer(many=True)
 
-def create_detailed_serializer(model, lang):
+    def __init__(self, *args, **kwargs):
+        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
+
+def create_detail_serializer(model, lang):
     class Meta:
         exclude = ['id', 'category']
         depth = 1
@@ -136,6 +153,6 @@ def create_detailed_serializer(model, lang):
     if hasattr(model, 'sizes'):
         fields.update({'sizes': SizeSerializer(many=True)})
 
-    serializer = type(model.get_name() + 'Serializer', (ProductSerializer, ), fields)
+    serializer = type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
 
     return serializer

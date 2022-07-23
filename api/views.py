@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CategorySerializer, create_serializer
+from .serializers import CategorySerializer, create_list_serializer
 from .translations import EN, RU, RO
 from . import models
 
@@ -29,5 +29,5 @@ class ProductsView(APIView):
 
         filter = filter.replace('_', ' ') if filter else None
         queryset = model.objects.get_filtered(category, filter)
-        serializer = create_serializer(model, lang)(queryset, many=True)
+        serializer = create_list_serializer(model, lang)(queryset, many=True)
         return Response(serializer.data)

@@ -149,15 +149,17 @@ class Product(models.Model):
     default_filtering = None
 
     name = models.CharField('Название', max_length=32, unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     desc_en = models.TextField('Описание (en)')
     desc_ru = models.TextField('Описание (ru)')
     desc_ro = models.TextField('Описание (ro)')
     discount = models.SmallIntegerField('Скидка (%)', default=0)
+    best = models.BooleanField('Лидер продаж', default=False)
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    sizes = models.ManyToManyField(Size, related_name='sizes%(class)s', verbose_name='Размеры')
     shortcut = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL, verbose_name='Фото на каталог')
     images = models.ManyToManyField(Image, related_name='images%(class)s', verbose_name='Фотографии товара', blank=True)
     videos = models.ManyToManyField(Video, related_name='videos%(class)s', verbose_name='Видео товара', blank=True)
-    best = models.BooleanField('Лидер продаж', default=False)
 
     @classmethod
     def set_manager(cls):
@@ -192,7 +194,6 @@ class Mattress(Product):
     max_pressure = models.IntegerField('Макс. нагрузка')
     lifetime = models.IntegerField('Срок Службы', default=10)
     cover = models.BooleanField('Съемный чехол', default=True)
-    sizes = models.ManyToManyField(Size, related_name='sizesM', verbose_name='Размеры')
     
     mattress_type = create_related_field('mattress_type', '', True)
     age = create_related_field('age', 'M', True)
@@ -205,8 +206,6 @@ class Mattress(Product):
 class Pillow(Product):
     default_filtering = 'material_filler'
 
-    width = models.IntegerField('Ширина')
-    length = models.IntegerField('Длина')
     height = models.IntegerField('Справочная высота')
     cover = models.BooleanField('Съемный чехол', default=True)
 
@@ -220,7 +219,6 @@ class MattressPad(Product):
 
     height = models.IntegerField('Высота')
     cover = models.BooleanField('Съемный чехол', default=True)
-    sizes = models.ManyToManyField(Size, related_name='sizesMP', verbose_name='Размеры')
 
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
@@ -230,7 +228,6 @@ class Blanket(Product):
     default_filtering = 'blanket_type'
 
     density = models.IntegerField('Плотность наполнения')
-    sizes = models.ManyToManyField(Size, related_name='sizesBl', verbose_name='Размеры')
     
     blanket_type = create_related_field('blanket_type', '', True)
     age = create_related_field('age', 'Bl', True)
@@ -239,8 +236,6 @@ class Blanket(Product):
 
 class BedSheets(Product):
     default_filtering = 'bedsheets_type'
-
-    sizes = models.ManyToManyField(Size, related_name='sizesBS', verbose_name='Размеры')
     
     bedsheets_type = create_related_field('bedsheets_type', '', True)
     bedsheets_color = create_related_field('bedsheets_color')
@@ -250,15 +245,12 @@ class Bed(Product):
     default_filtering = 'bed_type'
 
     height = models.IntegerField('Высота изголовья')
-    sizes = models.ManyToManyField(Size, related_name='sizesB', verbose_name='Размеры')
 
     bed_type = create_related_field('bed_type', '', True)
 
 class Stand(Product):
     default_filtering = 'material'
 
-    width = models.IntegerField('Ширина')
-    length = models.IntegerField('Длина')
     height = models.IntegerField('Высота')
 
     material = create_related_field('material')
@@ -271,6 +263,5 @@ class Basis(Product):
     height = models.IntegerField('Высота')
     legs_height = models.IntegerField('Высота ножек')
     recomended = models.ManyToManyField(Mattress, related_name='recomendedBa', verbose_name='Рекомендовано для матрассов')
-    sizes = models.ManyToManyField(Size, related_name='sizesBa', verbose_name='Размеры')
 
     basis_type = create_related_field('basis_type', '', True)
