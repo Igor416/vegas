@@ -1,4 +1,3 @@
-from tkinter import Image
 from django import shortcuts
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from . import models
@@ -17,11 +16,19 @@ class CategorySerializer(ModelSerializer):
         self.lang, *args = args
         super(CategorySerializer, self).__init__(*args, **kwargs)
 
+    def get_default_filtering(self, obj):
+        return getattr(models, obj.name).default_filtering
+
+    def get_default_filtering_lang(self, obj):
+        return manager.get_prop_trans(self.get_default_filtering(obj), langs.index(self.lang))
+
     def to_representation(self, obj):
         return {
             'name': obj.name,
             'name_s': getattr(obj, f'name_{self.lang}_s'),
             'name_pl': getattr(obj, f'name_{self.lang}_pl'),
+            'default_filtering': self.get_default_filtering(obj),
+            'default_filtering_lang': self.get_default_filtering_lang(obj),
             'desc': getattr(obj, f'desc_{self.lang}'),
         }
     
@@ -67,7 +74,6 @@ class ProductListSerializer(ModelSerializer):
     desc_en = SerializerMethodField()
     desc_ru = SerializerMethodField()
     desc_ro = SerializerMethodField()
-    default_filtering_lang = SerializerMethodField()
 
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
@@ -100,13 +106,10 @@ class ProductListSerializer(ModelSerializer):
     def get_desc_ro(self, obj):
         return self.get_short_desc(obj.desc_ro)
 
-    def get_default_filtering_lang(self, obj):
-        return manager.get_prop_trans(obj.default_filtering, langs.index(self.lang))
-
 def create_list_serializer(model, lang):
     class Meta:
         fields = ['name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
-        fields += ['sizes', 'shortcut', 'default_filtering', 'default_filtering_lang', model.default_filtering]
+        fields += ['sizes', 'shortcut', model.default_filtering]
         depth = 1
 
     setattr(Meta, 'model', model)
