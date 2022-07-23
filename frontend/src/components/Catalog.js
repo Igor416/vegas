@@ -3,7 +3,7 @@ import { useParams, useOutletContext } from "react-router-dom";
 import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./catalog/SectionImage.js"
 import Sorting from "./catalog/Sorting.js";
-import LayoutManager from "./catalog/LayoutManager.js";
+import Layout from "./catalog/Layout.js";
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -89,6 +89,7 @@ class Catalog extends Component {
     }
     let extended_props = Object.assign({
       lang: this.state.lang,
+      category: this.state.category,
       products: this.state.products
     }, props)
 
@@ -102,7 +103,7 @@ class Catalog extends Component {
             <div className="col-10">
               <Sorting updateCurrency={this.updateCurrency} changeLayout={this.changeLayout} {...props} />
               {this.state.products && 
-              <LayoutManager category_name={this.state.category.name} {...extended_props} />
+              <Layout {...extended_props} />
               }
             </div>
             <div className="col-1"></div>
