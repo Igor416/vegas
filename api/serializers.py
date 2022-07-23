@@ -62,23 +62,28 @@ class RecomendedSerializer(ModelSerializer):
         model = models.Basis
 
 class ProductSerializer(ModelSerializer):
-    def to_representation(self, instance):
-        r = super().to_representation(instance)
+    def to_representation(self, obj):
+        r = super().to_representation(obj)
         r['desc'] = r.pop('desc_' + self.lang).split('\n')[0]
         return r
 
 class ProductListSerializer(ProductSerializer):
     def __init__(self, *args, **kwargs):
         super(ProductSerializer, self).__init__(*args, **kwargs)
-
+        
         all_props = manager.get_all_props(self.model.get_name())
-        all_props.remove(self.default_filtering)
+        all_props.remove(self.model.default_filtering)
 
         for field in list(self.fields.keys()):
             if field in all_props or field.startswith('rigidity'):
                 self.fields.pop(field)
             elif field.startswith('desc') and not field.endswith(self.lang):
                 self.fields.pop(field)
+
+    def to_representation(self, obj):
+        r = super().to_representation(obj)
+        r['default_filtering'] = obj.default_filtering
+        return r
 
 def create_serializer(model, lang):
     class Meta:
@@ -91,11 +96,10 @@ def create_serializer(model, lang):
         'Meta': Meta,
         'model': model,
         'lang': lang,
-        'shortcut': ImageSerializer(),
-        'default_filtering': 'collection'
+        'shortcut': ImageSerializer()
     }
 
-    fields.update({'collection': ChoiceSerializer(lang)})
+    fields.update({model.default_filtering: ChoiceSerializer(lang, many=True)})
 
     if hasattr(model, 'sizes'):
         fields.update({'sizes': SizeSerializer(many=True)})

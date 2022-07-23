@@ -146,6 +146,8 @@ class Video(File):
 
 from . import managers
 class Product(models.Model):
+    default_filtering = None
+
     name = models.CharField('Название', max_length=32, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     desc_en = models.TextField('Описание (en)')
@@ -183,6 +185,8 @@ class Product(models.Model):
         abstract = True
 
 class Mattress(Product):
+    default_filtering = 'collection'
+
     height = models.IntegerField('Высота')
     springs = models.IntegerField('Кол-во пружин в двуспальном матрасе', default=0)
     max_pressure = models.IntegerField('Макс. нагрузка')
@@ -199,6 +203,8 @@ class Mattress(Product):
     construction = create_related_field('construction', '', True)
 
 class Pillow(Product):
+    default_filtering = 'material_filler'
+
     width = models.IntegerField('Ширина')
     length = models.IntegerField('Длина')
     height = models.IntegerField('Справочная высота')
@@ -210,6 +216,8 @@ class Pillow(Product):
 
 
 class MattressPad(Product):
+    default_filtering = 'mattresspad_type'
+
     height = models.IntegerField('Высота')
     cover = models.BooleanField('Съемный чехол', default=True)
     sizes = models.ManyToManyField(Size, related_name='sizesMP', verbose_name='Размеры')
@@ -219,6 +227,8 @@ class MattressPad(Product):
     cover = create_related_field('cover', 'MP', True)
 
 class Blanket(Product):
+    default_filtering = 'blanket_type'
+
     density = models.IntegerField('Плотность наполнения')
     sizes = models.ManyToManyField(Size, related_name='sizesBl', verbose_name='Размеры')
     
@@ -228,6 +238,8 @@ class Blanket(Product):
     blanket_color = create_related_field('blanket_color')
 
 class BedSheets(Product):
+    default_filtering = 'bedsheets_type'
+
     sizes = models.ManyToManyField(Size, related_name='sizesBS', verbose_name='Размеры')
     
     bedsheets_type = create_related_field('bedsheets_type', '', True)
@@ -235,12 +247,16 @@ class BedSheets(Product):
     tissue = create_related_field('tissue')
 
 class Bed(Product):
+    default_filtering = 'bed_type'
+
     height = models.IntegerField('Высота изголовья')
     sizes = models.ManyToManyField(Size, related_name='sizesB', verbose_name='Размеры')
 
     bed_type = create_related_field('bed_type', '', True)
 
 class Stand(Product):
+    default_filtering = 'material'
+
     width = models.IntegerField('Ширина')
     length = models.IntegerField('Длина')
     height = models.IntegerField('Высота')
@@ -248,6 +264,8 @@ class Stand(Product):
     material = create_related_field('material')
 
 class Basis(Product):
+    default_filtering = 'basis_type'
+
     distance = models.IntegerField('Расстяоние межда ламелями')
     width = models.IntegerField('Ширина ламели')
     height = models.IntegerField('Высота')

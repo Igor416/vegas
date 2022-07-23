@@ -16,7 +16,7 @@ class ProductManager(Manager):
         if type == 'all':
             return self.get_all()
 
-        getattr(self, 'get_by_' + type)(filter)
+        return getattr(self, 'get_by_' + type)(filter)
 
     def get_by_name(self, name):
         return self.objs.filter(name=name)
@@ -119,7 +119,7 @@ class PillowManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(BedManager, self).get_filtered(type, filter)
+        return super(PillowManager, self).get_filtered(type, filter)
 
     def get_by_types_and_forms(self, filter):
         queryset = self.objs.none()
@@ -184,7 +184,7 @@ class MattressPadManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(MattressPadManager, self).get_filtered(type, filter)
+        return super(MattressPadManager, self).get_filtered(type, filter)
 
     def get_by_type(self, type):
         return self.objs.filter(mattresspad_type=self.get_prop(ct.MATTRESSPAD_TYPE, type))
@@ -202,7 +202,7 @@ class BlanketManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(BlanketManager, self).get_filtered(type, filter)
+        return super(BlanketManager, self).get_filtered(type, filter)
 
     def get_by_type(self, type):
         types = {
@@ -238,7 +238,7 @@ class BedManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(BedManager, self).get_filtered(type, filter)
+        return super(BedManager, self).get_filtered(type, filter)
 
     def get_by_type(self, type):
         if type == 'All beds':
@@ -264,7 +264,7 @@ class StandManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(BedManager, self).get_filtered(type, filter)
+        return super(StandManager, self).get_filtered(type, filter)
 
     def get_by_type(self, type):
         types = {
@@ -282,7 +282,7 @@ class BasisManager(ProductManager):
         if not filter:
             return self.get_by_type(type)
 
-        super(BedManager, self).get_filtered(type, filter)
+        return super(BasisManager, self).get_filtered(type, filter)
 
     def get_by_type(self, type):
         type = type.replace('Basis ', '').replace('\'', '')

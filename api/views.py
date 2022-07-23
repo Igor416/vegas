@@ -29,6 +29,5 @@ class ProductsView(APIView):
 
         filter = filter.replace('_', ' ') if filter else None
         queryset = model.objects.get_filtered(category, filter)
-        
         serializer = create_serializer(model, lang)(queryset, many=True)
         return Response(serializer.data)
