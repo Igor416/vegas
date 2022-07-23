@@ -67,6 +67,7 @@ class ProductListSerializer(ModelSerializer):
     desc_en = SerializerMethodField()
     desc_ru = SerializerMethodField()
     desc_ro = SerializerMethodField()
+    default_filtering_lang = SerializerMethodField()
 
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
@@ -99,10 +100,13 @@ class ProductListSerializer(ModelSerializer):
     def get_desc_ro(self, obj):
         return self.get_short_desc(obj.desc_ro)
 
+    def get_default_filtering_lang(self, obj):
+        return manager.get_prop_trans(obj.default_filtering, langs.index(self.lang))
+
 def create_list_serializer(model, lang):
     class Meta:
         fields = ['name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
-        fields += ['sizes', 'shortcut', 'default_filtering', model.default_filtering]
+        fields += ['sizes', 'shortcut', 'default_filtering', 'default_filtering_lang', model.default_filtering]
         depth = 1
 
     setattr(Meta, 'model', model)
