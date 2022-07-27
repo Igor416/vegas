@@ -1,4 +1,3 @@
-from django.template.defaultfilters import slugify
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from .catalog import Manager
@@ -168,9 +167,6 @@ class Product(models.Model):
     @classmethod
     def get_name(cls):
         return cls.__name__
-
-    def slug(self):
-        return slugify(self.name)
 
     def __str__(self):
         return self._meta.verbose_name + ': ' + self.name
