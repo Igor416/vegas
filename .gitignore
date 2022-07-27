@@ -1,7 +1,10 @@
 *.env
 *.pyc
 migrations
+media
+images
 db.sqlite3
 *.node
 node_modules
 __pycache__
+*.png

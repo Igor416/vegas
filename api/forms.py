@@ -1,89 +1,44 @@
-from unicodedata import category
 from django import forms
 from . import models
+from .catalog import Manager
+from .translations import RU
 
-class ChoiceForm(forms.ModelForm):
-    class Meta:
-        model = models.Choice
-        exclude = ['category']
+manager = Manager()
 
 class ProductForm(forms.ModelForm):
-    def __init__(self, name, *args, **kwargs):
+    class Meta:
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
+        images = models.Image.objects.all()
+
+        for name, field in self.fields.items():
             if hasattr(field, 'queryset'):
-                if field.label == 'Категория':
-                    field.initial = models.Category.objects.get(name=name)
+                if name == 'category':
+                    field.initial = models.Category.objects.get(name=self.model.get_name())
                     field.disabled = True
                     continue
-                field.queryset = models.Choice.objects.filter(name=field.label)
-
-class MattrassForm(ProductForm):
-    class Meta:
-        model = models.Mattrass
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(MattrassForm, self).__init__("Матрас", *args, **kwargs)
-
-
-class PillowForm(ProductForm):
-    class Meta:
-        model = models.Pillow
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(PillowForm, self).__init__("Подушка", *args, **kwargs)
-
-
-class MattressPadsForm(ProductForm):
-    class Meta:
-        model = models.MattressPads
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(MattressPadsForm, self).__init__("Наматрсаник", *args, **kwargs)
-
-
-class BlanketForm(ProductForm):
-    class Meta:
-        model = models.Blanket
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(BlanketForm, self).__init__("Одеяло", *args, **kwargs)
-
-class BedSheetsForm(ProductForm):
-    class Meta:
-        model = models.BedSheets
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(BedSheetsForm, self).__init__("Постельное белье", *args, **kwargs)
-
-
-class BedForm(ProductForm):
-    class Meta:
-        model = models.Bed
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(BedForm, self).__init__("Кровать", *args, **kwargs)
-
-
-class StandForm(ProductForm):
-    class Meta:
-        model = models.Stand
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(StandForm, self).__init__("Тумба", *args, **kwargs)
-        
-
-class BasisForm(ProductForm):
-    class Meta:
-        model = models.Basis
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super(BasisForm, self).__init__("Основание", *args, **kwargs)
+                elif name == 'sizes':
+                    field.queryset = models.Size.objects.all()
+                    continue
+                elif name == 'shortcut':
+                    filtered = filter(lambda i: i.is_shortcut(), images)
+                    field.queryset = models.Image.objects.filter(pk__in=[item.pk for item in filtered])
+                    continue
+                elif name == 'images':
+                    filtered = filter(lambda i: not i.is_shortcut(), images)
+                    field.queryset = models.Image.objects.filter(pk__in=[item.pk for item in filtered])
+                    continue
+                elif name == 'videos':
+                    field.queryset = models.Video.objects.all()
+                    continue
+                elif name.startswith('rigidity'):
+                    field.queryset = models.Choice.objects.filter(name=name[:-1])
+                    field.label = manager.get_prop_trans(name[:-1], RU) + ' ' + name[-1]
+                    continue
+                elif name == 'recomended':
+                    continue
+                field.label = manager.get_prop_trans(name, RU)
+                field.queryset = models.Choice.objects.filter(name=name)
+        setattr(self.Meta, 'model', self.model)

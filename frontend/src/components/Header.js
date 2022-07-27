@@ -1,54 +1,109 @@
 import React, { Component } from "react";
-import SearchBar from "./SearchBar.js";
+import Navbar from "./header/Navbar.js";
+import Links from "./header/Links.js";
+import Menu from "./header/Menu.js";
+import CATEGORIES from "./header/LinksJson.js";
 
 export default class Header extends Component {
   constructor(props) {
     super(props);
+    this.inMenu = false;
+    this.state = {
+      category: null,
+      categoryEN: null,
+      sub_category: null
+    };
+
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
+  }
+
+  onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
+    let category_temp = this.state.category
+    let sub_category_temp = this.state.sub_category
+
+    if (!inMenu) {
+      category_temp = category
+    }
+    else {
+      if (sub_category) {
+        sub_category_temp = sub_category
+      }
+    }
+    this.setState({
+      category: category_temp,
+      categoryEN: this.getEnCategory(category_temp),
+      sub_category: sub_category_temp
+    }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
+  }
+  
+  onMouseLeave(inSubCategories=false, sub_category=null, inActualLinks=false) {
+    this.inMenu = inSubCategories
+    this.inActualLinks = inActualLinks
+    if (inActualLinks) {
+      this.setState({
+        sub_category: null
+      })
+    }
+    setTimeout(() => {
+      if ((inSubCategories ^ Boolean(sub_category)) && !this.inActualLinks) {
+        this.setState({
+          sub_category: null
+        })
+      }
+      if (!this.inMenu) {
+        this.setState({
+          category: null,
+          categoriesEN: null,
+          sub_category: null
+        })
+      }
+    }, 20)
+  }
+
+  getEnCategory(category) {
+    if (this.props.lang == 'en') {
+      return category
+    }
+
+    let categories = CATEGORIES[this.props.lang]
+    let keys = Object.keys(categories)
+    let categoriesEn = CATEGORIES.en
+    
+    for (let i = 0; i < keys.length; i++) {
+      if (category == keys[i]) {
+        return Object.keys(categoriesEn)[i]
+      }
+    }
   }
 
   render() {
+    let categories = CATEGORIES[this.props.lang];
     return (
-      <header className="container-fluid row px-5 pt-4">
-        <div className="col-1"></div>
-        <div className="col-2">
-          <img style={{ maxWidth: '80%' }} src="static/images/logo_menu.svg"/>
-        </div>
-        <div className="col-3 ps-0">
-          <SearchBar />
-        </div>
-        <div className="col-1 text-center border-1 border-end">
-          <span>
-            <i className="h4 fal fa-arrow-circle-right"></i>
-          </span>
-          <br />
-          <span className="h6">К оплате</span>
-        </div>
-        <div className="col-1 d-flex justify-content-center border-1 border-end">
-          <button className="p-2 bg-white border-0 outline-0 no-hover">
-            <img className="border border-1" style={{ width: "3vw" }}src="static/images/romanian.png"/>
-          </button>
-          <button className="p-2 bg-white border-0 no-hover">
-            <img className="border border-1" style={{ width: "3vw" }} src="static/images/russian.png"/>
-          </button>
-        </div>
-        <div className="col-2 text-center">
-          <span>
-            <i className="h4 fal fa-phone"></i>
-          </span>
-          <br />
-          <span className="h6">Закажите сейчас: 079 40-70-32</span>
-        </div>
-        <div className="col-1 text-center text-primary">
-          <button type="button" className="p-0 bg-white border-0 outline-0 no-hover" data-bs-toggle="offcanvas" data-bs-target="#sideBar">
-            <span>
-              <i className="h4 fal fa-shopping-cart"></i>
-            </span>
-            <br />
-            <span id="priceAmount" className="h6">0.00 MDL (0)</span>
-          </button>
-        </div>
-        <div className="col-1"></div>
-      </header>
+      <div className="container-fluid">
+        <Navbar
+          updateLang={this.props.updateLang}
+          lang={this.props.lang}
+          currency={this.props.currency}
+        />
+        <nav className="sticky-top bg-white">
+          <Links
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            categories={categories}
+            lang={this.props.lang}
+            state={this.state}
+          />
+          <Menu
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            lang={this.props.lang}
+            categoriesEn={CATEGORIES.en[this.state.categoryEN]}
+            categories={categories[this.state.category]}
+            state={this.state}
+          />
+        </nav>
+      </div>
     );
   }
 }

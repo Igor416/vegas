@@ -1,10 +1,33 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.exceptions import ValidationError
-from . import serializers, models
+from .serializers import CategorySerializer, create_list_serializer
+from .translations import EN, RU, RO
+from . import models
 
-class ProductView(APIView):
-    def get(self, request):
-        #user = User.objects.get(id=payload['id'])
-        #serializer = UserSerializer(user)
-        return Response(None)
+langs = {
+    'en': EN,
+    'ru': RU,
+    'ro': RO
+}
+
+class CategoryView(APIView):
+    lookup_url_kwarg = 'lang'
+
+    def get(self, request, name):
+        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        category = models.Category.objects.get(name=name)
+
+        serializer = CategorySerializer(lang, category)
+        return Response(serializer.data)
+
+class ProductsView(APIView):
+    lookup_url_kwarg = 'lang'
+
+    def get(self, request, product, category, filter=None):
+        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        model = getattr(models, product.title())
+
+        filter = filter.replace('_', ' ') if filter else None
+        queryset = model.objects.get_filtered(category, filter)
+        serializer = create_list_serializer(model, lang)(queryset, many=True)
+        return Response(serializer.data)

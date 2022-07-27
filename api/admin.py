@@ -1,39 +1,33 @@
 from django.contrib import admin
 from . import models
-from . import forms
+from .catalog import Manager
+from .forms import ProductForm
+from .translations import RU
+
+manager = Manager()
+
+admin.site.register(models.Image)
+admin.site.register(models.Video)
+
+@admin.register(models.Category)
+class CategoryAdmin(admin.ModelAdmin):
+    fields = ['name', 'desc_en', 'desc_ru', 'desc_ro']
+
+@admin.register(models.Size)
+class SizeAdmin(admin.ModelAdmin):
+    ordering = ['category', 'width']
 
 @admin.register(models.Choice)
 class ChoiceAdmin(admin.ModelAdmin):
-    form = forms.ChoiceForm
+    ordering = ['name']
+    exclude = ['category']
 
-@admin.register(models.Mattrass)
-class MattrassAdmin(admin.ModelAdmin):
-    form = forms.MattrassForm
+for product_name in manager.get_all_products():
+    form = type(product_name + 'Form', (ProductForm,), {})
+    model = getattr(models, product_name)
+    model._meta.verbose_name = manager.get_pr_trans(product_name, RU, False)
+    model._meta.verbose_name_plural = manager.get_pr_trans(product_name, RU, True)
+    setattr(form, 'model', model)
+    admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), {'form': form})
+    admin.site.register(model, admin_model)
 
-@admin.register(models.Pillow)
-class PillowAdmin(admin.ModelAdmin):
-    form = forms.PillowForm
-
-@admin.register(models.MattressPads)
-class MattressPadsAdmin(admin.ModelAdmin):
-    form = forms.MattressPadsForm
-
-@admin.register(models.Blanket)
-class BlanketAdmin(admin.ModelAdmin):
-    form = forms.BlanketForm
-
-@admin.register(models.BedSheets)
-class BedSheetsAdmin(admin.ModelAdmin):
-    form = forms.BedSheetsForm
-
-@admin.register(models.Bed)
-class BedAdmin(admin.ModelAdmin):
-    form = forms.BedForm
-
-@admin.register(models.Stand)
-class StandAdmin(admin.ModelAdmin):
-    form = forms.StandForm
-
-@admin.register(models.Basis)
-class BasisAdmin(admin.ModelAdmin):
-    form = forms.BasisForm
