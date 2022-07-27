@@ -86,7 +86,7 @@ class MattressManager(ProductManager):
             queryset = self.objs.none()
             for rigidity1 in self.get_props(ct.RIGIDITY):
                 for obj in self.objs.filter(rigidity1=rigidity1):
-                    if obj.rigidity2 == rigidity1:
+                    if obj.rigidity2.properry_en == rigidity1.property_en:
                         queryset = queryset.union(self.get_by_name(obj.name))
         else:
             if filter == 'Mattresses with latex':
