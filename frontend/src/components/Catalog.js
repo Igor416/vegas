@@ -85,10 +85,10 @@ class Catalog extends Component {
   render() {
     let props = {
       currency: this.state.currency,
-      isGrid: this.state.isGrid
+      isGrid: this.state.isGrid,
+      lang: this.state.lang
     }
     let extended_props = Object.assign({
-      lang: this.state.lang,
       category: this.state.category,
       products: this.state.products
     }, props)

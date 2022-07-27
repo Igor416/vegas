@@ -3,13 +3,15 @@
 }
 
 :root {
-  --blue: rgb(48, 68, 98);
+  --deep-sky-blue: #00aaff;
+  --lime-green: #49dc00;
+  --dark-cyan: #009696;
   --dark-grey: #444;
 }
 
 .link {
   text-decoration: none;
-  color: var(--bs-primary);
+  color: var(--deep-sky-blue);
   cursor: pointer;
 }
 
@@ -48,7 +50,7 @@ img {
 }
 
 #announcement {
-  background-color: var(--blue);
+  background-color: var(--dark-cyan);
   padding: 1.5em;
   color: white;
   font-size: 0.8rem;

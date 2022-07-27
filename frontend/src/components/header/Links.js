@@ -46,7 +46,7 @@ export default class Links extends Component {
                 onMouseEnter={() => props.onMouseEnter(false, category)}
                 onMouseLeave={() => props.onMouseLeave()}
               >
-                <CustomLink link=''  text={category} />
+                <CustomLink link='' text={category} />
                 <div>
                   <span>
                     &nbsp;

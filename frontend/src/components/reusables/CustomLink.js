@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Hoverable from "./Hoverable.js";
+import { Hoverable } from "./Hoverable.js";
 
 export default function CustomLink(props) {
   if (props.link == '') {
@@ -17,7 +17,7 @@ export default function CustomLink(props) {
 
   return (
     <Link className="no-hover no-link" to={href}>
-      <Hoverable text={props.text} />
+      <Hoverable text={props.text}/>
     </Link>
   );
 }
