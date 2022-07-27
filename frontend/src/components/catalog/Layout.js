@@ -2,25 +2,18 @@ import React from "react";
 import Section from "./Section.js";
 
 export default function Layout(props)  {
-    let products = sortProducts(props.products, props.category.default_filtering);
+  let sorted_products = sortProducts(props.products, props.category.default_filtering);
 
+  return (
+    <div className="py-4">
+    {Object.keys(sorted_products).map((filtering, index) => {
     return (
-      <div className="py-4">
-        {Object.keys(products).map((filtering, index) => {
-        return (
-          <div key={index}>
-            <Section
-              products={products}
-              filtering={filtering}
-              isGrid={props.isGrid}
-              currency={props.currency}
-              lang={props.lang}
-              category={props.category} 
-            />
-          </div>
-        )})}
+      <div key={index}>
+        <Section {...props} products={sorted_products[filtering]} filtering={filtering} />
       </div>
-    );
+    )})}
+    </div>
+  );
 }
 
 function sortProducts(products, default_filtering) {
@@ -39,8 +32,7 @@ function sortProducts(products, default_filtering) {
   
   for (let filtering in sorted) {
     remainder = sorted[filtering].length % 3 
-    if (remainder == 0) continue
-    else {
+    if (remainder != 0) {
       for (let i = 0; i < remainder + 1; i++) {
         sorted[filtering].push(null)
       }

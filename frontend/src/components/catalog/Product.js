@@ -25,23 +25,25 @@ const itemStyles = StyleSheet.create({
   }
 })
 
-const button = {
-  backgroundColor: 'white'
-}
-
 const buttonStyles = StyleSheet.create({
-  details: Object.assign({
-    borderColor: 'var(--lime-green)',
+  details: {
+    color: 'white',
+    border: '1px solid var(--lime-green)',
+    backgroundColor: 'var(--lime-green) !important',
     ':hover': {
-      backgroundColor: 'var(--lime-green)'
+      color: 'var(--lime-green)',
+      backgroundColor: 'white'
     }
-  }, button),
-  add: Object.assign({
-    borderColor: 'var(--deep-sky-blue)',
+  },
+  add: {
+    color: 'var(--deep-sky-blue)',
+    border: '1px solid var(--deep-sky-blue)',
+    backgroundColor: 'white',
     ':hover': {
-      backgroundColor: 'var(--deep-sky-blue)'
+      color: 'white',
+      backgroundColor: 'var(--deep-sky-blue) !important',
     }
-  }, button)
+  }
 }) 
 
 export default function Product(props) {
@@ -112,11 +114,11 @@ export default function Product(props) {
             <span>{product.desc}</span>
           </div>
         </div>
-        <div className="d-flex mt-2 flex-row row-nowrap justify-content-between h5">
-          <button className={"border-0 " + css(buttonStyles.details) + " outline-0 p-2 transition-s"}>
+        <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
+          <button className={css(buttonStyles.details) + " outline-0 p-3 transition-s"}>
             <span>{lang_version.details}</span>
           </button>
-          <button className={"border-0 no-hover" + css(buttonStyles.add) + " outline-0 p-2 transition-s"}>
+          <button className={css(buttonStyles.add) + " outline-0 p-3 transition-s"}>
             <span>{lang_version.add}</span> 
           </button>
         </div>
