@@ -1,4 +1,3 @@
-from django.template.defaultfilters import slugify
 from django.db import models
 from django.core.validators import FileExtensionValidator
 from .catalog import Manager
@@ -68,9 +67,6 @@ class Choice(models.Model):
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
         s = ', '.join(lst)
         return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
-
-    def __eq__(self, obj):
-        return self.name == obj.name and self.property_en == obj.property_en
 
     def save(self, *args, **kwargs):
         self.property_ru = self.property_ru.strip()
@@ -168,9 +164,6 @@ class Product(models.Model):
     @classmethod
     def get_name(cls):
         return cls.__name__
-
-    def slug(self):
-        return slugify(self.name)
 
     def __str__(self):
         return self._meta.verbose_name + ': ' + self.name

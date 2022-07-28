@@ -1,6 +1,9 @@
 *.env
 *.pyc
 db.sqlite3
+images
+media
 *.node
 node_modules
 __pycache__
+*.png

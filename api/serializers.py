@@ -108,7 +108,7 @@ class ProductListSerializer(ModelSerializer):
 
 def create_list_serializer(model, lang):
     class Meta:
-        fields = ['name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
+        fields = ['id', 'name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
         fields += ['sizes', 'shortcut', model.default_filtering]
         depth = 1
 
