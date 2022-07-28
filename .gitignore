@@ -1,6 +1,7 @@
 *.env
 *.pyc
 db.sqlite3
+migrations
 images
 media
 *.node
