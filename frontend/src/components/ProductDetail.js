@@ -1,0 +1,117 @@
+import React, { Component } from "react";
+import { useParams, useOutletContext } from "react-router-dom";
+import { getCategory, getProduct } from "./reusables/APICallPoints.js";
+import LocationListener from "./reusables/LocationListener.js";
+import SectionImage from "./reusables/SectionImage.js";
+import SlideShow from "./product_detail/SlideShow.js";
+import SizesView from "./product_detail/SizesView.js";
+
+function withParams(Component) {
+  return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
+}
+
+class ProductDetail extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      lang: this.props.context.lang,
+      currency: this.props.context.currency,
+      product: null,
+      size: null,
+      category: {
+        name: this.props.params.category
+      },
+      id: this.props.params.id
+    }
+
+    this.translations = {
+      en: {
+        'desc': 'Description',
+        'data': 'Characteristic',
+        'struct': 'Structure',
+        'tech': 'Technologies'
+      },
+      ru: {
+        'desc': 'Описание',
+        'data': 'Характеристика',
+        'struct': 'Структура',
+        'tech': 'Технологии'
+      },
+      ro: {
+        'desc': 'Descriere',
+        'data': 'Caracteristică',
+        'struct': 'Structură',
+        'tech': 'Tehnologii'
+      }
+    }
+
+    this.updateProduct = this.updateProduct.bind(this);
+    this.updateCurrency = this.updateCurrency.bind(this);
+  }
+
+  updateProduct(path) {
+    let lang = path.search.replace('?lang=', '');
+    let params = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
+
+    this.setState({
+      lang: lang || this.state.lang,
+      category: {
+        name: params[1]
+      },
+      id: params[2]
+    }, () => {
+      getCategory(this.state.category.name).then((data) => {
+        this.setState({
+          category: data
+        })
+      })
+      getProduct(this.state.category.name, this.state.id).then((data) => {
+        this.setState({
+          product: data,
+          size: data.sizes[0]
+        })
+      })
+    })
+  }
+
+  updateCurrency(currency) {
+    this.setState({
+      currency: currency
+    })
+    this.props.context.updateCurrency(currency)
+  }
+
+  render() {
+    let state = this.state;
+
+    return (
+      <div>
+        <LocationListener locationChanged={this.updateProduct} />
+        <SectionImage category={state.category} />
+        <div className="container-fluid">
+          <div className="row px-5 py-4">
+            <div className="col-1" />
+            {state.product && 
+            <div className="col-10">
+              <div className="d-flex flex-column mb-5">
+                <span className="h3">{state.category.name_s} {state.product.name}</span>
+                <div className="d-flex mt-2 row-nowrap align-items-start">
+                  <SlideShow product={state.product} />
+                  <SizesView updateCurrency={this.updateCurrency} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
+                </div>
+              </div>
+              <div className="mt-5">
+                
+              </div>
+            </div>
+            }
+            <div className="col-1" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default withParams(ProductDetail);
