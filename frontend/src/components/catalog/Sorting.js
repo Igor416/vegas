@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
 import { Hoverable, HoverableIcon } from '../reusables/Hoverable.js';
+import { currencies } from '../reusables/Globals.js';
 
 const switchMenu = {
   display: 'flex',
@@ -38,7 +39,6 @@ const barStyles = StyleSheet.create({
 })
 
 export default function Sorting(props) {
-  const currencies = ['MDL', 'EUR']
   const translations = {
     en: {
       sort_by: 'Sort by: ',
