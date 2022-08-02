@@ -1,12 +1,13 @@
-* {
-  box-sizing: border-box;
-}
-
 :root {
   --deep-sky-blue: #00aaff;
   --lime-green: #49dc00;
   --dark-cyan: #009696;
+  --light-grey: #848484;
   --dark-grey: #444;
+}
+
+.dropdown-toggle::after {
+  content: none;
 }
 
 .link {
