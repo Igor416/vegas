@@ -28,7 +28,7 @@ export default class App extends Component {
   }
 
   updateLang(lang) {
-    history.pushState(location.pathname.replace(`?lang=${lang}`, `?lang=%{this.state.lang}`), '')
+    history.pushState(location.pathname.replace(`?lang=${lang}`, `?lang=${this.state.lang}`), '')
     this.setState({
       lang: lang
     })
