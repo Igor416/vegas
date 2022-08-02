@@ -7,7 +7,7 @@ export default class Footer extends Component {
 
   render() {
     return (
-      <div style={{ backgroundColor: '#848484', color: '#efefef' }} className="container-fluidx d-flex justify-content-center">
+      <div style={{ backgroundColor: 'var(--light-grey)'}} className="container-fluid text-white d-flex justify-content-center">
         <div className="container row p-5">
           <div className="col me-5">
             <div className="mb-2">

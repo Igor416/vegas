@@ -2,17 +2,20 @@ import React from "react";
 import { StyleSheet, css } from 'aphrodite';
 import CustomLink from '../reusables/CustomLink.js';
 
+const menu = {
+  borderTop: '1px solid var(--bs-light)'
+}
+
 const menuStyles = StyleSheet.create({
-  hide: {
+  hide: Object.assign({
     opacity: '0',
     height: '0%'
-  },
-  show: {
+  }, menu),
+  show: Object.assign({
     opacity: '1',
     padding: '1rem 3rem',
-    borderTop: '1px solid var(--bs-light)',
     height: '100%'
-  }
+  }, menu),
 })
 
 export default function Menu(props) {
@@ -27,7 +30,7 @@ export default function Menu(props) {
     >
       <div className="col-2"></div>
       <div
-        className="col-2 border-start border-light border-2"
+        className="col-2 border-start border-1"
         onMouseLeave={() => state.category && props.onMouseLeave(true)}
       >
         {state.category && Object.keys(categories).map((sub_category, index) => {
@@ -43,7 +46,7 @@ export default function Menu(props) {
         )})}
       </div>
       <div
-        className={"col-2 border-start border-light border-2"}
+        className={"col-2 border-start border-1"}
         onMouseEnter={() => state.sub_category && props.onMouseEnter(true, state.category, state.sub_category, true)}
         onMouseLeave={() => state.sub_category && props.onMouseLeave(true, state.sub_category, true)}
       >
@@ -57,11 +60,11 @@ export default function Menu(props) {
           </div>
         )})}
       </div>
-      <div className="col-2 border-start border-light border-2">
+      <div className="col-2 border-start border-1">
       </div>
-      <div className="col-2 border-start border-light border-2">
+      <div className="col-2 border-start border-1">
       </div>
-      <div className="col-2 border-start border-light border-2"></div>
+      <div className="col-2 border-start border-1"></div>
     </div>
   );
 }

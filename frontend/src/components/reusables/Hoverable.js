@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, css } from 'aphrodite'
 
 const line = {
-  backgroundColor: 'black',
+  backgroundColor: 'var(--light-grey)',
   height: '1px'
 }
 
