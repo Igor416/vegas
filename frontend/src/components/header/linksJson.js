@@ -135,8 +135,7 @@ const CATEGORIES =  {
       'Stands for beds;Stand': [
         'Wooden stands',
         'Stands with soft upholstery'
-      ],
-      'Dressers': []
+      ]
     },
     'BASISES': {
       'Basis \'Lux\';Basis/Lux': [],
@@ -222,8 +221,7 @@ const CATEGORIES =  {
       'Одеяла;Blankets': [
         'Одеяла Bamboo',
         'Одеяла SumWin',
-        'Овечья Шерсть',
-        
+        'Овечья Шерсть'
       ],
       'Постельное белье;BedSheets/all': [],
       'Покрывала': []
@@ -260,8 +258,7 @@ const CATEGORIES =  {
       'Тумбы прикроватные;Stand': [
         'Тумбы из дерева',
         'Тумбы с мягкой обивкой'
-      ],
-      'Комоды': []
+      ]
     },
     'ОСНОВАНИЯ': {
       'Основание Люкс;Basis/Lux': [],
@@ -384,8 +381,7 @@ const CATEGORIES =  {
       'Noptiere de pat;Stand': [
         'Noptiere de lemn',
         'Noptiere tapițate'
-      ],
-      'Sifonierele': []
+      ]
     },
     'SOMIERE': {
       'Somiera Lux;Basis/Lux': [],
