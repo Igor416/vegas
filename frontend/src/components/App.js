@@ -16,6 +16,7 @@ export default class App extends Component {
       if (lang.includes('-')) {
         lang = lang.split('-')[0]
       }
+      location.replace(location.pathname + `?lang=${lang}`)
     }
     this.state = {
       lang: lang,
