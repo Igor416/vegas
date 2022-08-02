@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import FileExtensionValidator
+from urllib.request import urlretrieve
+from vegas.settings import BASE_DIR
 from .catalog import Manager
 from .translations import EN, RU, RO
 
@@ -105,6 +106,21 @@ class Size(models.Model):
         verbose_name_plural = 'размеры'   
 
 class File(models.Model):
+    folder = ''
+    image = models.ImageField('Фото товара', upload_to=folder)
+
+    def get_absolute_url(self):
+        return f'/media/{self.folder}/{self.get_name()}.jpg'
+
+    def is_shortcut(self):
+        return not '_' in self.get_name()
+
+    class Meta:
+        abstract = True
+
+class Image(File):
+    folder = 'images'
+
     def get_name(self):
         return self.image.name.split('/')[-1].split('.')[0] #media/images/[name].jpg -> [name]
 
@@ -117,24 +133,23 @@ class File(models.Model):
         return name
 
     class Meta:
-        abstract = True
-
-class Image(File):
-    image = models.ImageField('Фото товара', upload_to='images')
-
-    def get_absolute_url(self):
-        return '/media/' + self.image.name.replace('media/', '')
-
-    def is_shortcut(self):
-        return not '_' in self.get_name()
-
-    class Meta:
         verbose_name = 'фотография'
         verbose_name_plural = 'фотографии'
 
 class Video(File):
-    validators = [FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])]
-    video = models.FileField('Видео о товаре', upload_to='videos', validators=validators)
+    folder = 'videos'
+    video_id = models.CharField('Ссылка на видео', max_length=64, unique=True)
+
+    def save(self, *args, **kwargs):
+        self.video_id = self.video_id.split('=')[-1]
+        self.image = urlretrieve(f'http://img.youtube.com/vi/{self.video_id}/hqdefault.jpg', str(BASE_DIR) + f'\media\\videos\{self.video_id}.jpg')[0]
+        super(Video, self).save(*args, **kwargs)
+
+    def get_name(self):
+        return self.video_id
+
+    def __str__(self):
+        return f'видео о товаре с id: {self.video_id}'
 
     class Meta:
         verbose_name = 'видео'
