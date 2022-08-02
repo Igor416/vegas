@@ -7,7 +7,10 @@ from .translations import RU
 manager = Manager()
 
 admin.site.register(models.Image)
-admin.site.register(models.Video)
+
+@admin.register(models.Video)
+class VideoAdmin(admin.ModelAdmin):
+    fields = ['video_id']
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
