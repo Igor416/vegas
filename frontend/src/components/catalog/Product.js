@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, css } from 'aphrodite';
 import { Link } from "react-router-dom";
+import CustomButton from '../reusables/CustomButton.js';
 import { Hoverable } from '../reusables/Hoverable.js';
 
 const shadowStyles = StyleSheet.create({
@@ -25,36 +26,15 @@ const itemStyles = StyleSheet.create({
   }
 })
 
-const buttonStyles = StyleSheet.create({
-  details: {
-    color: 'white',
-    border: '1px solid var(--lime-green)',
-    backgroundColor: 'var(--lime-green) !important',
-    ':hover': {
-      color: 'var(--lime-green)',
-      backgroundColor: 'white'
-    }
-  },
-  add: {
-    color: 'var(--deep-sky-blue)',
-    border: '1px solid var(--deep-sky-blue)',
-    backgroundColor: 'white',
-    ':hover': {
-      color: 'white',
-      backgroundColor: 'var(--deep-sky-blue) !important',
-    }
-  }
-}) 
-
 export default function Product(props) {
   const product = props.product
   
   if (!product) {
     return <div className={css(props.isGrid ? itemStyles.grid : itemStyles.column)}></div>
   }
-  let price = product?.sizes[0]['price' + props.currency];
+  let price = product.sizes[0]['price' + props.currency];
   let old_price = price;
-  if (product?.discount) {
+  if (product.discount) {
     price *= (100 - product.discount) / 100
   }
 
@@ -80,7 +60,7 @@ export default function Product(props) {
   return (
     <Link
       className={css(props.isGrid ? itemStyles.grid : itemStyles.column) + ' ' + css(shadowStyles.item) + " d-flex transition-s no-link p-3"}
-      to={`/product/${product.id}`}
+      to={`/product/${props.category.name}/${product.id}` + location.search}
     >
       <img src={product.shortcut}/>
       <div className="d-flex flex-column justify-content-between">
@@ -115,12 +95,8 @@ export default function Product(props) {
           </div>
         </div>
         <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
-          <button className={css(buttonStyles.details) + " outline-0 p-3 transition-s"}>
-            <span>{lang_version.details}</span>
-          </button>
-          <button className={css(buttonStyles.add) + " outline-0 p-3 transition-s"}>
-            <span>{lang_version.add}</span> 
-          </button>
+          <CustomButton color="limeGreen" text={lang_version.details} />
+          <CustomButton color="deepSkyBlue" text={lang_version.add} />
         </div>
       </div>
     </Link>
