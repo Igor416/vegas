@@ -86,7 +86,7 @@ export default class Header extends Component {
           lang={this.props.lang}
           currency={this.props.currency}
         />
-        <nav className="sticky-top bg-white">
+        <nav className="position-sticky sticky-top bg-white">
           <Links
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
