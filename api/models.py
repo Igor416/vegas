@@ -91,6 +91,17 @@ class Choice(models.Model):
         verbose_name = 'вариант выбора'
         verbose_name_plural = 'варианты выбора'
 
+class Layer(models.Model):
+    name = models.CharField('Название', max_length=32)
+    quantity = models.SmallIntegerField('Количество', default=1)
+    image = models.ImageField('Фотография', upload_to='images')
+    desc = models.TextField('Описание')
+
+class Technology(models.Model):
+    name = models.CharField('Название', max_length=32)
+    image = models.ImageField('Фотография', upload_to='images')
+    desc = models.TextField('Описание')
+
 class Size(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     width = models.SmallIntegerField('Ширина')
@@ -202,9 +213,12 @@ class Mattress(Product):
     max_pressure = models.IntegerField('Макс. нагрузка')
     lifetime = models.IntegerField('Срок Службы', default=10)
     cover = models.BooleanField('Съемный чехол', default=True)
+
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
+    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
     
     mattress_type = create_related_field('mattress_type', '', True)
-    age = create_related_field('age', 'M', True)
+    age = create_related_field('age', '%(class)s', True)
     rigidity1 = create_related_field('rigidity1')
     rigidity2 = create_related_field('rigidity2')
     collection = create_related_field('collection')
@@ -217,9 +231,11 @@ class Pillow(Product):
     height = models.IntegerField('Справочная высота')
     cover = models.BooleanField('Съемный чехол', default=True)
 
-    age = create_related_field('age', 'P', True)
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
+
+    age = create_related_field('age', '%(class)s', True)
     material_filler = create_related_field('material_filler', '', True)
-    cover = create_related_field('cover', 'P', True)
+    cover = create_related_field('cover', '%(class)s', True)
 
 
 class MattressPad(Product):
@@ -228,9 +244,12 @@ class MattressPad(Product):
     height = models.IntegerField('Высота')
     cover = models.BooleanField('Съемный чехол', default=True)
 
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
+    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
+
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
-    cover = create_related_field('cover', 'MP', True)
+    cover = create_related_field('cover', '%(class)s', True)
 
 class Blanket(Product):
     default_filtering = 'blanket_type'
@@ -238,7 +257,7 @@ class Blanket(Product):
     density = models.IntegerField('Плотность наполнения')
     
     blanket_type = create_related_field('blanket_type', '', True)
-    age = create_related_field('age', 'Bl', True)
+    age = create_related_field('age', '%(class)s', True)
     filling = create_related_field('filling')
     blanket_color = create_related_field('blanket_color')
 

@@ -6,24 +6,27 @@ from .translations import RU
 
 manager = Manager()
 
-admin.site.register(models.Image)
-
-@admin.register(models.Video)
-class VideoAdmin(admin.ModelAdmin):
-    fields = ['video_id']
-
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
     fields = ['name', 'desc_en', 'desc_ru', 'desc_ro']
-
-@admin.register(models.Size)
-class SizeAdmin(admin.ModelAdmin):
-    ordering = ['category', 'width']
 
 @admin.register(models.Choice)
 class ChoiceAdmin(admin.ModelAdmin):
     ordering = ['name']
     exclude = ['category']
+
+admin.site.register(models.Layer)
+admin.site.register(models.Technology)
+
+@admin.register(models.Size)
+class SizeAdmin(admin.ModelAdmin):
+    ordering = ['category', 'width']
+
+admin.site.register(models.Image)
+
+@admin.register(models.Video)
+class VideoAdmin(admin.ModelAdmin):
+    fields = ['video_id']
 
 for product_name in manager.get_all_products():
     form = type(product_name + 'Form', (ProductForm,), {})

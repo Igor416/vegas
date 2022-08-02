@@ -18,27 +18,26 @@ class ProductForm(forms.ModelForm):
                 if name == 'category':
                     field.initial = models.Category.objects.get(name=self.model.get_name())
                     field.disabled = True
-                    continue
+
                 elif name == 'sizes':
                     field.queryset = models.Size.objects.all()
-                    continue
+
                 elif name == 'shortcut':
                     filtered = filter(lambda i: i.is_shortcut(), images)
                     field.queryset = models.Image.objects.filter(pk__in=[item.pk for item in filtered])
-                    continue
+
                 elif name == 'images':
                     filtered = filter(lambda i: not i.is_shortcut(), images)
                     field.queryset = models.Image.objects.filter(pk__in=[item.pk for item in filtered])
-                    continue
+
                 elif name == 'videos':
                     field.queryset = models.Video.objects.all()
-                    continue
+
                 elif name.startswith('rigidity'):
-                    field.queryset = models.Choice.objects.filter(name=name[:-1])
                     field.label = manager.get_prop_trans(name[:-1], RU) + ' ' + name[-1]
-                    continue
-                elif name == 'recomended':
-                    continue
-                field.label = manager.get_prop_trans(name, RU)
-                field.queryset = models.Choice.objects.filter(name=name)
+                    field.queryset = models.Choice.objects.filter(name=name[:-1])
+
+                elif name not in ['recomended', 'structure', 'technologies']:
+                    field.label = manager.get_prop_trans(name, RU)
+                    field.queryset = models.Choice.objects.filter(name=name)
         setattr(self.Meta, 'model', self.model)
