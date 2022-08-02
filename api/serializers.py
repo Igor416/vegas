@@ -49,43 +49,38 @@ class SizeSerializer(ModelSerializer):
         exclude = ['id', 'category']
         model = models.Size
 
-class ImageSerializer(ModelSerializer):
+class FileSerializer(ModelSerializer):
+    def to_representation(self, obj):
+        return obj.get_absolute_url()
+
+class ImageSerializer(FileSerializer):
     class Meta:
         fields = ['image']
         model = models.Image
 
-    def to_representation(self, obj):
-        return obj.get_absolute_url()
-
-class VideoSerializer(ModelSerializer):
+class VideoSerializer(FileSerializer):
     class Meta:
-        fields = ['video']
+        fields = ['image']
         model = models.Video
-
-    def to_representation(self, obj):
-        return obj.get_absolute_url()
 
 class RecomendedSerializer(ModelSerializer):
     class Meta:
         fields = ['name']
         model = models.Basis
 
-class ProductListSerializer(ModelSerializer):
-    desc_en = SerializerMethodField()
-    desc_ru = SerializerMethodField()
-    desc_ro = SerializerMethodField()
-
+class ProductSerializer(ModelSerializer):
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
 
     def __init__(self, *args, **kwargs):
-        super(ProductListSerializer, self).__init__(*args, **kwargs)
+        super(ProductSerializer, self).__init__(*args, **kwargs)
 
-        self.fields.update({'desc': self.fields['desc_' + self.lang]})
-        for lang in langs:
-            self.fields.pop('desc_' + lang)
+        self.fields.update({'desc': self.fields.pop('desc_' + self.lang)})
 
-    def get_short_desc(self, desc):
+class ProductListSerializer(ProductSerializer):
+    desc = SerializerMethodField()
+
+    def get_desc(self, desc):
         shortened = ''
 
         symbols = 256
@@ -97,18 +92,16 @@ class ProductListSerializer(ModelSerializer):
             else:
                 return shortened.strip()
 
-    def get_desc_en(self, obj):
-        return self.get_short_desc(obj.desc_en)
+class ProductDetailSerializer(ProductSerializer):
+    images = ImageSerializer(many=True)
+    videos = VideoSerializer(many=True)
 
-    def get_desc_ru(self, obj):
-        return self.get_short_desc(obj.desc_ru)
-
-    def get_desc_ro(self, obj):
-        return self.get_short_desc(obj.desc_ro)
+    def __init__(self, *args, **kwargs):
+        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
 
 def create_list_serializer(model, lang):
     class Meta:
-        fields = ['id', 'name', 'discount', 'best'] + ['desc_' + lang for lang in langs]
+        fields = ['id', 'name', 'discount', 'best', 'desc_' + lang]
         fields += ['sizes', 'shortcut', model.default_filtering]
         depth = 1
 
@@ -118,7 +111,6 @@ def create_list_serializer(model, lang):
 
     fields = {
         'Meta': Meta,
-        'model': model,
         'lang': lang,
         model.default_filtering: ChoiceSerializer(lang, many=many)
     }
@@ -127,24 +119,16 @@ def create_list_serializer(model, lang):
 
     return serializer
 
-class ProductDetailSerializer(ModelSerializer):
-    sizes = SizeSerializer(many=True)
-
-    def __init__(self, *args, **kwargs):
-        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
-
 def create_detail_serializer(model, lang):
     class Meta:
-        exclude = ['id', 'category']
+        exclude = ['id', 'category'] + ['desc_' + l for l in langs if l != lang]
         depth = 1
         
     setattr(Meta, 'model', model)
 
     fields = {
         'Meta': Meta,
-        'shortcut': ImageSerializer(),
-        'images': ImageSerializer(many=True),
-        'videos': VideoSerializer(many=True)
+        'lang': lang,
     }
 
     for prop in manager.get_all_props(model.get_name()):
@@ -156,9 +140,6 @@ def create_detail_serializer(model, lang):
             fields.update({prop + '2': serializer})
         else:
             fields.update({prop: serializer})
-
-    if hasattr(model, 'sizes'):
-        fields.update({'sizes': SizeSerializer(many=True)})
 
     serializer = type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
 
