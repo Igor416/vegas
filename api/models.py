@@ -119,10 +119,10 @@ class File(models.Model):
         abstract = True
 
 class Image(File):
-    folder = 'images'
+    folder = 'products'
 
     def get_name(self):
-        return self.image.name.split('/')[-1].split('.')[0] #media/images/[name].jpg -> [name]
+        return self.image.name.split('/')[-1].split('.')[0] #media/products/[name].jpg -> [name]
 
     def __str__(self):
         name = self.get_name()
