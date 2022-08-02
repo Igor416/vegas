@@ -43,7 +43,7 @@ export default function Links(props) {
               <div>
                 <span>
                   &nbsp;
-                  <FontAwesomeIcon className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s far fa-angle-down"} icon='angle-down' /> 
+                  <FontAwesomeIcon className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s"} icon='angle-down' /> 
                 </span>
               </div>
             </div>
