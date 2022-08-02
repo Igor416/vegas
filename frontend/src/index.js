@@ -7,12 +7,16 @@ import {
   faPhone,
   faShoppingCart,
   faAngleDown,
-  faAngleUp
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
 import App from "./components/App";
-import Catalog from "./components/Catalog"
+import Catalog from "./components/Catalog";
+import ProductDetail from "./components/ProductDetail";
 
-library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp);
+library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar);
 
 const appDiv = document.getElementById('app');
 const root = createRoot(appDiv);
@@ -23,6 +27,7 @@ root.render(
         <Route path="catalog/:category/:sub_category/" element={<Catalog/>}>
           <Route path=":filter/" element={<Catalog/>} />
         </Route>
+        <Route path="product/:category/:id" element={<ProductDetail/>} />
       </Route>
     </Routes>
   </BrowserRouter>
