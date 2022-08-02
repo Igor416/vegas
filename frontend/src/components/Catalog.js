@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import LocationListener from "./reusables/LocationListener.js";
-import SectionImage from "./catalog/SectionImage.js"
+import { getCategory, getProducts } from "./reusables/APICallPoints.js";
+import SectionImage from "./reusables/SectionImage.js";
 import Sorting from "./catalog/Sorting.js";
 import Layout from "./catalog/Layout.js";
 
@@ -41,32 +42,17 @@ class Catalog extends Component {
       sub_category: params[2],
       filter: params.length == 4 ? params[3] : null
     }, () => {
-      this.getCategory();
-      this.getProducts();
-    })
-  }
-
-  getCategory() {
-    let url = `/api/category/${this.state.category.name}/${location.search}`
-    fetch(url).then((response) => response.json()).then((data) => {
-      this.setState({
-        category: data
+      getCategory(this.state.category.name).then((data) => {
+        this.setState({
+          category: data
+        })
       })
-    });
-  }
-
-  getProducts() {
-    let url = `/api/products/${this.state.category.name}/${this.state.sub_category}/`
-    if (this.state.filter) {
-      url += this.state.filter + '/'
-    }
-    url += location.search
-
-    fetch(url).then((response) => response.json()).then((data) => {
-      this.setState({
-        products: data
-      });
-    });
+      getProducts(this.state.category.name, this.state.sub_category, this.state.filter).then((data) => {
+        this.setState({
+          products: data
+        })
+      })
+    })
   }
 
   updateCurrency(currency) {
