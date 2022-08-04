@@ -20,7 +20,7 @@ class ProductForm(forms.ModelForm):
                     field.disabled = True
 
                 elif name == 'sizes':
-                    field.queryset = models.Size.objects.all()
+                    field.queryset = models.Size.objects.get_by_category(category=self.model.get_name())
 
                 elif name == 'shortcut':
                     filtered = filter(lambda i: i.is_shortcut(), images)

@@ -20,6 +20,7 @@ admin.site.register(models.Technology)
 
 @admin.register(models.Size)
 class SizeAdmin(admin.ModelAdmin):
+    exclude = ['category']
     ordering = ['category', 'width']
 
 admin.site.register(models.Image)

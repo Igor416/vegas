@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 from urllib.request import urlretrieve
 from vegas.settings import BASE_DIR
@@ -112,11 +111,18 @@ class Technology(models.Model):
         verbose_name_plural = 'технологии'
 
 class Size(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    class SizeManager(models.Manager):
+        def get_by_category(self, category):
+            category = Category.objects.get(name=category)
+            queryset = super().get_queryset()
+            return queryset.filter(category=category) | queryset.filter(category=None)
+
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     width = models.SmallIntegerField('Ширина')
     length = models.SmallIntegerField('Длина')
     priceEUR = models.SmallIntegerField('Цена (евро)')
     priceMDL = models.SmallIntegerField('Цена (леи)')
+    objects = SizeManager()
 
     def __str__(self):
         return f'Размер в категории {self.category}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
@@ -203,11 +209,11 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs):
         self.name = self.name.title()
-        super(Product, self).save(*args, **kwargs)
         if hasattr(self, 'sizes'):
             for size in self.sizes.all():
                 size.caterogory = self.category
                 size.save()
+        super(Product, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -219,8 +225,8 @@ class Mattress(Product):
     lifetime = models.IntegerField(default=10)
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
-    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
+    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
     
     mattress_type = create_related_field('mattress_type', '', True)
     age = create_related_field('age', '%(class)s', True)
@@ -242,7 +248,7 @@ class Pillow(Product):
     height = models.IntegerField()
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
 
     age = create_related_field('age', '%(class)s', True)
     material_filler = create_related_field('material_filler', '', True)
@@ -260,8 +266,8 @@ class MattressPad(Product):
     height = models.IntegerField()
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
-    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
+    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
+    technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
 
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
