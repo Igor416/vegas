@@ -1,4 +1,3 @@
-from django import shortcuts
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from . import models
 from .catalog import Manager
@@ -17,7 +16,7 @@ class CategorySerializer(ModelSerializer):
         super(CategorySerializer, self).__init__(*args, **kwargs)
 
     def get_default_filtering(self, obj):
-        return getattr(models, obj.name).default_filtering
+        return manager.get_default_filtering(obj.name)
 
     def get_default_filtering_lang(self, obj):
         return manager.get_prop_trans(self.get_default_filtering(obj), langs.index(self.lang))
@@ -99,20 +98,57 @@ class ProductDetailSerializer(ProductSerializer):
     def __init__(self, *args, **kwargs):
         super(ProductDetailSerializer, self).__init__(*args, **kwargs)
 
+    def to_representation(self, obj):
+        r = super(ProductDetailSerializer, self).to_representation(obj)
+        characteristic = dict()
+        
+        for prop in manager.get_all_props(self.model.get_name()):
+            if prop != 'rigidity':
+                characteristic.update({prop: r.pop(prop)})
+                
+        if self.model == models.Mattress:
+            characteristic.update({'rigidity1': r.pop('rigidity1')})
+            characteristic.update({'rigidity2': r.pop('rigidity2')})
+
+        for key, val in r.copy().items():
+            if key == 'Characteristic':
+                break
+            elif key == 'best' or key == 'discount':
+                continue
+            elif isinstance(val, int) or isinstance(val, bool):
+                characteristic.update({key: r.pop(key)})
+
+        sorted_dict = {}
+        for key in self.model.get_order():
+            if key.startswith('rigidity'):
+                sorted_dict[key] = (manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}', characteristic[key])
+                continue
+            sorted_dict[key] = {
+                'name': manager.get_prop_trans(key, langs.index(self.lang)), 
+                'value': characteristic[key]
+            }
+
+        r['description'] = {key: value for key, value in sorted_dict.items() if key in self.model.get_short_order()}
+        r['characteristic'] = sorted_dict
+        
+
+        return r
+
 def create_list_serializer(model, lang):
     class Meta:
         fields = ['id', 'name', 'discount', 'best', 'desc_' + lang]
-        fields += ['sizes', 'shortcut', model.default_filtering]
+        fields += ['sizes', 'shortcut', manager.get_default_filtering(model.get_name())]
         depth = 1
 
     setattr(Meta, 'model', model)
 
-    many = models.has_multiple_rels(model, model.default_filtering)
+    default_filtering = manager.get_default_filtering(model.get_name())
+    many = models.has_multiple_rels(model, default_filtering)
 
     fields = {
         'Meta': Meta,
         'lang': lang,
-        model.default_filtering: ChoiceSerializer(lang, many=many)
+        default_filtering: ChoiceSerializer(lang, many=many)
     }
 
     serializer = type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
@@ -129,17 +165,19 @@ def create_detail_serializer(model, lang):
     fields = {
         'Meta': Meta,
         'lang': lang,
+        'model': model
     }
 
     for prop in manager.get_all_props(model.get_name()):
         many = models.has_multiple_rels(model, prop)
         serializer = ChoiceSerializer(lang, many=many)
-
-        if prop == 'rigidity':
-            fields.update({prop + '1': serializer})
-            fields.update({prop + '2': serializer})
-        else:
+        
+        if prop != 'rigidity':
             fields.update({prop: serializer})
+
+    if model == models.Mattress:
+        fields.update({'rigidity1': ChoiceSerializer(lang)})
+        fields.update({'rigidity2': ChoiceSerializer(lang)})
 
     serializer = type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
 
