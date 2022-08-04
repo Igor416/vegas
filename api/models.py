@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.db import models
 from urllib.request import urlretrieve
 from vegas.settings import BASE_DIR
@@ -97,10 +98,18 @@ class Layer(models.Model):
     image = models.ImageField('Фотография', upload_to='images')
     desc = models.TextField('Описание')
 
+    class Meta:
+        verbose_name = 'слой'
+        verbose_name_plural = 'слои'
+
 class Technology(models.Model):
     name = models.CharField('Название', max_length=32)
     image = models.ImageField('Фотография', upload_to='images')
     desc = models.TextField('Описание')
+
+    class Meta:
+        verbose_name = 'технология'
+        verbose_name_plural = 'технологии'
 
 class Size(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
