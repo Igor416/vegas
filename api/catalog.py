@@ -5,10 +5,23 @@ MATTRESSPAD = 'MattressPad'
 BLANKET = 'Blanket'
 BEDSHEETS = 'BedSheets'
 BED = 'Bed'
-STAND= 'Stand'
+STAND = 'Stand'
 BASIS = 'Basis'
 
 #Properties
+HEIGHT = 'height'
+SPRINGS = 'springs'
+MAX_PRESSURE = 'max_pressure'
+LIFETIME = 'lifetime'
+CASE = 'case'
+DENSITY = 'density'
+HEADBOARD_HEIGHT = 'headboard_height'
+DISTANCE = 'distance'
+WIDTH = 'width'
+LEGS_HEIGHT = 'legs_height'
+RECOMENDED = 'recomended'
+
+#Choices
 MATTRESS_TYPE = 'mattress_type'
 COLLECTION = 'collection'
 CONSTRUCTION = 'construction'
@@ -29,6 +42,17 @@ BED_TYPE = 'bed_type'
 MATERIAL = 'material'
 BASIS_TYPE = 'basis_type'
 
+DEFAULT_FILTERING = {
+    MATTRESS: COLLECTION,
+    PILLOW: MATERIAL_FILLER,
+    MATTRESSPAD: MATTRESSPAD_TYPE,
+    BLANKET: BLANKET_TYPE,
+    BEDSHEETS: BEDSHEETS_TYPE,
+    BED: BED_TYPE,
+    STAND: MATERIAL,
+    BASIS: BASIS_TYPE
+}
+
 COMMON_PROPERTIES  = {
     AGE: [MATTRESS, PILLOW, BLANKET],
     COVER: [PILLOW, MATTRESSPAD]
@@ -45,7 +69,7 @@ CATALOG = {
     BASIS: [BASIS_TYPE]
 }
 
-from .translations import EN, RU, RO
+from .translations import RU
 class Manager:
     def get_pr_choices(self):
         return [(key, self.get_pr_trans(key, RU, False)) for key in CATALOG.keys()]
@@ -83,10 +107,13 @@ class Manager:
                     break
         return categories
     
+    def get_default_filtering(self, product):
+        return DEFAULT_FILTERING[product]
+
     def get_pr_trans(self, product, lang, plural):
         from .translations import products
         return products.get(product)[lang][int(plural)]
     
     def get_prop_trans(self, property, lang):
-        from .translations import properties
-        return properties.get(property)[lang]
+        from .translations import properties, choices
+        return (properties.get(property) or choices.get(property))[lang]

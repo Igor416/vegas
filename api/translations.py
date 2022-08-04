@@ -17,6 +17,20 @@ products = {
 }
 
 properties = {
+    ct.HEIGHT: ('Height', 'Высота', 'Înălţime'),
+    ct.SPRINGS: ('Number of springs in a double mattress', 'Кол-во пружин в двуспальном матрасе', 'Numărul de arcuri într-o saltea dublă'),
+    ct.MAX_PRESSURE: ('Maximum load per bed', 'Максимальная нагрузка на 1 спальное место', 'Sarcina maxima pe pat'),
+    ct.LIFETIME: ('Life time', 'Срок Службы', 'Durata de viață'),
+    ct.CASE: ('Removable cover', 'Съемный чехол', 'Husa detasabila'),
+    ct.DENSITY: ('Filling density', 'Плотность наполнения', 'Densitatea de umplere'),
+    ct.HEADBOARD_HEIGHT: ('Headboard height', 'Высота изголовья', 'Înălțimea tăbliei'),
+    ct.DISTANCE: ('Distance between slats', 'Расстяоние межда ламелями', 'Distanța dintre lamele'),
+    ct.WIDTH: ('Width slats', 'Ширина ламели', 'Lamele latime'),
+    ct.LEGS_HEIGHT: ('Leg height', 'Высота ножек', 'Înălțimea piciorului'),
+    ct.RECOMENDED: ('Recommended for mattresses', 'Рекомендовано для матрассов', 'Recomandat pentru saltele')
+}
+
+choices = {
     ct.MATTRESS_TYPE: ('Mattress Type', 'Тип матраса', 'Tip de saltea'),
     ct.COLLECTION: ('Collection', 'Коллекция', 'Colecție'),
     ct.CONSTRUCTION: ('Construction', 'Конструкция', 'Construcție'),
