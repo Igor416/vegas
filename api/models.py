@@ -168,8 +168,6 @@ class Video(File):
 
 from . import managers
 class Product(models.Model):
-    default_filtering = None
-
     name = models.CharField('Название', max_length=32, unique=True)
     desc_en = models.TextField('Описание (en)')
     desc_ru = models.TextField('Описание (ru)')
@@ -206,13 +204,11 @@ class Product(models.Model):
         abstract = True
 
 class Mattress(Product):
-    default_filtering = 'collection'
-
-    height = models.IntegerField('Высота')
-    springs = models.IntegerField('Кол-во пружин в двуспальном матрасе', default=0)
-    max_pressure = models.IntegerField('Макс. нагрузка')
-    lifetime = models.IntegerField('Срок Службы', default=10)
-    cover = models.BooleanField('Съемный чехол', default=True)
+    height = models.IntegerField()
+    springs = models.IntegerField(default=0)
+    max_pressure = models.IntegerField()
+    lifetime = models.IntegerField(default=10)
+    case = models.BooleanField(default=True)
 
     structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
@@ -225,11 +221,17 @@ class Mattress(Product):
     springblock = create_related_field('springblock')
     construction = create_related_field('construction', '', True)
 
-class Pillow(Product):
-    default_filtering = 'material_filler'
+    @classmethod
+    def get_order(cls):
+        return ('mattress_type', 'age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'lifetime', 'collection', 'springblock', 'construction', 'case')
 
-    height = models.IntegerField('Справочная высота')
-    cover = models.BooleanField('Съемный чехол', default=True)
+    @classmethod
+    def get_short_order(cls):
+        return ('age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'construction', 'case')
+
+class Pillow(Product):
+    height = models.IntegerField()
+    case = models.BooleanField(default=True)
 
     structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
 
@@ -239,10 +241,8 @@ class Pillow(Product):
 
 
 class MattressPad(Product):
-    default_filtering = 'mattresspad_type'
-
-    height = models.IntegerField('Высота')
-    cover = models.BooleanField('Съемный чехол', default=True)
+    height = models.IntegerField()
+    case = models.BooleanField(default=True)
 
     structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура')
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии')
@@ -252,9 +252,7 @@ class MattressPad(Product):
     cover = create_related_field('cover', '%(class)s', True)
 
 class Blanket(Product):
-    default_filtering = 'blanket_type'
-
-    density = models.IntegerField('Плотность наполнения')
+    density = models.IntegerField()
     
     blanket_type = create_related_field('blanket_type', '', True)
     age = create_related_field('age', '%(class)s', True)
@@ -262,33 +260,25 @@ class Blanket(Product):
     blanket_color = create_related_field('blanket_color')
 
 class BedSheets(Product):
-    default_filtering = 'bedsheets_type'
-    
     bedsheets_type = create_related_field('bedsheets_type', '', True)
     bedsheets_color = create_related_field('bedsheets_color')
     tissue = create_related_field('tissue')
 
 class Bed(Product):
-    default_filtering = 'bed_type'
-
-    height = models.IntegerField('Высота изголовья')
+    headboard_height = models.IntegerField(default=0)
 
     bed_type = create_related_field('bed_type', '', True)
 
 class Stand(Product):
-    default_filtering = 'material'
-
-    height = models.IntegerField('Высота')
+    height = models.IntegerField()
 
     material = create_related_field('material')
 
 class Basis(Product):
-    default_filtering = 'basis_type'
-
-    distance = models.IntegerField('Расстяоние межда ламелями')
-    width = models.IntegerField('Ширина ламели')
-    height = models.IntegerField('Высота')
-    legs_height = models.IntegerField('Высота ножек')
+    distance = models.IntegerField()
+    width = models.IntegerField()
+    height = models.IntegerField()
+    legs_height = models.IntegerField()
     recomended = models.ManyToManyField(Mattress, related_name='recomendedBa', verbose_name='Рекомендовано для матрассов')
 
     basis_type = create_related_field('basis_type', '', True)

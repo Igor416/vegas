@@ -40,4 +40,11 @@ class ProductForm(forms.ModelForm):
                 elif name not in ['recomended', 'structure', 'technologies']:
                     field.label = manager.get_prop_trans(name, RU)
                     field.queryset = models.Choice.objects.filter(name=name)
+
+            else:
+                try:
+                    field.label = manager.get_prop_trans(name, RU)
+                except:
+                    pass
+
         setattr(self.Meta, 'model', self.model)
