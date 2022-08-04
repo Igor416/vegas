@@ -224,8 +224,8 @@ class Mattress(Product):
     
     mattress_type = create_related_field('mattress_type', '', True)
     age = create_related_field('age', '%(class)s', True)
-    rigidity1 = create_related_field('rigidity1')
-    rigidity2 = create_related_field('rigidity2')
+    rigidity1 = create_related_field('rigidity1', '%(class)s')
+    rigidity2 = create_related_field('rigidity2', '%(class)s')
     collection = create_related_field('collection')
     springblock = create_related_field('springblock')
     construction = create_related_field('construction', '', True)
@@ -248,6 +248,13 @@ class Pillow(Product):
     material_filler = create_related_field('material_filler', '', True)
     cover = create_related_field('cover', '%(class)s', True)
 
+    @classmethod
+    def get_order(cls):
+        return ('age', 'material_filler', 'height', 'case', 'cover')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('age', 'material_filler', 'case', 'cover')
 
 class MattressPad(Product):
     height = models.IntegerField()
@@ -258,7 +265,17 @@ class MattressPad(Product):
 
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
+    rigidity1 = create_related_field('rigidity1', '%(class)s')
+    rigidity2 = create_related_field('rigidity2', '%(class)s')
     cover = create_related_field('cover', '%(class)s', True)
+
+    @classmethod
+    def get_order(cls):
+        return ('mattresspad_type', 'height', 'rigidity1', 'rigidity2', 'case', 'binding', 'cover')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('mattresspad_type', 'rigidity1', 'rigidity2', 'case', 'cover')
 
 class Blanket(Product):
     density = models.IntegerField()
@@ -267,27 +284,69 @@ class Blanket(Product):
     age = create_related_field('age', '%(class)s', True)
     filling = create_related_field('filling')
     blanket_color = create_related_field('blanket_color')
+    cover = create_related_field('cover', '%(class)s', True)
+
+    @classmethod
+    def get_order(cls):
+        return ('blanket_type', 'age', 'filling', 'density', 'cover', 'blanket_color')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('blanket_type', 'age', 'filling', 'density', 'cover')
 
 class BedSheets(Product):
     bedsheets_type = create_related_field('bedsheets_type', '', True)
     bedsheets_color = create_related_field('bedsheets_color')
     tissue = create_related_field('tissue')
 
+    @classmethod
+    def get_order(cls):
+        return ('bedsheets_type', 'bedsheets_color', 'tissue')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('bedsheets_type', 'bedsheets_color')
+
 class Bed(Product):
     headboard_height = models.IntegerField(default=0)
+    lifetime = models.IntegerField(default=10)
 
     bed_type = create_related_field('bed_type', '', True)
+
+    @classmethod
+    def get_order(cls):
+        return ('bed_type', 'headboard_height', 'lifetime')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('bed_type', 'headboard_height', 'lifetime')
 
 class Stand(Product):
     height = models.IntegerField()
 
     material = create_related_field('material')
 
+    @classmethod
+    def get_order(cls):
+        return ('height', 'material')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('height', 'material')
+
 class Basis(Product):
     distance = models.IntegerField()
     width = models.IntegerField()
     height = models.IntegerField()
     legs_height = models.IntegerField()
-    recomended = models.ManyToManyField(Mattress, related_name='recomendedBa', verbose_name='Рекомендовано для матрассов')
+    recomended = models.ManyToManyField(Mattress, related_name='recomendedBasis', verbose_name='Рекомендовано для матрассов')
 
     basis_type = create_related_field('basis_type', '', True)
+
+    @classmethod
+    def get_order(cls):
+        return ('distance', 'height', 'width', 'legs_height', 'recomended')
+
+    @classmethod
+    def get_short_order(cls):
+        return ('distance', 'height', 'width', 'recomended')
