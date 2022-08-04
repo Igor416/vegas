@@ -121,14 +121,20 @@ class ProductDetailSerializer(ProductSerializer):
         sorted_dict = {}
         for key in self.model.get_order():
             if key.startswith('rigidity'):
-                sorted_dict[key] = (manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}', characteristic[key])
+                sorted_dict[manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}'] = characteristic[key]
                 continue
-            sorted_dict[key] = {
-                'name': manager.get_prop_trans(key, langs.index(self.lang)), 
-                'value': characteristic[key]
-            }
+            sorted_dict[manager.get_prop_trans(key, langs.index(self.lang))] = characteristic[key]
 
-        r['description'] = {key: value for key, value in sorted_dict.items() if key in self.model.get_short_order()}
+        r['description'] = dict()
+        for key in self.model.get_short_order():
+            if key.startswith('rigidity'):
+                key_lang = manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}'
+                r['description'][key_lang] = sorted_dict[key_lang]
+                continue
+
+            key_lang = manager.get_prop_trans(key, langs.index(self.lang))
+            r['description'][key_lang] = sorted_dict[key_lang]
+            
         r['characteristic'] = sorted_dict
         
 
