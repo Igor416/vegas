@@ -80,13 +80,15 @@ export default class Header extends Component {
   render() {
     let categories = CATEGORIES[this.props.lang];
     return (
-      <div className="container-fluid">
+      <div className="bg-white">
+        <div className="container-fluid">
         <Navbar
           updateLang={this.props.updateLang}
           lang={this.props.lang}
           currency={this.props.currency}
         />
-        <nav className="position-sticky sticky-top bg-white">
+        </div>
+        <nav className="container-fluid position-absolute bg-white">
           <Links
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
