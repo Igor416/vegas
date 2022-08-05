@@ -15,7 +15,6 @@ class ChoiceAdmin(admin.ModelAdmin):
     ordering = ['name']
     exclude = ['category']
 
-admin.site.register(models.Layer)
 admin.site.register(models.Technology)
 
 @admin.register(models.Size)
@@ -29,6 +28,14 @@ admin.site.register(models.Image)
 class VideoAdmin(admin.ModelAdmin):
     fields = ['video_id']
 
+class LayerMattressInline(admin.TabularInline):
+    model = models.LayerMattress
+    extra = 3
+
+class LayerMattressPadInline(admin.TabularInline):
+    model = models.LayerMattressPad
+    extra = 3
+    
 for product_name in manager.get_all_products():
     form = type(product_name + 'Form', (ProductForm,), {})
     model = getattr(models, product_name)
@@ -36,5 +43,11 @@ for product_name in manager.get_all_products():
     model._meta.verbose_name_plural = manager.get_pr_trans(product_name, RU, True)
     setattr(form, 'model', model)
     admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), {'form': form})
+
+    if model is models.Mattress:
+        setattr(admin_model, 'inlines', (LayerMattressInline, ))
+    elif model is models.MattressPad:
+        setattr(admin_model, 'inlines', (LayerMattressPadInline, ))
+        
     admin.site.register(model, admin_model)
 

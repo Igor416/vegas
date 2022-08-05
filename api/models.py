@@ -6,6 +6,19 @@ from .translations import EN, RU, RO
 
 manager = Manager()
 
+def save_langs(val_en, val_ru, val_ro):
+    val_ru = val_ru.strip()
+    if val_en == '':
+        val_en = val_ru
+    else:
+        val_en = val_en.strip()
+    if val_ro == '':
+        val_ro = val_ru
+    else:
+        val_ro = val_ro.strip()
+
+    return val_en, val_ru, val_ro
+
 def create_related_field(prop, postfix='', plural=False):
     kwargs = {
         'to': Choice,
@@ -70,18 +83,10 @@ class Choice(models.Model):
         return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
     def save(self, *args, **kwargs):
-        self.property_ru = self.property_ru.strip()
-        if self.property_en == '':
-            self.property_en = self.property_ru
-        else:
-            self.property_en = self.property_en.strip()
-        if self.property_ro == '':
-            self.property_ro = self.property_ru
-        else:
-            self.property_ro = self.property_ro.strip()
+        self.property_en, self.property_ru, self.property_ro = save_langs(self.property_en, self.property_ru, self.property_ro)
         super(Choice, self).save(*args, **kwargs)
         self.set_category(*args, **kwargs)
-    
+
     def set_category(self, *args, **kwargs):
         for category in manager.get_categories(self.name):
             self.category.add(Category.objects.get(name=category))
@@ -91,38 +96,12 @@ class Choice(models.Model):
         verbose_name = 'вариант выбора'
         verbose_name_plural = 'варианты выбора'
 
-class Layer(models.Model):
-    name = models.CharField('Название', max_length=32)
-    quantity = models.SmallIntegerField('Количество', default=1)
-    image = models.ImageField('Фотография', upload_to='images')
-    desc = models.TextField('Описание')
-
-    class Meta:
-        verbose_name = 'слой'
-        verbose_name_plural = 'слои'
-
-class Technology(models.Model):
-    name = models.CharField('Название', max_length=32)
-    image = models.ImageField('Фотография', upload_to='images')
-    desc = models.TextField('Описание')
-
-    class Meta:
-        verbose_name = 'технология'
-        verbose_name_plural = 'технологии'
-
 class Size(models.Model):
-    class SizeManager(models.Manager):
-        def get_by_category(self, category):
-            category = Category.objects.get(name=category)
-            queryset = super().get_queryset()
-            return queryset.filter(category=category) | queryset.filter(category=None)
-
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
     width = models.SmallIntegerField('Ширина')
     length = models.SmallIntegerField('Длина')
     priceEUR = models.SmallIntegerField('Цена (евро)')
     priceMDL = models.SmallIntegerField('Цена (леи)')
-    objects = SizeManager()
 
     def __str__(self):
         return f'Размер в категории {self.category}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
@@ -181,6 +160,53 @@ class Video(File):
         verbose_name = 'видео'
         verbose_name_plural = 'видео'
 
+class Technology(models.Model):
+    name_en = models.CharField('Название (en)', max_length=32, blank=True)
+    name_ru = models.CharField('Название (ru)', max_length=32)
+    name_ro = models.CharField('Название (ro)', max_length=32, blank=True)
+    image = models.ImageField('Фотография', upload_to='images')
+    desc_en = models.TextField('Описание (en)')
+    desc_ru = models.TextField('Описание (ru)')
+    desc_ro = models.TextField('Описание (ro)')
+
+    def get_absolute_url(self):
+        return f'/media/{self.image}'
+
+    def save(self, *args, **kwargs):
+        self.name_en, self.name_ru, self.name_ro = save_langs(self.name_en, self.name_ru, self.name_ro)
+        super(Technology, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f'технология {self.name_ru}'
+
+    class Meta:
+        verbose_name = 'технология'
+        verbose_name_plural = 'технологии'
+
+class LayerMattress(models.Model):
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    product = models.ForeignKey('Mattress', on_delete=models.CASCADE)
+    quantity = models.SmallIntegerField(default=1)
+
+    def __str__(self):
+        return f'слой матраса {self.product} с технологией {self.technology}, ({self.quantity})'
+
+class LayerPillow(models.Model):
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    product = models.ForeignKey('Pillow', on_delete=models.CASCADE)
+    quantity = models.SmallIntegerField(default=1)
+
+    def __str__(self):
+        return f'слой подушки {self.product} с технологией {self.technology}, ({self.quantity})'
+
+class LayerMattressPad(models.Model):
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    product = models.ForeignKey('MattressPad', on_delete=models.CASCADE)
+    quantity = models.SmallIntegerField(default=1)
+
+    def __str__(self):
+        return f'слой наматрасника {self.product} с технологией {self.technology}, ({self.quantity})'
+
 from . import managers
 class Product(models.Model):
     name = models.CharField('Название', max_length=32, unique=True)
@@ -211,7 +237,7 @@ class Product(models.Model):
         self.name = self.name.title()
         if hasattr(self, 'sizes'):
             for size in self.sizes.all():
-                size.caterogory = self.category
+                size.category = self.category
                 size.save()
         super(Product, self).save(*args, **kwargs)
 
@@ -225,7 +251,7 @@ class Mattress(Product):
     lifetime = models.IntegerField(default=10)
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
+    structure = models.ManyToManyField(Technology, through=LayerMattress, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
     
     mattress_type = create_related_field('mattress_type', '', True)
@@ -248,7 +274,7 @@ class Pillow(Product):
     height = models.IntegerField()
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
+    structure = models.ManyToManyField(Technology, through=LayerPillow, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
 
     age = create_related_field('age', '%(class)s', True)
     material_filler = create_related_field('material_filler', '', True)
@@ -266,7 +292,7 @@ class MattressPad(Product):
     height = models.IntegerField()
     case = models.BooleanField(default=True)
 
-    structure = models.ManyToManyField(Layer, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
+    structure = models.ManyToManyField(Technology, through=LayerMattressPad, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
 
     mattresspad_type = create_related_field('mattresspad_type', '', True)

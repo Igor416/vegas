@@ -43,6 +43,52 @@ class ChoiceSerializer(ModelSerializer):
     def to_representation(self, obj):
         return getattr(obj, 'property_' + self.lang)
 
+class TechnologySerializer(ModelSerializer):
+    class Meta:
+        exclude = ['id']
+        model = models.Technology
+
+    class MetaLayer:
+        fields = ['technologies', 'name_en', 'name_ru', 'name_ro', 'image', 'desc_en', 'desc_ru', 'desc_ro']
+        model = models.Technology
+
+    def __init__(self, lang, *args, **kwargs):
+        super(TechnologySerializer, self).__init__(*args, **kwargs)
+        self.lang = lang
+
+    def to_representation(self, obj):
+        r = super(TechnologySerializer, self).to_representation(obj)
+        for lang in langs:
+            if lang == self.lang:
+                r.update({
+                    'name': r.pop('name_' + lang),
+                    'desc': r.pop('desc_' + lang),
+                })
+                continue
+            r.pop('name_' + lang)
+            r.pop('desc_' + lang)
+
+        return r
+
+class LayerSerializer(ModelSerializer):
+    def to_representation(self, obj):
+        return obj.quantity
+
+class LayerMattressSerializer(TechnologySerializer):
+    technologies = LayerSerializer(source='layermattress_set', many=True)
+
+    class Meta(TechnologySerializer.MetaLayer): pass
+        
+class LayerPillowSerializer(TechnologySerializer):
+    technologies = LayerSerializer(source='layerpillow_set', many=True)
+
+    class Meta(TechnologySerializer.MetaLayer): pass
+
+class LayerMattressPadSerializer(TechnologySerializer):
+    technologies = LayerSerializer(source='layermattresspad_set', many=True)
+    
+    class Meta(TechnologySerializer.MetaLayer): pass
+
 class SizeSerializer(ModelSerializer):
     class Meta:
         exclude = ['id', 'category']
@@ -131,7 +177,6 @@ class ProductDetailSerializer(ProductSerializer):
                 key_lang = manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}'
                 r['description'][key_lang] = sorted_dict[key_lang]
                 continue
-
             key_lang = manager.get_prop_trans(key, langs.index(self.lang))
             r['description'][key_lang] = sorted_dict[key_lang]
             
@@ -184,6 +229,16 @@ def create_detail_serializer(model, lang):
     if model == models.Mattress:
         fields.update({'rigidity1': ChoiceSerializer(lang)})
         fields.update({'rigidity2': ChoiceSerializer(lang)})
+        
+        fields.update({'structure': LayerMattressSerializer(lang, many=True)})
+        fields.update({'technologies': TechnologySerializer(lang, many=True)})
+
+    if model == models.Pillow:
+        fields.update({'structure': LayerPillowSerializer(lang, many=True)})
+
+    if model == models.MattressPad:
+        fields.update({'structure': LayerMattressPadSerializer(lang, many=True)})
+        fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
     serializer = type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
 
