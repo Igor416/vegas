@@ -42,7 +42,7 @@ export default function Description(props) {
           )})}
           </div>
           <div onClick={() => {toCharacteristic(props.setTabId)}}>
-            <CustomButton text={lang_version.characteristic} color="darkCyan" />
+            <CustomButton text={lang_version.characteristic} color="deepSkyBlue" />
           </div>
         </div>
         <div className="col-6">
