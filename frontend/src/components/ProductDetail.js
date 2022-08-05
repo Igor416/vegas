@@ -5,6 +5,7 @@ import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./reusables/SectionImage.js";
 import SlideShow from "./product_detail/SlideShow.js";
 import SizesView from "./product_detail/SizesView.js";
+import Info from "./product_detail/Info.js";
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -23,27 +24,6 @@ class ProductDetail extends Component {
         name: this.props.params.category
       },
       id: this.props.params.id
-    }
-
-    this.translations = {
-      en: {
-        'desc': 'Description',
-        'data': 'Characteristic',
-        'struct': 'Structure',
-        'tech': 'Technologies'
-      },
-      ru: {
-        'desc': 'Описание',
-        'data': 'Характеристика',
-        'struct': 'Структура',
-        'tech': 'Технологии'
-      },
-      ro: {
-        'desc': 'Descriere',
-        'data': 'Caracteristică',
-        'struct': 'Structură',
-        'tech': 'Tehnologii'
-      }
     }
 
     this.updateProduct = this.updateProduct.bind(this);
@@ -101,9 +81,7 @@ class ProductDetail extends Component {
                   <SizesView updateCurrency={this.updateCurrency} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
                 </div>
               </div>
-              <div className="mt-5">
-                
-              </div>
+              <Info lang={state.lang} product={state.product} />
             </div>
             }
             <div className="col-1" />
