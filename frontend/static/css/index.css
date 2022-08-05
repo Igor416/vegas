@@ -6,10 +6,6 @@
   --dark-grey: #444;
 }
 
-.dropdown-toggle::after {
-  content: none;
-}
-
 .link {
   text-decoration: none;
   color: var(--deep-sky-blue);
