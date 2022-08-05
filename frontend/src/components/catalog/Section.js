@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from 'aphrodite';
-import Product from './Product.js'
+import Product from '../reusables/Product.js'
 
 const section = {
   display: 'flex'
