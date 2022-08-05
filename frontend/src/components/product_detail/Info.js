@@ -7,7 +7,7 @@ import Technologies from './Technologies.js';
 
 export default function Info(props) {
   const product = props.product
-  let [tabId, setTabId] = useState(2)
+  let [tabId, setTabId] = useState(0)
 
   const translations = {
     en: {
@@ -48,7 +48,7 @@ export default function Info(props) {
         <button
           key={index}
           id={'tab-' + tab}
-          className={'nav-link link' + (index == 2 ? " active" : "")}
+          className={'nav-link link' + (index == 0 ? " active" : "")}
           data-bs-toggle="tab"
           data-bs-target={`#${tab}`}
         >
@@ -61,7 +61,7 @@ export default function Info(props) {
       if (product[tab]) {
       let Tab = tabs[tab];
       return (
-        <div key={index} className={"border border-top-0 border-1 p-4 tab-pane fade" + (index == 2 ? " show active" : "")} id={tab}>
+        <div key={index} className={"border border-top-0 border-1 p-4 tab-pane fade" + (index == 0 ? " show active" : "")} id={tab}>
           <Tab lang={props.lang} product={product} setTabId={setTabId} />
         </div>
       )}})}
