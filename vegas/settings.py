@@ -7,7 +7,6 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = env('SECRET_KEY')
-TELEGRAM_TOKEN = env('TELEGRAM_TOKEN')
 
 DEBUG = True
 
@@ -21,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
-    'telegram.apps.TelegramConfig',
+    'telegram_api.apps.TelegramBotConfig',
     'frontend.apps.FrontendConfig',
     'rest_framework',
     'corsheaders',
@@ -39,6 +38,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'vegas.urls'
+
+BOT_TOKEN = env('TELEGRAM_TOKEN')
+BOT_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'
+CHANNEL_ID = env('CHANNEL_ID')
 
 TEMPLATES = [
     {
