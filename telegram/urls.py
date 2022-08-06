@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import OrderCall
+from .views import OrderCallView
 
 urlpatterns = [
-    path('orderCall/', OrderCall.as_view()),
+    path('order_call/', OrderCallView.as_view()),
 ]
