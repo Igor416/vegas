@@ -82,11 +82,12 @@ export default class Header extends Component {
     return (
       <div className="bg-white">
         <div className="container-fluid">
-        <Navbar
-          updateLang={this.props.updateLang}
-          lang={this.props.lang}
-          currency={this.props.currency}
-        />
+          <Navbar
+            updateLang={this.props.updateLang}
+            lang={this.props.lang}
+            currency={this.props.currency}
+            cart={this.props.cart}
+          />
         </div>
         <nav className="container-fluid position-absolute bg-white">
           <Links
