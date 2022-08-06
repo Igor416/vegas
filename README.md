@@ -1,4 +1,4 @@
 # Vegas (Online Shop)
 
 To do:
-- [x] Activate telegram api
+- [ ] Activate telegram api
