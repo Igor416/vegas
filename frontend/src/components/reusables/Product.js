@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, css } from 'aphrodite';
 import { Link } from "react-router-dom";
+import { useCookies } from 'react-cookie';
 import CustomButton from './CustomButton.js';
 import CustomPhoneInput from './CustomPhoneInput.js';
 import { Hoverable } from './Hoverable.js';
@@ -29,6 +30,7 @@ const itemStyles = StyleSheet.create({
 
 export default function Product(props) {
   const product = props.product
+  let [cookies, setCookie] = useCookies(['csrftoken']);
   let [name, setName] = useState('')
   let [phone, setPhone] = useState('')
   
@@ -149,7 +151,7 @@ export default function Product(props) {
               <div data-bs-dismiss="modal">
                 <CustomButton color="limeGreen" text={lang_version.close} />
               </div>
-              <div>
+              <div onClick={() => sendForm(props.category, product, name, phone, cookies.csrftoken)}>
                 <CustomButton color="deepSkyBlue" text={lang_version.submit} />
               </div>
             </div>
@@ -158,4 +160,30 @@ export default function Product(props) {
       </div>
     </div>
   );
+}
+
+function sendForm(category, product, name, phone, csrftoken) {
+  let options = {
+    method: "POST",
+    mode: 'cors',
+    headers: {
+      'X-CSRFToken': csrftoken,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      category: category.name,
+      product: product.name,
+      name: name,
+      phone: phone
+    })
+  }
+  
+  fetch("/telegram/order_call/", options).then((response) => response.json())
+  .then((data) => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  })
 }
