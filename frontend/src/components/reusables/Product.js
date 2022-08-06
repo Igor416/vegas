@@ -151,7 +151,7 @@ export default function Product(props) {
               <div data-bs-dismiss="modal">
                 <CustomButton color="limeGreen" text={lang_version.close} />
               </div>
-              <div onClick={() => sendForm(props.category, product, name, phone, cookies.csrftoken)}>
+              <div data-bs-dismiss="modal" onClick={() => sendForm(props.category, product, name, phone, cookies.csrftoken)}>
                 <CustomButton color="deepSkyBlue" text={lang_version.submit} />
               </div>
             </div>
@@ -179,9 +179,9 @@ function sendForm(category, product, name, phone, csrftoken) {
     })
   }
   
-  fetch("/telegram/order_call/", options).then((response) => response.json())
+  fetch('/telegram/order_call/' + location.search, options).then((response) => response.json())
   .then((data) => {
-    console.log('Success:', data);
+    alert(data);
   })
   .catch((error) => {
     console.error('Error:', error);
