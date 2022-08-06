@@ -21,7 +21,6 @@
   cursor: pointer;
   text-decoration: none !important;
   color: var(--bs-dark) !important;
-  border: none !important;
   outline: none !important;
   box-shadow: none !important;
 }
