@@ -14,6 +14,12 @@ class OrderCallView(APIView):
             'chat_id': str(CHANNEL_ID), 
             'text': f'Заказан звонок от: {info["name"]}, номер телефона: {info["phone"]}. Продукт: {info["product"]} ({info["category"]})'
         }
-        r = requests.post(BOT_URL + 'sendMessage', data=data)
-        return Response(status=status.HTTP_202_ACCEPTED)
+        #requests.post(BOT_URL + 'sendMessage', data=data)
+        phone = '079 40-70-32'
+        response = {
+            'en': f'Wait for a call from number: ({phone})',
+            'ru': f'Ожидайте звонка с номера: ({phone})',
+            'ro': f'Așteptați un apel de la numărul: ({phone})'
+        }
+        return Response(response, status=status.HTTP_202_ACCEPTED)
 
