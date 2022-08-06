@@ -208,7 +208,7 @@ def create_list_serializer(model, lang):
 
 def create_detail_serializer(model, lang):
     class Meta:
-        exclude = ['id', 'category'] + ['desc_' + l for l in langs if l != lang]
+        exclude = ['category'] + ['desc_' + l for l in langs if l != lang]
         depth = 1
         
     setattr(Meta, 'model', model)
