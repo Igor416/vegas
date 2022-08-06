@@ -8,7 +8,11 @@ from rest_framework import status
 
 
 class OrderCallView(APIView):
+    lookup_url_kwarg = 'lang'
+
     def post(self, request):
+        lang = request.GET.get(self.lookup_url_kwarg).lower()
+
         info = request.data
         data = {
             'chat_id': str(CHANNEL_ID), 
@@ -21,5 +25,5 @@ class OrderCallView(APIView):
             'ru': f'Ожидайте звонка с номера: ({phone})',
             'ro': f'Așteptați un apel de la numărul: ({phone})'
         }
-        return Response(response, status=status.HTTP_202_ACCEPTED)
+        return Response(response[lang], status=status.HTTP_202_ACCEPTED)
 
