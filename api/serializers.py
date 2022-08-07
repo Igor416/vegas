@@ -146,6 +146,7 @@ class ProductDetailSerializer(ProductSerializer):
 
     def to_representation(self, obj):
         r = super(ProductDetailSerializer, self).to_representation(obj)
+        
         characteristic = dict()
         
         for prop in manager.get_all_props(self.model.get_name()):
@@ -159,7 +160,7 @@ class ProductDetailSerializer(ProductSerializer):
         for key, val in r.copy().items():
             if key == 'Characteristic':
                 break
-            elif key == 'best' or key == 'discount':
+            elif key == 'best' or key == 'discount' or key == 'id':
                 continue
             elif isinstance(val, int) or isinstance(val, bool):
                 characteristic.update({key: r.pop(key)})
@@ -179,10 +180,10 @@ class ProductDetailSerializer(ProductSerializer):
                 continue
             key_lang = manager.get_prop_trans(key, langs.index(self.lang))
             r['description'][key_lang] = sorted_dict[key_lang]
-            
+        
         r['characteristic'] = sorted_dict
         
-
+        
         return r
 
 def create_list_serializer(model, lang):
