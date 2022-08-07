@@ -45,13 +45,14 @@ export default class App extends Component {
     })
   }
 
-  addProduct(category, product) {
+  addProduct(category, product, size, quantity) {
     let cart = this.state.cart
-    let newProduct = {category: category, id: product.id, discount: product.discount}
-
-    for (let currency of currencies) {
-      console.log(currency, product)
-      newProduct['price' + currency] = product['price' + currency]
+    let newProduct = {
+      category: category,
+      id: product.id,
+      discount: product.discount,
+      size: size,
+      quantity: quantity
     }
 
     cart.products.push(newProduct)
