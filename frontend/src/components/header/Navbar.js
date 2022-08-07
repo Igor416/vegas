@@ -37,12 +37,12 @@ export default function Navbar(props) {
     }
   }
 
-  let sum = 0
-  sum = props.cart.products.reduce((prev, curr) => {
-    console.log(prev, curr, 'price' + props.currency);
-    prev + curr['price' + props.currency]
-  }, sum)
+  let start = 0
+  let sum = props.cart.products.reduce((prev, curr) =>
+    prev + (curr.size['price' + props.currency] * (100 - curr.discount) / 100 * curr.quantity),
+  start)
 
+  console.log(sum);
   let lang_version = translations[props.lang];
   return (
     <div className="d-flex align-items-center row px-5 pt-4">
