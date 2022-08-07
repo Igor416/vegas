@@ -16,6 +16,7 @@ const dimensionStyles = StyleSheet.create({
 
 export default function SizesView(props) {
   const product = props.product
+  let [quantity, setQuantity] = useState(1)
   let [size, setSize] = useState(product.sizes[0])
 
   let widths = product.sizes.map(size => size.width)
@@ -52,6 +53,11 @@ export default function SizesView(props) {
     }
     setSize(getSize.apply(null, params))
   }
+
+  let addProduct = () => {
+    props.addProduct(props.category.name, product, size, quantity)
+  }
+
   return (
     <div className="d-flex flex-column">
       <Price size={size} discount={product.discount} {...props}/>
@@ -83,7 +89,7 @@ export default function SizesView(props) {
           </div>
         )})}
         </div>
-        <BuyPanel lang={props.lang} />
+        <BuyPanel addProduct={addProduct} quantity={quantity} setQuantity={setQuantity} lang={props.lang} />
       </div>
     </div>
   );

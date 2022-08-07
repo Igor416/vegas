@@ -64,7 +64,6 @@ class ProductDetail extends Component {
 
   render() {
     let state = this.state;
-
     return (
       <div>
         <LocationListener locationChanged={this.updateProduct} />
@@ -78,7 +77,7 @@ class ProductDetail extends Component {
                 <span className="h3">{state.category.name_s} {state.product.name}</span>
                 <div className="d-flex mt-2 row-nowrap align-items-start">
                   <SlideShow product={state.product} />
-                  <SizesView updateCurrency={this.updateCurrency} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
+                  <SizesView updateCurrency={this.updateCurrency} addProduct={this.props.context.addProduct} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
                 </div>
               </div>
               <Info lang={state.lang} product={state.product} />
