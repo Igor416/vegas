@@ -120,27 +120,7 @@
       "Basis \"SuperLux\";Basis/SuperLux": [],
       "Basis \"Premium\";Basis/Premium": []
     },
-    "SHOPS": {
-      "Call center": [
-        "079407032"
-      ],
-      "CC Jumbo Showroom": [
-        "Mun. Chișinău, bd. Decebal 23/1",
-        "078 505 520"
-      ],
-      "Magazin Vegas": [
-        "Mun. Chișinău, str. Kiev 16/1",
-        "079 440 057"
-      ],
-      "Showroom Creangă": [
-        "Mun Chișinău, str. Ion Crengă 5/3",
-        "079 840 444"
-      ],
-      "Showroom Ciocana": [
-        "Mun Chișinău, str. Zelinski 7",
-        "079 407 022"
-      ]
-    }
+    "SHOPS": {}
   },
   "ru": {
     "МАТРАСЫ": {
@@ -263,27 +243,7 @@
       "Основание СуперЛюкс;Basis/SuperLux": [],
       "Основание Премиум;Basis/Premium": []
     },
-    "МАГАЗИНЫ":  {
-      "Call center": [
-        "079407032"
-      ],
-      "CC Jumbo Showroom": [
-        "Mun. Chișinău, bd. Decebal 23/1",
-        "078 505 520"
-      ],
-      "Magazin Vegas": [
-        "Mun. Chișinău, str. Kiev 16/1",
-        "079 440 057"
-      ],
-      "Showroom Creangă": [
-        "Mun Chișinău, str. Ion Crengă 5/3",
-        "079 840 444"
-      ],
-      "Showroom Ciocana": [
-        "Mun Chișinău, str. Zelinski 7",
-        "079 407 022"
-      ]
-    }
+    "МАГАЗИНЫ":  {}
   },
   "ro": {
     "SALTELE": {
@@ -406,26 +366,6 @@
       "Somiera SuperLux;Basis/SuperLux": [],
       "Somiera Premium;Basis/Premium": []
     },
-    "MAGAZINE":  {
-      "Call center": [
-        "079407032"
-      ],
-      "CC Jumbo Showroom": [
-        "Mun. Chișinău, bd. Decebal 23/1",
-        "078 505 520"
-      ],
-      "Magazin Vegas": [
-        "Mun. Chișinău, str. Kiev 16/1",
-        "079 440 057"
-      ],
-      "Showroom Creangă": [
-        "Mun Chișinău, str. Ion Crengă 5/3",
-        "079 840 444"
-      ],
-      "Showroom Ciocana": [
-        "Mun Chișinău, str. Zelinski 7",
-        "079 407 022"
-      ]
-    }
+    "MAGAZINE":  {}
   }
 }
