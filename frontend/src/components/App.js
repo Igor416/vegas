@@ -60,7 +60,7 @@ export default class App extends Component {
   updateCurrency(currency) {
     this.setState({
       currency: currency
-    }, this.setTotal())
+    }, () => this.setTotal())
   }
 
   addProduct(category, product, size, quantity) {
