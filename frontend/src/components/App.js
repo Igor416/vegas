@@ -99,7 +99,6 @@ export default class App extends Component {
     for (let currency of currencies) {
       newProduct['price' + currency] = size['price' + currency]
       newProduct['sum' + currency] = size['price' + currency] * (100 - product.discount) / 100 * quantity
-      
     }
 
     products.push(newProduct)
