@@ -32,22 +32,23 @@ class Catalog extends Component {
 
   updateProducts(path) {
     let lang = path.search.replace('?lang=', '');
-    let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
+    let [_, category, sub_category, filter]  = path.pathname.slice(1).split('/')
+    //['catalog', '<category>', '<sub_category>', '<?filter>']
 
     this.setState({
       lang: lang,
       category: {
-        name: params[1]
+        name: category
       },
-      sub_category: params[2],
-      filter: params.length == 4 ? params[3] : null
+      sub_category: sub_category,
+      filter: filter || null
     }, () => {
-      getCategory(this.state.category.name).then((data) => {
+      getCategory(category).then((data) => {
         this.setState({
           category: data
         })
       })
-      getProducts(this.state.category.name, this.state.sub_category, this.state.filter).then((data) => {
+      getProducts(category, sub_category, filter).then((data) => {
         this.setState({
           products: data
         })
@@ -69,16 +70,6 @@ class Catalog extends Component {
   }
 
   render() {
-    let props = {
-      currency: this.state.currency,
-      isGrid: this.state.isGrid,
-      lang: this.state.lang
-    }
-    let extended_props = Object.assign({
-      category: this.state.category,
-      products: this.state.products
-    }, props)
-
     return (
       <div>
         <LocationListener locationChanged={this.updateProducts} />
@@ -87,9 +78,21 @@ class Catalog extends Component {
           <div className="row px-5 py-4">
             <div className="col-1"></div>
             <div className="col-10">
-              <Sorting updateCurrency={this.updateCurrency} changeLayout={this.changeLayout} {...props} />
+              <Sorting
+                updateCurrency={this.updateCurrency}
+                changeLayout={this.changeLayout}
+                currency={this.state.currency}
+                isGrid={this.state.isGrid}
+                lang={this.state.lang}
+              />
               {this.state.products && 
-              <Layout {...extended_props} />
+              <Layout
+                currency={this.state.currency}
+                isGrid={this.state.isGrid}
+                lang={this.state.lang}
+                category={this.state.category}
+                products={this.state.products}
+              />
               }
             </div>
             <div className="col-1"></div>
