@@ -64,27 +64,33 @@ class ProductDetail extends Component {
   }
 
   render() {
-    let state = this.state;
     return (
       <div>
         <LocationListener locationChanged={this.updateProduct} />
-        <SectionImage category={state.category} />
+        <SectionImage category={this.state.category} />
         <div className="container-fluid">
           <div className="row px-5 py-4">
             <div className="col-1" />
-            {state.product && 
+            {this.state.product && 
             <div className="col-10">
               <div className="d-flex flex-column mb-5">
                 <div className="d-flex row-nowrap h3">
-                  <CustomLink to={`/catalog/${state.category.name}/all`} text={state.category.name_s}/>
-                  <span>&nbsp;{state.product.name}</span>
+                  <CustomLink to={`/catalog/${this.state.category.name}/all`} text={this.state.category.name_s}/>
+                  <span>&nbsp;{this.state.product.name}</span>
                 </div>
                 <div className="d-flex mt-2 row-nowrap align-items-start">
-                  <SlideShow product={state.product} />
-                  <SizesView updateCurrency={this.updateCurrency} addProduct={this.props.context.addProduct} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
+                  <SlideShow product={this.state.product} />
+                  <SizesView
+                    updateCurrency={this.updateCurrency}
+                    addProduct={this.props.context.addProduct}
+                    lang={this.state.lang}
+                    product={this.state.product}
+                    category={this.state.category}
+                    currency={this.state.currency}
+                  />
                 </div>
               </div>
-              <Info lang={state.lang} product={state.product} />
+              <Info lang={this.state.lang} product={this.state.product} />
             </div>
             }
             <div className="col-1" />

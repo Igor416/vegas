@@ -78,7 +78,6 @@ export default class Header extends Component {
   }
 
   render() {
-    let categories = CATEGORIES[this.props.lang];
     return (
       <div className="bg-white">
         <div className="container-fluid">
@@ -93,7 +92,7 @@ export default class Header extends Component {
           <Links
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
-            categories={categories}
+            categories={CATEGORIES[this.props.lang]}
             lang={this.props.lang}
             state={this.state}
           />
@@ -102,7 +101,7 @@ export default class Header extends Component {
             onMouseLeave={this.onMouseLeave}
             lang={this.props.lang}
             categoriesEn={CATEGORIES.en[this.state.categoryEN]}
-            categories={categories[this.state.category]}
+            categories={CATEGORIES[this.props.lang][this.state.category]}
             state={this.state}
           />
         </nav>

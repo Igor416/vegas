@@ -101,8 +101,6 @@ class Cart extends Component {
   }
 
   render() {
-    let state = this.state;
-    
     return (
       <div>
         <LocationListener locationChanged={this.updateProducts} />
@@ -112,13 +110,13 @@ class Cart extends Component {
             {this.state.products[0] &&
             <div className="col-10 pt-5">
               <Table
-                lang={state.lang}
+                lang={this.state.lang}
                 total={this.props.context.cart.total}
-                products={state.products}
-                currency={state.currency}
+                products={this.state.products}
+                currency={this.state.currency}
                 updateQuantity={this.updateQuantity}
               />
-              <Form lang={state.lang} currency={state.currency} error={state.error} submitForm={this.submitForm} />
+              <Form lang={this.state.lang} currency={this.state.currency} error={this.state.error} submitForm={this.submitForm} />
             </div>
             }
             <div className="col-1"></div>
