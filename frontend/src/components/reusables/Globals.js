@@ -1,5 +1,11 @@
 export const currencies = ['MDL', 'EUR']
 
+export const langs = {
+  en: 'english',
+  ru: 'russian',
+  ro: 'romanian'
+}
+
 export const Shops = {
   'Call center': [
     '079407032'

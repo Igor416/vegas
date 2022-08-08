@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
-import { Shops } from "./reusables/Globals.js"
+import { langs, Shops } from "./reusables/Globals.js"
 
 const CATEGORIES = require("./header/links.json");
 
-for (let lang of ['en', 'ru', 'ro']) {
+for (let lang in langs) {
   CATEGORIES[lang][Object.keys(CATEGORIES[lang]).slice(-1)[0]] = Shops
 }
 

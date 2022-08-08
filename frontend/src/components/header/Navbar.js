@@ -2,13 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from "./SearchBar.js";
+import { langs as Langs } from '../reusables/Globals.js';
 
 export default function Navbar(props) {
-  let langs = {
-    en: 'english',
-    ru: 'russian',
-    ro: 'romanian'
-  }
+  let langs = {...Langs}
 
   langs = {...langs};
   delete langs[props.lang];
