@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { getCategory, getProduct } from "./reusables/APICallPoints.js";
 import LocationListener from "./reusables/LocationListener.js";
+import CustomLink from "./reusables/CustomLink.js";
 import SectionImage from "./reusables/SectionImage.js";
 import SlideShow from "./product_detail/SlideShow.js";
 import SizesView from "./product_detail/SizesView.js";
@@ -74,7 +75,10 @@ class ProductDetail extends Component {
             {state.product && 
             <div className="col-10">
               <div className="d-flex flex-column mb-5">
-                <span className="h3">{state.category.name_s} {state.product.name}</span>
+                <div className="d-flex row-nowrap h3">
+                  <CustomLink to={`/catalog/${state.category.name}/all`} text={state.category.name_s}/>
+                  <span>&nbsp;{state.product.name}</span>
+                </div>
                 <div className="d-flex mt-2 row-nowrap align-items-start">
                   <SlideShow product={state.product} />
                   <SizesView updateCurrency={this.updateCurrency} addProduct={this.props.context.addProduct} lang={state.lang} product={state.product} category={state.category} currency={state.currency} />
