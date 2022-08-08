@@ -29,7 +29,7 @@ export default function Links(props) {
           className="d-flex flex-inline justify-content-between transition-s"
         >
           <div>
-            <CustomLink link='/' text={lang_version} />
+            <CustomLink to='/' text={lang_version} />
           </div>
           {Object.keys(props.categories).map((category, index) => {
           return (
@@ -39,7 +39,7 @@ export default function Links(props) {
               onMouseEnter={() => props.onMouseEnter(false, category)}
               onMouseLeave={() => props.onMouseLeave()}
             >
-              <CustomLink link='' text={category} />
+              <CustomLink to='' text={category} />
               <div>
                 <span>
                   &nbsp;

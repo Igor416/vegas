@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Hoverable } from "./Hoverable.js";
 
 export default function CustomLink(props) {
-  if (props.link == '') {
+  if (props.to == '') {
     return (
       <div className="no-hover no-link">
         <Hoverable text={props.text} />
@@ -11,12 +11,11 @@ export default function CustomLink(props) {
     );
   }
 
-  let href = props.link.replace(/ /g, '_')
-  
-  href += location.search
+  let to = props.to.replace(/ /g, '_')
+  to += location.search
 
   return (
-    <Link className="no-hover no-link" to={href}>
+    <Link className="no-hover no-link" to={to}>
       <Hoverable text={props.text}/>
     </Link>
   );
