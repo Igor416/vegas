@@ -42,7 +42,7 @@ export default function Links(props) {
             >
               {index == Object.keys(props.categories).length - 1
               ?
-              <CustomLink to='/products' text={category} />
+              <CustomLink to='/shops/all' text={category} />
               :
               <Hoverable text={category} />
               }
