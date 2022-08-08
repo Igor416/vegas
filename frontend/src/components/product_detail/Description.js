@@ -7,19 +7,23 @@ export default function Description(props) {
 
   const translations = {
     en: {
-      yes: 'yes',
-      no: 'no',
       characteristic: 'Show All Characteristic'
     },
     ru: {
-      yes: 'да',
-      no: 'нет',
       characteristic: 'Показать все характеристики'
     },
     ro: {
-      yes: 'da',
-      no: 'nu',
       characteristic: 'Afișează toate caracteristicile'
+    }
+  }
+
+  let toCharacteristic = () => {
+    props.setTabId(1);
+    try {
+      $('#tab-characteristic').tab('show');
+      $('#characteristic').tab('show');
+    } catch (error) {
+      //displays error in console, however it works perfectly
     }
   }
 
@@ -41,7 +45,7 @@ export default function Description(props) {
             </div>
           )})}
           </div>
-          <div onClick={() => {toCharacteristic(props.setTabId)}}>
+          <div onClick={() => {toCharacteristic()}}>
             <CustomButton text={lang_version.characteristic} color="deepSkyBlue" />
           </div>
         </div>
@@ -51,28 +55,4 @@ export default function Description(props) {
       </div>
     </div>
   );
-}
-
-function toCharacteristic(setTabId) {
-  setTabId(1);
-  try {
-    $('#tab-characteristic').tab('show');
-    $('#characteristic').tab('show');
-  } catch (error) {
-    //displays error in console, however it works perfectly
-  }
-  
-}
-
-function repr(val, translation) {
-  //val is array, number or boolean
-  if (Array.isArray(val)) {
-    return val.join(' / ')
-  }
-  
-  if (typeof val == "boolean") {
-    return val ? translation.yes : translation.no
-  }
-
-  return val
 }

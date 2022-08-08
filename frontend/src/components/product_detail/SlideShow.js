@@ -15,7 +15,11 @@ export default function SlideShow(props) {
   const product = props.product
   const media = [product.shortcut].concat(product.images, product.videos)
   let [activeId, setActiveId] = useState(0)
-  
+  let getVideoUrl = (photoUrl) => {
+    let id = photoUrl.split('/').slice(-1)[0].split('.')[0]
+    return 'https://www.youtube.com/watch?v=' + id
+  }
+
   return (
     <div className="d-flex flex-column border border-1 me-5 p-3">
       <div style={{zIndex: 1000}} className="position-absolute d-flex p-3 h4">
@@ -83,9 +87,4 @@ export default function SlideShow(props) {
       </div>
     </div>
   );
-}
-
-function getVideoUrl(photoUrl) {
-  let id = photoUrl.split('/').slice(-1)[0].split('.')[0]
-  return 'https://www.youtube.com/watch?v=' + id
 }

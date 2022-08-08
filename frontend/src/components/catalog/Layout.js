@@ -2,7 +2,27 @@ import React from "react";
 import Section from "./Section.js";
 
 export default function Layout(props)  {
-  let sorted_products = sortProducts(props.products, props.category.default_filtering);
+  let sorted_products = {};
+  let filtering, remainder;
+  
+  for (let product of props.products) {
+    filtering = product[props.category.default_filtering]
+    if (filtering in sorted_products) {
+      sorted_products[filtering].push(product)
+    }
+    else {
+      sorted_products[filtering] = [product]
+    }
+  }
+  
+  for (let filtering in sorted_products) {
+    remainder = sorted_products[filtering].length % 3 
+    if (remainder != 0) {
+      for (let i = 0; i < remainder + 1; i++) {
+        sorted_products[filtering].push(null)
+      }
+    }
+  }
 
   return (
     <div className="py-4">
@@ -14,30 +34,4 @@ export default function Layout(props)  {
     )})}
     </div>
   );
-}
-
-function sortProducts(products, default_filtering) {
-  let sorted = {};
-  let filtering, remainder;
-  
-  for (let product of products) {
-    filtering = product[default_filtering]
-    if (filtering in sorted) {
-      sorted[filtering].push(product)
-    }
-    else {
-      sorted[filtering] = [product]
-    }
-  }
-  
-  for (let filtering in sorted) {
-    remainder = sorted[filtering].length % 3 
-    if (remainder != 0) {
-      for (let i = 0; i < remainder + 1; i++) {
-        sorted[filtering].push(null)
-      }
-    }
-  }
-
-  return sorted
 }

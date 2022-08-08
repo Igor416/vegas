@@ -43,13 +43,22 @@ export default function SizesView(props) {
   }
 
   let lang_version = translations[props.lang];
+
+  let getSize = (width, length) => {
+    for (let size of product.sizes) {
+      if (size.width == width && size.length == length) {
+        return size
+      }
+    }
+  }
+  
   let changeSize = (value, dimension) => {
-    let params = [product.sizes]
+    let params;
     if (dimension == 'width') {
-      params = params.concat([value, size.length])
+      params = [value, size.length]
     }
     else {
-      params = params.concat([size.width, value])
+      params = [size.width, value]
     }
     setSize(getSize.apply(null, params))
   }
@@ -93,12 +102,4 @@ export default function SizesView(props) {
       </div>
     </div>
   );
-}
-
-function getSize(sizes, width, length) {
-  for (let size of sizes) {
-    if (size.width == width && size.length == length) {
-      return size
-    }
-  }
 }

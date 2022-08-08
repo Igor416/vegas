@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import { StyleSheet, css } from 'aphrodite'
 import Description from './Description.js';
 import Characteristic from './Characteristic.js';
 import Structure from './Structure.js';
@@ -14,19 +13,25 @@ export default function Info(props) {
       description: 'Description',
       characteristic: 'Characteristic',
       structure: 'Structure',
-      technologies: 'Technologies'
+      technologies: 'Technologies',
+      yes: 'yes',
+      no: 'no'
     },
     ru: {
       description: 'Описание',
       characteristic: 'Характеристика',
       structure: 'Структура',
-      technologies: 'Технологии'
+      technologies: 'Технологии',
+      yes: 'да',
+      no: 'нет'
     },
     ro: {
       description: 'Descriere',
       characteristic: 'Caracteristică',
       structure: 'Structură',
-      technologies: 'Tehnologii'
+      technologies: 'Tehnologii',
+      yes: 'da',
+      no: 'nu'
     }
   }
 
@@ -39,6 +44,19 @@ export default function Info(props) {
 
   let lang_version = translations[props.lang];
   
+  let repr = (val) => {
+    //val is array, number or boolean
+    if (Array.isArray(val)) {
+      return val.join(' / ')
+    }
+    
+    if (typeof val == "boolean") {
+      return val ? lang_version.yes : lang_version.no
+    }
+  
+    return val
+  }
+
   return (
     <div className="mt-5">
       <div style={{borderColor: 'var(--deep-sky-blue)'}} className="nav nav-tabs ps-5" id="tab">
@@ -62,7 +80,7 @@ export default function Info(props) {
       let Tab = tabs[tab];
       return (
         <div key={index} className={"border border-top-0 border-1 p-4 tab-pane fade" + (index == 0 ? " show active" : "")} id={tab}>
-          <Tab lang={props.lang} product={product} setTabId={setTabId} />
+          <Tab lang={props.lang} product={product} repr={repr} setTabId={setTabId} />
         </div>
       )}})}
       </div>

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, css } from 'aphrodite';
 import { Link } from "react-router-dom";
-import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie'
+import { sendForm } from "./APICallPoints.js";
 import CustomButton from './CustomButton.js';
 import CustomPhoneInput from './CustomPhoneInput.js';
 import { Hoverable } from './Hoverable.js';
@@ -30,7 +31,7 @@ const itemStyles = StyleSheet.create({
 
 export default function Product(props) {
   const product = props.product
-  let [cookies, setCookie] = useCookies(['csrftoken']);
+  let [error, setError] = useState(false)
   let [name, setName] = useState('')
   let [phone, setPhone] = useState('')
   
@@ -43,11 +44,30 @@ export default function Product(props) {
     price *= (100 - product.discount) / 100
   }
 
+  let submitForm = () => {
+    let r = sendForm({
+      'category': props.category.name,
+      'product': product.name,
+      'name': name,
+      'phone': phone
+    }, Cookies.get('csrftoken'), true)
+
+    if (r == 'error: empty') {
+      setError(true)
+    }
+    else {
+      $(function () {
+        $('#modal').modal('toggle');
+     });
+    }
+  }
+
   const translations = {
     en: {
       from: 'from',
       details: 'More',
       call: 'Order Call',
+      error: 'Fill in all the fields!',
       desc: 'You can order a call in which you will be consulted on any questions that arise. Indicate how to contact you, as well as your phone number. After submitting the data to the specified phone number, a call will be received within a minute from a store employee',
       name: 'Your nickname',
       close: 'Close',
@@ -57,6 +77,7 @@ export default function Product(props) {
       from: 'от',
       details: 'Подробнее',
       call: 'Закажите звонок',
+      error: 'Заполните все поля!',
       desc: 'Вы можете заказать звонок, в котором вас проконсультируют по любым появивщимся вопросам. Укажите как к вам обращаться, а также свой номер телефона. После отправки данных на указаный номер телефона поступит, в течении минуты звонок, от сотрудника магазина',
       name: 'Ваше имя',
       close: 'Закрыть',
@@ -66,13 +87,14 @@ export default function Product(props) {
       from: 'de la',
       details: 'Mai mult',
       call: 'Solicitați un apel',
+      error: 'Completați toate intrările!',
       desc: 'Puteți comanda un apel în care veți fi consultat cu privire la orice întrebări care apar. Indicați cum să vă contactați, precum și numărul dvs. de telefon. După trimiterea datelor la numărul de telefon specificat, un apel va fi primit într-un minut de la un angajat al magazinului',
       name: 'Numele dumneavoastră',
       close: 'Închide',
       submit: 'Trimite'
     }
   }
-
+  
   let lang_version = translations[props.lang];
   return (
     <div>
@@ -113,21 +135,23 @@ export default function Product(props) {
             <Link to={`/product/${props.category.name}/${product.id}` + location.search}>
               <CustomButton color="limeGreen" text={lang_version.details} />
             </Link>
-            <div data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <div data-bs-toggle="modal" data-bs-target="#modal">
               <CustomButton color="deepSkyBlue" text={lang_version.call} />
             </div>
           </div>
         </div>
       </div>
-      <div className="modal fade" id="exampleModal" tabIndex="-1">
+      <div className="modal fade" id="modal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <span className="modal-title h5" id="exampleModalLabel">{lang_version.call + ` (${product.name})`}</span>
+              <span className="modal-title h5" id="modalLabel">{lang_version.call + ` (${product.name})`}</span>
               <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div className="modal-body">
               <span>{lang_version.desc}</span>
+              <br/>
+              <span className="h6 text-danger">{error ? lang_version.error : ''}</span>
               <form className="mt-3">
                 <label htmlFor="name">{lang_version.name}</label>
                 <br/>
@@ -142,8 +166,9 @@ export default function Product(props) {
                 />
                 <CustomPhoneInput
                   lang={props.lang}
+                  color="dark-cyan" 
                   value={phone}
-                  setPhone={setPhone}
+                  setPhone={phone => setPhone(phone)}
                 />
               </form>
             </div>
@@ -151,7 +176,7 @@ export default function Product(props) {
               <div data-bs-dismiss="modal">
                 <CustomButton color="limeGreen" text={lang_version.close} />
               </div>
-              <div data-bs-dismiss="modal" onClick={() => sendForm(props.category, product, name, phone, cookies.csrftoken)}>
+              <div onClick={submitForm}>
                 <CustomButton color="deepSkyBlue" text={lang_version.submit} />
               </div>
             </div>
@@ -160,30 +185,4 @@ export default function Product(props) {
       </div>
     </div>
   );
-}
-
-function sendForm(category, product, name, phone, csrftoken) {
-  let options = {
-    method: "POST",
-    mode: 'cors',
-    headers: {
-      'X-CSRFToken': csrftoken,
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify({
-      category: category.name,
-      product: product.name,
-      name: name,
-      phone: phone
-    })
-  }
-  
-  fetch('/telegram/order_call/' + location.search, options).then((response) => response.json())
-  .then((data) => {
-    alert(data);
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  })
 }

@@ -22,6 +22,27 @@ export default function Menu(props) {
   const state = props.state
   const categories = props.categories
 
+  let getLink = (link, sub_category=state.sub_category) => {
+    if (categories[sub_category].length == 0 || link) {
+      let url = '/catalog/' + sub_category.split(';')[1]
+      if (link) {
+        if (props.lang == 'en') {
+          url += '/' + link
+        }
+        else {
+          let keys = categories[sub_category]
+          for (let link_id = 0; link_id < keys.length; link_id++) {
+            if (keys[link_id] == link) {
+              url += '/' + Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
+            }
+          }
+        }
+      }
+      return url
+    }
+    return ''
+  }
+
   return (
     <div
       onMouseEnter={() => props.onMouseEnter(true)}
@@ -41,7 +62,7 @@ export default function Menu(props) {
             onMouseEnter={() => props.onMouseEnter(true, state.category, sub_category)}
             onMouseLeave={() => props.onMouseLeave(true, sub_category)}
           >
-            <CustomLink link={getLink(categories, sub_category)} text={sub_category.split(';')[0]} />
+            <CustomLink to={getLink(undefined, sub_category)} text={sub_category.split(';')[0]} />
           </div>
         )})}
       </div>
@@ -56,7 +77,7 @@ export default function Menu(props) {
             className={"d-flex pb-2"}
             key={index}
           >
-            <CustomLink link={getLink(categories, state.sub_category, link, props.lang, props.categoriesEn)} text={link}/>
+            <CustomLink to={getLink(link)} text={link}/>
           </div>
         )})}
       </div>
@@ -67,25 +88,4 @@ export default function Menu(props) {
       <div className="col-2 border-start border-1"></div>
     </div>
   );
-}
-
-function getLink(categories, sub_category, link, lang='en', categoriesEn=null) {
-  if (categories[sub_category].length == 0 || link) {
-    let url = '/catalog/' + sub_category.split(';')[1]
-    if (link) {
-      if (lang == 'en') {
-        url += '/' + link
-      }
-      else {
-        let keys = categories[sub_category]
-        for (let link_id = 0; link_id < keys.length; link_id++) {
-          if (keys[link_id] == link) {
-            url += '/' + Object.values(categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
-          }
-        }
-      }
-    }
-    return url
-  }
-  return ''
 }

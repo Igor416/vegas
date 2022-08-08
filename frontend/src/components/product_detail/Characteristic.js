@@ -26,6 +26,7 @@ export default function Characteristic(props) {
   }
 
   const lang_version = translations[props.lang]
+
   const className = "d-flex mb-2 justify-content-between align-items-center border-bottom"
   return (
     <div className="row">
@@ -38,7 +39,7 @@ export default function Characteristic(props) {
         return (
         <div key={index} className={className}>
           <span>{key}</span>
-          <span className="h6">{repr(characteristic[key], lang_version)}</span>
+          <span className="h6">{props.repr(characteristic[key])}</span>
         </div>
         )})}
       </div>
@@ -47,7 +48,7 @@ export default function Characteristic(props) {
         return (
         <div key={index} className={className}>
           <span>{key}</span>
-          <span className="h6">{repr(characteristic[key], lang_version)}</span>
+          <span className="h6">{props.repr(characteristic[key])}</span>
         </div>
         )})}
         {Object.keys(lang_version).slice(1, -2).map((key, index) => {
@@ -64,17 +65,4 @@ export default function Characteristic(props) {
       </div>
     </div>
   );
-}
-
-function repr(val, translation) {
-  //val is array, number or boolean
-  if (Array.isArray(val)) {
-    return val.join(' / ')
-  }
-  
-  if (typeof val == "boolean") {
-    return val ? translation.yes : translation.no
-  }
-
-  return val
 }
