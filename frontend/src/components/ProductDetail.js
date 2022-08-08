@@ -20,7 +20,6 @@ class ProductDetail extends Component {
       lang: this.props.context.lang,
       currency: this.props.context.currency,
       product: null,
-      size: null,
       category: {
         name: this.props.params.category
       },
@@ -49,8 +48,7 @@ class ProductDetail extends Component {
       })
       getProduct(category, id).then((data) => {
         this.setState({
-          product: data,
-          size: data.sizes[0]
+          product: data
         })
       })
     })
