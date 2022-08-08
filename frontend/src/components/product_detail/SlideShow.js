@@ -15,8 +15,9 @@ export default function SlideShow(props) {
   const product = props.product
   const media = [product.shortcut].concat(product.images, product.videos)
   let [activeId, setActiveId] = useState(0)
+
   let getVideoUrl = (photoUrl) => {
-    let id = photoUrl.split('/').slice(-1)[0].split('.')[0]
+    let id = photoUrl.split('/').slice(-1)[0].split('.')[0] // /media/videos/<id>.[jpg|png] -> <id>
     return 'https://www.youtube.com/watch?v=' + id
   }
 
@@ -32,7 +33,7 @@ export default function SlideShow(props) {
         </div>
         }
       </div>
-      <div id="carousel" className="carousel slide" data-bs-ride="carousel">
+      <div id="carousel" className="carousel slide" data-interval="false">
         <div className="carousel-inner">
         {media.map((url, index) => {
         return (
