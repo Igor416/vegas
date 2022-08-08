@@ -16,6 +16,7 @@ import { CookiesProvider } from 'react-cookie';
 import App from "./components/App";
 import Catalog from "./components/Catalog";
 import ProductDetail from "./components/ProductDetail";
+import Cart from "./components/Cart";
 
 library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar);
 
@@ -30,6 +31,7 @@ root.render(
             <Route path=":filter/" element={<Catalog/>} />
           </Route>
           <Route path="product/:category/:id" element={<ProductDetail/>} />
+          <Route path="cart/" element={<Cart/>} />
         </Route>
       </Routes>
     </BrowserRouter>

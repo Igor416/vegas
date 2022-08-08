@@ -27,11 +27,15 @@ object-assign
 
 /*! ../reusables/CustomLink.js */
 
+/*! ../reusables/CustomPhoneInput.js */
+
 /*! ../reusables/Globals.js */
 
 /*! ../reusables/Hoverable.js */
 
 /*! ../reusables/Product.js */
+
+/*! ./APICallPoints.js */
 
 /*! ./BuyPanel.js */
 
@@ -61,7 +65,15 @@ object-assign
 
 /*! ./Structure.js */
 
+/*! ./TableFooter.js */
+
+/*! ./TableHeader.js */
+
 /*! ./Technologies.js */
+
+/*! ./cart/Form.js */
+
+/*! ./cart/Table.js */
 
 /*! ./catalog/Layout.js */
 
@@ -80,6 +92,8 @@ object-assign
 /*! ./cjs/scheduler.development.js */
 
 /*! ./components/App */
+
+/*! ./components/Cart */
 
 /*! ./components/Catalog */
 
@@ -109,6 +123,8 @@ object-assign
 
 /*! ./reusables/APICallPoints.js */
 
+/*! ./reusables/CustomLink.js */
+
 /*! ./reusables/Globals.js */
 
 /*! ./reusables/LocationListener.js */
@@ -132,6 +148,10 @@ object-assign
 /*! cookie */
 
 /*! history */
+
+/*! js-cookie */
+
+/*! js-cookie v3.0.1 | MIT */
 
 /*! object-assign */
 
@@ -167,6 +187,10 @@ object-assign
   !*** ./src/components/App.js ***!
   \*******************************/
 
+/*!********************************!*\
+  !*** ./src/components/Cart.js ***!
+  \********************************/
+
 /*!**********************************!*\
   !*** ./src/components/Footer.js ***!
   \**********************************/
@@ -179,8 +203,16 @@ object-assign
   !*** ./src/components/Catalog.js ***!
   \***********************************/
 
+/*!*************************************!*\
+  !*** ./src/components/cart/Form.js ***!
+  \*************************************/
+
 /*!**************************************!*\
   !*** ./node_modules/cookie/index.js ***!
+  \**************************************/
+
+/*!**************************************!*\
+  !*** ./src/components/cart/Table.js ***!
   \**************************************/
 
 /*!***************************************!*\
@@ -248,6 +280,14 @@ object-assign
   \********************************************/
 
 /*!********************************************!*\
+  !*** ./src/components/cart/TableFooter.js ***!
+  \********************************************/
+
+/*!********************************************!*\
+  !*** ./src/components/cart/TableHeader.js ***!
+  \********************************************/
+
+/*!********************************************!*\
   !*** ./src/components/header/LinksJson.js ***!
   \********************************************/
 
@@ -276,10 +316,6 @@ object-assign
   \***********************************************/
 
 /*!************************************************!*\
-  !*** ./node_modules/react-cookie/es6/utils.js ***!
-  \************************************************/
-
-/*!************************************************!*\
   !*** ./node_modules/react-router-dom/index.js ***!
   \************************************************/
 
@@ -302,6 +338,10 @@ object-assign
 /*!**************************************************!*\
   !*** ./src/components/reusables/SectionImage.js ***!
   \**************************************************/
+
+/*!***************************************************!*\
+  !*** ./node_modules/js-cookie/dist/js.cookie.mjs ***!
+  \***************************************************/
 
 /*!***************************************************!*\
   !*** ./node_modules/prop-types/checkPropTypes.js ***!
@@ -337,10 +377,6 @@ object-assign
 
 /*!*****************************************************!*\
   !*** ./node_modules/aphrodite/es/chunk-febce46b.js ***!
-  \*****************************************************/
-
-/*!*****************************************************!*\
-  !*** ./node_modules/react-cookie/es6/useCookies.js ***!
   \*****************************************************/
 
 /*!*****************************************************!*\

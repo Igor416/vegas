@@ -1,21 +1,23 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require('path');
+const webpack = require('webpack');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
 
-module.exports = {
-  entry: "./src/index.js",
+module.exports = smp.wrap({
+  entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, "./static/frontend"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, './static/frontend'),
+    filename: '[name].js',
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   module: {
     rules: [
       {
         test: /\.js$/,
-        enforce: 'pre',
+        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
         },
       },
     ],
@@ -25,10 +27,10 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env": {
+      'process.env': {
         // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("development"),
+        NODE_ENV: JSON.stringify('development'),
       },
     }),
   ],
-};
+});

@@ -37,12 +37,6 @@ export default function Navbar(props) {
     }
   }
 
-  let start = 0
-  let sum = props.cart.products.reduce((prev, curr) =>
-    prev + (curr.size['price' + props.currency] * (100 - curr.discount) / 100 * curr.quantity),
-  start)
-
-  console.log(sum);
   let lang_version = translations[props.lang];
   return (
     <div className="d-flex align-items-center row px-5 pt-4">
@@ -54,16 +48,16 @@ export default function Navbar(props) {
         <SearchBar search={lang_version.search} />
       </div>
       <div className="col-1 d-flex flex-column align-items-center">
-        {Object.keys(langs).map((lang, index) => {
-        return (
-          <Link key={index} to={location.pathname + '?lang=' + lang}>
-            <button
-              onClick={() => props.updateLang(lang)}
-              className="p-2 bg-white border-0 outline-0 no-hover">
-              <img className="border border-1" style={{ width: "2.5vw" }} src={"/static/images/" + langs[lang] + ".png"}/>
-            </button>
-          </Link>
-        )})}
+      {Object.keys(langs).map((lang, index) => {
+      return (
+        <Link key={index} to={location.pathname + '?lang=' + lang}>
+          <button
+            onClick={() => props.updateLang(lang)}
+            className="p-2 bg-white border-0 outline-0 no-hover">
+            <img className="border border-1" style={{ width: "2.5vw" }} src={"/static/images/" + langs[lang] + ".png"}/>
+          </button>
+        </Link>
+      )})}
       </div>
       <div className="col-2 text-center border-1 border-start border-end">
         <span>
@@ -80,11 +74,13 @@ export default function Navbar(props) {
         <span className="h6">{lang_version.credit1} <br/> {lang_version.credit2} </span>
       </div>
       <div className="col-1 text-center">
-        <span>
-          <FontAwesomeIcon icon='shopping-cart' />
-        </span>
-        <br />
-        <span className="h6">{lang_version.cart} <br/> {sum} ({props.currency})</span>
+        <Link to={'/cart' + location.search} className="h6 no-link no-hover">
+          <span>
+            <FontAwesomeIcon icon='shopping-cart' />
+          </span>
+          <br />
+          <span>{lang_version.cart} <br/> {props.total} ({props.currency})</span>
+        </Link>
       </div>
       <div className="col-1"></div>
     </div>
