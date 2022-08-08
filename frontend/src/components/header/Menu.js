@@ -2,20 +2,16 @@ import React from "react";
 import { StyleSheet, css } from 'aphrodite';
 import CustomLink from '../reusables/CustomLink.js';
 
-const menu = {
-  borderTop: '1px solid var(--bs-light)'
-}
-
 const menuStyles = StyleSheet.create({
-  hide: Object.assign({
+  hide: {
     opacity: '0',
     height: '0%'
-  }, menu),
-  show: Object.assign({
+  },
+  show: {
     opacity: '1',
     padding: '1rem 3rem',
     height: '100%'
-  }, menu),
+  },
 })
 
 export default function Menu(props) {
@@ -47,7 +43,7 @@ export default function Menu(props) {
     <div
       onMouseEnter={() => props.onMouseEnter(true)}
       onMouseLeave={() => props.onMouseLeave()}
-      className={css(state.category ? menuStyles.show : menuStyles.hide) + " row transition-m"}
+      className={css(state.category ? menuStyles.show : menuStyles.hide) + " border-top row transition-m"}
     >
       <div className="col-2"></div>
       <div

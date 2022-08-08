@@ -5,7 +5,6 @@ import { Hoverable, HoverableIcon } from '../reusables/Hoverable.js';
 import { currencies } from '../reusables/Globals.js';
 
 const switchMenu = {
-  display: 'flex',
   padding: '0.5vw',
   width: '3vw',
   height: '3vw',
@@ -23,19 +22,15 @@ const switchStyles = StyleSheet.create({
   }, switchMenu)
 })
 
-const bar = {
-  backgroundColor: 'white'
-}
-
 const barStyles = StyleSheet.create({
-  column: Object.assign({
+  column: {
     height: '1vh',
     width: '2vw'
-  }, bar),
-  grid: Object.assign({
+  },
+  grid: {
     height: '0.75vw',
     width: '0.75vw'
-  }, bar)
+  }
 })
 
 export default function Sorting(props) {
@@ -93,9 +88,9 @@ export default function Sorting(props) {
         </div>
         <div
           onClick={props.changeLayout}
-          className={css(props.isGrid ? switchStyles.grid : switchStyles.column) + ' transition-s'}>
+          className={css(props.isGrid ? switchStyles.grid : switchStyles.column) + ' d-flex transition-s'}>
           {[0, 1, 2].map((value) => {
-          return <div key={value} className={css(props.isGrid ? barStyles.grid : barStyles.column) + ' transition-s'} />
+          return <div key={value} className={css(props.isGrid ? barStyles.grid : barStyles.column) + ' bg-white transition-s'} />
           })}
         </div>
       </div>
