@@ -86,7 +86,7 @@ export default class Header extends Component {
             updateLang={this.props.updateLang}
             lang={this.props.lang}
             currency={this.props.currency}
-            cart={this.props.cart}
+            total={this.props.total}
           />
         </div>
         <nav className="container-fluid position-absolute bg-white">
