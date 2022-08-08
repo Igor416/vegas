@@ -33,21 +33,21 @@ class ProductDetail extends Component {
 
   updateProduct(path) {
     let lang = path.search.replace('?lang=', '');
-    let params = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
+    let [_, category, id] = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
 
     this.setState({
       lang: lang,
       category: {
-        name: params[1]
+        name: category
       },
-      id: params[2]
+      id: id
     }, () => {
-      getCategory(this.state.category.name).then((data) => {
+      getCategory(category).then((data) => {
         this.setState({
           category: data
         })
       })
-      getProduct(this.state.category.name, this.state.id).then((data) => {
+      getProduct(category, id).then((data) => {
         this.setState({
           product: data,
           size: data.sizes[0]
