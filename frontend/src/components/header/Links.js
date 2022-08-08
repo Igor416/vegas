@@ -2,6 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
 import CustomLink from '../reusables/CustomLink.js';
+import { Hoverable } from '../reusables/Hoverable.js';
 
 const angleStyles = StyleSheet.create({
   hide: {
@@ -29,7 +30,7 @@ export default function Links(props) {
           className="d-flex flex-inline justify-content-between transition-s"
         >
           <div>
-            <CustomLink to='/' text={lang_version} />
+            <Hoverable to='/' text={lang_version} />
           </div>
           {Object.keys(props.categories).map((category, index) => {
           return (
@@ -39,7 +40,12 @@ export default function Links(props) {
               onMouseEnter={() => props.onMouseEnter(false, category)}
               onMouseLeave={() => props.onMouseLeave()}
             >
-              <CustomLink to='' text={category} />
+              {index == Object.keys(props.categories).length - 1
+              ?
+              <CustomLink to='/products' text={category} />
+              :
+              <Hoverable text={category} />
+              }
               <div>
                 <span>
                   &nbsp;

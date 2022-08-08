@@ -18,18 +18,22 @@ export default function Menu(props) {
   const state = props.state
   const categories = props.categories
 
-  let getLink = (link, sub_category=state.sub_category) => {
+  let getLink = (sub_category, link=null) => {
+    if (props.isShop) {
+      return '/shops/' + sub_category
+    }
+
     if (categories[sub_category].length == 0 || link) {
-      let url = '/catalog/' + sub_category.split(';')[1]
+      let url = `/catalog/${sub_category.split(';')[1]}/`
       if (link) {
         if (props.lang == 'en') {
-          url += '/' + link
+          url += link
         }
         else {
           let keys = categories[sub_category]
           for (let link_id = 0; link_id < keys.length; link_id++) {
             if (keys[link_id] == link) {
-              url += '/' + Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
+              url += Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
             }
           }
         }
@@ -58,7 +62,10 @@ export default function Menu(props) {
             onMouseEnter={() => props.onMouseEnter(true, state.category, sub_category)}
             onMouseLeave={() => props.onMouseLeave(true, sub_category)}
           >
-            <CustomLink to={getLink(undefined, sub_category)} text={sub_category.split(';')[0]} />
+            <CustomLink
+              to={getLink(sub_category)}
+              text={sub_category.split(';')[0]}
+            />
           </div>
         )})}
       </div>
@@ -73,7 +80,7 @@ export default function Menu(props) {
             className={"d-flex pb-2"}
             key={index}
           >
-            <CustomLink to={getLink(link)} text={link}/>
+            <CustomLink to={getLink(state.sub_category, link)} text={link}/>
           </div>
         )})}
       </div>
