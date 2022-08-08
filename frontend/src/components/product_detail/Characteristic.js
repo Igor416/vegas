@@ -1,5 +1,4 @@
 import React from "react";
-import CustomButton from '../reusables/CustomButton.js';
 
 export default function Characteristic(props) {
   const characteristic = props.product.characteristic
