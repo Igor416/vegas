@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import Description from './Description.js';
 import Characteristic from './Characteristic.js';
 import Structure from './Structure.js';
@@ -6,7 +6,6 @@ import Technologies from './Technologies.js';
 
 export default function Info(props) {
   const product = props.product
-  let [tabId, setTabId] = useState(0)
 
   const translations = {
     en: {
@@ -80,7 +79,7 @@ export default function Info(props) {
       let Tab = tabs[tab];
       return (
         <div key={index} className={"border border-top-0 border-1 p-4 tab-pane fade" + (index == 0 ? " show active" : "")} id={tab}>
-          <Tab lang={props.lang} product={product} repr={repr} setTabId={setTabId} />
+          <Tab lang={props.lang} product={product} repr={repr} />
         </div>
       )}})}
       </div>

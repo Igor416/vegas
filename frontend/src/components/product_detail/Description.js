@@ -18,7 +18,6 @@ export default function Description(props) {
   }
 
   let toCharacteristic = () => {
-    props.setTabId(1);
     try {
       $('#tab-characteristic').tab('show');
       $('#characteristic').tab('show');
@@ -41,7 +40,7 @@ export default function Description(props) {
           return (
             <div key={index} className="d-flex mb-2 justify-content-between border-bottom">
               <span>{key}</span>
-              <span className="h6">{repr(description[key], lang_version)}</span>
+              <span className="h6">{props.repr(description[key])}</span>
             </div>
           )})}
           </div>
