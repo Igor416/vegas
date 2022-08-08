@@ -36,7 +36,7 @@ class ProductDetail extends Component {
     let params = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
 
     this.setState({
-      lang: lang || this.state.lang,
+      lang: lang,
       category: {
         name: params[1]
       },

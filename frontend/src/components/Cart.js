@@ -31,7 +31,7 @@ class Cart extends Component {
     let lang = path.search.replace('?lang=', '');
 
     this.setState({
-      lang: lang || this.state.lang
+      lang: lang
     }, () => {
       let products = this.state.products;
       if (products.length == this.state.raw_products.length) {

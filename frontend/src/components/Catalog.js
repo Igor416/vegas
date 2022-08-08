@@ -35,7 +35,7 @@ class Catalog extends Component {
     let params = path.pathname.slice(1).split('/') //['catalog', '<category>', '<sub_category>', '<?filter>']
 
     this.setState({
-      lang: lang || this.state.lang,
+      lang: lang,
       category: {
         name: params[1]
       },
