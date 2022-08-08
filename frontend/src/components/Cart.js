@@ -18,7 +18,6 @@ export default class Cart extends Component {
       error: false
     }
     this.updateProducts = this.updateProducts.bind(this);
-    this.updateCurrency = this.updateCurrency.bind(this);
     this.updateQuantity = this.updateQuantity.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
@@ -65,13 +64,6 @@ export default class Cart extends Component {
         return size
       }
     }
-  }
-
-  updateCurrency(currency) {
-    this.setState({
-      currency: currency
-    })
-    this.props.context.updateCurrency(currency)
   }
 
   updateQuantity(category, id, quantity) {
