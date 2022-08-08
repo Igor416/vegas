@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
-import CATEGORIES from "./header/LinksJson.js";
+
+const CATEGORIES = require("./header/links.json");
 
 export default class Header extends Component {
   constructor(props) {
