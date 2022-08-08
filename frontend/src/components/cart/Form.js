@@ -19,7 +19,6 @@ const buttonStyles = StyleSheet.create({
 })
 
 export default function Form(props) {
-  let [error, setError] = useState(false)
   const [data, setData] = useState({
     name: '',
     town: '',
