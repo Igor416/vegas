@@ -23,7 +23,7 @@ export default function CustomPhoneInput(props) {
     
     label.innerHTML = lang_version.phone
     input.style.border = 'none'
-    input.style.borderBottom = '1px solid var(--dark-cyan)'
+    input.style.borderBottom = `1px solid var(--${props.color})`
     input.style.padding = '0 inherit'
     input.classList = []
     input.classList.add('w-100')
@@ -31,6 +31,6 @@ export default function CustomPhoneInput(props) {
   }, []);
 
   return (
-    <PhoneInput country={'md'} value={props.phone} onChange={phone => props.setPhone(phone)} />
+    <PhoneInput country={'md'} value={props.phone} onChange={props.setPhone} />
   )
 }
