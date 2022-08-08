@@ -12,7 +12,6 @@ import {
   faAngleRight,
   faStar
 } from '@fortawesome/free-solid-svg-icons';
-import { CookiesProvider } from 'react-cookie';
 import App from "./components/App";
 import Catalog from "./components/Catalog";
 import ProductDetail from "./components/ProductDetail";
@@ -23,17 +22,15 @@ library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, f
 const appDiv = document.getElementById('app');
 const root = createRoot(appDiv);
 root.render(
-  <CookiesProvider>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App/>}>
-          <Route path="catalog/:category/:sub_category/" element={<Catalog/>}>
-            <Route path=":filter/" element={<Catalog/>} />
-          </Route>
-          <Route path="product/:category/:id" element={<ProductDetail/>} />
-          <Route path="cart/" element={<Cart/>} />
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App/>}>
+        <Route path="catalog/:category/:sub_category/" element={<Catalog/>}>
+          <Route path=":filter/" element={<Catalog/>} />
         </Route>
-      </Routes>
-    </BrowserRouter>
-  </CookiesProvider>
+        <Route path="product/:category/:id" element={<ProductDetail/>} />
+        <Route path="cart/" element={<Cart/>} />
+      </Route>
+    </Routes>
+  </BrowserRouter>
 );

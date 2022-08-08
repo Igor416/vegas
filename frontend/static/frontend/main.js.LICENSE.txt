@@ -16,13 +16,6 @@ object-assign
  * Copyright 2022 Fonticons, Inc.
  */
 
-/*!
- * cookie
- * Copyright(c) 2012-2014 Roman Shtylman
- * Copyright(c) 2015 Douglas Christopher Wilson
- * MIT Licensed
- */
-
 /*! ../reusables/CustomButton.js */
 
 /*! ../reusables/CustomLink.js */
@@ -40,10 +33,6 @@ object-assign
 /*! ./BuyPanel.js */
 
 /*! ./Characteristic.js */
-
-/*! ./Cookies */
-
-/*! ./CookiesContext */
 
 /*! ./CustomButton.js */
 
@@ -131,8 +120,6 @@ object-assign
 
 /*! ./reusables/SectionImage.js */
 
-/*! ./utils */
-
 /*! @babel/runtime/helpers/esm/extends */
 
 /*! @fortawesome/fontawesome-svg-core */
@@ -145,8 +132,6 @@ object-assign
 
 /*! asap */
 
-/*! cookie */
-
 /*! history */
 
 /*! js-cookie */
@@ -158,8 +143,6 @@ object-assign
 /*! prop-types */
 
 /*! react */
-
-/*! react-cookie */
 
 /*! react-dom */
 
@@ -176,8 +159,6 @@ object-assign
 /*! scheduler */
 
 /*! string-hash */
-
-/*! universal-cookie */
 
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -206,10 +187,6 @@ object-assign
 /*!*************************************!*\
   !*** ./src/components/cart/Form.js ***!
   \*************************************/
-
-/*!**************************************!*\
-  !*** ./node_modules/cookie/index.js ***!
-  \**************************************/
 
 /*!**************************************!*\
   !*** ./src/components/cart/Table.js ***!
@@ -328,10 +305,6 @@ object-assign
   \************************************************/
 
 /*!**************************************************!*\
-  !*** ./node_modules/react-cookie/es6/Cookies.js ***!
-  \**************************************************/
-
-/*!**************************************************!*\
   !*** ./src/components/reusables/CustomButton.js ***!
   \**************************************************/
 
@@ -356,14 +329,6 @@ object-assign
   \***************************************************/
 
 /*!****************************************************!*\
-  !*** ./node_modules/universal-cookie/es6/index.js ***!
-  \****************************************************/
-
-/*!****************************************************!*\
-  !*** ./node_modules/universal-cookie/es6/utils.js ***!
-  \****************************************************/
-
-/*!****************************************************!*\
   !*** ./src/components/product_detail/SizesView.js ***!
   \****************************************************/
 
@@ -384,10 +349,6 @@ object-assign
   \*****************************************************/
 
 /*!******************************************************!*\
-  !*** ./node_modules/universal-cookie/es6/Cookies.js ***!
-  \******************************************************/
-
-/*!******************************************************!*\
   !*** ./src/components/product_detail/Description.js ***!
   \******************************************************/
 
@@ -404,16 +365,8 @@ object-assign
   \*******************************************************/
 
 /*!*********************************************************!*\
-  !*** ./node_modules/react-cookie/es6/CookiesContext.js ***!
-  \*********************************************************/
-
-/*!*********************************************************!*\
   !*** ./src/components/product_detail/Characteristic.js ***!
   \*********************************************************/
-
-/*!**********************************************************!*\
-  !*** ./node_modules/react-cookie/es6/CookiesProvider.js ***!
-  \**********************************************************/
 
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!
