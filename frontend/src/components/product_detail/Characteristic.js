@@ -27,17 +27,16 @@ export default function Characteristic(props) {
 
   const lang_version = translations[props.lang]
 
-  const className = "d-flex mb-2 justify-content-between align-items-center border-bottom"
   return (
     <div className="row">
       <div className="d-flex flex-column col-6 justify-content-top border-end p-4">
-        <div className={className}>
+        <div className="d-flex mb-2 justify-content-between align-items-center border-bottom">
           <span>{lang_version.brand}</span>
           <span className="h6">Vegas</span>
         </div>
         {Object.keys(characteristic).slice(0, 8).map((key, index) => {
         return (
-        <div key={index} className={className}>
+        <div key={index} className="d-flex mb-2 justify-content-between align-items-center border-bottom">
           <span>{key}</span>
           <span className="h6">{props.repr(characteristic[key])}</span>
         </div>
@@ -46,19 +45,19 @@ export default function Characteristic(props) {
       <div className="d-flex flex-column col-6 justify-content-top p-4">
         {Object.keys(characteristic).slice(8).map((key, index) => {
         return (
-        <div key={index} className={className}>
+        <div key={index} className="d-flex mb-2 justify-content-between align-items-center border-bottom">
           <span>{key}</span>
           <span className="h6">{props.repr(characteristic[key])}</span>
         </div>
         )})}
         {Object.keys(lang_version).slice(1, -2).map((key, index) => {
         return (
-        <div key={index} className={className}>
+        <div key={index} className="d-flex mb-2 justify-content-between align-items-center border-bottom">
           <span>{lang_version[key][0]}</span>
           <span className="h6">{lang_version[key][1]}</span>
         </div>
         )})}
-        <div className={className}>
+        <div className="d-flex mb-2 justify-content-between align-items-center border-bottom">
           <span>{lang_version.note[0]}</span>
           <span className="text-end" style={{fontSize: '0.75em', whiteSpace: "pre-line"}}>{lang_version.note[1]}</span>
         </div>
