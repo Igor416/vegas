@@ -12,10 +12,11 @@ import {
   faAngleRight,
   faStar
 } from '@fortawesome/free-solid-svg-icons';
-import App from "./components/App";
-import Catalog from "./components/Catalog";
-import ProductDetail from "./components/ProductDetail";
-import Cart from "./components/Cart";
+import App from "./components/App.js";
+import Catalog from "./components/Catalog.js";
+import ProductDetail from "./components/ProductDetail.js";
+import Cart from "./components/Cart.js";
+import Shops from "./components/Shops.js"
 
 library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar);
 
@@ -24,12 +25,13 @@ const root = createRoot(appDiv);
 root.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<App/>}>
-        <Route path="catalog/:category/:sub_category/" element={<Catalog/>}>
-          <Route path=":filter/" element={<Catalog/>} />
+      <Route path="/" element={<App />}>
+        <Route path="catalog/:category/:sub_category/" element={<Catalog />}>
+          <Route path=":filter" element={<Catalog />} />
         </Route>
-        <Route path="product/:category/:id" element={<ProductDetail/>} />
-        <Route path="cart/" element={<Cart/>} />
+        <Route path="product/:category/:id" element={<ProductDetail />} />
+        <Route path="cart" element={<Cart />} />
+        <Route path="shops/:name" element={<Shops />} />
       </Route>
     </Routes>
   </BrowserRouter>

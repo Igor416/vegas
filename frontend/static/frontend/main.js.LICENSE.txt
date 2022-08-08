@@ -80,13 +80,15 @@ object-assign
 
 /*! ./cjs/scheduler.development.js */
 
-/*! ./components/App */
+/*! ./components/App.js */
 
-/*! ./components/Cart */
+/*! ./components/Cart.js */
 
-/*! ./components/Catalog */
+/*! ./components/Catalog.js */
 
-/*! ./components/ProductDetail */
+/*! ./components/ProductDetail.js */
+
+/*! ./components/Shops.js */
 
 /*! ./factoryWithTypeCheckers */
 
@@ -171,6 +173,10 @@ object-assign
 /*!********************************!*\
   !*** ./src/components/Cart.js ***!
   \********************************/
+
+/*!*********************************!*\
+  !*** ./src/components/Shops.js ***!
+  \*********************************/
 
 /*!**********************************!*\
   !*** ./src/components/Footer.js ***!
