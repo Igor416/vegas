@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { useOutletContext } from "react-router-dom";
 import Cookies from 'js-cookie'
 import { getCategory, getProduct, sendForm } from "./reusables/APICallPoints.js";
 import { currencies } from "./reusables/Globals.js";
@@ -6,7 +7,11 @@ import LocationListener from "./reusables/LocationListener.js";
 import Table from "./cart/Table.js";
 import Form from "./cart/Form.js";
 
-export default class Cart extends Component {
+function withParams(Component) {
+  return props => <Component {...props} context={useOutletContext()} />;
+}
+
+class Cart extends Component {
   constructor(props) {
     super(props);
 
@@ -18,6 +23,7 @@ export default class Cart extends Component {
       error: false
     }
     this.updateProducts = this.updateProducts.bind(this);
+    this.updateCurrency = this.updateCurrency.bind(this);
     this.updateQuantity = this.updateQuantity.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
@@ -64,6 +70,13 @@ export default class Cart extends Component {
         return size
       }
     }
+  }
+
+  updateCurrency(currency) {
+    this.setState({
+      currency: currency
+    })
+    this.props.context.updateCurrency(currency)
   }
 
   updateQuantity(category, id, quantity) {
@@ -123,3 +136,5 @@ export default class Cart extends Component {
     );
   }
 }
+
+export default withParams(Cart);
