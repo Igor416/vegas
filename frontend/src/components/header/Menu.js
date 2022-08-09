@@ -24,16 +24,16 @@ export default function Menu(props) {
     }
 
     if (categories[sub_category].length == 0 || link) {
-      let url = `/catalog/${sub_category.split(';')[1]}/`
+      let url = `/catalog/${sub_category.split(';')[1]}`
       if (link) {
         if (props.lang == 'en') {
-          url += link
+          url += '/' + link
         }
         else {
           let keys = categories[sub_category]
           for (let link_id = 0; link_id < keys.length; link_id++) {
             if (keys[link_id] == link) {
-              url += Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
+              url += '/' + Object.values(props.categoriesEn)[Object.keys(categories).indexOf(sub_category)][link_id]
             }
           }
         }

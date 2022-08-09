@@ -1,10 +1,20 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
+import { StyleSheet, css } from 'aphrodite';
 import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProducts } from "./reusables/APICallPoints.js";
 import SectionImage from "./reusables/SectionImage.js";
 import Sorting from "./catalog/Sorting.js";
-import Layout from "./catalog/Layout.js";
+import Product from './reusables/Product.js'
+
+const sectionStyles = StyleSheet.create({
+  column: {
+    flexFlow: 'column'
+  },
+  grid: {
+    flexFlow: 'row wrap'
+  }
+})
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -63,6 +73,32 @@ class Catalog extends Component {
     this.props.context.updateCurrency(currency)
   }
 
+  getSortedProducts() {
+    let sorted_products = {};
+    let filtering, remainder;
+    
+    for (let product of this.state.products) {
+      filtering = product[this.state.category.default_filtering]
+      if (filtering in sorted_products) {
+        sorted_products[filtering].push(product)
+      }
+      else {
+        sorted_products[filtering] = [product]
+      }
+    }
+    
+    for (let filtering in sorted_products) {
+      remainder = sorted_products[filtering].length % 3 
+      if (remainder != 0) {
+        for (let i = 0; i < remainder + 1; i++) {
+          sorted_products[filtering].push(null)
+        }
+      }
+    }
+
+    return sorted_products
+  }
+
   changeLayout() {
     this.setState({
       isGrid: !this.state.isGrid
@@ -70,6 +106,8 @@ class Catalog extends Component {
   }
 
   render() {
+    let sorted_products = this.state.products && this.getSortedProducts();
+
     return (
       <div>
         <LocationListener locationChanged={this.updateProducts} />
@@ -85,15 +123,28 @@ class Catalog extends Component {
                 isGrid={this.state.isGrid}
                 lang={this.state.lang}
               />
-              {this.state.products && 
-              <Layout
-                currency={this.state.currency}
-                isGrid={this.state.isGrid}
-                lang={this.state.lang}
-                category={this.state.category}
-                products={this.state.products}
-              />
-              }
+              <div className="py-4">
+              {this.state.products && Object.keys(sorted_products).map((filtering, index) => {
+              return (
+                <div key={index} className="d-flex my-5 flex-column">
+                  <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
+                  <div className={css(this.state.isGrid ? sectionStyles.grid : sectionStyles.column) + " d-flex mt-3 justify-content-between"}>
+                  {sorted_products[filtering].map((product, index) => {
+                  return (
+                    <div style={{flex: '1 1 0'}} key={index}>
+                      <Product
+                        product={product}
+                        isGrid={this.state.isGrid}
+                        category={this.state.category}
+                        lang={this.state.lang}
+                        currency={this.state.currency}
+                      />
+                    </div>
+                  )})}
+                  </div>
+                </div>
+              )})}
+              </div>
             </div>
             <div className="col-1"></div>
           </div>

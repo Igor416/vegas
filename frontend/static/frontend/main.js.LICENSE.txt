@@ -26,8 +26,6 @@ object-assign
 
 /*! ../reusables/Hoverable.js */
 
-/*! ../reusables/Product.js */
-
 /*! ./APICallPoints.js */
 
 /*! ./BuyPanel.js */
@@ -50,8 +48,6 @@ object-assign
 
 /*! ./SearchBar.js */
 
-/*! ./Section.js */
-
 /*! ./Structure.js */
 
 /*! ./TableFooter.js */
@@ -63,8 +59,6 @@ object-assign
 /*! ./cart/Form.js */
 
 /*! ./cart/Table.js */
-
-/*! ./catalog/Layout.js */
 
 /*! ./catalog/Sorting.js */
 
@@ -121,6 +115,8 @@ object-assign
 /*! ./reusables/Globals.js */
 
 /*! ./reusables/LocationListener.js */
+
+/*! ./reusables/Product.js */
 
 /*! ./reusables/SectionImage.js */
 
@@ -233,10 +229,6 @@ object-assign
   \******************************************/
 
 /*!******************************************!*\
-  !*** ./src/components/catalog/Layout.js ***!
-  \******************************************/
-
-/*!******************************************!*\
   !*** ./src/components/header/links.json ***!
   \******************************************/
 
@@ -246,10 +238,6 @@ object-assign
 
 /*!*******************************************!*\
   !*** ./node_modules/string-hash/index.js ***!
-  \*******************************************/
-
-/*!*******************************************!*\
-  !*** ./src/components/catalog/Section.js ***!
   \*******************************************/
 
 /*!*******************************************!*\
