@@ -1,12 +1,12 @@
-import { resolve } from 'path';
-import { DefinePlugin } from 'webpack';
-import SpeedMeasurePlugin from 'speed-measure-webpack-plugin';
+const path = require('path');
+const webpack = require('webpack');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const smp = new SpeedMeasurePlugin();
 
-export default smp.wrap({
+module.exports = smp.wrap({
   entry: './src/index.js',
   output: {
-    path: resolve(__dirname, './static/frontend'),
+    path: path.resolve(__dirname, './static/frontend'),
     filename: '[name].js',
   },
   devtool: 'source-map',
@@ -14,7 +14,7 @@ export default smp.wrap({
     rules: [
       {
         test: /\.js$/,
-        include: resolve(__dirname, 'src'),
+        include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
@@ -26,7 +26,7 @@ export default smp.wrap({
     minimize: true,
   },
   plugins: [
-    new DefinePlugin({
+    new webpack.DefinePlugin({
       'process.env': {
         // This has effect on the react lib size
         NODE_ENV: JSON.stringify('development'),
