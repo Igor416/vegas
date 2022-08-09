@@ -11,8 +11,7 @@ class Shops extends Component {
     super(props);
 
     this.state = {
-      lang: this.props.context.lang,
-      shop: null
+      lang: this.props.context.lang
     }
 
     this.updateLang = this.updateLang.bind(this);
@@ -20,11 +19,9 @@ class Shops extends Component {
 
   updateLang(path) {
     let lang = path.search.replace('?lang=', '');
-    let [_, shop] = path.pathname.slice(1).split('/') //['shops', '<shop>']
 
     this.setState({
-      lang: lang,
-      shops: shop
+      lang: lang
     })
   }
 

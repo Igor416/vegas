@@ -15,9 +15,18 @@ const angleStyles = StyleSheet.create({
 
 export default function Links(props) {
   const translations = {
-    en: 'HOME',
-    ru: 'ГЛАВНАЯ',
-    ro: 'ACASA'
+    en: {
+      home: 'HOME',
+      shops: 'SHOPS'
+    },
+    ru: {
+      home: 'ГЛАВНАЯ',
+      shops: 'МАГАЗИНЫ'
+    },
+    ro: {
+      home: 'ACASA',
+      shops: 'MAGAZINE'
+    }
   }
   
   const lang_version = translations[props.lang]
@@ -30,7 +39,7 @@ export default function Links(props) {
           className="d-flex flex-inline justify-content-between transition-s"
         >
           <div>
-            <Hoverable to='/' text={lang_version} />
+            <CustomLink to="/" text={lang_version.home} />
           </div>
           {Object.keys(props.categories).map((category, index) => {
           return (
@@ -40,12 +49,7 @@ export default function Links(props) {
               onMouseEnter={() => props.onMouseEnter(false, category)}
               onMouseLeave={() => props.onMouseLeave()}
             >
-              {index == Object.keys(props.categories).length - 1
-              ?
-              <CustomLink to='/shops/all' text={category} />
-              :
               <Hoverable text={category} />
-              }
               <div>
                 <span>
                   &nbsp;
@@ -54,6 +58,9 @@ export default function Links(props) {
               </div>
             </div>
           )})}
+          <div>
+            <CustomLink to='/shops' text={lang_version.shops} />
+          </div>
         </div>
       </div>
       <div className="col-1"></div>

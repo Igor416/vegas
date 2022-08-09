@@ -2,13 +2,8 @@ import React, { Component } from "react";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
-import { langs, Shops } from "./reusables/Globals.js"
 
 const CATEGORIES = require("./header/links.json");
-
-for (let lang in langs) {
-  CATEGORIES[lang][Object.keys(CATEGORIES[lang]).slice(-1)[0]] = Shops
-}
 
 export default class Header extends Component {
   constructor(props) {

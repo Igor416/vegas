@@ -119,8 +119,7 @@
       "Basis \"Lux\";Basis/Lux": [],
       "Basis \"SuperLux\";Basis/SuperLux": [],
       "Basis \"Premium\";Basis/Premium": []
-    },
-    "SHOPS": {}
+    }
   },
   "ru": {
     "МАТРАСЫ": {
@@ -242,8 +241,7 @@
       "Основание Люкс;Basis/Lux": [],
       "Основание СуперЛюкс;Basis/SuperLux": [],
       "Основание Премиум;Basis/Premium": []
-    },
-    "МАГАЗИНЫ":  {}
+    }
   },
   "ro": {
     "SALTELE": {
@@ -365,7 +363,6 @@
       "Somiera Lux;Basis/Lux": [],
       "Somiera SuperLux;Basis/SuperLux": [],
       "Somiera Premium;Basis/Premium": []
-    },
-    "MAGAZINE":  {}
+    }
   }
 }

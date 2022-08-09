@@ -31,7 +31,7 @@ root.render(
         </Route>
         <Route path="product/:category/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="shops/:name" element={<Shops />} />
+        <Route path="shops" element={<Shops />} />
       </Route>
     </Routes>
   </BrowserRouter>
