@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import CustomButton from '../reusables/CustomButton.js';
 
 export default function Sorting(props) {
