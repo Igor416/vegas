@@ -7,23 +7,20 @@ export const langs = {
 }
 
 export const Shops = {
-  'Call center': [
-    '079407032'
-  ],
   'CC Jumbo Showroom': [
     'Mun. Chișinău, bd. Decebal 23/1',
-    '078 505 520'
+    '0 (78) 50-55-20'
   ],
-  'Magazin Vegas': [
+  'Vegas Rîșcani': [
     'Mun. Chișinău, str. Kiev 16/1',
-    '079 440 057'
+    '0 (79) 44-00-57'
   ],
   'Showroom Creangă': [
     'Mun Chișinău, str. Ion Crengă 5/3',
-    '079 840 444'
+    '0 (79) 84-04-44'
   ],
   'Showroom Ciocana': [
-    'Mun Chișinău, str. Zelinski 7',
-    '079 407 022'
+    'Mun Chișinău, bd. Mircea cel Bătrîn 14',
+    '0 (79) 40-70-22'
   ]
 }
