@@ -10,7 +10,8 @@ import {
   faAngleUp,
   faAngleLeft,
   faAngleRight,
-  faStar
+  faStar,
+  faMapMarkerAlt
 } from '@fortawesome/free-solid-svg-icons';
 import App from "./components/App.js";
 import Catalog from "./components/Catalog.js";
@@ -18,7 +19,7 @@ import ProductDetail from "./components/ProductDetail.js";
 import Cart from "./components/Cart.js";
 import Shops from "./components/Shops.js"
 
-library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar);
+library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar, faMapMarkerAlt);
 
 const appDiv = document.getElementById('app');
 const root = createRoot(appDiv);
