@@ -26,6 +26,8 @@ object-assign
 
 /*! ../reusables/Hoverable.js */
 
+/*! ../reusables/LocationListener.js */
+
 /*! ./APICallPoints.js */
 
 /*! ./BuyPanel.js */
