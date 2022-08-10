@@ -1,3 +1,9 @@
+export function getBanners() {
+  let url = '/news/'
+
+  return fetchAPI(url)
+}
+
 export function getCategory(name) {
   let url = `/api/category/${name}/`
 
