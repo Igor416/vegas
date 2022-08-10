@@ -101,7 +101,7 @@ export default function Form(props) {
         return (
           <div
             key={index}
-            className="d-flex justify-content-start row-nowrap mb-3"
+            className="d-flex justify-content-start row-nowrap pb-3 mb-4"
             style={{border: 'none', borderBottom: '1px solid var(--lime-green)'}}
           >
             <input

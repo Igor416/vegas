@@ -32,6 +32,7 @@ export default class App extends Component {
     this.updateLang = this.updateLang.bind(this)
     this.updateCurrency = this.updateCurrency.bind(this)
     this.addProduct = this.addProduct.bind(this)
+    this.deleteProduct = this.deleteProduct.bind(this)
     this.updateQuantity = this.updateQuantity.bind(this)
   }
 
@@ -67,7 +68,7 @@ export default class App extends Component {
     let products = this.state.cart.products
     let contains
     for (let pr of products) {
-      if (pr.id == product.id && pr.category == product.category) {
+      if (pr.id == product.id && pr.category == category && pr.size == size.width + ' x ' + size.length) {
         contains = true
         if (pr.quantity == product.quantity) {
           return
@@ -110,6 +111,17 @@ export default class App extends Component {
     }, () => {this.setTotal(); Cookies.set('products', this.encodeProducts(this.state.cart.products))})
   }
 
+  deleteProduct(category, id, size) {
+    let products = this.state.cart.products
+    products = products.filter(pr => !(pr.id == id && pr.category == category && pr.size == size))
+    this.setState({
+      cart: {
+        products: products,
+        total: 0
+      }
+    }, () => {this.setTotal(); Cookies.set('products', this.encodeProducts(this.state.cart.products))})
+  }
+
   encodeProducts(products) {
     let s = ''
     for (let product of products) {
@@ -132,12 +144,13 @@ export default class App extends Component {
       let productEnc = {}
       if (productDec != '') {
         for (let pair of productDec.split(';')) {
-          let [key, value] = pair.split('=')
-          if (key.includes('price') || key.includes('sum') || key == 'discount' || key == 'quantity') {
-            value = Number(value)
+          if (pair != '') {
+            let [key, value] = pair.split('=')
+            if (key.includes('price') || key.includes('sum')|| key == 'id' || key == 'discount' || key == 'quantity') {
+              value = Number(value)
+            }
+            productEnc[key] = value
           }
-          productEnc[key] = value
-          
         }
         products.push(productEnc)
       }
@@ -169,6 +182,7 @@ export default class App extends Component {
         <Outlet context={Object.assign(this.state, {
           updateCurrency: this.updateCurrency,
           addProduct: this.addProduct,
+          deleteProduct: this.deleteProduct,
           updateQuantity: this.updateQuantity
         })}/>
         <Footer />

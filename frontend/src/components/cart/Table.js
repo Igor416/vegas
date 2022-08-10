@@ -1,4 +1,5 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TableHeader from "./TableHeader.js";
 import TableFooter from "./TableFooter.js";
 
@@ -26,7 +27,14 @@ export default function Table(props) {
       return (
       <div key={index} className="row">
         <div className="col-2 h5 d-flex align-items-center justify-content-center border-bottom border-end m-0">
-          <span>{pr.name} ({pr.category.name_s})</span>
+          <span>{pr.name} ({pr.category.name_s}) &nbsp;</span>
+          <span
+            style={{color: 'var(--lime-green)'}}
+            className="link"
+            onClick={() => props.deleteProduct(pr.category.name, pr, pr.size)}
+          >
+            &nbsp; <FontAwesomeIcon icon='trash' />
+          </span>
         </div>
         <div className="col-3 border-bottom border-end">
           <img src={pr.shortcut} />

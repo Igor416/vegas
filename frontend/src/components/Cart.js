@@ -23,6 +23,7 @@ class Cart extends Component {
       error: false
     }
     this.updateProducts = this.updateProducts.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
     this.updateQuantity = this.updateQuantity.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
@@ -31,12 +32,10 @@ class Cart extends Component {
     let lang = path.search.replace('?lang=', '');
 
     this.setState({
-      lang: lang
+      lang: lang,
+      products: []
     }, () => {
       let products = this.state.products;
-      if (products.length == this.state.raw_products.length) {
-        return
-      }
       for (let raw_product of this.state.raw_products) {
         let product, category;
         getCategory(raw_product.category).then((data) => {
@@ -100,6 +99,17 @@ class Cart extends Component {
     }
   }
 
+  deleteProduct(category, product, size) {
+    size = size.width + ' x ' + size.length
+    let products = this.state.raw_products
+
+    this.setState({
+      raw_products: products.filter(pr => !(pr.id == product.id && pr.category == category && pr.size == size))
+    }, () => this.updateProducts(location))
+
+    this.props.context.deleteProduct(category, product.id, size)
+  }
+
   render() {
     return (
       <div>
@@ -114,6 +124,7 @@ class Cart extends Component {
                 total={this.props.context.cart.total}
                 products={this.state.products}
                 currency={this.state.currency}
+                deleteProduct={this.deleteProduct}
                 updateQuantity={this.updateQuantity}
               />
               <Form lang={this.state.lang} currency={this.state.currency} error={this.state.error} submitForm={this.submitForm} />
