@@ -164,7 +164,7 @@ class Technology(models.Model):
     name_en = models.CharField('Название (en)', max_length=32, blank=True)
     name_ru = models.CharField('Название (ru)', max_length=32)
     name_ro = models.CharField('Название (ro)', max_length=32, blank=True)
-    image = models.ImageField(default='', upload_to='images', verbose_name='Фотография')
+    image = models.ImageField(upload_to='images', verbose_name='Фотография')
     desc_en = models.TextField('Описание (en)')
     desc_ru = models.TextField('Описание (ru)')
     desc_ro = models.TextField('Описание (ro)')
