@@ -116,7 +116,10 @@ class PillowManager(ProductManager):
         super(PillowManager, self).__init__(*args, **kwargs)
 
     def get_filtered(self, type, filter):
-        if not filter:
+        if type == 'all':
+            return self.get_all()
+
+        elif not filter:
             return self.get_by_type(type)
 
         return super(PillowManager, self).get_filtered(type, filter)
