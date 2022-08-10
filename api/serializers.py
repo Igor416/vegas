@@ -12,8 +12,8 @@ class CategorySerializer(ModelSerializer):
         model = models.Category
 
     def __init__(self, *args, **kwargs):
-        self.lang, *args = args
         super(CategorySerializer, self).__init__(*args, **kwargs)
+        self.lang = kwargs['context']['request'].GET.get('lang')
 
     def get_default_filtering(self, obj):
         return manager.get_default_filtering(obj.name)
