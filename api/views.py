@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
 from .serializers import CategorySerializer, create_list_serializer, create_detail_serializer
 from .translations import EN, RU, RO
@@ -10,21 +11,19 @@ langs = {
     'ro': RO
 }
 
-class CategoryView(APIView):
-    lookup_url_kwarg = 'lang'
+class CategoryView(RetrieveAPIView):
+    lookup_field = 'name'
+    serializer_class = CategorySerializer
 
-    def get(self, request, name):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
-        category = models.Category.objects.get(name=name)
-
-        serializer = CategorySerializer(lang, category)
-        return Response(serializer.data)
+    def get_queryset(self):
+        queryset = models.Category.objects.filter(name=self.kwargs.get('name'))
+        return queryset
 
 class ProductsView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, product, category, filter=None):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        lang = request.GET.get(self.lookup_url_kwarg)
         model = getattr(models, product.title())
 
         filter = filter.replace('_', ' ') if filter else None
@@ -36,7 +35,7 @@ class ProductDetailView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, product, id):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
+        lang = request.GET.get(self.lookup_url_kwarg)
         model = getattr(models, product.title())
 
         queryset = model.objects.get(id=id)
