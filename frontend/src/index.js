@@ -15,10 +15,11 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import App from "./components/App.js";
+import Home from "./components/Home.js";
 import Catalog from "./components/Catalog.js";
 import ProductDetail from "./components/ProductDetail.js";
 import Cart from "./components/Cart.js";
-import Shops from "./components/Shops.js"
+import Shops from "./components/Shops.js";
 
 library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar, faMapMarkerAlt, faTrash);
 
@@ -34,6 +35,7 @@ root.render(
         <Route path="product/:category/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
         <Route path="shops" element={<Shops />} />
+        <Route path="" element={<Home />} />
       </Route>
     </Routes>
   </BrowserRouter>
