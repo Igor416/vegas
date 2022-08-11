@@ -108,6 +108,13 @@ class Manager:
                     break
         return categories
     
+    def get_category_by_prop(self, property):
+        for category, props in CATALOG.items():
+            if property in props:
+                return category
+        
+        return COMMON_PROPERTIES.get(property)[0]
+
     def get_default_filtering(self, product):
         return DEFAULT_FILTERING[product]
 
