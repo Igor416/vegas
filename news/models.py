@@ -14,10 +14,10 @@ class Banner(models.Model):
         verbose_name_plural = 'баннеры'
 
 class Review(models.Model):
-    title = models.CharField('Заглавие', max_length=64)
+    title = models.CharField('Заглавие', max_length=64, blank=True)
     date = models.DateField('Дата')
-    city = models.CharField('Город', max_length=16)
-    text = models.TextField('Отзыв')
+    city = models.CharField('Город', max_length=16, blank=True)
+    text = models.TextField('Отзыв', blank=True)
 
     def __str__(self):
         return self.title
