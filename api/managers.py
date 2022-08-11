@@ -16,7 +16,16 @@ class ProductManager(Manager):
         if type == 'all':
             return self.get_all()
 
-        return getattr(self, 'get_by_' + type)(filter)
+        queryset = self.objs.none()
+
+        for obj in self.objs:
+            if getattr(obj, type) == filter:
+                queryset = queryset | self.get_by_name(obj.name)
+
+        if len(queryset) == 0:
+            queryset = getattr(self, 'get_by_' + type)(filter)
+
+        return queryset
 
     def get_by_name(self, name):
         return self.objs.filter(name=name)
