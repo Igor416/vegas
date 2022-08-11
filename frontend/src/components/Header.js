@@ -94,7 +94,7 @@ export default class Header extends Component {
             total={this.props.total}
           />
         </div>
-        <nav className="container-fluid position-absolute bg-white">
+        <nav style={{zIndex: 1100}} className="container-fluid position-absolute bg-white">
           <Links
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}

@@ -4,6 +4,29 @@ export function getBanners() {
   return fetchAPI(url)
 }
 
+export function sendSearch(search, csrftoken) {
+  let options = {
+    method: "POST",
+    mode: 'cors',
+    headers: {
+      'X-CSRFToken': csrftoken,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      search: search
+    })
+  }
+  
+  return fetch(`/api/search/` + location.search, options).then((response) => response.json())
+  .then((data) => {
+    return data
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  })
+}
+
 export function getCategory(name) {
   let url = `/api/category/${name}/`
 

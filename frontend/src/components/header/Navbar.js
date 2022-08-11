@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SearchBar from "./SearchBar.js";
@@ -14,28 +14,25 @@ export default function Navbar(props) {
 
   const translations = {
     en: {
-      search: 'Search products...',
       order: 'Order now',
       credit1: 'Buy now,',
       credit2: 'pay later',
       cart: 'Cart'
     },
     ru: {
-      search: 'Искать товары...',
       order: 'Закажите сейчас',
       credit1: 'Купи сейчас,',
       credit2: 'плати позже',
       cart: 'Корзина'
     },
     ro: {
-      search: 'Cauta bunuri...',
       order: 'Comanda acum',
       credit1: 'Cumpara acum,',
       credit2: 'achita apoi',
       cart: 'Coş'
     }
   }
-  
+
   let lang_version = translations[props.lang];
   return (
     <div>
@@ -45,8 +42,8 @@ export default function Navbar(props) {
         <div className="col-1">
           <img style={{ maxWidth: '80%' }} src="/static/images/logo.png"/>
         </div>
-        <div className="col-3 ps-0">
-          <SearchBar search={lang_version.search} />
+        <div id="searchBar" className="col-3 ps-0">
+          <SearchBar width={document.getElementById('searchBar')?.offsetWidth} currency={props.currency} lang={props.lang} />
         </div>
         <div className="col-1 d-flex flex-column align-items-center">
         {Object.keys(langs).map((lang, index) => {
