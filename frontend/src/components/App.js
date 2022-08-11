@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { currencies } from './reusables/Globals.js';
 import Header from "./Header.js";
 import Footer from "./Footer.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default class App extends Component {
   constructor(props) {
@@ -186,6 +187,20 @@ export default class App extends Component {
           updateQuantity: this.updateQuantity
         })}/>
         <Footer />
+        <div
+          id="cart"
+          style={{
+          bottom: '5vh',
+          right: '2vw',
+          width: document.getElementById('cart')?.offsetHeight,
+          backgroundColor: 'var(--dark-cyan)'
+          }}
+          className="position-fixed d-flex justify-content-center align-items-center rounded-circle p-3"
+        >
+          <Link to={"/cart?lang=" + this.state.lang} className="no-link no-hover">
+            <FontAwesomeIcon icon="shopping-cart" color="white"/>
+          </Link>
+        </div>
       </div>
     );
   }
