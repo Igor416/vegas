@@ -62,13 +62,13 @@ class Shops extends Component {
     let today = new Date()
     let hours = today.getHours()
     if ((today.getDay() % 6)) {
-      return 10 < hours && hours < 19
+      return (9 < hours) && (hours < 19)
     }
     else {
       if (hours == 19) {
         return today.getMinutes() < 31
       }
-      return 10 < hours && hours < 20
+      return (9 < hours) && (hours < 19)
     }
   }
 
@@ -91,7 +91,7 @@ class Shops extends Component {
             {Object.keys(shops).map((name, index) => {
             return (
               <div key={index} className={css(shadowStyles.item) + " col-5 bg-white transition-s p-5 my-5 h6"}>
-                <span style={{color: 'var(--lime-green'}} className="h5 mb-4">{name}</span>
+                <span style={{color: 'var(--dark-cyan)'}} className="h5 mb-4">{name}</span>
                 <span>&nbsp; ({this.isOpen() ? lang_verion.opened : lang_verion.closed})</span>
                 <br />
                 <br />
@@ -100,15 +100,15 @@ class Shops extends Component {
                 <br />
                 <br />
                 <span>{lang_verion.workday}</span>
-                <span style={{color: 'var(--lime-green'}} className="mb-4">10.00 - 19.30</span>
+                <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 19.30</span>
                 <br />
                 <br />
                 <span>{lang_verion.weekend}</span>
-                <span style={{color: 'var(--lime-green'}} className="mb-4">10.00 - 18.00</span>
+                <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 18.00</span>
                 <br />
                 <br />
                 <FontAwesomeIcon icon='phone' />
-                <span style={{color: 'var(--lime-green'}}>&nbsp; {shops[name][1]}</span>
+                <span style={{color: 'var(--dark-cyan)'}}>&nbsp; {shops[name][1]}</span>
               </div>
             )})}
             </div>
