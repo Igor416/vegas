@@ -4,6 +4,33 @@ export function getBanners() {
   return fetchAPI(url)
 }
 
+export function getReviews() {
+  let url = '/news/reviews/'
+
+  return fetchAPI(url)
+}
+
+export function sendReview(review, csrftoken) {
+  let options = {
+    method: "POST",
+    mode: 'cors',
+    headers: {
+      'X-CSRFToken': csrftoken,
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify(review)
+  }
+  
+  return fetch('/news/reviews/', options).then((response) => response.json())
+  .then((data) => {
+    return data
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  })
+}
+
 export function sendSearch(search, csrftoken) {
   let options = {
     method: "POST",
@@ -66,7 +93,7 @@ export function sendForm(data, csrftoken, help=false) {
     credentials: 'include',
     body: JSON.stringify(data)
   }
-  
+
   fetch(`/telegram/order${help ? '_call' : ''}/` + location.search, options).then((response) => response.json())
   .then((data) => {
     alert(data);
