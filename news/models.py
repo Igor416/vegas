@@ -12,3 +12,16 @@ class Banner(models.Model):
     class Meta:
         verbose_name = 'баннер'
         verbose_name_plural = 'баннеры'
+
+class Review(models.Model):
+    title = models.CharField('Заглавие', max_length=64)
+    date = models.DateField('Дата')
+    city = models.CharField('Город', max_length=16)
+    text = models.TextField('Отзыв')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'отзыв'
+        verbose_name_plural = 'отзывы'
