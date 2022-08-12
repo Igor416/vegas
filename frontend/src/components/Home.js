@@ -29,7 +29,7 @@ class Home extends Component {
       en: {
         is: 'is',
         chars: [['European components', 'lime-green'], ['Extended warranty up to 25 years', 'dark-cyan'], ['Individual sizes', 'deep-sky-blue']],
-        title: 'At Vegas, we are experts at sleep',
+        main: 'At Vegas, we are experts at sleep',
         desc: 'We believe that good sleep is the foundation of a happy and healthy life, and our dream is that everyone can get their 8 hours of restful sleep.\n\nOur team has developed a wide range of products designed to improve the quality of sleep. Vegas is designed with a visible balance of style and function.',
         reviews: 'Reviews',
         leave: 'Leave your review',
@@ -40,7 +40,7 @@ class Home extends Component {
       ru: {
         is: 'это',
         chars: [['Европейские комплектующие', 'lime-green'], ['Увеличенная гарантия до 25 лет', 'dark-cyan'], ['Индивидуальные размеры', 'deep-sky-blue']],
-        title: 'В Vegas у нас есть эксперты по сну',
+        main: 'В Vegas у нас есть эксперты по сну',
         desc: 'Мы верим, что хороший сон является основой счастливой и здоровой жизни, и наша мечта состоит в том, чтобы каждый мог получить свои 8 часов спокойного сна.\n\nНаша команда разработала широкий спектр продуктов, предназначенных для улучшения качества сна. Изделие Vegas создано с видимым балансом стиля и функциональности.',
         reviews: 'Отзывы',
         leave: 'Оставьте свой отзыв',
@@ -51,7 +51,7 @@ class Home extends Component {
       ro: {
         is: 'este',
         chars: [['Componente europene', 'lime-green'], ['Garanție extinsă până la 25 de ani', 'dark-cyan'], ['Dimensiuni individuale', 'deep-sky-blue']],
-        title: 'La Vegas, suntem experți în somn',
+        main: 'La Vegas, suntem experți în somn',
         desc: 'Credem că un somn bun este baza unei vieți fericite și sănătoase, iar visul nostru este ca toată lumea să își poată avea cele 8 ore de somn odihnitor.\n\nEchipa noastră a dezvoltat o gamă largă de produse concepute pentru a îmbunătăți calitatea somnului. Vegas este proiectat cu un echilibru vizibil de stil și funcție.',
         reviews: 'Recenzii',
         leave: 'Lăsați recenzie dvs',
@@ -164,7 +164,7 @@ class Home extends Component {
           <div className="row text-center mt-5 pt-5">
             <div className="col-3"></div>
             <div className="col-6">
-              <p className="h2">{lang_verion.title}</p>
+              <p className="h2">{lang_verion.main}</p>
               <br />
               <p style={{fontWeight: 400, whiteSpace: "pre-line"}}>{lang_verion.desc}</p>
             </div>
