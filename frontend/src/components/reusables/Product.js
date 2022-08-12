@@ -98,7 +98,7 @@ export default function Product(props) {
   let lang_version = translations[props.lang];
   return (
     <div>
-      <div className={css(props.isGrid ? itemStyles.grid : itemStyles.column) + ' ' + css(shadowStyles.item) + " d-flex transition-s no-link p-3"}>
+      <div className={css(props.isGrid ? itemStyles.grid : itemStyles.column) + ' ' + css(shadowStyles.item) + " d-flex transition no-link p-3"}>
         <img src={product.shortcut}/>
         <div className="d-flex flex-column justify-content-between">
           <div className="d-flex flex-row justify-content-between align-items-end">

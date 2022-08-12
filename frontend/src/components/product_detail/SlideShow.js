@@ -78,7 +78,7 @@ export default function SlideShow(props) {
             onClick={() => setActiveId(index)}
             data-bs-target="#carousel"
             data-bs-slide-to={index}
-            className={css(active ? mediaStyles.active : mediaStyles.unactive) + ` transition-s${index == 0 ? " active" : ""}`}
+            className={css(active ? mediaStyles.active : mediaStyles.unactive) + ` transition${index == 0 ? " active" : ""}`}
             aria-current={index == 0 ? "true" : "false"}
           >
             <img style={{aspectRatio: 1.512 / 1}} src={url} />

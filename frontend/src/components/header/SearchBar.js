@@ -83,7 +83,7 @@ export default function SearchBar(props) {
       {Object.keys(res).length != 0 &&
       <div
         style={{zIndex: 1200, width: props.width}}
-        className={css(show ? resultsStyles.show : resultsStyles.hide) + " border bg-white transition-s position-absolute py-3 px-4 mt-4"}
+        className={css(show ? resultsStyles.show : resultsStyles.hide) + " border bg-white transition position-absolute py-3 px-4 mt-4"}
       >
         <span className="mb-4">{lang_version.help}</span>
       {Object.keys(res).map((key, index) => {

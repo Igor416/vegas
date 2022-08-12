@@ -26,7 +26,7 @@ export function Hoverable(props) {
       onMouseLeave={() => setIsActive(false)}
     >
       <span>{props.text}</span>
-      <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition-s mt-1"}></div>
+      <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition mt-1"}></div>
     </div>
   )
 }
@@ -40,7 +40,7 @@ export function HoverableIcon(props) {
       onMouseLeave={() => setIsActive(false)}
     >
       {props.icon}
-      <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition-s mt-1"}></div>
+      <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition mt-1"}></div>
     </div>
   )
 }

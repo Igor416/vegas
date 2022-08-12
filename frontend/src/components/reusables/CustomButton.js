@@ -33,7 +33,7 @@ const buttonStyles = StyleSheet.create({
 
 export default function CustomButton(props) {
   return (
-    <button style={{whiteSpace: 'nowrap'}} className={css(buttonStyles[props.color]) + " outline-0 p-3 transition-s"}>
+    <button style={{whiteSpace: 'nowrap'}} className={css(buttonStyles[props.color]) + " outline-0 p-3 transition"}>
       <span>{props.text}</span>
     </button>
   );

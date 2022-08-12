@@ -36,7 +36,7 @@ export default function Links(props) {
       <div className="col-1"></div>
       <div className="col-10 h6 m-0">
         <div
-          className="d-flex flex-inline justify-content-between transition-s"
+          className="d-flex flex-inline justify-content-between transition"
         >
           <div>
             <CustomLink to="/" text={lang_version.home} />
@@ -53,7 +53,7 @@ export default function Links(props) {
               <div>
                 <span>
                   &nbsp;
-                  <FontAwesomeIcon className={css(props.state.category == category ? angleStyles.show : angleStyles.hide) + " transition-s"} icon='angle-down' /> 
+                  <FontAwesomeIcon className={css(props.category == category ? angleStyles.show : angleStyles.hide) + " transition"} icon='angle-down' /> 
                 </span>
               </div>
             </div>

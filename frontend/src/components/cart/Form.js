@@ -119,14 +119,14 @@ export default function Form(props) {
           <div
             onClick={() => updateData('courier', true)}
             style={{borderRight: 'none'}}
-            className={css(data.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition-s"}
+            className={css(data.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition"}
           >
             <span>{lang_version.courier}</span>
           </div>
           <div
             onClick={() => updateData('courier', false)}
             style={{borderLeft: 'none'}}
-            className={css(!data.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition-s"}
+            className={css(!data.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition"}
           >
             <span>{lang_version.pickup}</span>
           </div>

@@ -90,7 +90,7 @@ class Shops extends Component {
             <div className="d-flex flex-wrap justify-content-between mt-5">
             {Object.keys(shops).map((name, index) => {
             return (
-              <div key={index} className={css(shadowStyles.item) + " col-5 bg-white transition-s p-5 my-5 h6"}>
+              <div key={index} className={css(shadowStyles.item) + " col-5 bg-white transition p-5 my-5 h6"}>
                 <span style={{color: 'var(--dark-cyan)'}} className="h5 mb-4">{name}</span>
                 <span>&nbsp; ({this.isOpen() ? lang_verion.opened : lang_verion.closed})</span>
                 <br />
