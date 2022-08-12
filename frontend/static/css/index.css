@@ -25,16 +25,8 @@
   box-shadow: none !important;
 }
 
-.transition-s {
-  transition: 0.4s;
-}
-
-.transition-m {
-  transition: 0.7s;
-}
-
-.transition-l {
-  transition: 1s;
+.transition {
+  transition: 0.5s;
 }
 
 body {
