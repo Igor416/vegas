@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, css } from 'aphrodite';
+import { Link } from "react-router-dom";
 import CustomLink from '../reusables/CustomLink.js';
 
 const menuStyles = StyleSheet.create({
@@ -17,6 +18,20 @@ const menuStyles = StyleSheet.create({
 export default function Menu(props) {
   const state = props.state
   const categories = props.categories
+
+  const translations = {
+    en: {
+      from: 'from',
+    },
+    ru: {
+      from: 'от',
+    },
+    ro: {
+      from: 'de la',
+    }
+  }
+  
+  let lang_version = translations[props.lang];
 
   let getLink = (sub_category, link=null) => {
     if (props.isShop) {
@@ -47,7 +62,7 @@ export default function Menu(props) {
     <div
       onMouseEnter={() => props.onMouseEnter(true)}
       onMouseLeave={() => props.onMouseLeave()}
-      className={css(state.category ? menuStyles.show : menuStyles.hide) + " border-top row transition-m"}
+      className={css(state.category ? menuStyles.show : menuStyles.hide) + " border-top row transition"}
     >
       <div className="col-2"></div>
       <div
@@ -70,7 +85,7 @@ export default function Menu(props) {
         )})}
       </div>
       <div
-        className={"col-2 border-start border-1"}
+        className="col-2 border-start border-1"
         onMouseEnter={() => state.sub_category && props.onMouseEnter(true, state.category, state.sub_category, true)}
         onMouseLeave={() => state.sub_category && props.onMouseLeave(true, state.sub_category, true)}
       >
@@ -84,10 +99,44 @@ export default function Menu(props) {
           </div>
         )})}
       </div>
-      <div className="col-2 border-start border-1">
+      {state.category && state.bestProducts[state.categoryEN].map((product, index) => {
+      return (
+      <div key={index} className="col-2 border-start border-1 p-2">
+        <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + props.lang}>
+          <span className="h6">{product.name}</span>
+          <img src={product.shortcut} />
+          {product.discount != 0
+          ?
+          <div className="d-flex flex-column">
+            <div style={{textDecoration: 'line-through'}}>
+              <span>
+                {`${lang_version.from} ${product.sizes[0]['price' + props.currency]} (${props.currency})`}
+              </span>
+            </div>
+            <div>
+              <span>
+                {`${lang_version.from} `}
+              </span>
+              <span style={{color: 'var(--lime-green)'}} className="h6">
+                {product.sizes[0]['price' + props.currency] * (100 - product.discount) / 100}
+              </span>
+              <span>
+                {` (${props.currency})`}
+              </span>
+            </div>
+          </div>
+          :
+          <div className="d-flex flex-column">
+            <div>
+              <span>
+                {`${lang_version.from} ${product.sizes[0]['price' + props.currency]} (${props.currency})`}
+              </span>
+            </div>
+          </div>
+          }
+        </Link>
       </div>
-      <div className="col-2 border-start border-1">
-      </div>
+      )})}
       <div className="col-2 border-start border-1"></div>
     </div>
   );

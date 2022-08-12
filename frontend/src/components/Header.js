@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { getBestProducts } from "./reusables/APICallPoints.js";
 import Navbar from "./header/Navbar.js";
 import Links from "./header/Links.js";
 import Menu from "./header/Menu.js";
@@ -10,6 +11,7 @@ export default class Header extends Component {
     super(props);
     this.inMenu = false;
     this.state = {
+      bestProducts: null,
       category: null,
       categoryEN: null,
       sub_category: null
@@ -38,6 +40,14 @@ export default class Header extends Component {
     }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
   
+  componentDidMount() {
+    getBestProducts().then(data => {
+      this.setState({
+        bestProducts: data
+      })
+    })
+  }
+
   onMouseLeave(inSubCategories=false, sub_category=null, inActualLinks=false) {
     this.inMenu = inSubCategories
     this.inActualLinks = inActualLinks
@@ -99,13 +109,14 @@ export default class Header extends Component {
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
             categories={CATEGORIES[this.props.lang]}
+            category={this.state.category}
             lang={this.props.lang}
-            state={this.state}
           />
           <Menu
             onMouseEnter={this.onMouseEnter}
             onMouseLeave={this.onMouseLeave}
             lang={this.props.lang}
+            currency={this.props.currency}
             categoriesEn={CATEGORIES.en[this.state.categoryEN]}
             categories={CATEGORIES[this.props.lang][this.state.category]}
             isShop={this.isShop()}

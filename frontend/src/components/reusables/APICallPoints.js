@@ -54,6 +54,12 @@ export function sendSearch(search, csrftoken) {
   })
 }
 
+export function getBestProducts() {
+  let url = '/api/best/'
+
+  return fetchAPI(url)
+}
+
 export function getCategory(name) {
   let url = `/api/category/${name}/`
 
