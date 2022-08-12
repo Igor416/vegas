@@ -28,7 +28,7 @@ class ProductManager(Manager):
         return queryset
 
     def get_by_name(self, name):
-        return self.objs.filter(name=name)
+        return self.objs.get(name=name)
 
     def get_props(self, name):
         queryset = Choice.objects.filter(name=name)
