@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 from . import models
 from .catalog import Manager
 
@@ -98,14 +98,15 @@ class FileSerializer(ModelSerializer):
     def to_representation(self, obj):
         return obj.get_absolute_url()
 
-class ImageSerializer(FileSerializer):
     class Meta:
         fields = ['image']
+
+class ImageSerializer(FileSerializer):
+    class Meta(FileSerializer.Meta):
         model = models.Image
 
 class VideoSerializer(FileSerializer):
-    class Meta:
-        fields = ['image']
+    class Meta(FileSerializer.Meta):
         model = models.Video
 
 class RecomendedSerializer(ModelSerializer):
@@ -117,79 +118,34 @@ class ProductSerializer(ModelSerializer):
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
 
-    def __init__(self, *args, **kwargs):
-        super(ProductSerializer, self).__init__(*args, **kwargs)
+def create_best_product_serializer(model):
+    class Meta:
+        fields = ['id', 'shortcut', 'name', 'sizes', 'discount']
 
-        self.fields.update({'desc': self.fields.pop('desc_' + self.lang)})
+    def to_representation(self, obj):
+        r = super(ProductSerializer, self).to_representation(obj)
+        r['category'] = obj.category.name
+        return r
+
+    setattr(Meta, 'model', model)
+
+    return type(model.get_name() + 'Serializer', (ProductSerializer, ), {'Meta': Meta, 'to_representation': to_representation})
 
 class ProductListSerializer(ProductSerializer):
     desc = SerializerMethodField()
 
-    def get_desc(self, desc):
-        shortened = ''
-
-        symbols = 256
-        words = 0
-        for sent in desc.split('.'):
+    def get_desc(self, obj):
+        shortened, symbols, words = '', 256, 0
+        for sent in getattr(obj, 'desc_' + self.lang).split('.'):
             words += len(sent.strip())
             if words <= symbols:
                 shortened += sent + '.'
             else:
-                return shortened.strip()
-
-class ProductDetailSerializer(ProductSerializer):
-    images = ImageSerializer(many=True)
-    videos = VideoSerializer(many=True)
-
-    def __init__(self, *args, **kwargs):
-        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
-
-    def to_representation(self, obj):
-        r = super(ProductDetailSerializer, self).to_representation(obj)
-        
-        characteristic = dict()
-        
-        for prop in manager.get_all_props(self.model.get_name()):
-            if prop != 'rigidity':
-                characteristic.update({prop: r.pop(prop)})
-                
-        if self.model == models.Mattress:
-            characteristic.update({'rigidity1': r.pop('rigidity1')})
-            characteristic.update({'rigidity2': r.pop('rigidity2')})
-
-        for key, val in r.copy().items():
-            if key == 'Characteristic':
-                break
-            elif key == 'best' or key == 'discount' or key == 'id':
-                continue
-            elif isinstance(val, int) or isinstance(val, bool):
-                characteristic.update({key: r.pop(key)})
-
-        sorted_dict = {}
-        for key in self.model.get_order():
-            if key.startswith('rigidity'):
-                sorted_dict[manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}'] = characteristic[key]
-                continue
-            sorted_dict[manager.get_prop_trans(key, langs.index(self.lang))] = characteristic[key]
-
-        r['description'] = dict()
-        for key in self.model.get_short_order():
-            if key.startswith('rigidity'):
-                key_lang = manager.get_prop_trans('rigidity', langs.index(self.lang)) + f' {key[-1]}'
-                r['description'][key_lang] = sorted_dict[key_lang]
-                continue
-            key_lang = manager.get_prop_trans(key, langs.index(self.lang))
-            r['description'][key_lang] = sorted_dict[key_lang]
-        
-        r['characteristic'] = sorted_dict
-        
-        
-        return r
+                return shortened
 
 def create_list_serializer(model, lang):
     class Meta:
-        fields = ['id', 'name', 'discount', 'best', 'desc_' + lang]
-        fields += ['sizes', 'shortcut', manager.get_default_filtering(model.get_name())]
+        fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', manager.get_default_filtering(model.get_name())]
         depth = 1
 
     setattr(Meta, 'model', model)
@@ -203,9 +159,32 @@ def create_list_serializer(model, lang):
         default_filtering: ChoiceSerializer(lang, many=many)
     }
 
-    serializer = type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
+    return type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
 
-    return serializer
+class ProductDetailSerializer(ProductSerializer):
+    images = ImageSerializer(many=True)
+    videos = VideoSerializer(many=True)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
+        self.fields.update({'desc': self.fields.pop('desc_' + self.lang)})
+
+    def to_representation(self, obj):
+        r = super(ProductDetailSerializer, self).to_representation(obj)
+
+        r['characteristic'], r['description'] = {}, {}
+        for key in self.model.get_order():
+            if key.startswith('rigidity'):
+                key_lang = manager.get_prop_trans(key[:-1], langs.index(self.lang)) + f' {key[-1]}'
+            else:
+                key_lang = manager.get_prop_trans(key, langs.index(self.lang))
+            
+            r['characteristic'][key_lang] = r.pop(key)
+
+            if key in self.model.get_short_order():
+                r['description'][key_lang] = r['characteristic'][key_lang]
+        
+        return r
 
 def create_detail_serializer(model, lang):
     class Meta:
@@ -227,20 +206,18 @@ def create_detail_serializer(model, lang):
         if prop != 'rigidity':
             fields.update({prop: serializer})
 
-    if model == models.Mattress:
+    if model is models.Mattress:
         fields.update({'rigidity1': ChoiceSerializer(lang)})
         fields.update({'rigidity2': ChoiceSerializer(lang)})
         
         fields.update({'structure': LayerMattressSerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
-    if model == models.Pillow:
+    elif model is models.Pillow:
         fields.update({'structure': LayerPillowSerializer(lang, many=True)})
 
-    if model == models.MattressPad:
+    elif model is models.MattressPad:
         fields.update({'structure': LayerMattressPadSerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
-    serializer = type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
-
-    return serializer
+    return type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
