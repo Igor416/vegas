@@ -80,7 +80,7 @@ class Choice(models.Model):
     def __str__(self):
         lst = list(map(lambda ctg: str(ctg), self.category.all()))
         s = ', '.join(lst)
-        return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}"; в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
+        return f'Вариант выбора для "{manager.get_prop_trans(self.name, RU)}" в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
     def save(self, *args, **kwargs):
         self.property_en, self.property_ru, self.property_ro = save_langs(self.property_en, self.property_ru, self.property_ro)
@@ -260,7 +260,7 @@ class Mattress(Product):
     rigidity2 = create_related_field('rigidity2', '%(class)s')
     collection = create_related_field('collection')
     springblock = create_related_field('springblock')
-    construction = create_related_field('construction', '', True)
+    construction = create_related_field('construction')
 
     @classmethod
     def get_order(cls):
