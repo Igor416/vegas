@@ -32,6 +32,10 @@ class LayerMattressInline(admin.TabularInline):
     model = models.LayerMattress
     extra = 3
 
+class LayerPillowInline(admin.TabularInline):
+    model = models.LayerPillow
+    extra = 3
+
 class LayerMattressPadInline(admin.TabularInline):
     model = models.LayerMattressPad
     extra = 3
@@ -46,6 +50,8 @@ for product_name in manager.get_all_products():
 
     if model is models.Mattress:
         setattr(admin_model, 'inlines', (LayerMattressInline, ))
+    elif model is models.Pillow:
+        setattr(admin_model, 'inlines', (LayerPillowInline, ))
     elif model is models.MattressPad:
         setattr(admin_model, 'inlines', (LayerMattressPadInline, ))
         
