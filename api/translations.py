@@ -1,4 +1,3 @@
-from enum import Enum
 from . import catalog as ct
 
 EN = 0
