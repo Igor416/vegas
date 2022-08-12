@@ -2,18 +2,11 @@ from unicodedata import category
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.response import Response
-from .serializers import CategorySerializer, create_list_serializer, create_detail_serializer
-from .translations import EN, RU, RO
+from .serializers import CategorySerializer, create_best_product_serializer, create_list_serializer, create_detail_serializer
 from .catalog import Manager
 from . import models
 
 manager = Manager()
-
-langs = {
-    'en': EN,
-    'ru': RU,
-    'ro': RO
-}
 
 class SearchView(APIView):
     lookup_url_kwarg = 'lang'
@@ -27,6 +20,7 @@ class SearchView(APIView):
             queryset_choices = models.Choice.objects.filter(property_en__icontains=search)
 
         elif lang == 'ru':
+            #sqllite3 doesn't support utf-8 search with insensitive case
             objects_categories = models.Category.objects
             queryset_categories = objects_categories.filter(name_ru_s__contains=search.lower())
             queryset_categories = queryset_categories | objects_categories.filter(name_ru_s__contains=search.title())
@@ -75,6 +69,24 @@ class SearchView(APIView):
 
         return Response({'categories': categories, 'choices': choices, 'products': products})
 
+class BestView(APIView):
+    def get(self, request):
+        products = {}
+
+        products['MATTRESSES'] = [models.Mattress.objects.get_by_name('F1'), models.Mattress.objects.get_by_name('M1')]
+        '''
+        products['MATTRESSES'] = [models.Mattress.objects.get_by_name('F3'), models.Mattress.objects.get_by_name('X3')]
+        products['PILLOWS'] = [models.Pillow.objects.get_by_name('20'), models.Pillow.objects.get_by_name('Extra Memory')]
+        products['ACCESSORIES'] = [models.MattressPad.objects.get_by_name('L3'), models.Blanket.objects.get_by_name('SumWin')]
+        products['FOR KIDS'] = [models.Mattress.objects.get_by_name('Cocolatex'), models.Pillow.objects.get_by_name('Junior')]
+        products['FURNITURE'] = [models.Bed.objects.get_by_name('Milano 2'), models.Bed.objects.get_by_name('Victoria')]
+        products['BASISES'] = [models.Basis.objects.get_by_name('SuperLux'), models.Basis.objects.get_by_name('Premium')]
+        '''
+
+        for key, vals in products.items():
+            products[key] = [create_best_product_serializer(product.__class__)(product).data for product in vals]
+
+        return Response(products)
 
 class CategoryView(RetrieveAPIView):
     lookup_field = 'name'
