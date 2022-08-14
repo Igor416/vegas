@@ -15,6 +15,7 @@ import {
   faTrash,
   faCalendarAlt
 } from '@fortawesome/free-solid-svg-icons';
+import i18n from './i18n.js';
 import App from "./components/App.js";
 import Home from "./components/Home.js";
 import Catalog from "./components/Catalog.js";

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import i18n from "i18next";
 import { Outlet, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { currencies } from './reusables/Globals.js';
@@ -22,6 +23,7 @@ export default class App extends Component {
       }
       location.replace(location.pathname + `?lang=${lang}`)
     }
+    i18n.changeLanguage(lang);
     this.state = {
       lang: lang,
       currency: currencies[0],
@@ -55,6 +57,7 @@ export default class App extends Component {
   }
 
   updateLang(lang) {
+    i18n.changeLanguage(lang);
     history.pushState(location.pathname.replace(`?lang=${lang}`, `?lang=${this.state.lang}`), '')
     this.setState({
       lang: lang
