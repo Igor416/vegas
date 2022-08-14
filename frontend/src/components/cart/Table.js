@@ -1,20 +1,24 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from "react-router-dom";
 import TableHeader from "./TableHeader.js";
-import TableFooter from "./TableFooter.js";
+import CustomButton from "../reusables/CustomButton.js";
 
 export default function Table(props) {
   const products = props.products
   
   const translations = {
     en: {
-      size: 'Size: '
+      size: 'Size: ',
+      add: 'Add more'
     },
     ru: {
-      size: 'Размер: '
+      size: 'Размер: ',
+      add: 'Добавить еще'
     },
     ro: {
-      size: 'Marimea: '
+      size: 'Marimea: ',
+      add: 'Adăuga mai mult'
     }
   }
 
@@ -66,7 +70,15 @@ export default function Table(props) {
         </div>
       </div>
       )})}
-      <TableFooter total={props.total} lang={props.lang} currency={props.currency} />
+      <div className="row text-center">
+        <Link to={"/" + location.search} className="d-flex justify-content-center no-link col-2 pt-3 border-end">
+          <CustomButton text={lang_version.add} color="limeGreen"/>
+        </Link>
+        <div className="col-9 border-end"></div>
+        <div style={{ color: 'var(--deep-sky-blue)' }} className="col-1 d-flex justify-content-center align-items-center h5 m-0">
+          <span>{props.total} ({props.currency})</span>
+        </div>
+      </div>
     </div>
   );
 }
