@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { StyleSheet, css } from 'aphrodite';
-import { sendSearch } from "../reusables/APICallPoints.js"
-import CustomLink from '../reusables/CustomLink.js';
+import { sendSearch } from "./APICallPoints.js"
+import CustomLink from './CustomLink.js';
 
 const resultsStyles = StyleSheet.create({
   hide: {
@@ -24,25 +24,25 @@ export default function SearchBar(props) {
     en: {
       search: 'Search products...',
       help: 'If you didn\'t find what you were looking for, try changing the language',
-      categories: 'Categories: ',
-      choices: 'Characteristics: ',
-      products: 'Products: ',
+      categories: 'Categories',
+      choices: 'Characteristics',
+      products: 'Products',
       from: 'from',
     },
     ru: {
       search: 'Искать товары...',
       help: 'Если вы не нашли то, чего хотели, попробуйте сменить язык',
-      categories: 'Категории: ',
-      choices: 'Характеристики: ',
-      products: 'Продукты: ',
+      categories: 'Категории',
+      choices: 'Характеристики',
+      products: 'Продукты',
       from: 'от',
     },
     ro: {
       search: 'Cauta bunuri...',
       help: 'Dacă nu ați găsit ceea ce căutați, încercați să schimbați limba',
-      categories: 'Categorii: ',
-      choices: 'Caracteristici: ',
-      products: 'Produse: ',
+      categories: 'Categorii',
+      choices: 'Caracteristici',
+      products: 'Produse',
       from: 'de la',
     }
   }
@@ -91,7 +91,7 @@ export default function SearchBar(props) {
       if (key == 'products') {
       return (
         <div key={index} className="w-100 d-flex flex-column border-bottom mt-3">
-          <span className="h5 pb-2">{lang_version[key]}</span>
+          <span className="h5 pb-2">{lang_version[key]}: </span>
           {res[key].map((item, index) => {
           return (
             <div key={index} className="d-flex row-nowrap justify-content-between text-end">
@@ -121,7 +121,7 @@ export default function SearchBar(props) {
       else {
       return (
         <div key={index} className="w-100 d-flex flex-column border-bottom mt-3">
-          <span className="h5 pb-2">{lang_version[key]}</span>
+          <span className="h5 pb-2">{lang_version[key]}: </span>
           {res[key].map((item, index) => {
           return (
             <div key={index} className="d-flex row-nowrap justify-content-between text-end">
