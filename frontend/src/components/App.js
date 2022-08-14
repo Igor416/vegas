@@ -3,6 +3,7 @@ import { Outlet, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
 import { currencies } from './reusables/Globals.js';
 import Header from "./Header.js";
+import MobileHeader from "./MobileHeader.js";
 import Footer from "./Footer.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -29,6 +30,7 @@ export default class App extends Component {
         total: 0
       }
     }
+    this.isMobile = window.matchMedia("(max-width: 576px)").matches
 
     this.updateLang = this.updateLang.bind(this)
     this.updateCurrency = this.updateCurrency.bind(this)
@@ -179,8 +181,25 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        <Header updateLang={this.updateLang} lang={this.state.lang} currency={this.state.currency} total={this.state.cart.total}/>
+        {this.isMobile
+        ?
+        <MobileHeader
+          updateLang={this.updateLang}
+          lang={this.state.lang}
+          currency={this.state.currency}
+          total={this.state.cart.total}
+        />
+        :
+        <Header
+          updateLang={this.updateLang}
+          lang={this.state.lang}
+          currency={this.state.currency}
+          total={this.state.cart.total}
+        />
+        }
+        
         <Outlet context={Object.assign(this.state, {
+          isMobile: this.isMobile,
           updateCurrency: this.updateCurrency,
           addProduct: this.addProduct,
           deleteProduct: this.deleteProduct,
@@ -191,7 +210,7 @@ export default class App extends Component {
           id="cart"
           style={{
           bottom: '5vh',
-          right: '2vw',
+          right: this.isMobile ? '5vw' : '2vw',
           width: document.getElementById('cart')?.offsetHeight,
           backgroundColor: 'var(--dark-cyan)'
           }}

@@ -48,6 +48,8 @@ object-assign
 
 /*! ./Hoverable.js */
 
+/*! ./MobileHeader.js */
+
 /*! ./Price.js */
 
 /*! ./SearchBar.js */
@@ -97,6 +99,8 @@ object-assign
 /*! ./header/Menu.js */
 
 /*! ./header/Navbar.js */
+
+/*! ./header/SearchBar.js */
 
 /*! ./header/links.json */
 
@@ -218,6 +222,10 @@ object-assign
 
 /*!****************************************!*\
   !*** ./node_modules/react-is/index.js ***!
+  \****************************************/
+
+/*!****************************************!*\
+  !*** ./src/components/MobileHeader.js ***!
   \****************************************/
 
 /*!****************************************!*\
