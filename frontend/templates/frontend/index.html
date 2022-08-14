@@ -24,5 +24,13 @@
       <span>SRL DECIMUS LEGIO Limited</span>
     </footer>
     <script src="{% static 'frontend/main.js' %}"></script>
+    <script>
+      setTimeout(() => {
+        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      }, 1000)
+    </script>
   </body>
 </html>
