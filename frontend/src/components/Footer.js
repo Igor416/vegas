@@ -16,7 +16,6 @@ export default class Footer extends Component {
             <span>Магазины</span><br/>
             <span>Доставка</span><br/>
             <span>Условия пользования</span><br/>
-            <span>Политика конфиденциальности</span><br/>
             <span>Сертификаты</span><br/>
             <span>Материалы</span><br/>
             <span>Акции</span><br/>
