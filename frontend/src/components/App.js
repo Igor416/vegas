@@ -69,25 +69,15 @@ export default class App extends Component {
 
   addProduct(category, product, size, quantity) {
     let products = this.state.cart.products
-    let contains
-    for (let pr of products) {
+    let contains, pr
+    for (pr of products) {
       if (pr.id == product.id && pr.category == category && pr.size == size.width + ' x ' + size.length) {
         contains = true
-        if (pr.quantity == product.quantity) {
-          return
-        }
-        else {
-          pr.quantity += product.quantity
-        }
+        break
       }
     }
     if (contains) {
-      this.setState({
-        cart: {
-          products: products,
-          total: 0
-        } 
-      }, () => {this.setTotal(); Cookies.set('products', this.encodeProducts(this.state.cart.products))})
+      this.updateQuantity(category, product.id, pr.quantity + quantity)
       return
     }
 
