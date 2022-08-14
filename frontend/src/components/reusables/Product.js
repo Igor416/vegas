@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { sendForm } from "./APICallPoints.js";
 import CustomButton from './CustomButton.js';
 import CustomPhoneInput from './CustomPhoneInput.js';
-import { Hoverable } from './Hoverable.js';
+import Hoverable from './Hoverable.js';
 
 const shadowStyles = StyleSheet.create({
   item: {

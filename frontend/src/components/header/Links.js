@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { StyleSheet, css } from 'aphrodite';
 import CustomLink from '../reusables/CustomLink.js';
-import { Hoverable } from '../reusables/Hoverable.js';
+import Hoverable from '../reusables/Hoverable.js';
 
 const angleStyles = StyleSheet.create({
   hide: {

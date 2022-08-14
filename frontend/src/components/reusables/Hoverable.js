@@ -17,7 +17,7 @@ const lineStyles = StyleSheet.create({
   }, line)
 })
 
-export function Hoverable(props) {
+export default function Hoverable(props) {
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -26,20 +26,6 @@ export function Hoverable(props) {
       onMouseLeave={() => setIsActive(false)}
     >
       <span>{props.text}</span>
-      <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition mt-1"}></div>
-    </div>
-  )
-}
-
-export function HoverableIcon(props) {
-  const [isActive, setIsActive] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-    >
-      {props.icon}
       <div className={css(isActive ? lineStyles.show : lineStyles.hide) + " transition mt-1"}></div>
     </div>
   )

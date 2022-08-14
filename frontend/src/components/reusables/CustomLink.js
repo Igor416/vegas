@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Hoverable } from "./Hoverable.js";
+import Hoverable from "./Hoverable.js";
 
 export default function CustomLink(props) {
   if (props.to == '') {

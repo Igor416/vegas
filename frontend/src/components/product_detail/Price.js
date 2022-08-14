@@ -1,5 +1,5 @@
 import React from "react";
-import { Hoverable } from '../reusables/Hoverable.js';
+import Hoverable from '../reusables/Hoverable.js';
 import { currencies } from '../reusables/Globals.js';
 
 export default function Sorting(props) {
