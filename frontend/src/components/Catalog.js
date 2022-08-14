@@ -3,10 +3,39 @@ import { useParams, useOutletContext } from "react-router-dom";
 import { StyleSheet, css } from 'aphrodite';
 import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProducts } from "./reusables/APICallPoints.js";
+import Hoverable from './reusables/Hoverable.js';
+import { currencies } from './reusables/Globals.js';
 import SectionImage from "./reusables/SectionImage.js";
-import Sorting from "./catalog/Sorting.js";
 import Product from './reusables/Product.js'
 
+const switchMenu = {
+  padding: '0.5vw',
+  width: '3vw',
+  height: '3vw',
+  backgroundColor: 'var(--dark-cyan)'
+}
+
+const switchStyles = StyleSheet.create({
+  column: Object.assign({
+    flexFlow: 'column nowrap',
+    gap: '1vh'
+  }, switchMenu),
+  grid: Object.assign({
+    flexFlow: 'row wrap',
+    gap: '0.5vw'
+  }, switchMenu)
+})
+
+const barStyles = StyleSheet.create({
+  column: {
+    height: '1vh',
+    width: '2vw'
+  },
+  grid: {
+    height: '0.75vw',
+    width: '0.75vw'
+  }
+})
 const sectionStyles = StyleSheet.create({
   column: {
     flexFlow: 'column'
@@ -36,7 +65,6 @@ class Catalog extends Component {
     }
 
     this.updateProducts = this.updateProducts.bind(this);
-    this.updateCurrency = this.updateCurrency.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
   }
 
@@ -56,11 +84,34 @@ class Catalog extends Component {
       getCategory(category).then((data) => {
         this.setState({
           category: data
-        })
-      })
-      getProducts(category, sub_category, filter).then((data) => {
-        this.setState({
-          products: data
+        }, () => {
+          getProducts(category, sub_category, filter).then((data) => {
+            let sorted_products = {};
+            let filtering, remainder;
+            
+            for (let product of data) {
+              filtering = product[this.state.category.default_filtering]
+              if (filtering in sorted_products) {
+                sorted_products[filtering].push(product)
+              }
+              else {
+                sorted_products[filtering] = [product]
+              }
+            }
+            
+            for (let filtering in sorted_products) {
+              remainder = sorted_products[filtering].length % 3 
+              if (remainder != 0) {
+                for (let i = 0; i < remainder + 1; i++) {
+                  sorted_products[filtering].push(null)
+                }
+              }
+            }
+
+            this.setState({
+              products: sorted_products
+            })
+          })
         })
       })
     })
@@ -73,32 +124,6 @@ class Catalog extends Component {
     this.props.context.updateCurrency(currency)
   }
 
-  getSortedProducts() {
-    let sorted_products = {};
-    let filtering, remainder;
-    
-    for (let product of this.state.products) {
-      filtering = product[this.state.category.default_filtering]
-      if (filtering in sorted_products) {
-        sorted_products[filtering].push(product)
-      }
-      else {
-        sorted_products[filtering] = [product]
-      }
-    }
-    
-    for (let filtering in sorted_products) {
-      remainder = sorted_products[filtering].length % 3 
-      if (remainder != 0) {
-        for (let i = 0; i < remainder + 1; i++) {
-          sorted_products[filtering].push(null)
-        }
-      }
-    }
-
-    return sorted_products
-  }
-
   changeLayout() {
     this.setState({
       isGrid: !this.state.isGrid
@@ -106,7 +131,7 @@ class Catalog extends Component {
   }
 
   render() {
-    let sorted_products = this.state.products && this.getSortedProducts();
+    const t = this.props.t
 
     return (
       <div>
@@ -116,20 +141,35 @@ class Catalog extends Component {
           <div className="row px-5 py-4">
             <div className="col-1"></div>
             <div className="col-10">
-              <Sorting
-                updateCurrency={this.updateCurrency}
-                changeLayout={this.changeLayout}
-                currency={this.state.currency}
-                isGrid={this.state.isGrid}
-                lang={this.state.lang}
-              />
+              <div className="d-flex flex-row justify-content-end align-items-center h6">
+                <div className="d-flex flex-row me-5 align-items-center">
+                  {currencies.map((currency, index) => {
+                  return (
+                    <div
+                      onClick={() => this.updateCurrency(currency)}
+                      className={"d-flex flex-row " + (currency != this.state.currency && "link")}
+                      key={index}
+                    >
+                      <Hoverable text={currency} isActive={currency == this.state.currency}/>
+                      <span>&nbsp;</span>
+                    </div>
+                  )})}
+                </div>
+                <div
+                  onClick={this.changeLayout}
+                  className={css(this.state.isGrid ? switchStyles.grid : switchStyles.column) + ' d-flex transition'}>
+                  {[0, 1, 2].map((value) => {
+                  return <div key={value} className={css(this.state.isGrid ? barStyles.grid : barStyles.column) + ' bg-white transition'} />
+                  })}
+                </div>
+              </div>
               <div className="py-4">
-              {this.state.products && Object.keys(sorted_products).map((filtering, index) => {
+              {this.state.products && Object.keys(this.state.products).map((filtering, index) => {
               return (
                 <div key={index} className="d-flex my-5 flex-column">
                   <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
                   <div className={css(this.state.isGrid ? sectionStyles.grid : sectionStyles.column) + " d-flex mt-3 justify-content-between"}>
-                  {sorted_products[filtering].map((product, index) => {
+                  {this.state.products[filtering].map((product, index) => {
                   return (
                     <div style={{flex: '1 1 0'}} key={index}>
                       <Product
