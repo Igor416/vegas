@@ -8,7 +8,6 @@ i18n.use(Backend).use(initReactI18next).init({
     useSuspense: true,
   },
   supported: ['en', 'ru', 'ro'],
-  debug: true,
   interpolation: {
     escapeValue: false
   },
