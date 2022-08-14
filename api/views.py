@@ -108,7 +108,7 @@ class ProductsView(APIView):
         serializer = create_list_serializer(model, lang)(queryset, many=True)
         return Response(serializer.data)
 
-class ProductDetailView(APIView):
+class ProductDetailsView(APIView):
     lookup_url_kwarg = 'lang'
 
     def get(self, request, product, id):

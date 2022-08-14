@@ -16,19 +16,13 @@ object-assign
  * Copyright 2022 Fonticons, Inc.
  */
 
-/*! ../reusables/APICallPoints.js */
+/*! ../links.json */
 
 /*! ../reusables/CustomButton.js */
-
-/*! ../reusables/CustomLink.js */
-
-/*! ../reusables/CustomPhoneInput.js */
 
 /*! ../reusables/Globals.js */
 
 /*! ../reusables/Hoverable.js */
-
-/*! ../reusables/LocationListener.js */
 
 /*! ./APICallPoints.js */
 
@@ -37,6 +31,8 @@ object-assign
 /*! ./Characteristic.js */
 
 /*! ./CustomButton.js */
+
+/*! ./CustomLink.js */
 
 /*! ./CustomPhoneInput.js */
 
@@ -52,11 +48,7 @@ object-assign
 
 /*! ./Price.js */
 
-/*! ./SearchBar.js */
-
 /*! ./Structure.js */
-
-/*! ./TableHeader.js */
 
 /*! ./Technologies.js */
 
@@ -65,12 +57,6 @@ object-assign
 /*! ./arrayWithHoles.js */
 
 /*! ./assertThisInitialized.js */
-
-/*! ./cart/Form.js */
-
-/*! ./cart/Table.js */
-
-/*! ./catalog/Sorting.js */
 
 /*! ./checkPropTypes */
 
@@ -92,7 +78,7 @@ object-assign
 
 /*! ./components/Home.js */
 
-/*! ./components/ProductDetail.js */
+/*! ./components/ProductDetails.js */
 
 /*! ./components/Shops.js */
 
@@ -101,16 +87,6 @@ object-assign
 /*! ./factoryWithTypeCheckers */
 
 /*! ./getFetch.cjs */
-
-/*! ./header/Links.js */
-
-/*! ./header/Menu.js */
-
-/*! ./header/Navbar.js */
-
-/*! ./header/SearchBar.js */
-
-/*! ./header/links.json */
 
 /*! ./i18n.js */
 
@@ -142,13 +118,19 @@ object-assign
 
 /*! ./reusables/CustomLink.js */
 
+/*! ./reusables/CustomPhoneInput.js */
+
 /*! ./reusables/Globals */
 
 /*! ./reusables/Globals.js */
 
+/*! ./reusables/Hoverable.js */
+
 /*! ./reusables/LocationListener.js */
 
 /*! ./reusables/Product.js */
+
+/*! ./reusables/SearchBar.js */
 
 /*! ./reusables/SectionImage.js */
 
@@ -250,6 +232,10 @@ object-assign
   !*** ./src/index.js ***!
   \**********************/
 
+/*!************************!*\
+  !*** ./src/links.json ***!
+  \************************/
+
 /*!*******************************!*\
   !*** ./src/components/App.js ***!
   \*******************************/
@@ -278,20 +264,8 @@ object-assign
   !*** ./src/components/Catalog.js ***!
   \***********************************/
 
-/*!*************************************!*\
-  !*** ./src/components/cart/Form.js ***!
-  \*************************************/
-
-/*!**************************************!*\
-  !*** ./src/components/cart/Table.js ***!
-  \**************************************/
-
 /*!***************************************!*\
   !*** ./node_modules/history/index.js ***!
-  \***************************************/
-
-/*!***************************************!*\
-  !*** ./src/components/header/Menu.js ***!
   \***************************************/
 
 /*!****************************************!*\
@@ -302,18 +276,6 @@ object-assign
   !*** ./src/components/MobileHeader.js ***!
   \****************************************/
 
-/*!****************************************!*\
-  !*** ./src/components/header/Links.js ***!
-  \****************************************/
-
-/*!*****************************************!*\
-  !*** ./src/components/ProductDetail.js ***!
-  \*****************************************/
-
-/*!*****************************************!*\
-  !*** ./src/components/header/Navbar.js ***!
-  \*****************************************/
-
 /*!******************************************!*\
   !*** ./node_modules/asap/browser-raw.js ***!
   \******************************************/
@@ -323,7 +285,7 @@ object-assign
   \******************************************/
 
 /*!******************************************!*\
-  !*** ./src/components/header/links.json ***!
+  !*** ./src/components/ProductDetails.js ***!
   \******************************************/
 
 /*!*******************************************!*\
@@ -332,10 +294,6 @@ object-assign
 
 /*!*******************************************!*\
   !*** ./node_modules/string-hash/index.js ***!
-  \*******************************************/
-
-/*!*******************************************!*\
-  !*** ./src/components/catalog/Sorting.js ***!
   \*******************************************/
 
 /*!********************************************!*\
@@ -348,14 +306,6 @@ object-assign
 
 /*!********************************************!*\
   !*** ./node_modules/react-router/index.js ***!
-  \********************************************/
-
-/*!********************************************!*\
-  !*** ./src/components/cart/TableHeader.js ***!
-  \********************************************/
-
-/*!********************************************!*\
-  !*** ./src/components/header/SearchBar.js ***!
   \********************************************/
 
 /*!*********************************************!*\
@@ -376,6 +326,10 @@ object-assign
 
 /*!***********************************************!*\
   !*** ./src/components/reusables/Hoverable.js ***!
+  \***********************************************/
+
+/*!***********************************************!*\
+  !*** ./src/components/reusables/SearchBar.js ***!
   \***********************************************/
 
 /*!************************************************!*\

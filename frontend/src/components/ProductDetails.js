@@ -12,7 +12,7 @@ function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
 }
 
-class ProductDetail extends Component {
+class ProductDetails extends Component {
   constructor(props) {
     super(props);
 
@@ -99,4 +99,4 @@ class ProductDetail extends Component {
   }
 }
 
-export default withParams(ProductDetail);
+export default withParams(ProductDetails);

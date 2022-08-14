@@ -161,16 +161,16 @@ def create_list_serializer(model, lang):
 
     return type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
 
-class ProductDetailSerializer(ProductSerializer):
+class ProductDetailsSerializer(ProductSerializer):
     images = ImageSerializer(many=True)
     videos = VideoSerializer(many=True)
 
     def __init__(self, *args, **kwargs):
-        super(ProductDetailSerializer, self).__init__(*args, **kwargs)
+        super(ProductDetailsSerializer, self).__init__(*args, **kwargs)
         self.fields.update({'desc': self.fields.pop('desc_' + self.lang)})
 
     def to_representation(self, obj):
-        r = super(ProductDetailSerializer, self).to_representation(obj)
+        r = super(ProductDetailsSerializer, self).to_representation(obj)
 
         r['characteristic'], r['description'] = {}, {}
         for key in self.model.get_order():
@@ -220,4 +220,4 @@ def create_detail_serializer(model, lang):
         fields.update({'structure': LayerMattressPadSerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
-    return type(model.get_name() + 'Serializer', (ProductDetailSerializer, ), fields)
+    return type(model.get_name() + 'Serializer', (ProductDetailsSerializer, ), fields)
