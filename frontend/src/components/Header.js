@@ -88,11 +88,6 @@ export default class Header extends Component {
     }
   }
 
-  isShop() {
-    let categories = Object.keys(CATEGORIES[this.props.lang])
-    return this.state.category == categories[categories.length - 1]
-  }
-
   render() {
     return (
       <div className="bg-white">
@@ -119,7 +114,6 @@ export default class Header extends Component {
             currency={this.props.currency}
             categoriesEn={CATEGORIES.en[this.state.categoryEN]}
             categories={CATEGORIES[this.props.lang][this.state.category]}
-            isShop={this.isShop()}
             state={this.state}
           />
         </nav>

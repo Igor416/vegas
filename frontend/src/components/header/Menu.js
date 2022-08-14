@@ -34,10 +34,6 @@ export default function Menu(props) {
   let lang_version = translations[props.lang];
 
   let getLink = (sub_category, link=null) => {
-    if (props.isShop) {
-      return '/shops/' + sub_category
-    }
-
     if (categories[sub_category].length == 0 || link) {
       let url = `/catalog/${sub_category.split(';')[1]}`
       if (link) {
@@ -77,10 +73,7 @@ export default function Menu(props) {
             onMouseEnter={() => props.onMouseEnter(true, state.category, sub_category)}
             onMouseLeave={() => props.onMouseLeave(true, sub_category)}
           >
-            <CustomLink
-              to={getLink(sub_category)}
-              text={sub_category.split(';')[0]}
-            />
+            <CustomLink to={getLink(sub_category)} text={sub_category.split(';')[0]} />
           </div>
         )})}
       </div>
