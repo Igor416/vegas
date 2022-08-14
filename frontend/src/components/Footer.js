@@ -37,7 +37,7 @@ export default class Footer extends Component {
             <div className="mb-2 mt-4">
               <span className="h5">Напишите Нам</span><br/>
             </div>
-            <span>test@gmail.com</span>
+            <span>vegasmd.info@gmail.com</span>
             <div className="mb-2 mt-4">
               <span className="h5">Подпишитесь на Нас</span><br/>
             </div>
