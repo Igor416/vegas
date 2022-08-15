@@ -126,7 +126,7 @@ export default function Product(props) {
               </div>
             </div>
           </div>
-          <div className="py-3 border-bottom border-1 border-muted">
+          <div className="py-3 border-bottom border-muted">
             <div>
               <span>{product.desc}</span>
             </div>

@@ -1,0 +1,21 @@
+{
+  "size": "Size: ",
+  "cart": "Choosed products",
+  "name": "Name: ",
+  "shortcut": "Photo: ",
+  "price": "Price: ",
+  "discount": "Discount: ",
+  "quantity": "Quantity: ",
+  "total": "Total: ",
+  "add": "Add more",
+  "error": "Fill in all the fields!",
+  "nickname": "Your full name",
+  "town": "Your city / locality",
+  "address": "Address",
+  "payment1": "By card to the company account",
+  "payment2": "By card through the terminal",
+  "payment3": "By cash",
+  "courier": "By courier",
+  "pickup": "Pickup",
+  "submit": "Checkout"
+}

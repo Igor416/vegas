@@ -1,0 +1,21 @@
+{
+  "width": "Lățime (cm)",
+  "length": "Lungime (cm)",
+  "old_price": "Старая цена",
+  "current_price": "Цена",
+  "buy": "Добавить в корзину",
+  "description": "Descriere",
+  "characteristic": "Caracteristică",
+  "structure": "Structură",
+  "technologies": "Tehnologii",
+  "yes": "da",
+  "no": "nu",
+  "characteristicbutton": "Afișează toate caracteristicile",
+  "brand": "Marca",
+  "country": "Țara de fabricație",
+  "countrytext": "Bielorusia",
+  "manufacturer": "Producător",
+  "manufacturertext": "VEGAS LLC, Locotenentului Ryabtsev, 118V, 224025, Brest, Belarus",
+  "note": "Notă",
+  "notetext": "Ilustrațiile prezintă prototipuri. Aspectul bunurilor și componentelor\n acestora pot diferi de ilustrații, păstrând\n în același timp proprietățile declarate de consumator."
+}

@@ -1,0 +1,21 @@
+{
+  "size": "Marimea",
+  "cart": "Produse Selectate",
+  "name": "Nume:",
+  "shortcut": "Fotografie",
+  "price": "Preț",
+  "discount": "Reducere",
+  "quantity": "Cantitate",
+  "total": "Total",
+  "add": "Adăuga mai mult",
+  "error": "Completați toate intrările!",
+  "nickname": "Numele dumneavoastră",
+  "town": "Orașul/localitatea dumneavoastră",
+  "address": "Аbordare",
+  "payment1": "Cu cardul în contul companiei",
+  "payment2": "Cu cardul prin terminal",
+  "payment3": "Bani lichizi",
+  "courier": "Prin curier",
+  "pickup": "Ridica",
+  "submit": "Face o comandă"
+}

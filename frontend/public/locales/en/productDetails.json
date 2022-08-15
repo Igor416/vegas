@@ -1,0 +1,21 @@
+{
+  "width": "Width (cm)",
+  "length": "Length (cm)",
+  "old_price": "Old price",
+  "current_price": "Price",
+  "buy": "Add to basket",
+  "description": "Description",
+  "characteristic": "Characteristic",
+  "structure": "Structure",
+  "technologies": "Technologies",
+  "yes": "yes",
+  "no": "no",
+  "characteristicbutton": "Show All Characteristic",
+  "brand": "Brand",
+  "country": "Country of manufacture",
+  "countrytext": "Belarus",
+  "manufacturer": "Manufacturer",
+  "manufacturertext": "VEGAS LLC, Lieutenant Ryabtsev, 118V, 224025, Brest, Belarus",
+  "note": "Note",
+  "notetext": "The illustrations show prototypes. The appearance of goods and their components\n may differ from the illustrations\n while maintaining the declared consumer properties."
+}

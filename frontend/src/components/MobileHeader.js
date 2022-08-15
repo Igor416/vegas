@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withTranslation } from "react-i18next";
 import LocationListener from './reusables/LocationListener.js';
-import SearchBar from "./header/SearchBar.js";
+import SearchBar from "./reusables/SearchBar.js";
 import { StyleSheet, css } from 'aphrodite';
 import { langs as Langs } from './reusables/Globals.js';
 import CustomLink from './reusables/CustomLink.js';
@@ -32,37 +33,11 @@ const menuStyles = StyleSheet.create({
   }
 })
 
-const CATEGORIES = require("./header/links.json");
+const CATEGORIES = require("../links.json");
 
-export default class Header extends Component {
+class MobileHeader extends Component {
   constructor(props) {
     super(props);
-    this.inMenu = false;
-
-    this.translations = {
-      en: {
-        order: 'Order now',
-        home: 'HOME',
-        shops: 'SHOPS',
-        credit: 'Buy now,\npay later',
-        cart: 'Cart'
-      },
-      ru: {
-        order: 'Закажите сейчас',
-        home: 'ГЛАВНАЯ',
-        shops: 'МАГАЗИНЫ',
-        credit: 'Купи сейчас,\nплати позже',
-        cart: 'Корзина'
-      },
-      ro: {
-        order: 'Comanda acum',
-        home: 'ACASA',
-        shops: 'MAGAZINE',
-        credit: 'Cumpara acum,\nachita apoi',
-        cart: 'Coş'
-      }
-    }
-
     this.state = {
       menuOpened: false,
       langs: () => {
@@ -131,7 +106,7 @@ export default class Header extends Component {
   }
 
   render() {
-    let lang_version = this.translations[this.props.lang];
+    const t = this.props.t
     return (
       <div className="bg-white position-sticky sticky-top">
         <LocationListener locationChanged={(location) => this.setState({pathname: location.pathname})} />
@@ -184,7 +159,7 @@ export default class Header extends Component {
               className="rounded-circle p-3 d-flex justify-content-center align-items-center"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
-              title={`${lang_version.order}: 079 40-70-32`}
+              title={`${t('order')}: 079 40-70-32`}
             >
               <FontAwesomeIcon icon='phone' color="white" />
             </div>
@@ -200,7 +175,7 @@ export default class Header extends Component {
               to={"/?lang=" + this.props.lang}
               className="w-100 p-3 border-bottom no-link no-hover"
             >
-              <span>{lang_version.home}</span>
+              <span>{t('home')}</span>
             </Link>
           {Object.keys(CATEGORIES[this.props.lang]).map((category, index) => {
           return (
@@ -218,7 +193,7 @@ export default class Header extends Component {
               to={"/shops?lang=" + this.props.lang}
               className="w-100 p-3 border-bottom no-link no-hover"
             >
-              <span>{lang_version.shops}</span>
+              <span>{t('shops')}</span>
             </Link>
           </div>
           <div style={{backgroundColor: 'var(--dark-grey)'}} className="flex-grow-1 w-100 d-flex row-nowrap text-white">
@@ -227,7 +202,7 @@ export default class Header extends Component {
                 <FontAwesomeIcon icon='hand-holding-usd' />
               </span>
               <br />
-              <span className="h6" style={{whiteSpace: "pre-line"}}>{lang_version.credit}</span>
+              <span className="h6" style={{whiteSpace: "pre-line"}}>{t('credit')}</span>
             </div>
             <Link
               onClick={() => this.toggleMenu()}
@@ -238,7 +213,7 @@ export default class Header extends Component {
                 <FontAwesomeIcon icon='shopping-cart' color="white" />
               </span>
               <br />
-              <span style={{color: 'white'}} className="h6">{lang_version.cart} <br/> {this.props.total} ({this.props.currency})</span>
+              <span style={{color: 'white'}} className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
           <div style={{left: 0, opacity: 0, height: '100vh'}} className={css(this.state.category ? menuStyles.shown : menuStyles.hidden) + " position-absolute transition bg-white d-flex flex-column"}>
@@ -294,3 +269,5 @@ export default class Header extends Component {
     );
   }
 }
+
+export default withTranslation('header')(MobileHeader)

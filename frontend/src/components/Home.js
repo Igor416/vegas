@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { withTranslation } from "react-i18next";
 import { getBanners, getReviews, sendReview } from "./reusables/APICallPoints.js";
 import LocationListener from "./reusables/LocationListener.js";
 import CustomButton from "./reusables/CustomButton.js"
@@ -25,42 +26,7 @@ class Home extends Component {
       }
     }
 
-    this.translations = {
-      en: {
-        is: 'is',
-        chars: [['European components', 'lime-green'], ['Extended warranty up to 25 years', 'dark-cyan'], ['Individual sizes', 'deep-sky-blue']],
-        main: 'Vegas - better dreams',
-        desc: 'We believe that good sleep is the foundation of a happy and healthy life, and our dream is that everyone can get their 8 hours of restful sleep.\n\nOur team has developed a wide range of products designed to improve the quality of sleep. Vegas is designed with a visible balance of style and function.',
-        reviews: 'Reviews',
-        leave: 'Leave your review',
-        title: 'Title',
-        city: 'City',
-        text: 'Text'
-      },
-      ru: {
-        is: 'это',
-        chars: [['Европейские комплектующие', 'lime-green'], ['Увеличенная гарантия до 25 лет', 'dark-cyan'], ['Индивидуальные размеры', 'deep-sky-blue']],
-        main: 'Vegas - ваш лучший сон',
-        desc: 'Мы знаем, что хороший сон является основой счастливой и здоровой жизни, и наша мечта состоит в том, чтобы каждый мог получить свои 8 часов спокойного сна.\n\nНаша команда разработала широкий спектр продуктов, предназначенных для улучшения качества сна. Изделие Vegas создано с видимым балансом стиля и функциональности.',
-        reviews: 'Отзывы',
-        leave: 'Оставьте свой отзыв',
-        title: 'Заголовок',
-        city: 'Город',
-        text: 'Текст'
-      },
-      ro: {
-        is: 'este',
-        chars: [['Componente europene', 'lime-green'], ['Garanție extinsă până la 25 de ani', 'dark-cyan'], ['Dimensiuni individuale', 'deep-sky-blue']],
-        main: 'Vegas - cel mai bun visul tău',
-        desc: 'Credem că un somn bun este baza unei vieți fericite și sănătoase, iar visul nostru este ca toată lumea să își poată avea cele 8 ore de somn odihnitor.\n\nEchipa noastră a dezvoltat o gamă largă de produse concepute pentru a îmbunătăți calitatea somnului. Vegas este proiectat cu un echilibru vizibil de stil și funcție.',
-        reviews: 'Recenzii',
-        leave: 'Lăsați recenzie dvs',
-        title: 'Titlu',
-        city: 'Oraș',
-        text: 'Text'
-      }
-    }
-
+    this.colors = ['lime-green', 'dark-cyan', 'deep-sky-blue']
     this.updateLang = this.updateLang.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
@@ -100,8 +66,7 @@ class Home extends Component {
   }
 
   render() {
-    const lang_verion = this.translations[this.state.lang];
-
+    const t = this.props.t
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateLang} />
@@ -142,9 +107,9 @@ class Home extends Component {
           </div>
           <div className="d-flex row-nowrap py-5 bg-light justify-content-center align-items-center mt-5">
             <img src="/static/images/logo.png"/>
-            <span style={{fontWeight: 400}} className="ms-5 h1">{lang_verion.is}</span>
+            <span style={{fontWeight: 400}} className="ms-5 h1">{t('is')}</span>
             <div className="row justify-content-between">
-            {lang_verion.chars.map((char, index) => {
+            {[1, 2, 3].map((num, index) => {
             return (
               <div
                 key={index}
@@ -152,11 +117,11 @@ class Home extends Component {
                   width: '12.5vw',
                   height: '12.5vw',
                   fontWeight: 400,
-                  backgroundColor: `var(--${char[1]})`
+                  backgroundColor: `var(--${this.colors[index]})`
                 }}
                 className="d-flex p-3 ms-5 justify-content-center align-items-center text-center text-white rounded-circle span"
               >
-                <span className="h5">{char[0]}</span>
+                <span className="h5">{t('char' + num)}</span>
               </div>
             )})}
             </div>
@@ -164,9 +129,9 @@ class Home extends Component {
           <div className="row text-center mt-5 pt-5">
             <div className="col-3"></div>
             <div className="col-6">
-              <p className="h2">{lang_verion.main}</p>
+              <p className="h2">{t('main')}</p>
               <br />
-              <p style={{fontWeight: 400, whiteSpace: "pre-line"}}>{lang_verion.desc}</p>
+              <p style={{fontWeight: 400, whiteSpace: "pre-line"}}>{t('desc')}</p>
             </div>
             <div className="col-3"></div>
           </div>
@@ -175,7 +140,7 @@ class Home extends Component {
             <div className="col-2"></div>
             <div className="col-8">
               <div className="w-100 pt-3 border">
-                <span className="h4 border-bottom border-2">{lang_verion.reviews}:</span>
+                <span className="h4 border-bottom border-2">{t('reviews')}:</span>
                 <div id="carouselReviews" className="p-5 mt-1 carousel slide" data-interval="false">
                   <div className="carousel-indicators">
                     {this.state.reviews.map((_, index) => {
@@ -224,7 +189,7 @@ class Home extends Component {
                 {Object.keys(this.state.review).map((key, index) => {
                 return (
                 <div key={index} className="mt-2 d-flex flex-column">
-                  <label htmlFor={key} className="h6">{lang_verion[key]}: </label>
+                  <label htmlFor={key} className="h6">{t(key)}: </label>
                   <input
                     type="text"
                     name={key}
@@ -237,7 +202,7 @@ class Home extends Component {
                 )})}
                 <div className="w-100 d-flex justify-content-end mt-3">
                   <div onClick={this.submitForm}>
-                    <CustomButton color="darkCyan" text={lang_verion.leave} />
+                    <CustomButton color="darkCyan" text={t('leave')} />
                   </div>
                 </div>
               </div>
@@ -251,4 +216,4 @@ class Home extends Component {
   }
 }
 
-export default withParams(Home);
+export default withTranslation('home')(withParams(Home));
