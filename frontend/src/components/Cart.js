@@ -225,7 +225,7 @@ class Cart extends Component {
                 )})}
                 <div className="row text-center">
                   <Link to={"/" + location.search} className="d-flex justify-content-center no-link col-2 pt-3 border-end">
-                    <CustomButton text={t('add')} color="limeGreen"/>
+                    <CustomButton text={t('add')} color="lime-green"/>
                   </Link>
                   <div className="col-9 border-end"></div>
                   <div style={{ color: 'var(--deep-sky-blue)' }} className="col-1 d-flex justify-content-center align-items-center h5 m-0">
@@ -294,7 +294,7 @@ class Cart extends Component {
                   </div>
                 </div>
                 <div className="d-flex justify-content-end" onClick={this.submitForm}>
-                  <CustomButton color="deepSkyBlue" text={t('submit')} />
+                  <CustomButton color="deep-sky-blue" text={t('submit')} />
                 </div>
               </div>
             </div>

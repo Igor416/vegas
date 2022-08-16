@@ -302,7 +302,7 @@ class ProductDetails extends Component {
                           </div>
                         </div>
                         <div className="ps-5" onClick={() => this.props.context.addProduct(this.state.category.name, this.state.product, this.state.size, this.state.quantity)}>
-                          <CustomButton color="deepSkyBlue" text={t('buy')} />
+                          <CustomButton color="deep-sky-blue" text={t('buy')} />
                         </div>
                       </div>
                     </div>
@@ -349,7 +349,7 @@ class ProductDetails extends Component {
                             //displays error in console, however it works perfectly
                           }
                         }}>
-                          <CustomButton text={t('characteristic')} color="deepSkyBlue" />
+                          <CustomButton text={t('characteristic')} color="deep-sky-blue" />
                         </div>
                       </div>
                       <div className="col-6">

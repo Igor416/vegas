@@ -202,7 +202,7 @@ class Home extends Component {
                 )})}
                 <div className="w-100 d-flex justify-content-end mt-3">
                   <div onClick={this.submitForm}>
-                    <CustomButton color="darkCyan" text={t('leave')} />
+                    <CustomButton color="dark-cyan" text={t('leave')} />
                   </div>
                 </div>
               </div>
