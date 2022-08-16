@@ -1,15 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 
-export default function Hoverable(props) {
-  const [isActive, setIsActive] = useState(false);
+export default function Hoverable({text}) {
 
   return (
-    <div
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-    >
-      <span>{props.text}</span>
-      <div className={"line-" + (isActive ? "show" : "hide") + " line transition mt-1"}></div>
+    <div className="hoverable">
+      <span>{text}</span>
+      <div className="mt-1 transition"></div>
     </div>
   )
 }

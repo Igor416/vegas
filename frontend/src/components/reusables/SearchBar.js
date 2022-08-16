@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { sendSearch } from "./APICallPoints.js"
 import CustomLink from './CustomLink.js';
 
-export default function SearchBar(props) {
+export default function SearchBar({width, currency}) {
   let [search, setSearch] = useState('')
   let [show, setShow] = useState(false)
   let [res, setRes] = useState({})
@@ -43,7 +43,7 @@ export default function SearchBar(props) {
       </div>
       {Object.keys(res).length != 0 &&
       <div
-        style={{zIndex: 1200, width: props.width}}
+        style={{zIndex: 1200, width: width}}
         className={(show ? "search-show" : "search-hide") + " border bg-white transition position-absolute py-3 px-4 mt-4"}
       >
         <span className="mb-4">{t('help')}</span>
@@ -60,7 +60,7 @@ export default function SearchBar(props) {
               {item.discount != 0 && 
               <div style={{fontSize: '0.75em', textDecoration: 'line-through'}}>
                 <span>
-                  {`${t('from')} ${item.price[props.currency]} (${props.currency})`}
+                  {`${t('from')} ${item.price[currency]} (${currency})`}
                 </span>
               </div>
             }
@@ -69,10 +69,10 @@ export default function SearchBar(props) {
                   {`${t('from')} `}
                 </span>
                 <span style={{color: 'var(--lime-green)'}} className="h6">
-                  {item.price[props.currency] * (100 - item.discount) / 100}
+                  {item.price[currency] * (100 - item.discount) / 100}
                 </span>
                 <span>
-                  {` (${props.currency})`}
+                  {` (${currency})`}
                 </span>
               </div>
             </div>

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function LocationListener(props) {
+export default function LocationListener({locationChanged}) {
   let location = useLocation();
   useEffect(() => {
-    props.locationChanged(location);
+    locationChanged(location);
   }, [location]);
 
   return <div></div>;

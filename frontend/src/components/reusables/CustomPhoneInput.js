@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PhoneInput from 'react-phone-input-2';
 
-export default function CustomPhoneInput(props) {
+export default function CustomPhoneInput({lang, color, phone, setPhone}) {
   const translations = {
     en: {
       phone: 'Phone'
@@ -14,7 +14,7 @@ export default function CustomPhoneInput(props) {
     }
   }
 
-  const lang_version = translations[props.lang]
+  const lang_version = translations[lang]
 
   useEffect(() => {
     let div = document.getElementsByClassName('react-tel-input')[0]
@@ -23,7 +23,7 @@ export default function CustomPhoneInput(props) {
     
     label.innerHTML = lang_version.phone
     input.style.border = 'none'
-    input.style.borderBottom = `1px solid var(--${props.color})`
+    input.style.borderBottom = `1px solid var(--${color})`
     input.style.padding = '0 inherit'
     input.classList = []
     input.classList.add('w-100')
@@ -31,6 +31,6 @@ export default function CustomPhoneInput(props) {
   }, []);
 
   return (
-    <PhoneInput country={'md'} value={props.phone} onChange={props.setPhone} />
+    <PhoneInput country={'md'} value={phone} onChange={setPhone} />
   )
 }
