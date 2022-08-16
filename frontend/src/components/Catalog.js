@@ -1,49 +1,14 @@
 import React, { Component } from "react";
-import { useParams, useOutletContext } from "react-router-dom";
-import { StyleSheet, css } from 'aphrodite';
+import { useParams, useOutletContext, Link } from "react-router-dom";
+import { withTranslation } from "react-i18next";
+import Cookies from 'js-cookie'
 import LocationListener from "./reusables/LocationListener.js";
-import { getCategory, getProducts } from "./reusables/APICallPoints.js";
+import { getCategory, getProducts, sendForm } from "./reusables/APICallPoints.js";
 import Hoverable from './reusables/Hoverable.js';
+import CustomButton from './reusables/CustomButton.js';
+import CustomPhoneInput from './reusables/CustomPhoneInput.js';
 import { currencies } from './reusables/Globals.js';
 import SectionImage from "./reusables/SectionImage.js";
-import Product from './reusables/Product.js'
-
-const switchMenu = {
-  padding: '0.5vw',
-  width: '3vw',
-  height: '3vw',
-  backgroundColor: 'var(--dark-cyan)'
-}
-
-const switchStyles = StyleSheet.create({
-  column: Object.assign({
-    flexFlow: 'column nowrap',
-    gap: '1vh'
-  }, switchMenu),
-  grid: Object.assign({
-    flexFlow: 'row wrap',
-    gap: '0.5vw'
-  }, switchMenu)
-})
-
-const barStyles = StyleSheet.create({
-  column: {
-    height: '1vh',
-    width: '2vw'
-  },
-  grid: {
-    height: '0.75vw',
-    width: '0.75vw'
-  }
-})
-const sectionStyles = StyleSheet.create({
-  column: {
-    flexFlow: 'column'
-  },
-  grid: {
-    flexFlow: 'row wrap'
-  }
-})
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -61,11 +26,18 @@ class Catalog extends Component {
         name: this.props.params.category
       },
       sub_category: this.props.params.sub_category,
-      filter: this.props.params.filter
+      filter: this.props.params.filter,
+      active: null,
+      form: {
+        error: false,
+        name: '',
+        phone: ''
+      },
     }
 
     this.updateProducts = this.updateProducts.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   updateProducts(path) {
@@ -107,7 +79,6 @@ class Catalog extends Component {
                 }
               }
             }
-
             this.setState({
               products: sorted_products
             })
@@ -122,6 +93,32 @@ class Catalog extends Component {
       currency: currency
     })
     this.props.context.updateCurrency(currency)
+  }
+
+  updateForm(key, value) {
+    let changedForm = {...this.state.form}
+    changedForm[key] = value
+    this.setState({
+      form: changedForm
+    })
+  }
+
+  submitForm() {
+    let r = sendForm({
+      'category': this.state.category.name,
+      'product': this.state.active.name,
+      'name': this.state.form.name,
+      'phone': this.state.form.phone
+    }, Cookies.get('csrftoken'), true)
+
+    if (r == 'error: empty') {
+      setError(true)
+    }
+    else {
+      $(function () {
+        $('#modal').modal('toggle');
+     });
+    }
   }
 
   changeLayout() {
@@ -140,6 +137,7 @@ class Catalog extends Component {
         <div className="container-fluid">
           <div className="row px-5 py-4">
             <div className="col-1"></div>
+            {this.state.products &&
             <div className="col-10">
               <div className="d-flex flex-row justify-content-end align-items-center h6">
                 <div className="d-flex flex-row me-5 align-items-center">
@@ -157,28 +155,74 @@ class Catalog extends Component {
                 </div>
                 <div
                   onClick={this.changeLayout}
-                  className={css(this.state.isGrid ? switchStyles.grid : switchStyles.column) + ' d-flex transition'}>
+                  className={(this.state.isGrid ? "switch-grid" : "switch-column") + " switch d-flex transition"}>
                   {[0, 1, 2].map((value) => {
-                  return <div key={value} className={css(this.state.isGrid ? barStyles.grid : barStyles.column) + ' bg-white transition'} />
+                  return <div key={value} className="bg-white transition" />
                   })}
                 </div>
               </div>
               <div className="py-4">
-              {this.state.products && Object.keys(this.state.products).map((filtering, index) => {
+              {Object.keys(this.state.products).map((filtering, index) => {
               return (
                 <div key={index} className="d-flex my-5 flex-column">
                   <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
-                  <div className={css(this.state.isGrid ? sectionStyles.grid : sectionStyles.column) + " d-flex mt-3 justify-content-between"}>
+                  <div className={(this.state.isGrid ? "section-grid" : "section-column") + " d-flex mt-3 justify-content-between"}>
                   {this.state.products[filtering].map((product, index) => {
+                  if (product == null) {
+                    return <div key={index} />
+                  }
                   return (
-                    <div style={{flex: '1 1 0'}} key={index}>
-                      <Product
-                        product={product}
-                        isGrid={this.state.isGrid}
-                        category={this.state.category}
-                        lang={this.state.lang}
-                        currency={this.state.currency}
-                      />
+                    <div key={index} className="d-flex shadow no-link p-3">
+                      <img src={product.shortcut}/>
+                      <div className="d-flex flex-column justify-content-between">
+                        <div className="d-flex flex-row justify-content-between align-items-end">
+                          <div className="h5 m-0">
+                            <Hoverable text={`${this.state.category.name_s} ${product.name}`} />
+                          </div>
+                          <div className="d-flex flex-column text-end">
+                          {product.discount != 0
+                          ?
+                            <div className="d-flex flex-column">
+                              <div style={{textDecoration: 'line-through'}}>
+                                <span>
+                                  {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
+                                </span>
+                              </div>
+                              <div>
+                                <span>
+                                  {`${t('from')} `}
+                                </span>
+                                <span style={{color: 'var(--lime-green)'}} className="h5">
+                                  {product.sizes[0]['price' + this.state.currency] * (100 - product.discount) / 100}
+                                </span>
+                                <span>
+                                  {` (${this.state.currency})`}
+                                </span>
+                              </div>
+                            </div>
+                          :
+                            <div className="d-flex flex-column">
+                              <span>
+                                {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
+                              </span>
+                            </div>
+                          }
+                          </div>
+                        </div>
+                        <div className="py-3 border-bottom border-muted">
+                          <div>
+                            <span>{product.desc}</span>
+                          </div>
+                        </div>
+                        <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
+                          <Link to={`/product/${this.state.category.name}/${product.id}` + location.search}>
+                            <CustomButton color="lime-green" text={t('details')} />
+                          </Link>
+                          <div onClick={() => this.setState({active: product})} data-bs-toggle="modal" data-bs-target="#modal">
+                            <CustomButton color="deep-sky-blue" text={t('call')} />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   )})}
                   </div>
@@ -186,7 +230,50 @@ class Catalog extends Component {
               )})}
               </div>
             </div>
+            }
             <div className="col-1"></div>
+          </div>
+        </div>
+        <div className="modal fade" id="modal" tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <span className="modal-title h5" id="modalLabel">{t('call') + ` (${this.state.active?.name})`}</span>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <span>{t('desc')}</span>
+                <br/>
+                <span className="h6 text-danger">{this.state.form.error ? t('error') : ''}</span>
+                <form className="mt-3">
+                  <label htmlFor="name">{t('name')}</label>
+                  <br/>
+                  <input
+                    style={{border: 'none', borderBottom: '1px solid var(--dark-cyan)'}}
+                    className="outline-0 no-hover w-100 px-0 mb-3"
+                    type="text"
+                    name="name"
+                    placeholder="..."
+                    value={this.state.form.name}
+                    onChange={e => updateData('name', e.target.value)}
+                  />
+                  <CustomPhoneInput
+                    lang={this.state.lang}
+                    color="dark-cyan" 
+                    value={this.state.form.phone}
+                    setPhone={phone => updateData('phone', phone)}
+                  />
+                </form>
+              </div>
+              <div className="d-flex justify-content-between modal-footer">
+                <div data-bs-dismiss="modal">
+                  <CustomButton color="lime-green" text={t('close')} />
+                </div>
+                <div onClick={this.submitForm}>
+                  <CustomButton color="deep-sky-blue" text={t('submit')} />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -194,4 +281,4 @@ class Catalog extends Component {
   }
 }
 
-export default withParams(Catalog);
+export default withTranslation('catalog')(withParams(Catalog));
