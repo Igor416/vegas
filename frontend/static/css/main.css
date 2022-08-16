@@ -14,6 +14,18 @@
   height: 0%
 }
 
+.hoverable > div {
+  background-color: var(--dark-grey);
+  height: 1px;
+  opacity: 0;
+  width: 0%;
+}
+
+.hoverable:hover > div {
+  opacity: 1;
+  width: 100%
+}
+
 .angle-active {
   transform: rotate(180deg)
 }
@@ -97,21 +109,6 @@
 .deep-sky-blue-button:hover {
   color: white;
   background-color: var(--deep-sky-blue);
-}
-
-.line {
-  background-color: var(--light-grey);
-  height: 1px
-}
-
-.line-show {
-  opacity: 1;
-  width: 100%
-}
-
-.line-hide {
-  opacity: 0;
-  width: 0%;
 }
 
 .switch {
