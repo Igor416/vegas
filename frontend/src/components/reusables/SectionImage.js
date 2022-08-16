@@ -1,11 +1,11 @@
 import React from "react";
 
-export default function SectionImage(props) {
+export default function SectionImage({category}) {
   return (
     <div
       className="container-fluid m-0 d-flex flex-column justify-content-around align-items-center"
       style={{
-        backgroundImage: `url(/static/images/${props.category.name}.jpg)`,
+        backgroundImage: `url(/static/images/${category.name}.jpg)`,
         height: '100vh'
       }}>
       <div className="container" style={{height: '30vh'}}></div>
@@ -15,8 +15,8 @@ export default function SectionImage(props) {
           opacity: 0.7,
           height: '30vh'
         }}>
-        <span className="h4">{props.category.name_pl}</span>
-        <span className="text-center">{props.category.desc}</span>
+        <span className="h4">{category.name_pl}</span>
+        <span className="text-center">{category.desc}</span>
       </div>
     </div>
   );
