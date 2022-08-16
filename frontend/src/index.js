@@ -13,7 +13,8 @@ import {
   faStar,
   faMapMarkerAlt,
   faTrash,
-  faCalendarAlt
+  faCalendarAlt,
+  faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import i18n from './i18n.js';
@@ -24,7 +25,23 @@ import ProductDetails from "./components/ProductDetails.js";
 import Cart from "./components/Cart.js";
 import Shops from "./components/Shops.js";
 
-library.add(faHandHoldingUsd, faPhone, faShoppingCart, faAngleDown, faAngleUp, faAngleLeft, faAngleRight, faStar, faMapMarkerAlt, faTrash, faCalendarAlt, faFacebook);
+const icons = [
+  faHandHoldingUsd,
+  faPhone,
+  faShoppingCart,
+  faAngleDown,
+  faAngleUp,
+  faAngleLeft,
+  faAngleRight,
+  faStar,
+  faMapMarkerAlt,
+  faTrash,
+  faCalendarAlt,
+  faEnvelope
+]
+
+library.add.apply(library, icons);
+library.add(faFacebook)
 
 const appDiv = document.getElementById('app');
 const root = createRoot(appDiv);
