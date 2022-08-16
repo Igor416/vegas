@@ -2,7 +2,6 @@
   --deep-sky-blue: #00aaff;
   --lime-green: #49dc00;
   --dark-cyan: #009696;
-  --light-grey: #848484;
   --dark-grey: #444;
 }
 
@@ -42,7 +41,7 @@ img {
 
 footer {
   font-size: 0.8rem;
-  text-align: right;
+  text-align: center;
   padding: 2rem 4rem 2rem 0;
   background-color: var(--dark-grey);
   color: white;

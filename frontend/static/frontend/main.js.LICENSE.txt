@@ -146,6 +146,8 @@ object-assign
 
 /*! @fortawesome/fontawesome-svg-core */
 
+/*! @fortawesome/free-brands-svg-icons */
+
 /*! @fortawesome/free-solid-svg-icons */
 
 /*! @fortawesome/react-fontawesome */
@@ -434,6 +436,10 @@ object-assign
 
 /*!*********************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js ***!
+  \*********************************************************************/
+
+/*!*********************************************************************!*\
+  !*** ./node_modules/@fortawesome/free-brands-svg-icons/index.es.js ***!
   \*********************************************************************/
 
 /*!***********************************************************************!*\
