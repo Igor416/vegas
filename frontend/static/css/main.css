@@ -1,0 +1,106 @@
+.link {
+  text-decoration: none;
+  color: var(--deep-sky-blue);
+  cursor: pointer;
+}
+
+.lime-green-button {
+  color: var(--lime-green);
+  border: 1px solid var(--lime-green);
+  background-color: white;
+}
+
+.lime-green-button:hover {
+  color: white;
+  background-color: var(--lime-green);
+}
+
+.dark-cyan-button {
+  color: var(--dark-cyan);
+  border: 1px solid var(--dark-cyan);
+  background-color: white;
+}
+
+.dark-cyan-button:hover {
+  color: white;
+  background-color: var(--dark-cyan);
+}
+
+.deep-sky-blue-button {
+  color: var(--deep-sky-blue);
+  border: 1px solid var(--deep-sky-blue);
+  background-color: white;
+}
+
+.deep-sky-blue-button:hover {
+  color: white;
+  background-color: var(--deep-sky-blue);
+}
+
+.line {
+  background-color: var(--light-grey);
+  height: 1px
+}
+
+.line-show {
+  opacity: 1;
+  width: 100%
+}
+
+.line-hide {
+  opacity: 0;
+  width: 0%;
+}
+
+.switch {
+  flex-flow: row wrap;
+  padding: 0.5vw;
+  width: 3vw;
+  height: 3vw;
+  background-color: var(--dark-cyan)
+}
+
+.switch-column {
+  gap: 0.55vw;
+}
+
+.switch-grid {
+  gap: 0.5vw
+}
+
+.switch-column > div {
+  height: 0.3vw;
+  width: 2vw
+}
+
+.switch-grid > div {
+  height: 0.75vw;
+  width: 0.75vw
+}
+
+.section-column {
+  flex-direction: column;
+}
+
+.section-column > div {
+  flex-flow: row nowrap;
+  padding-right: 4em
+}
+
+.section-column > div:nth-child(1n) > img {
+  width: 40%
+}
+
+.section-grid {
+  flex: 0.33 1 0;
+  flex-flow: row wrap;
+}
+
+.section-grid > div {
+  flex: 0.33 1 0;
+  flex-direction: column;
+}
+
+.shadow:hover {
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.175) !important;
+}
