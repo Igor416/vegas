@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
+import { useTranslation } from 'react-i18next';
 import { sendSearch } from "./APICallPoints.js"
 import CustomLink from './CustomLink.js';
 
@@ -7,35 +8,7 @@ export default function SearchBar(props) {
   let [search, setSearch] = useState('')
   let [show, setShow] = useState(false)
   let [res, setRes] = useState({})
-  
-  const translations = {
-    en: {
-      search: 'Search products...',
-      help: 'If you didn\'t find what you were looking for, try changing the language',
-      categories: 'Categories',
-      choices: 'Characteristics',
-      products: 'Products',
-      from: 'from',
-    },
-    ru: {
-      search: 'Искать товары...',
-      help: 'Если вы не нашли то, чего хотели, попробуйте сменить язык',
-      categories: 'Категории',
-      choices: 'Характеристики',
-      products: 'Продукты',
-      from: 'от',
-    },
-    ro: {
-      search: 'Cauta bunuri...',
-      help: 'Dacă nu ați găsit ceea ce căutați, încercați să schimbați limba',
-      categories: 'Categorii',
-      choices: 'Caracteristici',
-      products: 'Produse',
-      from: 'de la',
-    }
-  }
-  
-  let lang_version = translations[props.lang];
+  const [t, i18n] = useTranslation('search');
 
   let submitForm = () => {
     if (search.length > 1) {
@@ -54,7 +27,7 @@ export default function SearchBar(props) {
           className="form-control rounded-end rounded-pill bg-light h6 m-0 p-3 border-0 outline-0 no-hover"
           type="text"
           name="searchQueryInput"
-          placeholder={lang_version.search}
+          placeholder={t('search')}
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
@@ -73,13 +46,13 @@ export default function SearchBar(props) {
         style={{zIndex: 1200, width: props.width}}
         className={(show ? "search-show" : "search-hide") + " border bg-white transition position-absolute py-3 px-4 mt-4"}
       >
-        <span className="mb-4">{lang_version.help}</span>
+        <span className="mb-4">{t('help')}</span>
       {Object.keys(res).map((key, index) => {
       if (res[key].length != 0) {
       if (key == 'products') {
       return (
         <div key={index} className="w-100 d-flex flex-column border-bottom mt-3">
-          <span className="h5 pb-2">{lang_version[key]}: </span>
+          <span className="h5 pb-2">{t(key)}: </span>
           {res[key].map((item, index) => {
           return (
             <div key={index} className="d-flex row-nowrap justify-content-between text-end">
@@ -87,13 +60,13 @@ export default function SearchBar(props) {
               {item.discount != 0 && 
               <div style={{fontSize: '0.75em', textDecoration: 'line-through'}}>
                 <span>
-                  {`${lang_version.from} ${item.price[props.currency]} (${props.currency})`}
+                  {`${t('from')} ${item.price[props.currency]} (${props.currency})`}
                 </span>
               </div>
             }
               <div>
                 <span>
-                  {`${lang_version.from} `}
+                  {`${t('from')} `}
                 </span>
                 <span style={{color: 'var(--lime-green)'}} className="h6">
                   {item.price[props.currency] * (100 - item.discount) / 100}
