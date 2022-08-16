@@ -6,12 +6,6 @@
   --dark-grey: #444;
 }
 
-.link {
-  text-decoration: none;
-  color: var(--deep-sky-blue);
-  cursor: pointer;
-}
-
 .no-link {
   text-decoration: none !important;
   color: var(--bs-dark) !important;
