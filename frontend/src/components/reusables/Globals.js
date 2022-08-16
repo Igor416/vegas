@@ -6,6 +6,11 @@ export const langs = {
   ro: 'romanian'
 }
 
+export const links = {
+  "company": ["about", "story", "certificates", "materials", "jobs"],
+  "store": ["shipping", "contacts", "reviews", "guarantee", "gifts"]
+}
+
 export const Shops = {
   'CC Jumbo Showroom': [
     'Mun. Chișinău, bd. Decebal 23/1',

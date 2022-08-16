@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import i18n from "i18next";
 import { Outlet, Link } from "react-router-dom";
 import Cookies from 'js-cookie';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { currencies } from './reusables/Globals.js';
 import Header from "./Header.js";
 import MobileHeader from "./MobileHeader.js";
 import Footer from "./Footer.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MobileFooter from "./MobileFooter.js";
 
 export default class App extends Component {
   constructor(props) {
@@ -190,7 +191,6 @@ export default class App extends Component {
           total={this.state.cart.total}
         />
         }
-        
         <Outlet context={Object.assign(this.state, {
           isMobile: this.isMobile,
           updateCurrency: this.updateCurrency,
@@ -198,7 +198,12 @@ export default class App extends Component {
           deleteProduct: this.deleteProduct,
           updateQuantity: this.updateQuantity
         })}/>
-        <Footer isMobile={this.isMobile} />
+        {this.isMobile
+        ?
+        <MobileFooter />
+        :
+        <Footer />
+        }
         <div
           id="cart"
           style={{

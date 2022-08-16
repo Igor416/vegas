@@ -2,27 +2,23 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
 import CustomLink from "./reusables/CustomLink.js";
+import { links } from "./reusables/Globals.js";
 
 class Footer extends Component {
   constructor(props) {
     super(props);
-
-    this.links = {
-      "company": ["about", "story", "certificates", "materials", "jobs"],
-      "store": ["shipping", "contacts", "reviews", "guarantee", "gifts"]
-    }
   }
 
   render() {
     const t = this.props.t
     return (
-      <div style={{ borderTop: '1px solid var(--deep-sky-blue)'}} className="container-fluid row p-5">
+      <div style={{ borderTop: '1px solid var(--deep-sky-blue)'}} className="row container-fluid p-5">
         <div className="col-2"></div>
-        {Object.keys(this.links).map((section, index) => {
+        {Object.keys(links).map((section, index) => {
         return (
         <div key={index} className="d-flex flex-column align-items-start col-2">
           <span className="h5 mb-2">{t(section)}</span>
-          {this.links[section].map((link, index) => {
+          {links[section].map((link, index) => {
           return (
             <CustomLink to={`/${section}/${link}`} key={index} text={t(link)}/>
           )})}
