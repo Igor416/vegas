@@ -137,27 +137,30 @@
   width: 0.75vw
 }
 
-.section-column {
-  flex-direction: column;
-}
-
-.section-column > div {
+.section-column > div.shadow {
+  width: 100%;
   flex-flow: row nowrap;
-  padding-right: 4em
+  transition: 0.5s width;
 }
 
-.section-column > div:nth-child(1n) > img {
-  width: 40%
+.section-column > div.shadow:nth-child(1n) > img {
+  width: 40%;
+  transition: width 0s cubic-bezier(1, 0, 0, 1) 1.5s;
 }
 
-.section-grid {
-  flex: 0.33 1 0;
-  flex-flow: row wrap;
-}
-
-.section-grid > div {
-  flex: 0.33 1 0;
+.section-grid > div.shadow {
+  width: 33%;
   flex-direction: column;
+  transition: 0.5s width;
+}
+
+.section-grid > div.shadow:nth-child(1n) > img {
+  width: auto;
+  transition: width 0s cubic-bezier(1, 0, 0, 1) 1.5s;
+}
+
+.shadow {
+  transition: 0.5s box-shadow;
 }
 
 .shadow:hover {

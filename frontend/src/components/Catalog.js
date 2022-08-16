@@ -160,75 +160,73 @@ class Catalog extends Component {
                 })}
               </div>
             </div>
-            <div className="py-4">
             {Object.keys(this.state.products).map((filtering, index) => {
             return (
-              <div key={index} className="d-flex my-5 flex-column">
-                <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
-                <div className={(this.state.isGrid ? "section-grid" : "section-column") + " d-flex mt-3 justify-content-between"}>
-                {this.state.products[filtering].map((product, index) => {
-                if (product == null) {
-                  return <div key={index} />
-                }
-                return (
-                  <div key={index} className="d-flex shadow no-link p-3">
-                    <img src={product.shortcut}/>
-                    <div className="d-flex flex-column justify-content-between">
-                      <div className="d-flex flex-row justify-content-between align-items-end">
-                        <div className="h5 m-0">
-                          <Hoverable text={`${this.state.category.name_s} ${product.name}`} />
-                        </div>
-                        <div className="d-flex flex-column text-end">
-                        {product.discount != 0
-                        ?
-                          <div className="d-flex flex-column">
-                            <div style={{textDecoration: 'line-through'}}>
-                              <span>
-                                {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
-                              </span>
-                            </div>
-                            <div>
-                              <span>
-                                {`${t('from')} `}
-                              </span>
-                              <span style={{color: 'var(--lime-green)'}} className="h5">
-                                {product.sizes[0]['price' + this.state.currency] * (100 - product.discount) / 100}
-                              </span>
-                              <span>
-                                {` (${this.state.currency})`}
-                              </span>
-                            </div>
-                          </div>
-                        :
-                          <div className="d-flex flex-column">
+            <div key={index} className="d-flex mb-5 flex-column">
+              <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
+              <div className={(this.state.isGrid ? "section-grid" : "section-column") + " d-flex row-wrap mt-3 justify-content-between transition"}>
+              {this.state.products[filtering].map((product, index) => {
+              if (product == null) {
+                return <div key={index} />
+              }
+              return (
+                <div key={index} className="d-flex shadow no-link p-3">
+                  <img src={product.shortcut}/>
+                  <div className="d-flex flex-column justify-content-between">
+                    <div className="d-flex flex-row justify-content-between align-items-end">
+                      <div className="h5 m-0">
+                        <Hoverable text={`${this.state.category.name_s} ${product.name}`} />
+                      </div>
+                      <div className="d-flex flex-column text-end">
+                      {product.discount != 0
+                      ?
+                        <div className="d-flex flex-column">
+                          <div style={{textDecoration: 'line-through'}}>
                             <span>
                               {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
                             </span>
                           </div>
-                        }
+                          <div>
+                            <span>
+                              {`${t('from')} `}
+                            </span>
+                            <span style={{color: 'var(--lime-green)'}} className="h5">
+                              {product.sizes[0]['price' + this.state.currency] * (100 - product.discount) / 100}
+                            </span>
+                            <span>
+                              {` (${this.state.currency})`}
+                            </span>
+                          </div>
                         </div>
+                      :
+                        <div className="d-flex flex-column">
+                          <span>
+                            {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
+                          </span>
+                        </div>
+                      }
                       </div>
-                      <div className="py-3 border-bottom border-muted">
-                        <div>
-                          <span>{product.desc}</span>
-                        </div>
+                    </div>
+                    <div className="py-3 border-bottom border-muted">
+                      <div>
+                        <span>{product.desc}</span>
                       </div>
-                      <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
-                        <Link to={`/product/${this.state.category.name}/${product.id}` + location.search}>
-                          <CustomButton color="lime-green" text={t('details')} />
-                        </Link>
-                        <div onClick={() => this.setState({active: product})} data-bs-toggle="modal" data-bs-target="#modal">
-                          <CustomButton color="deep-sky-blue" text={t('call')} />
-                        </div>
+                    </div>
+                    <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
+                      <Link to={`/product/${this.state.category.name}/${product.id}` + location.search}>
+                        <CustomButton color="lime-green" text={t('details')} />
+                      </Link>
+                      <div onClick={() => this.setState({active: product})} data-bs-toggle="modal" data-bs-target="#modal">
+                        <CustomButton color="deep-sky-blue" text={t('call')} />
                       </div>
                     </div>
                   </div>
-                )})}
                 </div>
+              )})}
               </div>
+            </div>
             )})}
             </div>
-          </div>
           }
           <div className="col-1"></div>
         </div>
