@@ -198,7 +198,7 @@ export default class App extends Component {
           deleteProduct: this.deleteProduct,
           updateQuantity: this.updateQuantity
         })}/>
-        <Footer />
+        <Footer isMobile={this.isMobile} />
         <div
           id="cart"
           style={{
