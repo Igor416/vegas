@@ -3,7 +3,6 @@
   "shops": "SHOPS",
   "from": "from",
   "order": "Order now",
-  "credit1": "Buy now,",
-  "credit2": "pay later",
+  "credit": "Buy now,\npay later",
   "cart": "Cart"
 }

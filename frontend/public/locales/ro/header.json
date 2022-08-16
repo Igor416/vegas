@@ -3,7 +3,6 @@
   "shops": "MAGAZINE",
   "from": "de la",
   "order": "Comanda acum",
-  "credit1": "Cumpara acum,",
-  "credit2": "achita apoi",
+  "credit": "Cumpara acum,\nachita apoi",
   "cart": "Coş"
 }
