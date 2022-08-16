@@ -4,34 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
 import LocationListener from './reusables/LocationListener.js';
 import SearchBar from "./reusables/SearchBar.js";
-import { StyleSheet, css } from 'aphrodite';
 import { langs as Langs } from './reusables/Globals.js';
 import CustomLink from './reusables/CustomLink.js';
-
-const burgerStyles = StyleSheet.create({
-  sided: {
-    top: '3.6vw',
-    width: '0%',
-    left: '50%',
-  },
-  top: {
-    transform: 'rotate(45deg)',
-  },
-  bottom: {
-    transform: 'rotate(-45deg)',
-  }
-})
-
-const menuStyles = StyleSheet.create({
-  hidden: {
-    width: 0,
-    opacity: 0
-  },
-  shown: {
-    opacity: 1,
-    width: '100vw'
-  }
-})
 
 const CATEGORIES = require("../links.json");
 
@@ -115,23 +89,23 @@ class MobileHeader extends Component {
             <div
               onClick={() => this.toggleMenu()}
               style={{width: '12vw', height: '9vw'}}
-              className="position-relative"
+              className="position-relative burger"
             >
               <div
-                style={{top: 0, left: 0, width: '12vw',height: '1.8vw'}}
-                className={css(this.state.menuOpened ? burgerStyles.sided : null) + " rounded-pill transition position-absolute bg-dark"}
+                style={{top: 0}}
+                className={(this.state.menuOpened ? "burger-sided" : "") + " rounded-pill transition position-absolute bg-dark"}
               />
               <div
-                style={{top: '3.6vw', left: 0, width: '12vw',height: '1.8vw'}}
-                className={css(this.state.menuOpened ? burgerStyles.top: null) + " rounded-pill transition position-absolute bg-dark"}
+                style={{top: '3.6vw'}}
+                className={(this.state.menuOpened ? "burger-top": "") + " rounded-pill transition position-absolute bg-dark"}
               />
               <div
-                style={{top: '3.6vw', left: 0, width: '12vw', height: '1.8vw'}}
-                className={css(this.state.menuOpened ? burgerStyles.bottom : null) + " rounded-pill transition position-absolute bg-dark"}
+                style={{top: '3.6vw'}}
+                className={(this.state.menuOpened ? "burger-bottom" : "") + " rounded-pill transition position-absolute bg-dark"}
               />
               <div
-                style={{top: '7.2vw', left: 0, width: '12vw', height: '1.8vw'}}
-                className={css(this.state.menuOpened ? burgerStyles.sided : null) + " rounded-pill transition position-absolute bg-dark"}
+                style={{top: '7.2vw'}}
+                className={(this.state.menuOpened ? "burger-sided" : "") + " rounded-pill transition position-absolute bg-dark"}
               />
             </div>
           </div>
@@ -165,7 +139,7 @@ class MobileHeader extends Component {
             </div>
           </div>
         </div>
-        <div style={{left: 0, opacity: 0, height: '100vh'}} className={css(this.state.menuOpened ? menuStyles.shown : menuStyles.hidden) + " position-absolute transition bg-white d-flex flex-column"}>
+        <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.menuOpened ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
           <div className="d-flex flex-column">
             <div id="searchBar" style={{backgroundColor: 'var(--dark-cyan)'}} className="w-100 p-3">
               <SearchBar lang={this.props.lang} currency={this.props.currency} width='92.5%' />
@@ -216,7 +190,7 @@ class MobileHeader extends Component {
               <span style={{color: 'white'}} className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
-          <div style={{left: 0, opacity: 0, height: '100vh'}} className={css(this.state.category ? menuStyles.shown : menuStyles.hidden) + " position-absolute transition bg-white d-flex flex-column"}>
+          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.category ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
             <div className="d-flex flex-column">
               <div
                 onClick={() => this.setState({category: null, categoryEN: null})}
@@ -246,7 +220,7 @@ class MobileHeader extends Component {
             )})}
             </div>
           </div>
-          <div style={{left: 0, opacity: 0, height: '100vh'}} className={css(this.state.sub_category ? menuStyles.shown : menuStyles.hidden) + " position-absolute transition bg-white d-flex flex-column"}>
+          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.sub_category ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
             <div className="d-flex flex-column">
               <div
                 onClick={() => this.setState({sub_category: null})}

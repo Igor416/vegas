@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import { StyleSheet, css } from 'aphrodite';
 import { withTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookies from 'js-cookie'
@@ -9,17 +8,6 @@ import { currencies } from "./reusables/Globals.js";
 import LocationListener from "./reusables/LocationListener.js";
 import CustomPhoneInput from "./reusables/CustomPhoneInput.js";
 import CustomButton from "./reusables/CustomButton.js";
-
-const buttonStyles = StyleSheet.create({
-  active: {
-    color: 'white',
-    backgroundColor: 'var(--deep-sky-blue)'
-  },
-  unactive: {
-    color: 'var(--dark)',
-    backgroundColor: 'white'
-  }
-})
 
 function withParams(Component) {
   return props => <Component {...props} context={useOutletContext()} />;
@@ -197,7 +185,7 @@ class Cart extends Component {
                     <img src={pr.shortcut} />
                   </div>
                   <div className="col-2 h6 d-flex align-items-center justify-content-center border-bottom border-end m-0">
-                    <span>{t('size')}{pr.size.width} x {pr.size.length}</span>
+                    <span>{t('size')} {pr.size.width} x {pr.size.length}</span>
                   </div>
                   <div className="col-1 h5 d-flex align-items-center justify-content-center border-bottom border-end m-0">
                     <span>{pr.size['price' + this.props.context.currency]}</span>
@@ -246,14 +234,14 @@ class Cart extends Component {
                         <input
                           name={field}
                           value={this.state.form[field]}
-                          onChange={e => updateData(field, e.target.value)}
+                          onChange={e => this.updateForm(field, e.target.value)}
                           type="text"
                           style={{border: 'none', borderBottom: '1px solid var(--lime-green)'}}
                           className="outline-0 no-hover w-100 px-0 mb-3 col-12"
                         />
                       </div>
                     )}})}
-                    <CustomPhoneInput lang={this.state.lang} color='lime-green' phone={this.state.form.phone} setPhone={phone => updateData('phone', phone)} />
+                    <CustomPhoneInput lang={this.state.lang} color='lime-green' phone={this.state.form.phone} setPhone={phone => this.updateForm('phone', phone)} />
                     </div>
                   </div>
                   <div className="col-1"></div>
@@ -269,7 +257,7 @@ class Cart extends Component {
                         name='payment'
                         value={t('payment' + num)}
                         className="me-3"
-                        onClick={() => {updateData('payment', t('payment' + num))}}
+                        onClick={() => {this.updateForm('payment', t('payment' + num))}}
                         type="radio"
                       />
                       <label htmlFor='payment'>{t('payment' + num)}</label>
@@ -278,16 +266,16 @@ class Cart extends Component {
                   </div>
                   <div className="d-flex row-nowrap justify-content-end align-items-start col-3">
                     <div
-                      onClick={() => updateData('courier', true)}
-                      style={{border: '1px solid var(--deep-sky-blue)', borderLeft: 'none'}}
-                      className={css(this.state.form.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition"}
+                      onClick={() => this.updateForm('courier', true)}
+                      style={{border: '1px solid var(--deep-sky-blue)', borderRight: 'none'}}
+                      className={(this.state.form.courier ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
                     >
                       <span>{t('courier')}</span>
                     </div>
                     <div
-                      onClick={() => updateData('courier', false)}
+                      onClick={() => this.updateForm('courier', false)}
                       style={{border: '1px solid var(--deep-sky-blue)', borderLeft: 'none'}}
-                      className={css(!this.state.form.courier ? buttonStyles.active : buttonStyles.unactive) + " p-3 transition"}
+                      className={(!this.state.form.courier ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
                     >
                       <span>{t('pickup')}</span>
                     </div>

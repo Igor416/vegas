@@ -20,11 +20,7 @@ object-assign
 
 /*! ./APICallPoints.js */
 
-/*! ./CustomButton.js */
-
 /*! ./CustomLink.js */
-
-/*! ./CustomPhoneInput.js */
 
 /*! ./Footer.js */
 
@@ -41,8 +37,6 @@ object-assign
 /*! ./assertThisInitialized.js */
 
 /*! ./checkPropTypes */
-
-/*! ./chunk-febce46b.js */
 
 /*! ./cjs/react-dom.development.js */
 
@@ -84,8 +78,6 @@ object-assign
 
 /*! ./objectWithoutPropertiesLoose.js */
 
-/*! ./raw */
-
 /*! ./request.js */
 
 /*! ./reusables/APICallPoints.js */
@@ -103,8 +95,6 @@ object-assign
 /*! ./reusables/Hoverable.js */
 
 /*! ./reusables/LocationListener.js */
-
-/*! ./reusables/Product.js */
 
 /*! ./reusables/SearchBar.js */
 
@@ -160,10 +150,6 @@ object-assign
 
 /*! @fortawesome/react-fontawesome */
 
-/*! aphrodite */
-
-/*! asap */
-
 /*! cross-fetch */
 
 /*! history */
@@ -197,8 +183,6 @@ object-assign
 /*! react-router-dom */
 
 /*! scheduler */
-
-/*! string-hash */
 
 /*!*********************!*\
   !*** ./src/i18n.js ***!
@@ -253,28 +237,12 @@ object-assign
   \****************************************/
 
 /*!******************************************!*\
-  !*** ./node_modules/asap/browser-raw.js ***!
-  \******************************************/
-
-/*!******************************************!*\
   !*** ./node_modules/prop-types/index.js ***!
   \******************************************/
 
 /*!******************************************!*\
   !*** ./src/components/ProductDetails.js ***!
   \******************************************/
-
-/*!*******************************************!*\
-  !*** ./node_modules/asap/browser-asap.js ***!
-  \*******************************************/
-
-/*!*******************************************!*\
-  !*** ./node_modules/string-hash/index.js ***!
-  \*******************************************/
-
-/*!********************************************!*\
-  !*** ./node_modules/aphrodite/es/index.js ***!
-  \********************************************/
 
 /*!********************************************!*\
   !*** ./node_modules/prop-types/lib/has.js ***!
@@ -290,10 +258,6 @@ object-assign
 
 /*!*********************************************!*\
   !*** ./src/components/reusables/Globals.js ***!
-  \*********************************************/
-
-/*!*********************************************!*\
-  !*** ./src/components/reusables/Product.js ***!
   \*********************************************/
 
 /*!***********************************************!*\
@@ -335,10 +299,6 @@ object-assign
 /*!***************************************************!*\
   !*** ./src/components/reusables/APICallPoints.js ***!
   \***************************************************/
-
-/*!*****************************************************!*\
-  !*** ./node_modules/aphrodite/es/chunk-febce46b.js ***!
-  \*****************************************************/
 
 /*!*****************************************************!*\
   !*** ./node_modules/react-i18next/dist/es/utils.js ***!

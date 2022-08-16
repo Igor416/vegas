@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { StyleSheet, css } from 'aphrodite';
 import { withTranslation } from "react-i18next";
 import { getCategory, getProduct } from "./reusables/APICallPoints.js";
 import Hoverable from './reusables/Hoverable.js';
@@ -11,15 +10,6 @@ import LocationListener from "./reusables/LocationListener.js";
 import CustomLink from "./reusables/CustomLink.js";
 import SectionImage from "./reusables/SectionImage.js";
 
-const dimensionStyles = StyleSheet.create({
-  dimension: {
-    fontWeight: 400,
-
-    ':hover': {
-      backgroundColor: 'var(--dark-cyan)'
-    }
-  }
-})
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -278,7 +268,7 @@ class ProductDetails extends Component {
                               <li
                                 onClick={() => this.state.size[dimension] != dim && this.changeSize(dim, dimension)}
                                 key={index}
-                                className={css(dimensionStyles.dimension) + " p-1 ps-2"}
+                                className="dimension p-1 ps-2"
                                 value={dim}
                               >
                                 {dim}

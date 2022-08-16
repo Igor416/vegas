@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { StyleSheet, css } from 'aphrodite';
 import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import SearchBar from "./reusables/SearchBar.js";
@@ -9,27 +8,6 @@ import LocationListener from './reusables/LocationListener.js';
 import { langs as Langs } from './reusables/Globals.js';
 import Hoverable from './reusables/Hoverable.js';
 import CustomLink from './reusables/CustomLink.js';
-
-const angleStyles = StyleSheet.create({
-  hide: {
-    transform: 'rotate(0deg)'
-  },
-  show: {
-    transform: 'rotate(180deg)'
-  }
-})
-
-const menuStyles = StyleSheet.create({
-  hide: {
-    opacity: '0',
-    height: '0%'
-  },
-  show: {
-    opacity: '1',
-    padding: '1rem 3rem',
-    height: '100%'
-  },
-})
 
 const CATEGORIES = require("../links.json");
 
@@ -169,24 +147,18 @@ class Header extends Component {
           )})}
           </div>
           <div className="col-2 text-center border-start border-end">
-            <span>
-              <FontAwesomeIcon icon='phone' />
-            </span>
+            <FontAwesomeIcon icon='phone' />
             <br />
             <span className="h6">{t('order')}: <br/>079 40-70-32</span>
           </div>
           <div className="col-2 text-center border-end">
-            <span>
-              <FontAwesomeIcon icon='hand-holding-usd' />
-            </span>
+            <FontAwesomeIcon icon='hand-holding-usd' />
             <br />
             <span className="h6" style={{whiteSpace: "pre-line"}}>{t('credit')}</span>
           </div>
           <div className="col-1 text-center">
             <Link to={'/cart' + location.search} className="h6 no-link no-hover">
-              <span>
-                <FontAwesomeIcon icon='shopping-cart' />
-              </span>
+              <FontAwesomeIcon icon='shopping-cart' />
               <br />
               <span>{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
@@ -210,12 +182,8 @@ class Header extends Component {
                     onMouseLeave={() => this.onMouseLeave()}
                   >
                     <Hoverable text={category} />
-                    <div>
-                      <span>
-                        &nbsp;
-                        <FontAwesomeIcon className={css(this.state.category == category ? angleStyles.show : angleStyles.hide) + " transition"} icon='angle-down' /> 
-                      </span>
-                    </div>
+                    &nbsp;
+                    <FontAwesomeIcon className={(this.state.category == category ? "angle-active" : "angle-unactive") + " transition"} icon='angle-down' /> 
                   </div>
                 )})}
                 <div>
@@ -228,7 +196,7 @@ class Header extends Component {
           <div
             onMouseEnter={() => this.onMouseEnter(true)}
             onMouseLeave={() => this.onMouseLeave()}
-            className={css(this.state.category ? menuStyles.show : menuStyles.hide) + " row border-top row transition"}
+            className={(this.state.category ? "menu-show" : "menu-hide") + " row border-top row transition"}
           >
             <div className="col-2"></div>
             <div

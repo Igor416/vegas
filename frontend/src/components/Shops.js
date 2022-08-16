@@ -1,18 +1,8 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { StyleSheet, css } from 'aphrodite';
 import { withTranslation } from "react-i18next";
 import { Shops as shops } from "./reusables/Globals";
-
-const shadowStyles = StyleSheet.create({
-  item: {
-    boxShadow: '0 .5rem 1rem rgba(0, 0, 0, .15)',
-    ':hover': {
-      boxShadow: '0 1rem 1.5rem rgba(0, 0, 0, .175)'
-    }
-  }
-})
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;
@@ -53,7 +43,7 @@ class Shops extends Component {
             <div className="d-flex flex-wrap justify-content-between mt-5">
             {Object.keys(shops).map((name, index) => {
             return (
-              <div key={index} className={css(shadowStyles.item) + " col-5 bg-white transition p-5 my-5 h6"}>
+              <div key={index} className="col-5 shadow bg-white transition p-5 my-5 h6">
                 <span style={{color: 'var(--dark-cyan)'}} className="h5 mb-4">{name}</span>
                 <span>&nbsp; ({this.isOpen() ? t('opened') : t('closed')})</span>
                 <br />

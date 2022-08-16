@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
-import { StyleSheet, css } from 'aphrodite';
 import { sendSearch } from "./APICallPoints.js"
 import CustomLink from './CustomLink.js';
-
-const resultsStyles = StyleSheet.create({
-  hide: {
-    opacity: '0',
-    height: '0%'
-  },
-  show: {
-    opacity: '1',
-    height: 'auto'
-  },
-})
 
 export default function SearchBar(props) {
   let [search, setSearch] = useState('')
@@ -83,7 +71,7 @@ export default function SearchBar(props) {
       {Object.keys(res).length != 0 &&
       <div
         style={{zIndex: 1200, width: props.width}}
-        className={css(show ? resultsStyles.show : resultsStyles.hide) + " border bg-white transition position-absolute py-3 px-4 mt-4"}
+        className={(show ? "search-show" : "search-hide") + " border bg-white transition position-absolute py-3 px-4 mt-4"}
       >
         <span className="mb-4">{lang_version.help}</span>
       {Object.keys(res).map((key, index) => {
