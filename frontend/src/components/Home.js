@@ -71,7 +71,7 @@ class Home extends Component {
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateLang} />
-        <div className={"container-fluid text-center mt-5" + (this.isMobile ? " p-0" : "")}>
+        <div className={"container-fluid text-center mt-5 p-0 p-sm-auto"}>
           <div className="d-flex px-2 py-1 px-sm-5 py-sm-4">
             <div className="col-sm-1"></div>
             <div className="col-12 col-sm-10">
