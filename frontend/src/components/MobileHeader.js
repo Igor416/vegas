@@ -138,7 +138,7 @@ class MobileHeader extends Component {
             </div>
           </div>
         </div>
-        <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.menuOpened ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column overflow-scroll"}>
+        <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.menuOpened ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column overflow-scroll"}>
           <div className="d-flex flex-column">
             <div id="searchBar" style={{backgroundColor: 'var(--dark-cyan)'}} className="w-100 p-3">
               <SearchBar lang={this.props.lang} currency={this.props.currency} width='92.5%' />
@@ -189,7 +189,7 @@ class MobileHeader extends Component {
               <span className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
-          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.category ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
+          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.category ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
             <div className="d-flex flex-column">
               <div
                 onClick={() => this.setState({category: null, categoryEN: null})}
@@ -219,7 +219,7 @@ class MobileHeader extends Component {
             )})}
             </div>
           </div>
-          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.sub_category ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
+          <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.sub_category ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
             <div className="d-flex flex-column">
               <div
                 onClick={() => this.setState({sub_category: null})}

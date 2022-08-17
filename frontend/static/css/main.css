@@ -45,43 +45,6 @@
   height: 0%
 }
 
-.mobile-menu-show {
-  opacity: 1 !important;
-  width: 100vw
-}
-
-.mobile-menu-hide {
-  width: 0;
-  opacity: 0 !important;
-}
-
-.mobile-menu-hide > * * {
-  display: none !important;
-}
-
-.burger, .burger > div {
-  width: 12vw
-}
-
-.burger > div {
-  height: 1.8vw;
-  left: 0
-}
-
-.burger-sided {
-  top: 3.6vw !important;
-  width: 0% !important;
-  left: 50% !important;
-}
-
-.burger-top {
-  transform: rotate(45deg)
-}
-
-.burger-bottom {
-  transform: rotate(-45deg)
-}
-
 .lime-green-button {
   color: var(--lime-green);
   border: 1px solid var(--lime-green);
