@@ -17,6 +17,7 @@ class Cart extends Component {
   constructor(props) {
     super(props);
 
+    this.isMobile = this.props.context.isMobile
     this.state = {
       lang: this.props.context.lang,
       raw_products: this.props.context.cart.products,
@@ -133,14 +134,15 @@ class Cart extends Component {
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateProducts} />
-        <div className="container-fluid row px-5 py-4 mt-5 border-top">
-          <div className="col-1"></div>
+        <div className="container-fluid d-flex mt-5 mb-5 px-2 py-1 mb-sm-0 px-sm-5 py-sm-4">
+          <div className="col-sm-1"></div>
           {this.state.products[0] &&
-          <div className="col-10 pt-5">
+          <div className="col-12 col-sm-10 pt-0 pt-sm-5">
             <div className="d-flex flex-column">
               <div className="d-flex flex-row justify-content-between">
-                <span className="h5">{t('cart')}</span>
+                <span className={"h5" + (this.isMobile ? " border-bottom" : "")}>{t('cart')}</span>
               </div>
+              {!this.isMobile &&
               <div
                 style={{backgroundColor: 'var(--dark-cyan)'}}
                 className="text-white row align-items-center text-center mt-3 rounded-pill"
@@ -167,11 +169,52 @@ class Cart extends Component {
                   <span>{t('total')}: </span>
                 </div>
               </div>
+              }
               {this.state.products.map((pr, index) => {
+              if (this.isMobile) {
+              return (
+              <div key={index} className="d-flex flex-column border-bottom">
+                <div className="d-flex row-nowrap p-2">
+                  <img className="col-6" src={pr.shortcut} />
+                  <div className="d-flex flex-column col-6 align-items-centers pt-3">
+                    <div className="d-flex row-nowrap">
+                      <span>{pr.category.name_s} {pr.name}</span>
+                      <span
+                        style={{color: 'var(--lime-green)'}}
+                        className="link h5"
+                        onClick={() => this.deleteProduct(pr.category.name, pr, pr.size)}
+                      >
+                        &nbsp; <FontAwesomeIcon icon='trash' />
+                      </span>
+                    </div>
+                    <span>{t('size')} {pr.size.width} x {pr.size.length}</span>
+                    {pr.discount != 0 &&
+                    <span style={{ color: 'var(--deep-sky-blue)' }}>{pr.discount} %</span>
+                    }
+                  </div>
+                </div>
+                <div className="d-flex row-nowrap justify-content-around align-items-center p-2">
+                  <div style={{border: '1px solid var(--lime-green)'}} className="d-flex flex-row justify-content-between align-items-center p-3 h5">
+                    <div onClick={() => this.updateQuantity(pr.category, pr.id, pr.quantity == 1 ? pr.quantity : pr.quantity - 1)}>
+                      <span>-</span>
+                    </div>
+                    <div style={{width: '2rem'}} className="d-flex justify-content-center">
+                      <span>{pr.quantity}</span>
+                    </div>
+                    <div onClick={() => this.updateQuantity(pr.category, pr.id, pr.quantity == 99 ? pr.quantity : Number(pr.quantity) + 1)}>
+                      <span>+</span>
+                    </div>
+                  </div>
+                  <span style={{ color: 'var(--deep-sky-blue)' }} className="h6">
+                    {t('price')}: {pr['sum' + this.props.context.currency]} ({this.props.context.currency})
+                  </span>
+                </div>
+              </div>
+              )}
               return (
               <div key={index} className="row">
                 <div className="col-2 h5 d-flex align-items-center justify-content-center border-bottom border-end m-0">
-                  <span>{pr.name} ({pr.category.name_s}) &nbsp;</span>
+                  <span>{pr.category.name_s} {pr.name}</span>
                   <span
                     style={{color: 'var(--lime-green)'}}
                     className="link"
@@ -211,19 +254,19 @@ class Cart extends Component {
               </div>
               )})}
               <div className="row text-center">
-                <Link to={"/" + location.search} className="d-flex justify-content-center no-link col-2 pt-3 border-end">
+                <Link to={"/" + location.search} className={"d-flex justify-content-center no-link col-6 col-sm-2 pt-3" + (this.isMobile ? "" : "border-end")}>
                   <CustomButton text={t('add')} color="lime-green"/>
                 </Link>
-                <div className="col-9 border-end"></div>
-                <div style={{ color: 'var(--deep-sky-blue)' }} className="col-1 d-flex justify-content-center align-items-center h5 m-0">
+                {!this.isMobile && <div className="col-9 border-end"></div>}
+                <div style={{ color: 'var(--deep-sky-blue)' }} className="col-6 col-sm-1 d-flex justify-content-center align-items-center h5 m-0">
                   <span>{this.props.context.cart.total} ({this.props.context.currency})</span>
                 </div>
               </div>
             </div>
-            <div style={{border: '1px solid var(--deep-sky-blue)'}} className="d-flex flex-column mt-5 p-5">
+            <div style={{border: this.isMobile ? '' : '1px solid var(--deep-sky-blue)'}} className="d-flex flex-column mt-5 p-0 p-sm-5">
               <span className="h6 text-danger">{this.state.error ? t('error') : ''}</span>
-              <div className="row">
-                <div className="d-flex col-5 flex-column">
+              <div className={(this.isMobile ? "flex-column" : "row-nowrap") + " d-flex"}>
+                <div className="d-flex col-sm-5 flex-column">
                   <div>
                   {['nickname', 'town', 'address'].map((field, index) => {
                   if (field != 'payment') {
@@ -243,8 +286,8 @@ class Cart extends Component {
                   <CustomPhoneInput lang={this.state.lang} color='lime-green' phone={this.state.form.phone} setPhone={phone => this.updateForm('phone', phone)} />
                   </div>
                 </div>
-                <div className="col-1"></div>
-                <div className="d-flex flex-column col-3">
+                {!this.isMobile && <div className="col-1"></div>}
+                <div className="d-flex flex-column col-sm-3 mt-3 mt-sm-0">
                 {[1, 2, 3].map((num, index) => {
                 return (
                   <div
@@ -263,7 +306,7 @@ class Cart extends Component {
                   </div>
                 )})}
                 </div>
-                <div className="d-flex row-nowrap justify-content-end align-items-start col-3">
+                <div className="d-flex row-nowrap justify-content-end align-items-start col-sm-3 mt-3 mt-sm-0">
                   <div
                     onClick={() => this.updateForm('courier', true)}
                     style={{border: '1px solid var(--deep-sky-blue)', borderRight: 'none'}}
@@ -280,13 +323,13 @@ class Cart extends Component {
                   </div>
                 </div>
               </div>
-              <div className="d-flex justify-content-end" onClick={this.submitForm}>
+              <div className="d-flex justify-content-end mt-3 mt-sm-0" onClick={this.submitForm}>
                 <CustomButton color="deep-sky-blue" text={t('submit')} />
               </div>
             </div>
           </div>
           }
-          <div className="col-1"></div>
+          <div className="col-sm-1"></div>
         </div>
       </div>
     );
