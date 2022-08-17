@@ -11,6 +11,8 @@ function withParams(Component) {
 class Shops extends Component {
   constructor(props) {
     super(props);
+
+    this.isMobile = this.props.context.isMobile
   }
 
   isOpen() {
@@ -31,43 +33,41 @@ class Shops extends Component {
     const t = this.props.t
     return (
       <div className="mt-5">
-        <div className="container-fluid mt-5">
-          <div className="row px-5 py-4">
-            <div className="col-1"></div>
-            <div className="col-10">
-            <iframe
-              src="https://www.google.com/maps/d/u/0/embed?mid=1GchRIsF2ZGYvS6rskNj_6UTPwg1UB6w&ehbc=2E312F"
-              className="w-100"
-              style={{height: '100vh'}}
-            />
-            <div className="d-flex flex-wrap justify-content-between mt-5">
-            {Object.keys(shops).map((name, index) => {
-            return (
-              <div key={index} className="col-5 shadow bg-white transition p-5 my-5 h6">
-                <span style={{color: 'var(--dark-cyan)'}} className="h5 mb-4">{name}</span>
-                <span>&nbsp; ({this.isOpen() ? t('opened') : t('closed')})</span>
-                <br />
-                <br />
-                <FontAwesomeIcon icon='map-marker-alt' />
-                <span className="mb-4">&nbsp; {shops[name][0]}</span>
-                <br />
-                <br />
-                <span>{t('workday')}</span>
-                <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 19.30</span>
-                <br />
-                <br />
-                <span>{t('weekday')}</span>
-                <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 18.00</span>
-                <br />
-                <br />
-                <FontAwesomeIcon icon='phone' />
-                <span style={{color: 'var(--dark-cyan)'}}>&nbsp; {shops[name][1]}</span>
-              </div>
-            )})}
+        <div className="container-fluid d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
+          <div className="col-sm-1"></div>
+          <div className="col-12 col-sm-10">
+          <iframe
+            src="https://www.google.com/maps/d/u/0/embed?mid=1GchRIsF2ZGYvS6rskNj_6UTPwg1UB6w&ehbc=2E312F"
+            className="w-100"
+            style={{height: '100vh'}}
+          />
+          <div className={(this.isMobile ? "flex-column" : "flex-wrap") + " d-flex justify-content-between mt-5"}>
+          {Object.keys(shops).map((name, index) => {
+          return (
+            <div key={index} className="col-12 col-sm-5 shadow bg-white transition p-3 p-sm-5 my-3 my-sm-5 h6">
+              <span style={{color: 'var(--dark-cyan)'}} className="h5 mb-4">{name}</span>
+              <span>&nbsp; ({this.isOpen() ? t('opened') : t('closed')})</span>
+              <br />
+              <br />
+              <FontAwesomeIcon icon='map-marker-alt' />
+              <span className="mb-4">&nbsp; {shops[name][0]}</span>
+              <br />
+              <br />
+              <span>{t('workday')}</span>
+              <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 19.30</span>
+              <br />
+              <br />
+              <span>{t('weekend')}</span>
+              <span style={{color: 'var(--dark-cyan)'}} className="mb-4">10.00 - 18.00</span>
+              <br />
+              <br />
+              <FontAwesomeIcon icon='phone' />
+              <span style={{color: 'var(--dark-cyan)'}}>&nbsp; {shops[name][1]}</span>
             </div>
-            </div>
-            <div className="col-1"></div>
+          )})}
           </div>
+          </div>
+          <div className="col-sm-1"></div>
         </div>
       </div>
     );
