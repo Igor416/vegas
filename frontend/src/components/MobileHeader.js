@@ -81,7 +81,7 @@ class MobileHeader extends Component {
   render() {
     const t = this.props.t
     return (
-      <div className="bg-white sticky-top">
+      <div className="bg-white">
         <LocationListener locationChanged={(location) => this.setState({pathname: location.pathname})} />
         <div style={{boxShadow: '0 1rem 1.5rem -.5rem rgba(0, 0, 0, .25)'}} className="container-fluid row p-3 align-items-center m-0">
           <div className="d-flex col-3 justify-content-center align-items-center">
