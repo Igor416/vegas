@@ -27,9 +27,6 @@ class Header extends Component {
       categoryEN: null,
       sub_category: null
     };
-
-    this.onMouseEnter = this.onMouseEnter.bind(this);
-    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
   onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
