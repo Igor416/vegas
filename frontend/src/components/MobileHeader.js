@@ -30,7 +30,6 @@ class MobileHeader extends Component {
     this.setState({
       menuOpened: !this.state.menuOpened
     }, () => {
-      document.getElementsByTagName('body')[0].style.overflow = this.state.menuOpened ? 'hidden' : 'visible'
       if (!this.state.menuOpened) {
         this.setState({
           category: null,
@@ -139,7 +138,7 @@ class MobileHeader extends Component {
             </div>
           </div>
         </div>
-        <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.menuOpened ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
+        <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.menuOpened ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column overflow-scroll"}>
           <div className="d-flex flex-column">
             <div id="searchBar" style={{backgroundColor: 'var(--dark-cyan)'}} className="w-100 p-3">
               <SearchBar lang={this.props.lang} currency={this.props.currency} width='92.5%' />
@@ -165,13 +164,13 @@ class MobileHeader extends Component {
             <Link
               onClick={() => this.toggleMenu()}
               to={"/shops?lang=" + this.props.lang}
-              className="w-100 p-3 border-bottom no-link no-hover"
+              className="w-100 p-3 no-link no-hover"
             >
               <span>{t('shops')}</span>
             </Link>
           </div>
-          <div style={{backgroundColor: 'var(--dark-grey)'}} className="flex-grow-1 w-100 d-flex row-nowrap text-white">
-            <div className="w-50 pt-3 px-0 border-end text-center">
+          <div style={{backgroundColor: 'var(--milk)'}} className="flex-grow-1 w-100 d-flex row-nowrap">
+            <div className="w-50 pt-3 text-center">
               <span>
                 <FontAwesomeIcon icon='hand-holding-usd' />
               </span>
@@ -181,13 +180,13 @@ class MobileHeader extends Component {
             <Link
               onClick={() => this.toggleMenu()}
               to={"/cart?lang=" + this.props.lang}
-              className="w-50 pt-3 px-0 flex-column text-center no-link no-hover"
+              className="w-50 pt-3 text-center no-link no-hover"
             >
               <span>
-                <FontAwesomeIcon icon='shopping-cart' color="white" />
+                <FontAwesomeIcon icon='shopping-cart' />
               </span>
               <br />
-              <span style={{color: 'white'}} className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
+              <span className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
           <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.category ? "mobile-menu-show" : "mobile-menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
