@@ -142,6 +142,13 @@
   background-color: var(--dark-cyan)
 }
 
+.structure-quantity {
+  background-color: var(--deep-sky-blue);
+  width: 1.5vw;
+  height: 1.5vw;
+  margin-left: -0.75vw;
+}
+
 .form-button-active {
   color: white;
   background-color: var(--deep-sky-blue)

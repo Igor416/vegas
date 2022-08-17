@@ -39,3 +39,9 @@
 .section-grid > div.shadow {
   width: 100% !important;
 }
+
+.structure-quantity {
+  width: 6vw !important;
+  height: 6vw !important;
+  margin-left: -3vw !important;
+}
