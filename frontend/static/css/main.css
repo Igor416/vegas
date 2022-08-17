@@ -56,7 +56,7 @@
 }
 
 .mobile-menu-hide > * * {
-  display: none;
+  display: none !important;
 }
 
 .burger, .burger > div {
