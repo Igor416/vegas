@@ -14,7 +14,8 @@ import {
   faMapMarkerAlt,
   faTrash,
   faCalendarAlt,
-  faEnvelope
+  faEnvelope,
+  faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 import i18n from './i18n.js';
@@ -37,7 +38,8 @@ const icons = [
   faMapMarkerAlt,
   faTrash,
   faCalendarAlt,
-  faEnvelope
+  faEnvelope,
+  faCheckCircle
 ]
 
 library.add.apply(library, icons);
