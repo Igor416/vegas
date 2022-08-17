@@ -1,0 +1,41 @@
+.menu-show {
+  opacity: 1 !important;
+  padding: 0 !important;
+  width: 100vw
+}
+
+.menu-hide {
+  width: 0;
+  opacity: 0 !important;
+}
+
+.menu-hide > * * {
+  display: none !important;
+}
+
+.burger, .burger > div {
+  width: 12vw
+}
+
+.burger > div {
+  height: 1.8vw;
+  left: 0
+}
+
+.burger-sided {
+  top: 3.6vw !important;
+  width: 0% !important;
+  left: 50% !important;
+}
+
+.burger-top {
+  transform: rotate(45deg)
+}
+
+.burger-bottom {
+  transform: rotate(-45deg)
+}
+
+.section-grid > div.shadow {
+  width: 100% !important;
+}
