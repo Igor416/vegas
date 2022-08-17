@@ -154,7 +154,7 @@ class ProductDetails extends Component {
               <div className={(this.isMobile ? "flex-column" : "row-nowrap") + " d-flex mt-2 align-items-start"}>
                 <div className="d-flex flex-column border me-sm-5 p-3">
                   <div style={{zIndex: 1000}} className="position-absolute d-flex p-3 h4">
-                    <div style={{color: (this.state.product.best ? 'gold' : 'var(--light-grey)')}}>
+                    <div style={{color: (this.state.product.best ? 'gold' : 'var(--milk)')}}>
                       <FontAwesomeIcon icon="fa-star"/>
                     </div>
                     {this.state.product.discount != 0 &&
