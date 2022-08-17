@@ -26,6 +26,7 @@ class Home extends Component {
       }
     }
 
+    this.isMobile = this.props.context.isMobile
     this.colors = ['lime-green', 'dark-cyan', 'deep-sky-blue']
     this.updateLang = this.updateLang.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -70,10 +71,10 @@ class Home extends Component {
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateLang} />
-        <div className="container-fluid text-center mt-5">
-          <div className="row px-5 py-4">
-            <div className="col-1"></div>
-            <div className="col-10">
+        <div className={"container-fluid text-center mt-5" + (this.isMobile ? " p-0" : "")}>
+          <div className="d-flex px-2 py-1 px-sm-5 py-sm-4">
+            <div className="col-sm-1"></div>
+            <div className="col-12 col-sm-10">
             {this.state.banners != '' && 
               <div id="carousel" className="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="1500">
                 <div className="carousel-inner">
@@ -102,14 +103,27 @@ class Home extends Component {
                 </button>
               </div>
               }
-              <div className="col-1"></div>
             </div>
+            <div className="col-sm-1"></div>
           </div>
-          <div className="d-flex row-nowrap py-5 bg-light justify-content-center align-items-center mt-5">
+          <div className={(this.isMobile ? "flex-column" : "row-nowrap") + " d-flex p-2 py-sm-5 px-sm-0 bg-light justify-content-center align-items-center mt-5"}>
             <img src="/static/images/logo.png"/>
-            <span style={{fontWeight: 400}} className="ms-5 h1">{t('is')}</span>
-            <div className="row justify-content-between">
+            <span style={{fontWeight: 400}} className="ms-sm-5 h1">{t('is')}</span>
+            <div className={(this.isMobile ? "flex-column w-100" : "row-nowrap") + " d-flex justify-content-between"}>
             {[1, 2, 3].map((num, index) => {
+            if (this.isMobile) {
+              return (
+              <div
+                key={index}
+                style={{
+                  fontWeight: 400,
+                  backgroundColor: `var(--${this.colors[index]})`
+                }}
+                className="p-3 text-start text-white w-100 mb-2"
+              >
+                <span className="h6"><FontAwesomeIcon icon='check-circle' />&nbsp; {t('char' + num)}</span>
+              </div>
+            )}
             return (
               <div
                 key={index}
@@ -119,29 +133,29 @@ class Home extends Component {
                   fontWeight: 400,
                   backgroundColor: `var(--${this.colors[index]})`
                 }}
-                className="d-flex p-3 ms-5 justify-content-center align-items-center text-center text-white rounded-circle span"
+                className="d-flex p-3 ms-5 justify-content-center align-items-center text-center text-white rounded-circle"
               >
                 <span className="h5">{t('char' + num)}</span>
               </div>
             )})}
             </div>
           </div>
-          <div className="row text-center mt-5 pt-5">
-            <div className="col-3"></div>
-            <div className="col-6">
+          <div className="d-flex text-center mt-5 px-2 pt-sm-5 px-sm-0">
+            <div className="col-sm-3"></div>
+            <div className="col-12 col-sm-6">
               <p className="h2">{t('main')}</p>
               <br />
               <p style={{fontWeight: 400, whiteSpace: "pre-line"}}>{t('desc')}</p>
             </div>
-            <div className="col-3"></div>
+            <div className="col-sm-3"></div>
           </div>
           {this.state.reviews != '' && 
-          <div className="row mt-5">
-            <div className="col-2"></div>
-            <div className="col-8">
+          <div className="d-flex mt-5 px-2 px-sm-auto">
+            <div className="col-sm-2"></div>
+            <div className="col-sm-8">
               <div className="w-100 pt-3 border">
                 <span className="h4 border-bottom border-2">{t('reviews')}:</span>
-                <div id="carouselReviews" className="p-5 mt-1 carousel slide" data-interval="false">
+                <div id="carouselReviews" className="p-2 pb-5 p-sm-5 mt-1 carousel slide" data-interval="false">
                   <div className="carousel-indicators">
                     {this.state.reviews.map((_, index) => {
                     return <button
@@ -156,8 +170,8 @@ class Home extends Component {
                   {this.state.reviews.map((review, index) => {
                   return (
                     <div key={index} className={(index == 0 ? "active " : "") + "text-center carousel-item"}>
-                      <div className="row position-relative mb-4 text-center h6">
-                        <div className="d-flex row-nowrap justify-content-between">
+                      <div className="d-flex flex-column mb-4 text-center h6">
+                        <div className="d-flex w-100 row-nowrap justify-content-between">
                           <span><FontAwesomeIcon icon='calendar-alt' />&nbsp;{review.date}</span>
                           <span><FontAwesomeIcon icon='map-marker-alt' />&nbsp;{review.city}</span>
                         </div>
@@ -207,7 +221,7 @@ class Home extends Component {
                 </div>
               </div>
             </div>
-            <div className="col-2"></div>
+            <div className="col-sm-2"></div>
           </div>
           }
         </div>
