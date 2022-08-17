@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useParams, useOutletContext, Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import Cookies from 'js-cookie'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProducts, sendForm } from "./reusables/APICallPoints.js";
 import Hoverable from './reusables/Hoverable.js';
@@ -175,6 +176,16 @@ class Catalog extends Component {
               }
               return (
                 <div key={index} className="d-flex shadow no-link p-3">
+                  <div style={{zIndex: 1000}} className="position-absolute d-flex p-3 h4">
+                    <div style={{color: (product.best ? 'gold' : 'var(--milk)')}}>
+                      <FontAwesomeIcon icon="fa-star"/>
+                    </div>
+                    {product.discount != 0 &&
+                    <div className="ms-4" style={{color: 'var(--deep-sky-blue)', borderBottom: '1px solid var(--deep-sky-blue)'}}>
+                      <span>-{product.discount}%</span>
+                    </div>
+                    }
+                  </div>
                   <img src={product.shortcut}/>
                   <div className="d-flex flex-column justify-content-between">
                     <div className="d-flex flex-row justify-content-between align-items-end">
