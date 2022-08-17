@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
+
 import { sendSearch } from "./APICallPoints.js"
 import CustomLink from './CustomLink.js';
 

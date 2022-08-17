@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
-import CustomLink from "./reusables/CustomLink.js";
+
 import { links } from "./reusables/Globals.js";
+import CustomLink from "./reusables/CustomLink.js";
 
 class Footer extends Component {
   constructor(props) {

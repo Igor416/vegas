@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
-import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Cookies from 'js-cookie'
 import { withTranslation } from "react-i18next";
-import { getBanners, getReviews, sendReview } from "./reusables/APICallPoints.js";
+
 import LocationListener from "./reusables/LocationListener.js";
+import { getBanners, getReviews, sendReview } from "./reusables/APICallPoints.js";
 import CustomButton from "./reusables/CustomButton.js"
 
 function withParams(Component) {

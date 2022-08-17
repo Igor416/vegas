@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { useParams, useOutletContext, Link } from "react-router-dom";
-import { withTranslation } from "react-i18next";
-import Cookies from 'js-cookie'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Cookies from 'js-cookie'
+import { withTranslation } from "react-i18next";
+
 import LocationListener from "./reusables/LocationListener.js";
+import SectionImage from "./reusables/SectionImage.js";
 import { getCategory, getProducts, sendForm } from "./reusables/APICallPoints.js";
+import { currencies } from './reusables/Globals.js';
 import Hoverable from './reusables/Hoverable.js';
 import CustomButton from './reusables/CustomButton.js';
 import CustomPhoneInput from './reusables/CustomPhoneInput.js';
-import { currencies } from './reusables/Globals.js';
-import SectionImage from "./reusables/SectionImage.js";
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;

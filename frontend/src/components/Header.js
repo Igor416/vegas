@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
-import SearchBar from "./reusables/SearchBar.js";
-import { getBestProducts } from "./reusables/APICallPoints.js";
+
 import LocationListener from './reusables/LocationListener.js';
+import { getBestProducts } from "./reusables/APICallPoints.js";
 import { langs as Langs } from './reusables/Globals.js';
+import SearchBar from "./reusables/SearchBar.js";
 import Hoverable from './reusables/Hoverable.js';
 import CustomLink from './reusables/CustomLink.js';
 

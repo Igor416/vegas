@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
-import { getCategory, getProduct } from "./reusables/APICallPoints.js";
-import Hoverable from './reusables/Hoverable.js';
-import { currencies } from './reusables/Globals.js';
-import CustomButton from './reusables/CustomButton.js';
+
 import LocationListener from "./reusables/LocationListener.js";
-import CustomLink from "./reusables/CustomLink.js";
 import SectionImage from "./reusables/SectionImage.js";
+import { getCategory, getProduct } from "./reusables/APICallPoints.js";
+import { currencies } from './reusables/Globals.js';
+import Hoverable from './reusables/Hoverable.js';
+import CustomButton from './reusables/CustomButton.js';
+import CustomLink from "./reusables/CustomLink.js";
 
 function withParams(Component) {
   return props => <Component {...props} params={useParams()} context={useOutletContext()} />;

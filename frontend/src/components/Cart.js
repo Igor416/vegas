@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { useOutletContext, Link } from "react-router-dom";
-import { withTranslation } from "react-i18next";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Cookies from 'js-cookie'
+import { withTranslation } from "react-i18next";
+
+import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProduct, sendForm } from "./reusables/APICallPoints.js";
 import { currencies } from "./reusables/Globals.js";
-import LocationListener from "./reusables/LocationListener.js";
 import CustomPhoneInput from "./reusables/CustomPhoneInput.js";
 import CustomButton from "./reusables/CustomButton.js";
 

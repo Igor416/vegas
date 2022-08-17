@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useParams, useOutletContext } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
+
 import { Shops as shops } from "./reusables/Globals";
 
 function withParams(Component) {

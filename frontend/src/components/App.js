@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import i18n from "i18next";
 import { Outlet, Link } from "react-router-dom";
-import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { currencies } from './reusables/Globals.js';
+import Cookies from 'js-cookie';
+import i18n from "i18next";
+
 import Header from "./Header.js";
 import MobileHeader from "./MobileHeader.js";
 import Footer from "./Footer.js";
 import MobileFooter from "./MobileFooter.js";
+import { currencies } from './reusables/Globals.js';
 
 export default class App extends Component {
   constructor(props) {

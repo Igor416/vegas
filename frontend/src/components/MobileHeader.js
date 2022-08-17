@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
+
 import LocationListener from './reusables/LocationListener.js';
-import SearchBar from "./reusables/SearchBar.js";
 import { langs as Langs } from './reusables/Globals.js';
+import SearchBar from "./reusables/SearchBar.js";
 import CustomLink from './reusables/CustomLink.js';
 
 const CATEGORIES = require("../links.json");
