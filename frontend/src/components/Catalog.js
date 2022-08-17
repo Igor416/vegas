@@ -18,6 +18,7 @@ class Catalog extends Component {
   constructor(props) {
     super(props);
 
+    this.isMobile = this.props.context.isMobile;
     this.state = {
       isGrid: true,
       lang: this.props.context.lang,
@@ -35,6 +36,7 @@ class Catalog extends Component {
       },
     }
 
+    
     this.updateProducts = this.updateProducts.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -134,12 +136,13 @@ class Catalog extends Component {
       <div>
         <LocationListener locationChanged={this.updateProducts} />
         <SectionImage category={this.state.category} />
-        <div className="container-fluid row px-5 py-4">
-          <div className="col-1"></div>
+        <div className="container-fluid d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
+          <div className="col-sm-1"></div>
           {this.state.products &&
-          <div className="col-10">
+          <div className="col-sm-10">
+            {!this.isMobile && 
             <div className="d-flex flex-row justify-content-end align-items-center h6">
-              <div className="d-flex flex-row me-5 align-items-center">
+              <div className="d-flex flex-row me-2 me-sm-5 align-items-center">
                 {currencies.map((currency, index) => {
                 return (
                   <div
@@ -160,6 +163,7 @@ class Catalog extends Component {
                 })}
               </div>
             </div>
+            }
             {Object.keys(this.state.products).map((filtering, index) => {
             return (
             <div key={index} className="d-flex mb-5 flex-column">
@@ -228,7 +232,7 @@ class Catalog extends Component {
             )})}
             </div>
           }
-          <div className="col-1"></div>
+          <div className="col-sm-1"></div>
         </div>
         <div className="modal fade" id="modal" tabIndex="-1">
           <div className="modal-dialog">
