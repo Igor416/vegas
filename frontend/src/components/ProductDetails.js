@@ -159,7 +159,7 @@ class ProductDetails extends Component {
                       <FontAwesomeIcon icon="fa-star"/>
                     </div>
                     {this.state.product.discount != 0 &&
-                    <div className="ms-4" style={{color: 'var(--deep-sky-blue)', borderBottom: '1px solid var(--deep-sky-blue)'}}>
+                    <div className="ms-2 ms-sm-4" style={{color: 'var(--deep-sky-blue)', borderBottom: '1px solid var(--deep-sky-blue)'}}>
                       <span>-{this.state.product.discount}%</span>
                     </div>
                     }
