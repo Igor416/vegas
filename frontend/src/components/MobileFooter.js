@@ -18,7 +18,7 @@ class MobileFooter extends Component {
   render() {
     const t = this.props.t
     return (
-      <div style={{ borderTop: '1px solid var(--deep-sky-blue)'}} className="d-flex flex-column container-fluid p-5">
+      <div style={{ backgroundColor: 'var(--milk)' }} className="d-flex flex-column container-fluid p-5">
         {Object.keys(links).map((section, index) => {
         return (
         <div key={index} className={"d-flex flex-column p-2" + (index == 1 ? " align-items-end" : " align-items-start")}>

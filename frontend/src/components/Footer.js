@@ -13,7 +13,7 @@ class Footer extends Component {
   render() {
     const t = this.props.t
     return (
-      <div style={{ borderTop: '1px solid var(--deep-sky-blue)'}} className="row container-fluid p-5">
+      <div style={{ backgroundColor: 'var(--milk)' }} className="d-flex container-fluid p-5">
         <div className="col-2"></div>
         {Object.keys(links).map((section, index) => {
         return (
