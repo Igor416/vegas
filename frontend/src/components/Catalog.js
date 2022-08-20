@@ -187,7 +187,17 @@ class Catalog extends Component {
                     </div>
                     }
                   </div>
-                  <img src={product.shortcut}/>
+                  <div className="d-flex row-nowrap">
+                    <div className="d-flex">
+                      <img src={product.shortcut}/>
+                    </div>
+                    <div style={{width: this.isMobile ? '50vw' : '12.5vw'}} className="d-flex flex-column justify-content-start mt-3">
+                      {product.markers.map((marker, index) => {
+                      return (
+                        <img key={index} src={marker} style={{aspectRatio: 1 / 1}} className="mb-2" />
+                      )})}
+                    </div>
+                  </div>
                   <div className="d-flex flex-column justify-content-between">
                     <div className="d-flex flex-row justify-content-between align-items-end">
                       <div className="h5 m-0">
