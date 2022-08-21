@@ -249,7 +249,13 @@ class ProductDetails extends Component {
                     )})}
                     </div>
                   </div>
-                  <div className="d-flex border flex-column mt-5 p-3">
+                  <div style={{height: '6vh'}} className="d-flex row-nowrap justify-content-start my-3">
+                    {this.state.product.markers.map((marker, index) => {
+                    return (
+                      <img key={index} src={marker} style={{width: '6vh', height: '6vh'}} className="me-2" />
+                    )})}
+                  </div>
+                  <div className="d-flex border flex-column mt-sm-5 p-3">
                     <div className="d-flex flex-column flex-wrap align-items-stretch h6">
                     {Object.keys(this.dimensions).map((dimension, index) => {
                     return (
