@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 from urllib.request import urlretrieve
 from vegas.settings import BASE_DIR
 from .catalog import Manager
@@ -164,7 +165,7 @@ class Technology(models.Model):
     name_en = models.CharField('Название (en)', max_length=32, blank=True)
     name_ru = models.CharField('Название (ru)', max_length=32)
     name_ro = models.CharField('Название (ro)', max_length=32, blank=True)
-    image = models.ImageField(upload_to='images', verbose_name='Фотография')
+    image = models.ImageField('Фотография', upload_to='images')
     desc_en = models.TextField('Описание (en)')
     desc_ru = models.TextField('Описание (ru)')
     desc_ro = models.TextField('Описание (ro)')
@@ -207,6 +208,16 @@ class LayerMattressPad(models.Model):
     def __str__(self):
         return f'слой наматрасника {self.product} с технологией {self.technology}, ({self.quantity})'
 
+class Marker(models.Model):
+    name = models.CharField('Маркер (ru)', max_length=64, unique=True, primary_key=True)
+
+    class Meta:
+        verbose_name = 'маркер'
+        verbose_name_plural = 'маркеры'
+    
+    def __str__(self):
+        return f'маркер {self.name}'
+
 from . import managers
 class Product(models.Model):
     name = models.CharField('Название', max_length=32, unique=True)
@@ -237,8 +248,9 @@ class Product(models.Model):
         self.name = self.name.title()
         if hasattr(self, 'sizes'):
             for size in self.sizes.all():
-                size.category = self.category
-                size.save()
+                if not size.category:
+                    size.category = self.category
+                    size.save()
         super(Product, self).save(*args, **kwargs)
 
     class Meta:
@@ -250,6 +262,8 @@ class Mattress(Product):
     max_pressure = models.IntegerField()
     lifetime = models.IntegerField(default=10)
     case = models.BooleanField(default=True)
+    visible_markers = models.ManyToManyField(Marker, related_name='visible_markers', verbose_name='Маркеры')
+    markers = models.ManyToManyField(Marker, related_name='markers')
 
     structure = models.ManyToManyField(Technology, through=LayerMattress, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
@@ -269,6 +283,27 @@ class Mattress(Product):
     @classmethod
     def get_short_order(cls):
         return ('age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'construction', 'case')
+
+    def save(self, *args, **kwargs):
+        markers = [
+            'height_' + str(self.height),
+            'max_pressure_' + str(self.max_pressure),
+            'springs_' + str(self.springs)
+        ]
+
+        if self.rigidity2:
+            markers.append('rigidity_' + self.rigidity1.property_en + '-' + self.rigidity2.property_en)
+        else:
+            markers.append('rigidity_' + self.rigidity1.property_en)
+
+        self.markers.add(*self.visible_markers.all())
+        for marker in markers:
+            try:
+                self.markers.add(Marker.objects.get(name=marker))
+            except ObjectDoesNotExist:
+                self.markers.create(name=marker)
+
+        super(Mattress, self).save(*args, **kwargs)
 
 class Pillow(Product):
     height = models.IntegerField()

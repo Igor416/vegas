@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms import ModelMultipleChoiceField
 from . import models
 from .catalog import Manager
 from .forms import ProductForm
@@ -39,14 +40,16 @@ class LayerPillowInline(admin.TabularInline):
 class LayerMattressPadInline(admin.TabularInline):
     model = models.LayerMattressPad
     extra = 3
-    
+
+admin.site.register(models.Marker)
+
 for product_name in manager.get_all_products():
     form = type(product_name + 'Form', (ProductForm,), {})
     model = getattr(models, product_name)
     model._meta.verbose_name = manager.get_pr_trans(product_name, RU, False)
     model._meta.verbose_name_plural = manager.get_pr_trans(product_name, RU, True)
     setattr(form, 'model', model)
-    admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), {'form': form})
+    admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), {'form': form, 'exclude': ['markers']})
 
     if model is models.Mattress:
         setattr(admin_model, 'inlines', (LayerMattressInline, ))

@@ -35,6 +35,9 @@ class ProductForm(forms.ModelForm):
                 elif name == 'videos':
                     field.queryset = models.Video.objects.all()
 
+                elif name == 'visible_markers':
+                    field.queryset = models.Marker.objects.filter(name__in=['3_zones', 'garanty', 'rolled'])
+
                 elif name.startswith('rigidity'):
                     field.label = manager.get_prop_trans(name[:-1], RU) + ' ' + name[-1]
                     field.queryset = models.Choice.objects.filter(name=name[:-1])

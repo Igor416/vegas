@@ -114,6 +114,18 @@ class RecomendedSerializer(ModelSerializer):
         fields = ['name']
         model = models.Basis
 
+class MarkerSerializer(ModelSerializer):
+    class Meta:
+        fields = ['name']
+        model = models.Marker
+
+    def __init__(self, lang, *args, **kwargs):
+        super(MarkerSerializer, self).__init__(*args, **kwargs)
+        self.lang = lang
+
+    def to_representation(self, obj):
+        return f'/media/markers/{obj.name}_{self.lang}.jpg'
+
 class ProductSerializer(ModelSerializer):
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
@@ -145,7 +157,7 @@ class ProductListSerializer(ProductSerializer):
 
 def create_list_serializer(model, lang):
     class Meta:
-        fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', manager.get_default_filtering(model.get_name())]
+        fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', 'markers', manager.get_default_filtering(model.get_name())]
         depth = 1
 
     setattr(Meta, 'model', model)
@@ -156,6 +168,7 @@ def create_list_serializer(model, lang):
     fields = {
         'Meta': Meta,
         'lang': lang,
+        'markers': MarkerSerializer(lang, many=True),
         default_filtering: ChoiceSerializer(lang, many=many)
     }
 
@@ -188,7 +201,7 @@ class ProductDetailsSerializer(ProductSerializer):
 
 def create_detail_serializer(model, lang):
     class Meta:
-        exclude = ['category'] + ['desc_' + l for l in langs if l != lang]
+        exclude = ['category', 'visible_markers'] + ['desc_' + l for l in langs if l != lang]
         depth = 1
         
     setattr(Meta, 'model', model)
@@ -212,6 +225,8 @@ def create_detail_serializer(model, lang):
         
         fields.update({'structure': LayerMattressSerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
+
+        fields.update({'markers': MarkerSerializer(lang, many=True)})
 
     elif model is models.Pillow:
         fields.update({'structure': LayerPillowSerializer(lang, many=True)})
