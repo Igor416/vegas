@@ -191,12 +191,14 @@ class Catalog extends Component {
                     <div className="d-flex">
                       <img src={product.shortcut}/>
                     </div>
+                    {this.state.isGrid &&
                     <div style={{width: this.isMobile ? '50vw' : '12.5vw'}} className="d-flex flex-column justify-content-start mt-3">
                       {product.markers.map((marker, index) => {
                       return (
                         <img key={index} src={marker} style={{aspectRatio: 1 / 1}} className="mb-2" />
                       )})}
                     </div>
+                    }
                   </div>
                   <div className="d-flex flex-column justify-content-between">
                     <div className="d-flex flex-row justify-content-between align-items-end">
@@ -238,6 +240,14 @@ class Catalog extends Component {
                         <span>{product.desc}</span>
                       </div>
                     </div>
+                    {!this.state.isGrid &&
+                    <div style={{height: '5vh'}} className="d-flex row-nowrap justify-content-start">
+                      {product.markers.map((marker, index) => {
+                      return (
+                        <img key={index} src={marker} style={{width: '5vh', height: '5vh'}} className="me-2" />
+                      )})}
+                    </div>
+                    }
                     <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
                       <Link to={`/product/${this.state.category.name}/${product.id}` + location.search}>
                         <CustomButton color="lime-green" text={t('details')} />
