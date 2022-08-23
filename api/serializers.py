@@ -1,3 +1,4 @@
+from dataclasses import field
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 from . import models
 from .catalog import Manager
@@ -69,25 +70,6 @@ class TechnologySerializer(ModelSerializer):
             r.pop('desc_' + lang)
 
         return r
-
-class LayerSerializer(ModelSerializer):
-    def to_representation(self, obj):
-        return obj.quantity
-
-class LayerMattressSerializer(TechnologySerializer):
-    technologies = LayerSerializer(source='layermattress_set', many=True)
-
-    class Meta(TechnologySerializer.MetaLayer): pass
-        
-class LayerPillowSerializer(TechnologySerializer):
-    technologies = LayerSerializer(source='layerpillow_set', many=True)
-
-    class Meta(TechnologySerializer.MetaLayer): pass
-
-class LayerMattressPadSerializer(TechnologySerializer):
-    technologies = LayerSerializer(source='layermattresspad_set', many=True)
-    
-    class Meta(TechnologySerializer.MetaLayer): pass
 
 class SizeSerializer(ModelSerializer):
     class Meta:
@@ -223,16 +205,16 @@ def create_detail_serializer(model, lang):
         fields.update({'rigidity1': ChoiceSerializer(lang)})
         fields.update({'rigidity2': ChoiceSerializer(lang)})
         
-        fields.update({'structure': LayerMattressSerializer(lang, many=True)})
+        fields.update({'structure': TechnologySerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
         fields.update({'markers': MarkerSerializer(lang, many=True)})
 
     elif model is models.Pillow:
-        fields.update({'structure': LayerPillowSerializer(lang, many=True)})
+        fields.update({'structure': TechnologySerializer(lang, many=True)})
 
     elif model is models.MattressPad:
-        fields.update({'structure': LayerMattressPadSerializer(lang, many=True)})
+        fields.update({'structure': TechnologySerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
 
     return type(model.get_name() + 'Serializer', (ProductDetailsSerializer, ), fields)

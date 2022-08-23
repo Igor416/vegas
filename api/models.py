@@ -187,26 +187,23 @@ class Technology(models.Model):
 class LayerMattress(models.Model):
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     product = models.ForeignKey('Mattress', on_delete=models.CASCADE)
-    quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
-        return f'слой матраса {self.product} с технологией {self.technology}, ({self.quantity})'
+        return f'слой матраса {self.product} с технологией {self.technology}'
 
 class LayerPillow(models.Model):
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     product = models.ForeignKey('Pillow', on_delete=models.CASCADE)
-    quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
-        return f'слой подушки {self.product} с технологией {self.technology}, ({self.quantity})'
+        return f'слой подушки {self.product} с технологией {self.technology}'
 
 class LayerMattressPad(models.Model):
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     product = models.ForeignKey('MattressPad', on_delete=models.CASCADE)
-    quantity = models.SmallIntegerField(default=1)
 
     def __str__(self):
-        return f'слой наматрасника {self.product} с технологией {self.technology}, ({self.quantity})'
+        return f'слой наматрасника {self.product} с технологией {self.technology}'
 
 class Marker(models.Model):
     name = models.CharField('Маркер (ru)', max_length=64, unique=True, primary_key=True)
