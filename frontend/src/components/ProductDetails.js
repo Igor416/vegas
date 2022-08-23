@@ -52,32 +52,6 @@ class ProductDetails extends Component {
         })
       })
       getProduct(category, id).then((data) => {
-        const structureRaw = data.structure
-        const structure = []
-
-        for (let layerRaw of structureRaw) {
-          let contains = false
-          for (let layer of structure) {
-            if (layerRaw.name == layer.name) {
-              contains = true
-            }
-          }
-          if (!contains) {
-            layerRaw.quantity = layerRaw.technologies[0]
-            structure.push(layerRaw)
-          }
-          else {
-            let sameLayers = structureRaw.filter(layer => layer.name == layerRaw.name)
-            layerRaw.quantity = layerRaw.technologies[sameLayers.indexOf(layerRaw)]
-            structure.push(layerRaw)
-          }
-        }
-
-        /*
-        structureRaw comes with a list of quantities called technologies, with index of quantity corresponding index of same layers.
-        So we append layer if it is new, or append quantity with new set id
-        */
-        data.structure = structure
         this.setState({
           product: data,
           size: data.sizes[0]
@@ -395,7 +369,7 @@ class ProductDetails extends Component {
                     </div>
                     <div className="col-sm-2 d-flex align-items-center">
                       <div className="rounded-circle d-flex align-items-center justify-content-center position-absolute text-white structure-quantity">
-                        <span>{layer.quantity}</span>
+                        <span>{index + 1}</span>
                       </div>
                       <img src={layer.image} />
                     </div>
