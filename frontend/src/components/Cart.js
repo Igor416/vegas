@@ -7,6 +7,7 @@ import { withTranslation } from "react-i18next";
 import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProduct, sendForm } from "./reusables/APICallPoints.js";
 import { currencies } from "./reusables/Globals.js";
+import Hoverable from './reusables/Hoverable.js';
 import CustomPhoneInput from "./reusables/CustomPhoneInput.js";
 import CustomButton from "./reusables/CustomButton.js";
 
@@ -137,7 +138,8 @@ class Cart extends Component {
         <LocationListener locationChanged={this.updateProducts} />
         <div className="container-fluid d-flex mt-5 mb-5 px-2 py-1 mb-sm-0 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
-          {this.state.products[0] &&
+          {this.state.products[0]
+          ?
           <div className="col-12 col-sm-10 pt-0 pt-sm-5">
             <div className="d-flex flex-column">
               <div className="d-flex flex-row justify-content-between">
@@ -326,6 +328,33 @@ class Cart extends Component {
               </div>
               <div className="d-flex justify-content-end mt-3 mt-sm-0" onClick={this.submitForm}>
                 <CustomButton color="deep-sky-blue" text={t('submit')} />
+              </div>
+            </div>
+          </div>
+          :
+          <div style={{height: '60vh'}} className="col-12 col-sm-10 pt-0 pt-sm-5 d-flex align-items-center justify-content-center mb-sm-5">
+            <div style={{
+              width: this.isMobile ? '100vw' : '60vw',
+              backgroundColor: this.isMobile ? 'white' : 'var(--milk)'
+              }}
+              className={(this.isMobile ? "flex-column" : "flex-row") + " d-flex juaftify-content-between align-items-center col-6 p-5"}
+            >
+              <div className="me-5">
+                <FontAwesomeIcon icon='shopping-cart' style={{width: '25vh', height: '25vh'}} />
+              </div>
+              <div style={{height: '25vh'}} className="d-flex flex-column justify-content-around">
+                <div>
+                  <span className="h3">{t('empty')}</span>
+                  <br />
+                  <Link className="link h5" to="/">
+                    <span>{t('return')}</span>
+                  </Link>
+                </div>
+                <div className="link mt-3 h5">
+                  <span className="no-link h3">{t('unfound')}?</span>
+                  <br />
+                  <Hoverable text={t('request')} />
+                </div>
               </div>
             </div>
           </div>
