@@ -4,5 +4,11 @@
   "from": "from",
   "order": "Order now",
   "credit": "Buy now,\npay later",
-  "cart": "Cart"
+  "cart": "Cart",
+  "months": "Months",
+  "call": "Order Call",
+  "error": "Fill in all the fields!",
+  "name": "Your nickname",
+  "close": "Close",
+  "submit": "Submit"
 }

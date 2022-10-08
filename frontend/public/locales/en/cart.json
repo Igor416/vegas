@@ -1,4 +1,8 @@
 {
+  "empty": "Cart is empty",
+  "return": "Return to shopping",
+  "unfound": "No matching product found",
+  "request": "Request a consultation",
   "size": "Size",
   "cart": "Choosed products",
   "name": "Name",

@@ -1,4 +1,8 @@
 {
+  "empty": "Coșul este gol",
+  "return": "Reveniți la cumpărături",
+  "unfound": "Nu s-a găsit niciun produs potrivit",
+  "request": "Solicitați o consultație",
   "size": "Marimea",
   "cart": "Produse Selectate",
   "name": "Nume",

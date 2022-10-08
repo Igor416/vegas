@@ -115,7 +115,7 @@ class Catalog extends Component {
     }, Cookies.get('csrftoken'), true)
 
     if (r == 'error: empty') {
-      setError(true)
+      this.updateForm('error', true)
     }
     else {
       $(function () {
@@ -296,13 +296,13 @@ class Catalog extends Component {
                     name="name"
                     placeholder="..."
                     value={this.state.form.name}
-                    onChange={e => updateData('name', e.target.value)}
+                    onChange={e => this.updateForm('name', e.target.value)}
                   />
                   <CustomPhoneInput
                     lang={this.state.lang}
                     color="dark-cyan" 
                     value={this.state.form.phone}
-                    setPhone={phone => updateData('phone', phone)}
+                    setPhone={phone => this.updateForm('phone', phone)}
                   />
                 </form>
               </div>
