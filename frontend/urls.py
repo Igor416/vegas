@@ -5,11 +5,11 @@ from .views import index
 
 urlpatterns = [
     path('', index),
-    path(r'cart', index),
-    path(r'shops', index),
-    path(r'catalog/<string1>/<string2>', index),
-    path(r'catalog/<string1>/<string2>/<string3>', index),
-    path(r'product/<string1>/<string2>', index),
+    path('cart', index),
+    path('shops', index),
+    path('catalog/<string1>/<string2>', index),
+    path('catalog/<string1>/<string2>/<string3>', index),
+    path('product/<string1>/<string2>', index),
 ]
 
 urlpatterns += static('/public/locales/dev/', document_root=BASE_DIR.joinpath('frontend/public/locales/en'))
