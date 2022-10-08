@@ -8,8 +8,9 @@
         "Mattresses Comfort",
         "Mattresses Ecolatex",
         "Mattresses Active",
-        "Mattresses Practic",
-        "Mattresses Esleep",
+        "Mattresses Alba",
+        "Mattresses Smart",
+        "Mattresses Special",
         "Vegas Kids"
       ],
       "Springless;Mattress/springless": [
@@ -17,8 +18,8 @@
         "Mattresses with latex"
       ],
       "By springlocks;Mattress/springblock": [
-        "Independent springs",
-        "7-zonal block Medizone"
+        "Independent Springs",
+        "7-zonal Block Medizone"
       ],
       "By age;Mattress/age": [
         "Mattresses for children",
@@ -64,8 +65,7 @@
       ],
       "Special pillows;Pillow/special": [
         "Pillow Beauty for beauty and youngness",
-        "Pillow Baby Boom for pregnants and breastfeeding",
-        "Pillow Travel for trips"
+        "Pillow Baby Boom for pregnants and breastfeeding"
       ]
     },
     "ACCESSORIES": {
@@ -73,13 +73,13 @@
         "Transform",
         "Protect"
       ],
-      "Blankets;Blankets": [
+      "Blankets;Blanket": [
         "Blankets Bamboo",
-        "Blankets SumWin",
-        "Sheep\"s wool"
+        "SumWin Blanket",
+        "Blankets with Sheep's Wool",
+        "Blankets with Thermoregulation"
       ],
-      "Bedsheets;BedSheets/all": [],
-      "BedSpreads": []
+      "Bedsheets;BedSheets/all": []
     },
     "FOR KIDS": {
       "Mattresses;Mattress/children": [
@@ -104,7 +104,7 @@
       ]
     },
     "FURNITURE": {
-      "Beds;Beds": [
+      "Beds;Bed": [
         "All beds",
         "Wooden beds",
         "Beds with soft upholstery",
@@ -113,7 +113,8 @@
       "Stands for beds;Stand": [
         "Wooden stands",
         "Stands with soft upholstery"
-      ]
+      ],
+      "Puffs;Stand/Puffs": []
     },
     "BASISES": {
       "Basis \"Lux\";Basis/Lux": [],
@@ -130,8 +131,9 @@
         "Матрасы Comfort",
         "Матрасы Ecolatex",
         "Матрасы Active",
-        "Матрасы Practic",
-        "Матрасы Esleep",
+        "Матрасы Alba",
+        "Матрасы Smart",
+        "Mattresses Special",
         "Vegas Kids"
       ],
       "Беспружинные;Mattress/springless": [
@@ -186,8 +188,7 @@
       ],
       "Специальные Подушки;Pillow/special": [
         "Подушка Beauty для красоты и молодости",
-        "Подушка Baby Boom для беременных и кормления",
-        "Подушка Travel для путешествий"
+        "Подушка Baby Boom для беременных и кормления"
       ]
     },
     "АКСЕССУАРЫ": {
@@ -195,13 +196,13 @@
         "Transform",
         "Protect"
       ],
-      "Одеяла;Blankets": [
+      "Одеяла;Blanket": [
         "Одеяла Bamboo",
-        "Одеяла SumWin",
-        "Овечья Шерсть"
+        "Одеяло SumWin",
+        "Одеяло из овечьей шерсти",
+        "Одеяла с терморегуляцией"
       ],
-      "Постельное белье;BedSheets/all": [],
-      "Покрывала": []
+      "Постельное белье;BedSheets/all": []
     },
     "ДЕТЯМ": {
       "Матрасы;Mattress/children": [
@@ -226,7 +227,7 @@
       ]
     },
     "МЕБЕЛЬ": {
-      "Кровати;Beds": [
+      "Кровати;Bed": [
         "Все кровати",
         "Деревянные кровати",
         "Кровати с мягкой обивкой",
@@ -235,7 +236,8 @@
       "Тумбы прикроватные;Stand": [
         "Тумбы из дерева",
         "Тумбы с мягкой обивкой"
-      ]
+      ],
+      "Пуфы;Stand/Puffs": []
     },
     "ОСНОВАНИЯ": {
       "Основание Люкс;Basis/Lux": [],
@@ -252,8 +254,9 @@
         "Saltele Comfort",
         "Saltele Ecolatex",
         "Saltele Active",
-        "Saltele Practic",
-        "Saltele Esleep",
+        "Saltele Alba",
+        "Saltele Smart",
+        "Mattresses Special",
         "Vegas Kids"
       ],
       "Fără arcuri;Mattress/springless": [
@@ -308,8 +311,7 @@
       ],
       "Perne speciale;Pillow/special": [
         "Perna Beauty pentru frumusețe si tinirețe",
-        "Perna Baby Boom pentru femeile insarcinate si alăptare",
-        "Perna Travel pentru călătorie"
+        "Perna Baby Boom pentru femeile insarcinate si alăptare"
       ]
     },
     "ACCESORII": {
@@ -317,13 +319,13 @@
         "Transform",
         "Protect"
       ],
-      "Plapume;Blankets": [
+      "Plapume;Blanket": [
         "Plapume Bamboo",
-        "Plapume SumWin",
-        "Lână de oaie"
+        "Plapumă SumWin",
+        "Plapume din lână de oaie",
+        "Plapume cu termoreglare"
       ],
-      "Cearceafuri;BedSheets/all": [],
-      "Cuverturi de pat": []
+      "Cearceafuri;BedSheets/all": []
     },
     "PENTRU COPII": {
       "Saltele;Mattress/children": [
@@ -348,7 +350,7 @@
       ]
     },
     "MOBILA": {
-      "Paturi;Beds": [
+      "Paturi;Bed": [
         "Toate paturile",
         "Paturi de lemn",
         "Paturi tapițate",
@@ -357,7 +359,8 @@
       "Noptiere de pat;Stand": [
         "Noptiere de lemn",
         "Noptiere tapițate"
-      ]
+      ],
+      "Pufături;Stand/Puffs": []
     },
     "SOMIERE": {
       "Somiera Lux;Basis/Lux": [],
