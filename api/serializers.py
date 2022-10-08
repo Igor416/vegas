@@ -9,12 +9,12 @@ langs = ['en', 'ru', 'ro']
 
 class CategorySerializer(ModelSerializer):
     class Meta:
-        exclude = ['id', 'name']
+        fields = '__all__'
         model = models.Category
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, lang, *args, **kwargs):
         super(CategorySerializer, self).__init__(*args, **kwargs)
-        self.lang = kwargs['context']['request'].GET.get('lang')
+        self.lang = lang
 
     def get_default_filtering(self, obj):
         return manager.get_default_filtering(obj.name)
@@ -23,13 +23,18 @@ class CategorySerializer(ModelSerializer):
         return manager.get_prop_trans(self.get_default_filtering(obj), langs.index(self.lang))
 
     def to_representation(self, obj):
+        if isinstance(obj, models.Basis) or obj.name == 'Basis':
+            return {
+            'name': obj.name,
+            'name_s': getattr(obj, f'name_{self.lang}_s'),
+            'name_pl': getattr(obj, f'name_{self.lang}_pl'),
+        }
         return {
             'name': obj.name,
             'name_s': getattr(obj, f'name_{self.lang}_s'),
             'name_pl': getattr(obj, f'name_{self.lang}_pl'),
             'default_filtering': self.get_default_filtering(obj),
-            'default_filtering_lang': self.get_default_filtering_lang(obj),
-            'desc': getattr(obj, f'desc_{self.lang}'),
+            'default_filtering_lang': self.get_default_filtering_lang(obj)
         }
     
 class ChoiceSerializer(ModelSerializer):
@@ -59,6 +64,7 @@ class TechnologySerializer(ModelSerializer):
 
     def to_representation(self, obj):
         r = super(TechnologySerializer, self).to_representation(obj)
+        r['image'] = obj.get_absolute_url()
         for lang in langs:
             if lang == self.lang:
                 r.update({
@@ -73,7 +79,7 @@ class TechnologySerializer(ModelSerializer):
 
 class SizeSerializer(ModelSerializer):
     class Meta:
-        exclude = ['id', 'category']
+        exclude = ['id', 'category', 'product']
         model = models.Size
 
 class FileSerializer(ModelSerializer):
@@ -93,8 +99,11 @@ class VideoSerializer(FileSerializer):
 
 class RecomendedSerializer(ModelSerializer):
     class Meta:
-        fields = ['name']
+        fields = ['property_en']
         model = models.Basis
+
+    def to_representation(self, obj):
+        return obj.property_en
 
 class MarkerSerializer(ModelSerializer):
     class Meta:
@@ -108,51 +117,86 @@ class MarkerSerializer(ModelSerializer):
     def to_representation(self, obj):
         return f'/media/markers/{obj.name}_{self.lang}.jpg'
 
+class BedSheetsSizeSerializer(ModelSerializer):
+    duvet_cover_size = SizeSerializer()
+    sheet_size = SizeSerializer()
+    elasticated_sheet_size = SizeSerializer()
+    pillowcase_sizes = SizeSerializer(many=True)
+
+    class Meta:
+        exclude = ['id', 'category', 'product']
+        model = models.Size
+
 class ProductSerializer(ModelSerializer):
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
 
-def create_best_product_serializer(model):
+class ProductBestSerializer(ProductSerializer):
+    def to_representation(self, obj):
+        r = super(ProductBestSerializer, self).to_representation(obj)
+        r['category'] = obj.category.name
+        r['size'] = r['sizes'][0]
+        r['category_name'] = getattr(obj.category, f'name_{self.lang}_s')
+        return r
+
+def create_best_product_serializer(model, lang):
     class Meta:
         fields = ['id', 'shortcut', 'name', 'sizes', 'discount']
 
-    def to_representation(self, obj):
-        r = super(ProductSerializer, self).to_representation(obj)
-        r['category'] = obj.category.name
-        return r
-
     setattr(Meta, 'model', model)
-
-    return type(model.get_name() + 'Serializer', (ProductSerializer, ), {'Meta': Meta, 'to_representation': to_representation})
+    return type(model.get_name() + 'Serializer', (ProductBestSerializer, ), {'Meta': Meta, 'lang': lang})
 
 class ProductListSerializer(ProductSerializer):
     desc = SerializerMethodField()
 
     def get_desc(self, obj):
-        shortened, symbols, words = '', 256, 0
+        shortened, symbols, words = '', 288, 0
         for sent in getattr(obj, 'desc_' + self.lang).split('.'):
             words += len(sent.strip())
             if words <= symbols:
                 shortened += sent + '.'
             else:
                 return shortened
+        else:
+            return getattr(obj, 'desc_' + self.lang)
+
+    def to_representation(self, obj):
+        r = super().to_representation(obj)
+        try:
+            r['size'] = r['sizes'][0]
+        except:
+            r['size'] = dict({
+                "width": 0,
+                "length": 0,
+                "priceEUR": 0,
+                "priceMDL": 0
+            })
+        if not r['name']:
+            r['name'] = f"{manager.get_pr_trans('BedSheets', langs.index(self.lang), False)} ({r['name_' + self.lang]})"
+        return r
 
 def create_list_serializer(model, lang):
     class Meta:
-        fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', 'markers', manager.get_default_filtering(model.get_name())]
+        fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut'] + ([] if model is models.Basis else [manager.get_default_filtering(model.get_name())]) + (['markers'] if model is models.Mattress else []) + (['name_' + lang] if model is models.BedSheets else [])
         depth = 1
-
+    
     setattr(Meta, 'model', model)
-
     default_filtering = manager.get_default_filtering(model.get_name())
-    many = models.has_multiple_rels(model, default_filtering)
+    if model is models.Basis:
+        many = False
+    else:
+        many = models.has_multiple_rels(model, default_filtering)
 
     fields = {
         'Meta': Meta,
         'lang': lang,
-        'markers': MarkerSerializer(lang, many=True),
         default_filtering: ChoiceSerializer(lang, many=many)
     }
+ 
+    if model is models.Mattress:
+        fields.update({'markers': MarkerSerializer(lang, many=True)})
+    elif model is models.Basis:
+        del fields[default_filtering]
 
     return type(model.get_name() + 'Serializer', (ProductListSerializer, ), fields)
 
@@ -166,7 +210,6 @@ class ProductDetailsSerializer(ProductSerializer):
 
     def to_representation(self, obj):
         r = super(ProductDetailsSerializer, self).to_representation(obj)
-
         r['characteristic'], r['description'] = {}, {}
         for key in self.model.get_order():
             if key.startswith('rigidity'):
@@ -174,16 +217,19 @@ class ProductDetailsSerializer(ProductSerializer):
             else:
                 key_lang = manager.get_prop_trans(key, langs.index(self.lang))
             
-            r['characteristic'][key_lang] = r.pop(key)
+            if key.startswith('extra'):
+                r['characteristic'][key_lang] = r[key]
+            else:
+                r['characteristic'][key_lang] = r.pop(key)
 
             if key in self.model.get_short_order():
                 r['description'][key_lang] = r['characteristic'][key_lang]
-        
+
         return r
 
 def create_detail_serializer(model, lang):
     class Meta:
-        exclude = ['category', 'visible_markers'] + ['desc_' + l for l in langs if l != lang]
+        exclude = ['category'] + ['desc_' + l for l in langs if l != lang] + (['visible_markers'] if model is models.Mattress else [])
         depth = 1
         
     setattr(Meta, 'model', model)
@@ -216,5 +262,11 @@ def create_detail_serializer(model, lang):
     elif model is models.MattressPad:
         fields.update({'structure': TechnologySerializer(lang, many=True)})
         fields.update({'technologies': TechnologySerializer(lang, many=True)})
+
+    elif model is models.BedSheets:
+        fields.update({'sizes': BedSheetsSizeSerializer(lang, many=True)})
+
+    elif model is models.Basis:
+        fields.update({'recomended': RecomendedSerializer(many=True)})
 
     return type(model.get_name() + 'Serializer', (ProductDetailsSerializer, ), fields)
