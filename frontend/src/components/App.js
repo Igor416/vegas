@@ -25,7 +25,6 @@ export default class App extends Component {
       }
       location.replace(location.pathname + `?lang=${lang}`)
     }
-    i18n.changeLanguage(lang);
     this.state = {
       lang: lang,
       currency: currencies[0],
@@ -45,6 +44,7 @@ export default class App extends Component {
 
   componentDidMount() {
     this.setTotal()
+    i18n.changeLanguage(this.state.lang);
   }
 
   setTotal() {

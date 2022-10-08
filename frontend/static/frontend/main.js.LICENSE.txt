@@ -84,6 +84,10 @@ object-assign
 
 /*! ./reusables/APICallPoints.js */
 
+/*! ./reusables/BedSheetsSizesManager.js */
+
+/*! ./reusables/BedSizesManager.js */
+
 /*! ./reusables/CustomButton.js */
 
 /*! ./reusables/CustomLink.js */
@@ -316,6 +320,10 @@ object-assign
   !*** ./node_modules/react-phone-input-2/lib/lib.js ***!
   \*****************************************************/
 
+/*!*****************************************************!*\
+  !*** ./src/components/reusables/BedSizesManager.js ***!
+  \*****************************************************/
+
 /*!******************************************************!*\
   !*** ./src/components/reusables/CustomPhoneInput.js ***!
   \******************************************************/
@@ -354,6 +362,10 @@ object-assign
 
 /*!***********************************************************!*\
   !*** ./node_modules/react-is/cjs/react-is.development.js ***!
+  \***********************************************************/
+
+/*!***********************************************************!*\
+  !*** ./src/components/reusables/BedSheetsSizesManager.js ***!
   \***********************************************************/
 
 /*!************************************************************!*\
