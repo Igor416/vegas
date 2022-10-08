@@ -83,7 +83,7 @@ export default function SearchBar({width, currency}) {
       else {
       return (
         <div key={index} className="w-100 d-flex flex-column border-bottom mt-3">
-          <span className="h5 pb-2">{lang_version[key]}: </span>
+          <span className="h5 pb-2">{t(key)}: </span>
           {res[key].map((item, index) => {
           return (
             <div key={index} className="d-flex row-nowrap justify-content-between text-end">
