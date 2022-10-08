@@ -16,6 +16,8 @@ LIFETIME = 'lifetime'
 CASE = 'case'
 DENSITY = 'density'
 HEADBOARD_HEIGHT = 'headboard_height'
+EXTRA_LENGTH = 'extra_length'
+EXTRA_WIDTH = 'extra_width'
 DISTANCE = 'distance'
 WIDTH = 'width'
 LEGS_HEIGHT = 'legs_height'
@@ -40,7 +42,6 @@ BEDSHEETS_COLOR = 'bedsheets_color'
 TISSUE = 'tissue'
 BED_TYPE = 'bed_type'
 MATERIAL = 'material'
-BASIS_TYPE = 'basis_type'
 
 DEFAULT_FILTERING = {
     MATTRESS: COLLECTION,
@@ -50,11 +51,11 @@ DEFAULT_FILTERING = {
     BEDSHEETS: BEDSHEETS_TYPE,
     BED: BED_TYPE,
     STAND: MATERIAL,
-    BASIS: BASIS_TYPE
+    BASIS: ''
 }
 
 COMMON_PROPERTIES  = {
-    AGE: [MATTRESS, PILLOW, BLANKET],
+    AGE: [MATTRESS, PILLOW, BLANKET, MATTRESSPAD],
     RIGIDITY: [MATTRESS, MATTRESSPAD],
     COVER: [PILLOW, MATTRESSPAD, BLANKET]
 }
@@ -67,7 +68,7 @@ CATALOG = {
     BEDSHEETS: [BEDSHEETS_TYPE, BEDSHEETS_COLOR, TISSUE],
     BED: [BED_TYPE],
     STAND: [MATERIAL],
-    BASIS: [BASIS_TYPE]
+    BASIS: []
 }
 
 from .translations import RU
@@ -125,3 +126,14 @@ class Manager:
     def get_prop_trans(self, property, lang):
         from .translations import properties, choices
         return (properties.get(property) or choices.get(property))[lang]
+
+    def get_prop_by_trans(self, trans, lang=RU):
+        from .translations import properties, choices
+        
+        for prop, tranlation in properties.items():
+            if tranlation[lang] == trans:
+                return prop
+        
+        for prop, tranlation in choices.items():
+            if tranlation[lang] == trans:
+                return prop
