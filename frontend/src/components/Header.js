@@ -28,6 +28,8 @@ class Header extends Component {
       categoryEN: null,
       sub_category: null
     };
+
+    this.updateBestProducts = this.updateBestProducts.bind(this)
   }
 
   onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
@@ -49,10 +51,14 @@ class Header extends Component {
     }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
   
-  componentDidMount() {
-    getBestProducts().then(data => {
-      this.setState({
-        bestProducts: data
+  updateBestProducts(location) {
+    this.setState({
+      pathname: location.pathname
+    }, () => {
+      getBestProducts().then(data => {
+        this.setState({
+          bestProducts: data
+        })
       })
     })
   }
@@ -99,6 +105,9 @@ class Header extends Component {
 
   getLink(sub_category, link=null) {
     let categories = CATEGORIES[this.props.lang][this.state.category]
+    if (this.state.categoryEN == 'BASISES') {
+      return `/product/Basis/${Object.keys(categories).indexOf(sub_category) + 1}`
+    }
     if (categories[sub_category].length == 0 || link) {
       let url = `/catalog/${sub_category.split(';')[1]}`
       if (link) {
@@ -123,7 +132,7 @@ class Header extends Component {
     const t = this.props.t
     return (
       <div className="bg-white">
-      <LocationListener locationChanged={(location) => this.setState({pathname: location.pathname})} />
+      <LocationListener locationChanged={this.updateBestProducts} />
         <div className="container-fluid d-flex align-items-center row px-5 pt-4">
           <div className="col-1"></div>
           <div className="col-1">
@@ -149,7 +158,7 @@ class Header extends Component {
             <br />
             <span className="h6">{t('order')}: <br/>079 40-70-32</span>
           </div>
-          <div className="col-2 text-center border-end">
+          <div className="col-2 text-center border-end" data-bs-toggle="modal" data-bs-target="#modalHelp">
             <FontAwesomeIcon icon='hand-holding-usd' />
             <br />
             <span className="h6" style={{whiteSpace: "pre-line"}}>{t('credit')}</span>
@@ -163,7 +172,7 @@ class Header extends Component {
           </div>
           <div className="col-1"></div>
         </div>
-        <nav style={{zIndex: 1100}} className="container-fluid position-absolute bg-white px-5 pt-4">
+        <nav style={{zIndex: 1000}} className="container-fluid position-absolute bg-white px-5 pt-4">
           <div className="row">
             <div className="col-1"></div>
             <div className="col-10 h6 m-0">
@@ -232,14 +241,17 @@ class Header extends Component {
             return (
             <div key={index} className="col-2 border-start p-2">
               <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>
-                <span className="h6">{product.name}</span>
+                <span className="h6">{product.category_name} {product.name}</span>
+                <div className="text-start" style={{color: 'gold'}}>
+                  <FontAwesomeIcon icon="fa-star"/>
+                </div>
                 <img src={product.shortcut} />
                 {product.discount != 0
                 ?
                 <div className="d-flex flex-column">
                   <div style={{textDecoration: 'line-through'}}>
                     <span>
-                      {`${t('from')} ${product.sizes[0]['price' + this.props.currency]} (${this.props.currency})`}
+                      {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
                     </span>
                   </div>
                   <div>
@@ -247,7 +259,7 @@ class Header extends Component {
                       {`${t('from')} `}
                     </span>
                     <span style={{color: 'var(--lime-green)'}} className="h6">
-                      {product.sizes[0]['price' + this.props.currency] * (100 - product.discount) / 100}
+                      {product.size['price' + this.props.currency] * (100 - product.discount) / 100}
                     </span>
                     <span>
                       {` (${this.props.currency})`}
@@ -258,7 +270,7 @@ class Header extends Component {
                 <div className="d-flex flex-column">
                   <div>
                     <span>
-                      {`${t('from')} ${product.sizes[0]['price' + this.props.currency]} (${this.props.currency})`}
+                      {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
                     </span>
                   </div>
                 </div>
@@ -269,6 +281,19 @@ class Header extends Component {
             <div className="col-2 border-start"></div>
           </div>
         </nav>
+        <div className="modal fade" id="modalHelp" tabIndex="-1">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+              </div>
+              <div className="d-flex justify-content-between modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
