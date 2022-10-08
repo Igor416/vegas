@@ -16,14 +16,10 @@ class ProductManager(Manager):
         if type == 'all':
             return self.get_all()
 
-        queryset = self.objs.none()
+        if not filter:
+            return self.get_by_type(type.replace('_', ' '))
 
-        for obj in self.objs:
-            if getattr(obj, type) == filter:
-                queryset = queryset | self.get_by_name(obj.name)
-
-        if len(queryset) == 0:
-            queryset = getattr(self, 'get_by_' + type)(filter)
+        queryset = getattr(self, 'get_by_' + type)(filter)
 
         return queryset
 
@@ -35,11 +31,14 @@ class ProductManager(Manager):
         return queryset
 
     def get_prop(self, name, property):
-        queryset = Choice.objects.get(name=name, property_en=property)
+        if len(property.split(' ')) > 1:
+            queryset = Choice.objects.get(name=name, property_en=property)
+        else:
+            queryset = Choice.objects.get(name=name, property_en=property.title())
         return queryset
 
     def get_size(self, width, length):
-        return Size.objects.get(category=self.category, width=width, length=length)
+        return Size.objects.filter(category=self.category, width=width, length=length)
 
 class MattressManager(ProductManager):
     def __init__(self, *args, **kwargs):
@@ -53,10 +52,10 @@ class MattressManager(ProductManager):
     def get_by_springless(self, filter):
         queryset = self.objs.filter(springs=0)
         if filter == 'Mattresses with latex':
-            collection = self.get_prop(ct.COLLECTION, 'ecolatex')
-            queryset.filter(collection=collection)
-            queryset = queryset.union(self.get_by_name('Prince'))
-            queryset = queryset.union(self.get_by_name('Cocolatex'))
+            collection = self.get_prop(ct.COLLECTION, 'Ecolatex')
+            queryset = queryset.filter(collection=collection)
+            queryset |= self.objs.filter(name='Prince')
+            queryset |= self.objs.filter(name='Cocolatex')
         return queryset
 
     def get_by_springblock(self, filter):
@@ -73,14 +72,14 @@ class MattressManager(ProductManager):
         if filter == 'With springs':
             queryset = queryset.difference(springless)
         elif filter == 'Springless':
-            queryset = queryset.filter(springless)
+            queryset = springless
 
         return queryset
 
     def get_by_rigidity(self, filter):
         RIGIDITIES = {
-            'Hard mattresses': 'hard',
-            'Medium firm mattresses': 'medium firm',
+            'Hard mattresses': 'firm',
+            'Medium firm mattresses': 'semifirm',
             'Soft mattresses': 'soft'
         }
 
@@ -95,15 +94,17 @@ class MattressManager(ProductManager):
             queryset = self.objs.none()
             for rigidity1 in self.get_props(ct.RIGIDITY):
                 for obj in self.objs.filter(rigidity1=rigidity1):
-                    if obj.rigidity2.properry_en == rigidity1.property_en:
-                        queryset = queryset.union(self.get_by_name(obj.name))
+                    if obj.rigidity2 is None:
+                        continue
+                    elif obj.rigidity2.property_en == rigidity1.property_en:
+                        queryset |= self.objs.filter(name=obj.name)
         else:
             if filter == 'Mattresses with latex':
                 objs = {'F2', 'F5', 'M1', 'M3', 'M4', 'M5', 'X2', 'X3', 'X4', 'X6', 'X7', 'X8'}
                 queryset = self.get_by_springless(filter)
                 
             elif filter == 'Mattresses with coconut coir':
-                objs = {'F1', 'F3', 'F5', 'M3', 'M4', 'X5', 'X6', 'X7', 'L2', 'L3', 'L6', 'E1'}
+                objs = {'F1', 'F3', 'F5', 'M3', 'M4', 'X5', 'X6', 'X7', 'L2', 'L3', 'L6'}
                 queryset = self.get_by_collection('Vegas Kids')
 
             elif filter == 'Mattresses with memory effect':
@@ -111,27 +112,18 @@ class MattressManager(ProductManager):
                 queryset = self.objs.none()
 
             for obj in objs:
-                queryset = queryset.union(self.get_by_name(obj))
+                queryset |= self.objs.filter(name=obj)
 
         return queryset
 
     def get_by_sizes(self, filter):
-        width, length = filter.replace('Mattresses ', '').split(' x ')#english x (eks)
-        size = self.get_size(width, length)
-        return self.objs.filter(sizes=size)
+        width = filter.replace('Mattresses ', '').split(' x ')[0]#english x (eks)
+        sizes = self.get_size(width, 200)
+        return self.objs.filter(name__in=[size.product for size in sizes])
         
 class PillowManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(PillowManager, self).__init__(*args, **kwargs)
-
-    def get_filtered(self, type, filter):
-        if type == 'all':
-            return self.get_all()
-
-        elif not filter:
-            return self.get_by_type(type)
-
-        return super(PillowManager, self).get_filtered(type, filter)
 
     def get_by_types_and_forms(self, filter):
         queryset = self.objs.none()
@@ -140,16 +132,16 @@ class PillowManager(ProductManager):
             objs = {'9', '14', '16', '19', '20', 'Junior', 'Bimbo', 'Latex Royal', 'Extra Memory'}
             
         elif filter == 'Ergonomic form with rollers':
-            objs = {'8', '11', '17', '21', 'Bambino'}
+            objs = {'8', '11', '17', '21'}
 
         elif filter == 'Pillows for pregnants':
             objs = {'Baby Boom'}
 
         elif filter == 'Others':
-            objs = {'Sleep constructor', 'Beauty', 'Travel'}
+            objs = {'Sleep Constructor', 'Beauty'}
 
         for obj in objs:
-            queryset = queryset.union(self.get_by_name(obj))
+            queryset |= self.objs.filter(name=obj)
 
         return queryset
 
@@ -157,11 +149,11 @@ class PillowManager(ProductManager):
         if filter == 'With latex':
             material_filler = self.get_prop(ct.MATERIAL_FILLER, 'Latex Monolith')
             
-        elif filter == 'Made from foam with memory effect':
-            material_filler = self.get_prop(ct.MATERIAL_FILLER, 'MemoryFoam slices')
+        elif filter == 'Made from foam with memory effect Memory Foam':
+            material_filler = self.get_prop(ct.MATERIAL_FILLER, 'MemoryFoam Slices')
 
-        elif filter == 'Pillows for pregnants':
-            material_filler = self.get_prop(ct.MATERIAL_FILLER, 'Cooling gel')
+        elif filter == 'Pillows with cooling gel':
+            material_filler = self.get_prop(ct.MATERIAL_FILLER, 'Cooling Gel')
 
         return self.objs.filter(material_filler=material_filler)
 
@@ -185,58 +177,52 @@ class PillowManager(ProductManager):
         elif filter == 'Pillow Travel for trips':
             name = 'Travel'
 
-        return self.get_by_name(name)
+        return self.objs.filter(name=name)
 
 
 class MattressPadManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(MattressPadManager, self).__init__(*args, **kwargs)
 
-    def get_filtered(self, type, filter):
-        if not filter:
-            return self.get_by_type(type)
-
-        return super(MattressPadManager, self).get_filtered(type, filter)
-
     def get_by_type(self, type):
         return self.objs.filter(mattresspad_type=self.get_prop(ct.MATTRESSPAD_TYPE, type))
 
     def get_by_children(self, filter):
         width, length = filter.replace('Size ', '').split(' x ')#english x (eks)
-        size = self.get_size(width, length)
-        return self.objs.filter(sizes=size)
+        sizes = self.get_size(width, length)
+        return self.objs.filter(name__in=[size.product for size in sizes])
 
 class BlanketManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(BlanketManager, self).__init__(*args, **kwargs)
 
-    def get_filtered(self, type, filter):
-        if not filter:
-            return self.get_by_type(type)
-
-        return super(BlanketManager, self).get_filtered(type, filter)
-
     def get_by_type(self, type):
         types = {
             'Blankets Bamboo': 'Bamboo',
-            'Blankets SumWin': 'SumWin',
-            'Sheep\'s wool': 'Sheep'
+            'SumWin Blanket': 'SumWin',
+            'Blankets with Sheep\'s Wool': 'Sheep',
+            'Blankets with Thermoregulation': ''
         }
 
         queryset = self.objs.none()
 
         for obj in self.get_all():
             if obj.name.startswith(types[type]):
-                queryset = queryset.union(obj)
+                queryset |= self.objs.filter(name=obj.name)
 
         return queryset
 
     def get_by_children(self, filter):
         if filter == 'All child Blankets':
-            return self.objs.filter(age=self.get_prop(ct.AGE, 'children'))
+            return self.objs.all()
         else:
-            filter = filter.lower().replace(' blanket', '')
-            return self.objs.filter(blanket_type=self.get_prop(ct.BLANKET_TYPE, filter))
+            types = {
+                'Light blanket': 'With The Effect Of Thermoregulation',
+                'All season blanket': 'All Season',
+                'Insulated blanket': 'Insulated',
+                'Double blanket (2 in 1)': 'Double (2 In 1)'
+            }
+            return self.objs.filter(blanket_type=self.get_prop(ct.BLANKET_TYPE, types[filter]))
 
 class BedSheetsManager(ProductManager):
     def __init__(self, *args, **kwargs):
@@ -246,23 +232,23 @@ class BedManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(BedManager, self).__init__(*args, **kwargs)
 
-    def get_filtered(self, type, filter):
-        if not filter:
-            return self.get_by_type(type)
-
-        return super(BedManager, self).get_filtered(type, filter)
-
     def get_by_type(self, type):
         if type == 'All beds':
             queryset = self.get_all()
         
         elif 'children' in type:
-            queryset = self.objs.filter(bed_type=self.get_prop(ct.BED_TYPE, 'Beds for children'))
+            queryset = self.objs.none()
+            objs = {'Chris', 'Alice', 'Mari'}
+
+            for obj in objs:
+                queryset |= self.objs.filter(name=obj)
+
+            return queryset
 
         else:
             types = {
-                'Wooden beds': 'Wooden beds',
-                'Beds with soft upholstery': 'Upholstered beds',
+                'Wooden beds': 'Wood',
+                'Beds with soft upholstery': 'Soft Upholstery',
             }
             queryset = self.objs.filter(bed_type=self.get_prop(ct.BED_TYPE, types[type]))
 
@@ -272,31 +258,26 @@ class StandManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(StandManager, self).__init__(*args, **kwargs)
 
-    def get_filtered(self, type, filter):
-        if not filter:
-            return self.get_by_type(type)
-
-        return super(StandManager, self).get_filtered(type, filter)
-
     def get_by_type(self, type):
-        types = {
-            'Wooden stands': 'Wooden stands',
-            'Stands with soft upholstery': 'Upholstered stands',
-        }
-        return self.objs.filter(bed_type=self.get_prop(ct.BED_TYPE, types[type]))
+        if type == "Puffs":
+            objs = {'Vicont', 'Ludovic II', 'Ludovic I', 'Filip'}
+            queryset = self.objs.none()
+
+            for obj in objs:
+                queryset |= self.objs.filter(name=obj)
+
+        else:
+            types = {
+                'Wooden stands': 'Tree Ash',
+                'Stands with soft upholstery': 'Textile',
+            }
+            queryset = self.objs.filter(material=self.get_prop(ct.MATERIAL, types[type]))
+
+        return queryset
 
 class BasisManager(ProductManager):
     def __init__(self, *args, **kwargs):
         super(BasisManager, self).__init__(*args, **kwargs)
 
-    
-    def get_filtered(self, type, filter):
-        if not filter:
-            return self.get_by_type(type)
-
-        return super(BasisManager, self).get_filtered(type, filter)
-
     def get_by_type(self, type):
-        type = type.replace('Basis ', '').replace('\'', '')
-
-        return self.objs.filter(bed_type=self.get_prop(ct.BED_TYPE, type))
+        return self.objs.filter(name=type)
