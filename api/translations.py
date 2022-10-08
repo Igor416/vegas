@@ -9,24 +9,26 @@ products = {
     ct.PILLOW: ((('Pillow', 'Pillows'), ('Подушка', 'Подушки'), ('Perna', 'Perne'))),
     ct.MATTRESSPAD: ((('Mattress Pad', 'Mattress Pads'), ('Наматрасник', 'Наматрасники'), ('Husa', 'Huse'))),
     ct.BLANKET: ((('Blanket', 'Blankets'), ('Одеяло', 'Одеяла'), ('Plapuma', 'Plapume'))),
-    ct.BEDSHEETS: ((('Bed Sheets', 'Bed Sheets'), ('Постельное белье', 'Постельно белье'), ('Cearceafuri', 'Cearceafuri'))),
+    ct.BEDSHEETS: ((('Bed Sheets Kit', 'Bed Sheets Kit'), ('Комплект постельного белья', 'Комплекты постельного белья'), ('Cearceafuri', 'Cearceafuri'))),
     ct.BED: ((('Bed', 'Beds'), ('Кровать', 'Кровати'), ('Pat', 'Paturi'))),
     ct.STAND: ((('Stand', 'Stands'), ('Тумба', 'Тумбы'), ('Noptiera', 'Noptiere'))),
     ct.BASIS: ((('Basis', 'Basises'), ('Основание', 'Основания'), ('Somiera', 'Somiere')))
 }
 
 properties = {
-    ct.HEIGHT: ('Height', 'Высота', 'Înălţime'),
-    ct.SPRINGS: ('Number of springs in a double mattress', 'Кол-во пружин в двуспальном матрасе', 'Numărul de arcuri într-o saltea dublă'),
-    ct.MAX_PRESSURE: ('Maximum load per bed', 'Максимальная нагрузка на 1 спальное место', 'Sarcina maxima pe pat'),
-    ct.LIFETIME: ('Life time', 'Срок Службы', 'Durata de viață'),
+    ct.HEIGHT: ('Height (cm)', 'Высота (см)', 'Înălţime (cm)'),
+    ct.SPRINGS: ('Number of springs in a double mattress', 'Количество пружин в двуспальном матрасе', 'Numărul de arcuri într-o saltea dublă'),
+    ct.MAX_PRESSURE: ('Maximum load per bed (kg)', 'Максимальная нагрузка на 1 спальное место (кг)', 'Sarcina maxima pe pat (kg)'),
+    ct.LIFETIME: ('Life time (years)', 'Срок службы (лет)', 'Durata de viață (ani)'),
     ct.CASE: ('Removable cover', 'Съемный чехол', 'Husa detasabila'),
-    ct.DENSITY: ('Filling density', 'Плотность наполнения', 'Densitatea de umplere'),
-    ct.HEADBOARD_HEIGHT: ('Headboard height', 'Высота изголовья', 'Înălțimea tăbliei'),
-    ct.DISTANCE: ('Distance between slats', 'Расстяоние межда ламелями', 'Distanța dintre lamele'),
-    ct.WIDTH: ('Width slats', 'Ширина ламели', 'Lamele latime'),
-    ct.LEGS_HEIGHT: ('Leg height', 'Высота ножек', 'Înălțimea piciorului'),
-    ct.RECOMENDED: ('Recommended for mattresses', 'Рекомендовано для матрассов', 'Recomandat pentru saltele')
+    ct.DENSITY: ('Filling density (g/m2)', 'Плотность наполнителя (г/м2)', 'Densitatea de umplere (g/m2)'),
+    ct.HEADBOARD_HEIGHT: ('Headboard height (cm)', 'Высота изголовья (см)', 'Înălțimea tăbliei (cm)'),
+    ct.EXTRA_LENGTH: ('Extra length (cm)', 'Дополнительная длина (см)', 'Lungime suplimentară (cm)'),
+    ct.EXTRA_WIDTH: ('Extra width (cm)', 'Дополнительная ширина (см)', 'Latime suplimentara (cm)'),
+    ct.DISTANCE: ('Distance between slats (cm)', 'Расстояние между ламелями (см)', 'Distanța dintre lamele (cm)'),
+    ct.WIDTH: ('Width slats (cm)', 'Ширина ламели (см)', 'Lamele latime (cm)'),
+    ct.LEGS_HEIGHT: ('Leg height (cm)', 'Высота ножек (см)', 'Înălțimea piciorului (cm)'),
+    ct.RECOMENDED: ('Recommended for mattresses', 'Рекомендовано для матрассов', 'Reco чехлаmandat pentru saltele')
 }
 
 choices = {
@@ -39,7 +41,7 @@ choices = {
     ct.MATERIAL_FILLER: ('Material Filler', 'Материал наполнения', 'Material de umplere'),
     ct.COVER: ('Cover', 'Ткань чехла', 'Material de acoperire'),
     ct.MATTRESSPAD_TYPE: ('Mattress Pad Type', 'Тип наматрасника', 'Tip de husă'),
-    ct.BINDING: ('Binding', 'Крепление', 'Fixare'),
+    ct.BINDING: ('Contour', 'Крепление', 'Contur'),
     ct.BLANKET_TYPE: ('Blanket Type', 'Тип одеяла', 'Tip de plapumă'),
     ct.BLANKET_COLOR: ('Blanket Color', 'Цвет одеяла', 'Culoare de plapumă'),
     ct.FILLING: ('Filling', 'Наполнитель', 'Material de umplutura'),
@@ -47,6 +49,5 @@ choices = {
     ct.BEDSHEETS_COLOR: ('Kit color', 'Цвет комплекта', 'Culoare de kit'),
     ct.TISSUE: ('Tissue', 'Ткань', 'țesătură'),
     ct.BED_TYPE: ('Bed Type', 'Вид кровати', 'Tip de pat'),
-    ct.MATERIAL: ('Material', 'Материал', 'Material'),
-    ct.BASIS_TYPE: ('Basis Type', 'Вид основания', 'Tip de somieră')
+    ct.MATERIAL: ('Material', 'Материал', 'Material')
 }
