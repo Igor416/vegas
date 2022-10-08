@@ -37,7 +37,6 @@ class Catalog extends Component {
         phone: ''
       },
     }
-
     
     this.updateProducts = this.updateProducts.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
@@ -46,7 +45,7 @@ class Catalog extends Component {
 
   updateProducts(path) {
     let lang = path.search.replace('?lang=', '');
-    let [_, category, sub_category, filter]  = path.pathname.slice(1).split('/')
+    let [_, category, sub_category, filter] = path.pathname.slice(1).split('/')
     //['catalog', '<category>', '<sub_category>', '<?filter>']
 
     this.setState({
@@ -64,7 +63,7 @@ class Catalog extends Component {
           getProducts(category, sub_category, filter).then((data) => {
             let sorted_products = {};
             let filtering, remainder;
-            
+
             for (let product of data) {
               filtering = product[this.state.category.default_filtering]
               if (filtering in sorted_products) {
@@ -76,9 +75,9 @@ class Catalog extends Component {
             }
             
             for (let filtering in sorted_products) {
-              remainder = sorted_products[filtering].length % 3 
+              remainder = sorted_products[filtering].length % 3
               if (remainder != 0) {
-                for (let i = 0; i < remainder + 1; i++) {
+                for (let i = 0; i < remainder; i++) {
                   sorted_products[filtering].push(null)
                 }
               }
@@ -133,12 +132,13 @@ class Catalog extends Component {
 
   render() {
     const t = this.props.t
+    let i = 0
 
     return (
-      <div>
+      <div className="mt-5">
         <LocationListener locationChanged={this.updateProducts} />
-        <SectionImage category={this.state.category} />
-        <div className="container-fluid d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
+        {!this.isMobile && <SectionImage category={this.state.category} />}
+        <div className="d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
           {this.state.products &&
           <div className="col-sm-10">
@@ -170,13 +170,14 @@ class Catalog extends Component {
             return (
             <div key={index} className="d-flex mb-5 flex-column">
               <span className="h4">{this.state.category.default_filtering_lang} {filtering}</span>
-              <div className={(this.state.isGrid ? "section-grid" : "section-column") + " d-flex row-wrap mt-3 justify-content-between transition"}>
+              <div className={(this.state.isGrid ? "section-grid" : "section-column") + " d-flex flex-wrap mt-3 justify-content-between transition"}>
               {this.state.products[filtering].map((product, index) => {
               if (product == null) {
                 return <div key={index} />
               }
+              i++;
               return (
-                <div key={index} className="d-flex shadow no-link p-3">
+                <div key={index} className="d-flex shadow no-link mb-3 p-3">
                   <div style={{zIndex: 1000}} className="position-absolute d-flex p-3 h4">
                     <div style={{color: (product.best ? 'gold' : 'var(--milk)')}}>
                       <FontAwesomeIcon icon="fa-star"/>
@@ -188,22 +189,32 @@ class Catalog extends Component {
                     }
                   </div>
                   <div className="d-flex row-nowrap">
-                    <div className="d-flex">
+                    <div className="d-flex flex-column flex-grow-1 flex-shrink-1">
                       <img src={product.shortcut}/>
                     </div>
-                    {this.state.isGrid &&
-                    <div style={{width: this.isMobile ? '50vw' : '12.5vw'}} className="d-flex flex-column justify-content-start mt-3">
+                    {this.state.isGrid && product.markers &&
+                    <div id={"markers" + i} style={{width: this.isMobile ? '50vw' : '12.5vw', height: this.isMobile ? 'calc(50vw + 2.5rem)' : 'calc(12.5vw + 2.5rem)'}} className="markers d-flex flex-column justify-content-start mt-3">
                       {product.markers.map((marker, index) => {
-                      return (
-                        <img key={index} src={marker} style={{aspectRatio: 1 / 1}} className="mb-2" />
-                      )})}
+                        const k = i;
+                        let image = new Image();
+                        image.id = k * 10 + index;
+                        image.src = marker;
+                        image.className = "mb-2";
+                        image.key = index;
+                        image.onload = () => {
+                          try {
+                            document.getElementById("markers" + k).removeChild(document.getElementById(k * 10 + index));
+                          } catch {}
+                          document.getElementById("markers" + k).appendChild(image);
+                        };
+                      })}
                     </div>
                     }
                   </div>
-                  <div className="d-flex flex-column justify-content-between">
-                    <div className="d-flex flex-row justify-content-between align-items-end">
+                  <div className="d-flex mt-3 flex-column justify-content-between">
+                    <div className="price d-flex flex-row justify-content-between align-items-end">
                       <div className="h5 m-0">
-                        <Hoverable text={`${this.state.category.name_s} ${product.name}`} />
+                        <Hoverable text={product.name} />
                       </div>
                       <div className="d-flex flex-column text-end">
                       {product.discount != 0
@@ -211,7 +222,7 @@ class Catalog extends Component {
                         <div className="d-flex flex-column">
                           <div style={{textDecoration: 'line-through'}}>
                             <span>
-                              {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
+                              {`${t('from')} ${product.size['price' + this.state.currency]} (${this.state.currency})`}
                             </span>
                           </div>
                           <div>
@@ -219,7 +230,7 @@ class Catalog extends Component {
                               {`${t('from')} `}
                             </span>
                             <span style={{color: 'var(--lime-green)'}} className="h5">
-                              {product.sizes[0]['price' + this.state.currency] * (100 - product.discount) / 100}
+                              {product.size['price' + this.state.currency] * (100 - product.discount) / 100}
                             </span>
                             <span>
                               {` (${this.state.currency})`}
@@ -229,18 +240,16 @@ class Catalog extends Component {
                       :
                         <div className="d-flex flex-column">
                           <span>
-                            {`${t('from')} ${product.sizes[0]['price' + this.state.currency]} (${this.state.currency})`}
+                            {`${t('from')} ${product.size['price' + this.state.currency]} (${this.state.currency})`}
                           </span>
                         </div>
                       }
                       </div>
                     </div>
-                    <div className="py-3 border-bottom border-muted">
-                      <div>
-                        <span>{product.desc}</span>
-                      </div>
+                    <div className="desc py-3 border-bottom border-muted">
+                      <span>{product.desc}</span>
                     </div>
-                    {!this.state.isGrid &&
+                    {!this.state.isGrid && product.markers &&
                     <div style={{height: '5vh'}} className="d-flex row-nowrap justify-content-start">
                       {product.markers.map((marker, index) => {
                       return (

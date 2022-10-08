@@ -7,6 +7,8 @@ import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./reusables/SectionImage.js";
 import { getCategory, getProduct } from "./reusables/APICallPoints.js";
 import { currencies } from './reusables/Globals.js';
+import BedSheetsSizesManager from './reusables/BedSheetsSizesManager.js';
+import BedSizesManager from './reusables/BedSizesManager.js';
 import Hoverable from './reusables/Hoverable.js';
 import CustomButton from './reusables/CustomButton.js';
 import CustomLink from "./reusables/CustomLink.js";
@@ -24,6 +26,7 @@ class ProductDetails extends Component {
       lang: this.props.context.lang,
       currency: this.props.context.currency,
       product: null,
+      loaded_marks: [],
       category: {
         name: this.props.params.category
       },
@@ -52,9 +55,18 @@ class ProductDetails extends Component {
         })
       })
       getProduct(category, id).then((data) => {
+        let tabs = ['description', 'characteristic'];
+        if (data['structure']) {
+          tabs.push('structure')
+          if (data['technologies'] && !this.isMobile) {
+            tabs.push('technologies')
+          }
+        }
+
         this.setState({
           product: data,
-          size: data.sizes[0]
+          size: data.sizes[0],
+          tabs: tabs
         })
         let widths = data.sizes.map(size => size.width)
         let lengths = data.sizes.map(size => size.length)
@@ -82,6 +94,7 @@ class ProductDetails extends Component {
     else {
       [width, length] = [this.state.size.width, value]
     }
+    
     for (let size of this.state.product.sizes) {
       if (size.width == width && size.length == length) {
         this.setState({
@@ -114,9 +127,9 @@ class ProductDetails extends Component {
   render() {
     const t = this.props.t
     return (
-      <div>
+      <div className="mt-5">
         <LocationListener locationChanged={this.updateProduct} />
-        <SectionImage category={this.state.category} />
+        {!this.isMobile && <SectionImage category={this.state.category} />}
         <div className="container-fluid d-flex mt-5 mb-5 px-2 py-1 mb-sm-0 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
           {this.state.product && 
@@ -171,7 +184,7 @@ class ProductDetails extends Component {
                     >
                       <FontAwesomeIcon icon='angle-right' />
                     </button>
-                    <div className="carousel-indicators d-flex row-nowrap justify-content-between mt-3 align-items-stretch">
+                    <div className={"carousel-indicators d-flex row-nowrap mt-3 align-items-stretch" + (this.media.length > 1 ? " many-items" : " one-item")}>
                       {this.media.map((url, index) => {
                       return (
                       <div
@@ -223,63 +236,98 @@ class ProductDetails extends Component {
                     )})}
                     </div>
                   </div>
-                  <div style={{height: '6vh'}} className="d-flex row-nowrap justify-content-start my-3">
-                    {this.state.product.markers.map((marker, index) => {
-                    return (
-                      <img key={index} src={marker} style={{width: '6vh', height: '6vh'}} className="me-2" />
-                    )})}
-                  </div>
+                  {this.state.product.markers &&
+                    <div id="markers" style={{height: '6vh'}} className="d-flex row-nowrap justify-content-start my-3">
+                      {this.state.product.markers.map((marker, index) => {
+                        let image = new Image();
+                        image.src = marker;
+                        image.className = "me-2";
+                        image.style.width = '6vh'
+                        image.style.height = '6vh';
+                        image.key = index;
+                        image.onload = () => {
+                          let loaded_marks = this.state.loaded_marks
+                          if (!loaded_marks.includes(image.src)) {
+                            document.getElementById("markers").appendChild(image);
+                            loaded_marks.push(image.src)
+                            this.setState({loaded_marks: loaded_marks})
+                          }
+                        };
+                      })}
+                    </div>
+                  }
                   <div className="d-flex border flex-column mt-sm-5 p-3">
-                    <div className="d-flex flex-column flex-wrap align-items-stretch h6">
-                    {Object.keys(this.dimensions).map((dimension, index) => {
-                    return (
-                      <div key={index} className="mt-3">
-                        <span>{t(dimension)}:</span>
-                        <div className="mt-2">
-                          <div className="d-flex justify-content-between border-bottom p-2 dropdown-toggle" data-bs-toggle="dropdown">
-                            <span>{this.state.size[dimension]}</span>
-                            <FontAwesomeIcon icon='angle-down' />
+                  {this.state.category.name == 'BedSheets'
+                  ?
+                    <BedSheetsSizesManager
+                      sizes={this.state.product.sizes}
+                      currentSize={this.state.size}
+                      changeSize={(size) => this.setState({size: size})}
+                    />
+                  :
+                  (this.state.category.name == 'Bed'
+                  ?
+                    <BedSizesManager
+                      extra_width={this.state.product['extra_width']}
+                      extra_length={this.state.product['extra_length']}
+                      sizes={this.state.product.sizes}
+                      currentSize={this.state.size}
+                      changeSize={(size) => this.setState({size: size})}
+                    />
+                  :
+                  <div>
+                      <div className="d-flex flex-column flex-wrap align-items-stretch h6">
+                      {Object.keys(this.dimensions).map((dimension, index) => {
+                      return (
+                        <div key={index} className="mt-3">
+                          <span>{t(dimension)}:</span>
+                          <div className="mt-2">
+                            <div className="d-flex justify-content-between border-bottom p-2 dropdown-toggle" data-bs-toggle="dropdown">
+                              <span>{this.state.size[dimension]}</span>
+                              <FontAwesomeIcon icon='angle-down' />
+                            </div>
+                            <ul className="dropdown-menu">
+                            {this.dimensions[dimension].map((dim, index) => {
+                            return (
+                              <li
+                                onClick={() => this.state.size[dimension] != dim && this.changeSize(dim, dimension)}
+                                key={index}
+                                className="dimension p-1 ps-2"
+                                value={dim}
+                              >
+                                {dim}
+                              </li>
+                            )})}
+                            </ul>
                           </div>
-                          <ul className="dropdown-menu">
-                          {this.dimensions[dimension].map((dim, index) => {
-                          return (
-                            <li
-                              onClick={() => this.state.size[dimension] != dim && this.changeSize(dim, dimension)}
-                              key={index}
-                              className="dimension p-1 ps-2"
-                              value={dim}
-                            >
-                              {dim}
-                            </li>
-                          )})}
-                          </ul>
                         </div>
+                      )})}
                       </div>
-                    )})}
                     </div>
+                    )}
                     <div className="d-flex justify-content-between align-items-stretch pt-3">
-                      <div style={{border: '1px solid var(--lime-green)'}} className="d-flex flex-row justify-content-between align-items-center p-3 h5">
-                        <div onClick={() => this.setState({quantity: this.state.quantity == 1 ? this.state.quantity : this.state.quantity - 1})}>
-                          <span>-</span>
+                        <div style={{border: '1px solid var(--lime-green)'}} className="d-flex flex-row justify-content-between align-items-center p-3 h5">
+                          <div onClick={() => this.setState({quantity: this.state.quantity == 1 ? this.state.quantity : this.state.quantity - 1})}>
+                            <span>-</span>
+                          </div>
+                          <div style={{width: '2rem'}} className="d-flex justify-content-center">
+                            <span>{this.state.quantity}</span>
+                          </div>
+                          <div onClick={() => this.setState({quantity: this.state.quantity == 99 ? this.state.quantity : this.state.quantity + 1})}>
+                            <span>+</span>
+                          </div>
                         </div>
-                        <div style={{width: '2rem'}} className="d-flex justify-content-center">
-                          <span>{this.state.quantity}</span>
-                        </div>
-                        <div onClick={() => this.setState({quantity: this.state.quantity == 99 ? this.state.quantity : this.state.quantity + 1})}>
-                          <span>+</span>
+                        <div className="ps-5" onClick={() => this.props.context.addProduct(this.state.category.name, this.state.product, this.state.size, this.state.quantity)}>
+                          <CustomButton color="deep-sky-blue" text={t('buy')} />
                         </div>
                       </div>
-                      <div className="ps-5" onClick={() => this.props.context.addProduct(this.state.category.name, this.state.product, this.state.size, this.state.quantity)}>
-                        <CustomButton color="deep-sky-blue" text={t('buy')} />
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="mt-5">
               <div style={{borderColor: 'var(--deep-sky-blue)'}} className="nav nav-tabs ps-1 ps-sm-5" id="tab">
-              {['description', 'characteristic', 'structure'].concat(this.isMobile ? [] : ['technologies']).map((tab, index) => {
+              {this.state.tabs.map((tab, index) => {
               if (this.state.product[tab]) {
               return (
                 <button
@@ -320,7 +368,7 @@ class ProductDetails extends Component {
                         <CustomButton text={t('characteristic')} color="deep-sky-blue" />
                       </div>
                     </div>
-                    <div className="col-sm-6 ">
+                    <div className="col-sm-6 d-flex justify-content-end">
                       <img src={this.state.product.shortcut} />
                     </div>
                   </div>
@@ -360,6 +408,7 @@ class ProductDetails extends Component {
                     </div>
                   </div>
                 </div>
+                {this.state.tabs.includes('structure') &&
                 <div className="flex-column border border-top-0 p-4 tab-pane fade" id='structure'>
                 {this.state.product.structure.map((layer, index) => {
                 return (
@@ -379,7 +428,8 @@ class ProductDetails extends Component {
                   </div>
                 )})}
                 </div>
-                {!this.isMobile &&
+                }
+                {this.state.tabs.includes('technologies') &&
                 <div className="flex-column border border-top-0 p-4 tab-pane fade" id='technologies'>
                 {this.state.product.technologies.map((technology, index) => {
                 return (
