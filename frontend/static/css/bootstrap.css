@@ -8,8 +8,15 @@
 
 #carousel .carousel-indicators {
   position: relative !important;
-  justify-content: space-between !important;
   margin: 1rem 0 0 !important;
+}
+
+#carousel .carousel-indicators.many-items {
+  justify-content: space-between !important;
+}
+
+#carousel .carousel-indicators.one-item {
+  justify-content: center !important;
 }
 
 .media {

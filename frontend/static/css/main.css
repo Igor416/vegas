@@ -2,6 +2,7 @@
   text-decoration: none;
   color: var(--deep-sky-blue);
   cursor: pointer;
+  transition: 0.5s;
 }
 
 .search-show {
@@ -115,10 +116,18 @@
   transition: width 0s cubic-bezier(1, 0, 0, 1) 1.5s;
 }
 
-.section-grid > div.shadow {
-  width: 33%;
+.section-grid > div {
+  width: 31.5%;
   flex-direction: column;
   transition: 0.5s width;
+}
+
+.section-grid > div.shadow > div > .price {
+  height: 5vh;
+}
+
+.section-grid > div > div > .desc {
+  height: 25vh;
 }
 
 .section-grid > div.shadow:nth-child(1n) > img {
