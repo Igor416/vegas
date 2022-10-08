@@ -1,14 +1,17 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Cookies from 'js-cookie'
 import { withTranslation } from "react-i18next";
 
 import LocationListener from './reusables/LocationListener.js';
-import { getBestProducts } from "./reusables/APICallPoints.js";
+import { getBestProducts, sendForm } from "./reusables/APICallPoints.js";
 import { langs as Langs } from './reusables/Globals.js';
 import SearchBar from "./reusables/SearchBar.js";
 import Hoverable from './reusables/Hoverable.js';
 import CustomLink from './reusables/CustomLink.js';
+import CustomButton from './reusables/CustomButton.js';
+import CustomPhoneInput from './reusables/CustomPhoneInput.js';
 
 const CATEGORIES = require("../links.json");
 
@@ -26,10 +29,17 @@ class Header extends Component {
       pathname: location.pathname,
       category: null,
       categoryEN: null,
-      sub_category: null
+      sub_category: null,
+      ordered: false,
+      form: {
+        error: false,
+        name: '',
+        phone: ''
+      }
     };
 
-    this.updateBestProducts = this.updateBestProducts.bind(this)
+    this.updateBestProducts = this.updateBestProducts.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
@@ -126,6 +136,30 @@ class Header extends Component {
       return url
     }
     return ''
+  }
+
+  updateForm(key, value) {
+    let changedForm = {...this.state.form}
+    changedForm[key] = value
+    this.setState({
+      form: changedForm
+    })
+  }
+
+  submitForm() {
+    let r = sendForm({
+      'name': this.state.form.name,
+      'phone': this.state.form.phone
+    }, Cookies.get('csrftoken'), true)
+
+    if (r == 'error: empty') {
+      this.updateForm('error', true)
+    }
+    else {
+      $(function () {
+        $('#modal').modal('toggle');
+     });
+    }
   }
 
   render() {
@@ -285,11 +319,49 @@ class Header extends Component {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <span className="h3">{t('credit')}</span>
+                <button onClick={() => this.setState({ordered: false}, () => this.updateForm('error', false))} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div className="modal-body">
+              <div className="modal-body h6">
+                <ol>
+                  <li>Maib - LiberCard (6 {t('months')})</li>
+                  <li>Start Credit (4-6 {t('months')})</li>
+                </ol>
+                <span className="h6 text-danger">{this.state.form.error ? t('error') : ''}</span>
+                <form style={{display: this.state.ordered ? 'block' : 'none'}} className="mt-3">
+                  <label htmlFor="name">{t('name')}</label>
+                  <br/>
+                  <input
+                    style={{border: 'none', borderBottom: '1px solid var(--dark-cyan)'}}
+                    className="outline-0 no-hover w-100 px-0 mb-3"
+                    type="text"
+                    name="name"
+                    placeholder="..."
+                    value={this.state.form.name}
+                    onChange={e => this.updateForm('name', e.target.value)}
+                  />
+                  <CustomPhoneInput
+                    lang={this.props.lang}
+                    color="dark-cyan" 
+                    value={this.state.form.phone}
+                    setPhone={phone => this.updateForm('phone', phone)}
+                  />
+                </form>
               </div>
               <div className="d-flex justify-content-between modal-footer">
+                <div onClick={() => this.setState({ordered: false}, () => this.updateForm('error', false))} data-bs-dismiss="modal">
+                  <CustomButton color="lime-green" text={t('close')} />
+                </div>
+                {this.state.ordered
+                ?
+                <div onClick={this.submitForm}>
+                  <CustomButton color="deep-sky-blue" text={t('submit')} />
+                </div>
+                :
+                <div onClick={() => this.setState({ordered: true})}>
+                  <CustomButton color="deep-sky-blue" text={t('call')} />
+                </div>
+                }
               </div>
             </div>
           </div>
