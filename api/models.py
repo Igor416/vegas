@@ -1,3 +1,4 @@
+from math import ceil
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from urllib.request import urlretrieve
@@ -42,16 +43,13 @@ def has_multiple_rels(model, field):
 class Category(models.Model):
     choices = manager.get_pr_choices()
     
-    name = models.CharField('Название', max_length=32, choices=choices, unique=True)
+    name = models.CharField('Название', max_length=32, choices=choices, unique=True, primary_key=True)
     name_en_s = models.CharField(max_length=32)
     name_en_pl = models.CharField(max_length=32)
     name_ru_s = models.CharField(max_length=32)
     name_ru_pl = models.CharField(max_length=32)
     name_ro_s = models.CharField(max_length=32)
     name_ro_pl = models.CharField(max_length=32)
-    desc_en = models.TextField('Описание (en)', blank=True)
-    desc_ru = models.TextField('Описание (ru)', blank=True)
-    desc_ro = models.TextField('Описание (ro)', blank=True)
 
     def __str__(self):
         return self.name_ru_s
@@ -99,13 +97,19 @@ class Choice(models.Model):
 
 class Size(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
-    width = models.SmallIntegerField('Ширина')
-    length = models.SmallIntegerField('Длина')
-    priceEUR = models.SmallIntegerField('Цена (евро)')
-    priceMDL = models.SmallIntegerField('Цена (леи)')
+    product = models.CharField('Название продукта', max_length=32, blank=True)
+    width = models.SmallIntegerField('Ширина', default=80)
+    length = models.SmallIntegerField('Длина', default=200)
+    priceEUR = models.SmallIntegerField('Цена (евро)', default=0)
+    priceMDL = models.SmallIntegerField('Цена (леи)', default=0)
 
     def __str__(self):
-        return f'Размер в категории {self.category}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
+        return f'Размер продукта {self.product}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
+
+    def save(self, *args, **kwargs):
+        if self.priceMDL == 0:
+            self.priceMDL = ceil(self.priceEUR * 20.5)
+        super(Size, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'размер'
@@ -118,26 +122,30 @@ class File(models.Model):
     def get_absolute_url(self):
         return f'/media/{self.folder}/{self.get_name()}.jpg'
 
-    def is_shortcut(self):
-        return not '_' in self.get_name()
+    def get_name(self):
+        return self.image.name.split('/')[-1].split('.')[0] #products/[name].jpg -> [name]
 
     class Meta:
         abstract = True
 
 class Image(File):
     folder = 'products'
-
-    def get_name(self):
-        return self.image.name.split('/')[-1].split('.')[0] #products/[name].jpg -> [name]
+    image = models.ImageField('Фото товара', upload_to=folder)
 
     def __str__(self):
         name = self.get_name()
-        if '_' in name:
-            name = name.replace('_', ' № ')
-        else:
+        if self.is_shortcut():
+            name = name.replace('_', ' ')
             name += ' Для каталога'
+        else:
+            name = name.replace('_', ' ')
+            name = ' '.join(name.split(' ')[:-1]) + ' № ' + name.split(' ')[-1]
+            
         return name
 
+    def is_shortcut(self):
+        return not self.get_name().split('_')[-1].isdigit()
+        
     class Meta:
         verbose_name = 'фотография'
         verbose_name_plural = 'фотографии'
@@ -147,7 +155,10 @@ class Video(File):
     video_id = models.CharField('Ссылка на видео', max_length=64, unique=True)
 
     def save(self, *args, **kwargs):
-        self.video_id = self.video_id.split('=')[-1]
+        if '=' in self.video_id:
+            self.video_id = self.video_id.split('=')[-1]
+        elif 'youtu.be' in self.video_id:
+            self.video_id = self.video_id.split('/')[-1]
         self.image = urlretrieve(f'http://img.youtube.com/vi/{self.video_id}/hqdefault.jpg', str(BASE_DIR) + f'\media\\videos\{self.video_id}.jpg')[0]
         super(Video, self).save(*args, **kwargs)
 
@@ -162,8 +173,9 @@ class Video(File):
         verbose_name_plural = 'видео'
 
 class Technology(models.Model):
+    isTechnology = models.BooleanField('Это технология (или слой)?', default=False)
     name_en = models.CharField('Название (en)', max_length=32, blank=True)
-    name_ru = models.CharField('Название (ru)', max_length=32)
+    name_ru = models.CharField('Название (ru)', max_length=32, unique=True)
     name_ro = models.CharField('Название (ro)', max_length=32, blank=True)
     image = models.ImageField('Фотография', upload_to='images')
     desc_en = models.TextField('Описание (en)')
@@ -171,7 +183,7 @@ class Technology(models.Model):
     desc_ro = models.TextField('Описание (ro)')
 
     def get_absolute_url(self):
-        return f'/media/{self.image}'
+        return '/media/images/' + self.image.name.split('/')[-1]
 
     def save(self, *args, **kwargs):
         self.name_en, self.name_ru, self.name_ro = save_langs(self.name_en, self.name_ru, self.name_ro)
@@ -206,7 +218,7 @@ class LayerMattressPad(models.Model):
         return f'слой наматрасника {self.product} с технологией {self.technology}'
 
 class Marker(models.Model):
-    name = models.CharField('Маркер (ru)', max_length=64, unique=True, primary_key=True)
+    name = models.CharField('Маркер', max_length=64, unique=True, primary_key=True)
 
     class Meta:
         verbose_name = 'маркер'
@@ -224,7 +236,7 @@ class Product(models.Model):
     discount = models.SmallIntegerField('Скидка (%)', default=0)
     best = models.BooleanField('Лидер продаж', default=False)
 
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=True)
     sizes = models.ManyToManyField(Size, related_name='sizes%(class)s', verbose_name='Размеры')
     shortcut = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL, verbose_name='Фото на каталог')
     images = models.ManyToManyField(Image, related_name='images%(class)s', verbose_name='Фотографии товара', blank=True)
@@ -239,27 +251,41 @@ class Product(models.Model):
         return cls.__name__
 
     def __str__(self):
-        return self._meta.verbose_name + ': ' + self.name
+        try:
+            default_filtering = manager.get_default_filtering(self.get_name())
+            return f'{self._meta.verbose_name}: {self.name}, {manager.get_prop_trans(default_filtering, RU)}: {getattr(self, default_filtering).property_ru}'
+        except AttributeError:
+            return f'{self._meta.verbose_name}: {self.name}'
 
     def save(self, *args, **kwargs):
-        self.name = self.name.title()
-        if hasattr(self, 'sizes'):
+        super(Product, self).save(*args, **kwargs)
+        if self.category:
             for size in self.sizes.all():
-                if not size.category:
+                if not size.category or size.product == '':
                     size.category = self.category
+                    size.product = self.name
                     size.save()
+
+        if hasattr(self, 'structure'):
+            for s in self.structure.all():
+                s.isTechnology = False
+                s.save()
+        if hasattr(self, 'technologies'):
+            for t in self.technologies.all():
+                t.isTechnology = True
+                t.save()
         super(Product, self).save(*args, **kwargs)
 
     class Meta:
         abstract = True
 
 class Mattress(Product):
-    height = models.IntegerField()
+    height = models.IntegerField(default=0)
     springs = models.IntegerField(default=0)
-    max_pressure = models.IntegerField()
+    max_pressure = models.IntegerField(default=0)
     lifetime = models.IntegerField(default=10)
     case = models.BooleanField(default=True)
-    visible_markers = models.ManyToManyField(Marker, related_name='visible_markers', verbose_name='Маркеры')
+    visible_markers = models.ManyToManyField(Marker, related_name='visible_markers', verbose_name='Маркеры', blank=True)
     markers = models.ManyToManyField(Marker, related_name='markers')
 
     structure = models.ManyToManyField(Technology, through=LayerMattress, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
@@ -282,28 +308,30 @@ class Mattress(Product):
         return ('age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'construction', 'case')
 
     def save(self, *args, **kwargs):
-        markers = [
-            'height_' + str(self.height),
-            'max_pressure_' + str(self.max_pressure),
-            'springs_' + str(self.springs)
-        ]
+        super(Mattress, self).save(*args, **kwargs)
+        if self.category:
+            markers = [
+                'height_' + str(self.height),
+                'max_pressure_' + str(self.max_pressure),
+                'springs_' + str(self.springs)
+            ]
 
-        if self.rigidity2:
-            markers.append('rigidity_' + self.rigidity1.property_en + '-' + self.rigidity2.property_en)
-        else:
-            markers.append('rigidity_' + self.rigidity1.property_en)
+            if self.rigidity2:
+                markers.append('rigidity_' + self.rigidity1.property_en + '-' + self.rigidity2.property_en)
+            else:
+                markers.append('rigidity_' + self.rigidity1.property_en)
 
-        self.markers.add(*self.visible_markers.all())
-        for marker in markers:
-            try:
-                self.markers.add(Marker.objects.get(name=marker))
-            except ObjectDoesNotExist:
-                self.markers.create(name=marker)
+            self.markers.add(*self.visible_markers.all())
+            for marker in markers:
+                try:
+                    self.markers.add(Marker.objects.get(name=marker.lower()))
+                except ObjectDoesNotExist:
+                    self.markers.create(name=marker.lower())
 
         super(Mattress, self).save(*args, **kwargs)
 
 class Pillow(Product):
-    height = models.IntegerField()
+    height = models.IntegerField(default=0)
     case = models.BooleanField(default=True)
 
     structure = models.ManyToManyField(Technology, through=LayerPillow, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
@@ -321,32 +349,31 @@ class Pillow(Product):
         return ('age', 'material_filler', 'case', 'cover')
 
 class MattressPad(Product):
-    height = models.IntegerField()
+    height = models.IntegerField(default=0)
     case = models.BooleanField(default=True)
 
     structure = models.ManyToManyField(Technology, through=LayerMattressPad, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
 
+    age = create_related_field('age', '%(class)s', True)
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
-    rigidity1 = create_related_field('rigidity1', '%(class)s')
-    rigidity2 = create_related_field('rigidity2', '%(class)s')
     cover = create_related_field('cover', '%(class)s', True)
 
     @classmethod
     def get_order(cls):
-        return ('mattresspad_type', 'height', 'rigidity1', 'rigidity2', 'case', 'binding', 'cover')
+        return ('age', 'mattresspad_type', 'height', 'case', 'binding', 'cover')
 
     @classmethod
     def get_short_order(cls):
-        return ('mattresspad_type', 'rigidity1', 'rigidity2', 'case', 'cover')
+        return ('age', 'mattresspad_type', 'case', 'cover')
 
 class Blanket(Product):
-    density = models.IntegerField()
+    density = models.IntegerField(default=0)
     
     blanket_type = create_related_field('blanket_type', '', True)
     age = create_related_field('age', '%(class)s', True)
-    filling = create_related_field('filling')
+    filling = create_related_field('filling', '%(class)s', True)
     blanket_color = create_related_field('blanket_color')
     cover = create_related_field('cover', '%(class)s', True)
 
@@ -358,10 +385,28 @@ class Blanket(Product):
     def get_short_order(cls):
         return ('blanket_type', 'age', 'filling', 'density', 'cover')
 
+class BedSheetsSize(Size):
+    duvet_cover_size = models.ForeignKey(Size, related_name='duvet_cover_size%(class)s', on_delete=models.SET_NULL, null=True, verbose_name='Пододеяльник')
+    sheet_size = models.ForeignKey(Size, related_name='sheet_size%(class)s', on_delete=models.SET_NULL, null=True, verbose_name='Простыня')
+    elasticated_sheet_size = models.ForeignKey(Size, related_name='elasticated_sheet_size%(class)s', on_delete=models.SET_NULL, null=True, verbose_name='Простыня на резинке')
+    pillowcase_sizes = models.ManyToManyField(Size, related_name='pillowcase_sizes%(class)s', verbose_name='Наволочки')
+
+    class Meta:
+        verbose_name = 'размер постельного белья'
+        verbose_name_plural = 'размеры постельного белья'
+
 class BedSheets(Product):
+    name = None
+    name_en = models.CharField('Название (en)', max_length=32)
+    name_ru = models.CharField('Название (ru)', max_length=32)
+    name_ro = models.CharField('Название (ro)', max_length=32)
+    sizes = models.ManyToManyField(BedSheetsSize, related_name='sizes%(class)s', verbose_name='Размеры')
     bedsheets_type = create_related_field('bedsheets_type', '', True)
     bedsheets_color = create_related_field('bedsheets_color')
     tissue = create_related_field('tissue')
+
+    def __str__(self):
+        return f'{self._meta.verbose_name}: {self.name_ru}, {self.bedsheets_color.property_ru}'
 
     @classmethod
     def get_order(cls):
@@ -371,24 +416,49 @@ class BedSheets(Product):
     def get_short_order(cls):
         return ('bedsheets_type', 'bedsheets_color')
 
+    def save(self, *args, **kwargs):
+        super(BedSheets, self).save(*args, **kwargs)
+        if self.category:
+            for size in self.sizes.all():
+                size.duvet_cover_size.product = self
+                size.duvet_cover_size.category = self.category
+
+                try:
+                    size.sheet_size.product = self
+                    size.sheet_size.category = self.category
+                except AttributeError:
+                    pass
+                
+                try:
+                    size.elasticated_sheet_size.product = self
+                    size.elasticated_sheet_size.category = self.category
+                except AttributeError:
+                    pass
+
+                for pillowcase_size in size.pillowcase_sizes.all():
+                    pillowcase_size.product = self
+                    pillowcase_size.category = self.category
+            super(BedSheets, self).save(*args, **kwargs)
+
 class Bed(Product):
     headboard_height = models.IntegerField(default=0)
-    lifetime = models.IntegerField(default=10)
+    extra_length = models.IntegerField(default=0)
+    extra_width = models.IntegerField(default=0)
 
     bed_type = create_related_field('bed_type', '', True)
 
     @classmethod
     def get_order(cls):
-        return ('bed_type', 'headboard_height', 'lifetime')
+        return ('bed_type', 'headboard_height', 'extra_length', 'extra_width')
 
     @classmethod
     def get_short_order(cls):
-        return ('bed_type', 'headboard_height', 'lifetime')
+        return ('bed_type', 'headboard_height')
 
 class Stand(Product):
-    height = models.IntegerField()
+    height = models.IntegerField(default=0)
 
-    material = create_related_field('material')
+    material = create_related_field('material', '', True)
 
     @classmethod
     def get_order(cls):
@@ -399,18 +469,19 @@ class Stand(Product):
         return ('height', 'material')
 
 class Basis(Product):
-    distance = models.IntegerField()
-    width = models.IntegerField()
-    height = models.IntegerField()
-    legs_height = models.IntegerField()
-    recomended = models.ManyToManyField(Mattress, related_name='recomendedBasis', verbose_name='Рекомендовано для матрассов')
+    distance = models.IntegerField(default=45)
+    width = models.IntegerField(default=0)
+    legs_height = models.IntegerField(default=0)
 
-    basis_type = create_related_field('basis_type', '', True)
+    recomended = models.ManyToManyField(Choice, related_name='recomendedBasis', verbose_name='Рекомендовано для матрассов')
+
+    def __str__(self):
+        return self._meta.verbose_name + ': ' + self.name
 
     @classmethod
     def get_order(cls):
-        return ('distance', 'height', 'width', 'legs_height', 'recomended')
+        return ('distance', 'width', 'legs_height', 'recomended')
 
     @classmethod
     def get_short_order(cls):
-        return ('distance', 'height', 'width', 'recomended')
+        return ('distance', 'width', 'recomended')
