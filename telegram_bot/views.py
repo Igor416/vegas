@@ -20,7 +20,7 @@ class OrderView(APIView):
         for product in info['products']:
             data['text'] += f'{info["products"].index(product) + 1}) {product["name"]} ({product["category"]})\n    размер: {product["size"]},\n    начальная цена: {product["priceMDL"]} (MDL) / {product["priceEUR"]} (EUR),\n    количество: {product["quantity"]},\n    предварительная скидка: {product["discount"]} &,\n    конечная цена: {product["sumMDL"]} (MDL) / {product["sumEUR"]} (EUR)\n'
         data['text'] += f'Конечная цена: {info["total"]}'
-        #requests.post(BOT_URL + 'sendMessage', data=data)
+        requests.post(BOT_URL + 'sendMessage', data=data)
 
         response = {
             'en': f'The order has been sent. Wait for a call from number: ({PHONE})',
@@ -41,7 +41,7 @@ class OrderCallView(APIView):
             'chat_id': str(CHANNEL_ID), 
             'text': f'Заказан звонок от: {info["name"]}, номер телефона: {info["phone"]}. Продукт: {info["product"]} ({info["category"]})'
         }
-        #requests.post(BOT_URL + 'sendMessage', data=data)
+        requests.post(BOT_URL + 'sendMessage', data=data)
 
         response = {
             'en': f'Wait for a call from number: ({PHONE})',
