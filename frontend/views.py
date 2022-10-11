@@ -11,9 +11,9 @@ def index(request, *args, **kwargs):
         lang = request.GET['lang']
     except MultiValueDictKeyError:
         lang = 'dev'
-        
+
     context = {
         'title': requests.get('http://' + request.get_host() + f'/public/locales/{lang}/titles.json').json()[title]
     }
-    print(context)
+    
     return render(request, 'frontend/index.html', context=context)
