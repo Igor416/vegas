@@ -309,7 +309,7 @@ class Mattress(Product):
 
     def save(self, *args, **kwargs):
         super(Mattress, self).save(*args, **kwargs)
-        if self.category:
+        if self.category and self.max_pressure:
             markers = [
                 'height_' + str(self.height),
                 'max_pressure_' + str(self.max_pressure),
