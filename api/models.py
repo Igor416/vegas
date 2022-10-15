@@ -316,6 +316,8 @@ class Mattress(Product):
                 'springs_' + str(self.springs)
             ]
 
+            rev = lambda s: 'rigidity_' +  '-'.join(s.replace('rigidity_', '').split('-')[::-1])
+
             if self.rigidity2:
                 markers.append('rigidity_' + self.rigidity1.property_en + '-' + self.rigidity2.property_en)
             else:
@@ -323,10 +325,19 @@ class Mattress(Product):
 
             self.markers.add(*self.visible_markers.all())
             for marker in markers:
-                try:
-                    self.markers.add(Marker.objects.get(name=marker.lower()))
-                except ObjectDoesNotExist:
-                    self.markers.create(name=marker.lower())
+                if marker.startswith('rigidity_'):
+                    if len(Marker.objects.filter(name=marker.lower())) == 0 and len(Marker.objects.filter(name=rev(marker.lower()))) == 0:
+                        self.markers.create(name=marker.lower())
+                    else:
+                        try:
+                            self.markers.add(Marker.objects.get(name=marker.lower()))
+                        except ObjectDoesNotExist:
+                            self.markers.add(Marker.objects.get(name=rev(marker.lower())))
+                else:
+                    try:
+                        self.markers.add(Marker.objects.get(name=marker.lower()))
+                    except ObjectDoesNotExist:
+                        self.markers.create(name=marker.lower())
 
         super(Mattress, self).save(*args, **kwargs)
 
