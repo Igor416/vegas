@@ -26,7 +26,6 @@ class ProductDetails extends Component {
       lang: this.props.context.lang,
       currency: this.props.context.currency,
       product: null,
-      loaded_marks: [],
       category: {
         name: this.props.params.category
       },
@@ -237,22 +236,9 @@ class ProductDetails extends Component {
                     </div>
                   </div>
                   {this.state.product.markers &&
-                    <div id="markers" style={{height: '6vh'}} className="d-flex row-nowrap justify-content-start my-3">
+                    <div style={{height: '6vh'}} className="d-flex row-nowrap justify-content-start my-3">
                       {this.state.product.markers.map((marker, index) => {
-                        let image = new Image();
-                        image.src = marker;
-                        image.className = "me-2";
-                        image.style.width = '6vh'
-                        image.style.height = '6vh';
-                        image.key = index;
-                        image.onload = () => {
-                          let loaded_marks = this.state.loaded_marks
-                          if (!loaded_marks.includes(image.src)) {
-                            document.getElementById("markers").appendChild(image);
-                            loaded_marks.push(image.src)
-                            this.setState({loaded_marks: loaded_marks})
-                          }
-                        };
+                        return <img className="me-2" key={index} src={marker} style={{width: '6vh', height: '6vh'}}/>
                       })}
                     </div>
                   }

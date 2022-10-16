@@ -56,16 +56,26 @@ class Catalog extends Component {
       sub_category: sub_category,
       filter: filter || null
     }, () => {
-      getCategory(category).then((data) => {
+      getCategory(category).then((category_data) => {
         this.setState({
-          category: data
+          category: category_data
         }, () => {
           getProducts(category, sub_category, filter).then((data) => {
             let sorted_products = {};
             let filtering, remainder;
 
+            if (Array.isArray(data[0][category_data.default_filtering])) {
+              for (let i = 0; i < data.length; i++) {
+                for (let j = 0; j < ( data.length - i -1 ); j++) {
+                  if (data[j][category_data.default_filtering].length < data[j+1][category_data.default_filtering].length) {
+                    [data[j], data[j+1]] = [data[j + 1], data[j]]
+                  }
+                }
+              }
+            }
+
             for (let product of data) {
-              filtering = product[this.state.category.default_filtering]
+              filtering = product[category_data.default_filtering]
               if (filtering in sorted_products) {
                 sorted_products[filtering].push(product)
               }
@@ -193,20 +203,9 @@ class Catalog extends Component {
                       <img src={product.shortcut}/>
                     </div>
                     {this.state.isGrid && product.markers &&
-                    <div id={"markers" + i} style={{width: this.isMobile ? '50vw' : '12.5vw', height: this.isMobile ? 'calc(50vw + 2.5rem)' : 'calc(12.5vw + 2.5rem)'}} className="markers d-flex flex-column justify-content-start mt-3">
+                    <div style={{width: this.isMobile ? '50vw' : '12.5vw', height: this.isMobile ? 'calc(50vw + 2.5rem)' : 'calc(12.5vw + 2.5rem)'}} className="d-flex flex-column justify-content-start mt-3">
                       {product.markers.map((marker, index) => {
-                        const k = i;
-                        let image = new Image();
-                        image.id = k * 10 + index;
-                        image.src = marker;
-                        image.className = "mb-2";
-                        image.key = index;
-                        image.onload = () => {
-                          try {
-                            document.getElementById("markers" + k).removeChild(document.getElementById(k * 10 + index));
-                          } catch {}
-                          document.getElementById("markers" + k).appendChild(image);
-                        };
+                        return <img key={index} className="mb-2" src={marker}/>
                       })}
                     </div>
                     }
