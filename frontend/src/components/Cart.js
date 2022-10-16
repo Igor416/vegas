@@ -339,7 +339,7 @@ class Cart extends Component {
               }}
               className={(this.isMobile ? "flex-column" : "flex-row") + " d-flex juaftify-content-between align-items-center col-6 p-5"}
             >
-              <div className="me-5">
+              <div className="me-5" style={{color: 'var(--deep-sky-blue)'}}>
                 <FontAwesomeIcon icon='shopping-cart' style={{width: '25vh', height: '25vh'}} />
               </div>
               <div style={{height: '25vh'}} className="d-flex flex-column justify-content-around">
