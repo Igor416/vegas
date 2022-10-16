@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import { withTranslation } from "react-i18next";
 
 import LocationListener from './reusables/LocationListener.js';
-import { getBestProducts, sendForm } from "./reusables/APICallPoints.js";
+import { getBestProducts, getMattressColectionsPrice, sendForm } from "./reusables/APICallPoints.js";
 import { langs as Langs } from './reusables/Globals.js';
 import SearchBar from "./reusables/SearchBar.js";
 import Hoverable from './reusables/Hoverable.js';
@@ -30,6 +30,7 @@ class Header extends Component {
       category: null,
       categoryEN: null,
       sub_category: null,
+      mattressColectionsPrice: [],
       ordered: false,
       form: {
         error: false,
@@ -40,6 +41,14 @@ class Header extends Component {
 
     this.updateBestProducts = this.updateBestProducts.bind(this);
     this.submitForm = this.submitForm.bind(this);
+  }
+
+  componentDidMount() {
+    getMattressColectionsPrice().then(data => {
+      this.setState({
+        mattressColectionsPrice: data
+      })
+    })
   }
 
   onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
@@ -262,6 +271,16 @@ class Header extends Component {
               onMouseLeave={() => this.state.sub_category && this.onMouseLeave(true, this.state.sub_category, true)}
             >
               {this.state.sub_category && CATEGORIES[this.props.lang][this.state.category][this.state.sub_category].map((link, index) => {
+              if (this.state.sub_category.endsWith(';Mattress/collection')) {
+                return (
+                  <div
+                    className={"d-flex pb-2"}
+                    key={index}
+                  >
+                    <CustomLink to={this.getLink(this.state.sub_category, link)} text={`${link} ${t('from')}: ${this.state.mattressColectionsPrice[index]['price' + this.props.currency]} (${this.props.currency})`}/>
+                  </div>
+                )
+              }
               return (
                 <div
                   className={"d-flex pb-2"}
@@ -319,7 +338,11 @@ class Header extends Component {
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <span className="h3">{t('credit')}</span>
+                <div>
+                  <span className="h3">{t('credit')}</span>
+                  <br/>
+                  <span>({t('procent')})</span>
+                </div>
                 <button onClick={() => this.setState({ordered: false}, () => this.updateForm('error', false))} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div className="modal-body h6">
