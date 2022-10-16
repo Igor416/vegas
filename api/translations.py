@@ -17,7 +17,7 @@ products = {
 
 properties = {
     ct.HEIGHT: ('Height (cm)', 'Высота (см)', 'Înălţime (cm)'),
-    ct.SPRINGS: ('Number of springs in a double mattress', 'Количество пружин в двуспальном матрасе', 'Numărul de arcuri într-o saltea dublă'),
+    ct.SPRINGS: ('Number of springs', 'Количество пружин', 'Numărul de arcuri'),
     ct.MAX_PRESSURE: ('Maximum load per bed (kg)', 'Максимальная нагрузка на 1 спальное место (кг)', 'Sarcina maxima pe pat (kg)'),
     ct.LIFETIME: ('Life time (years)', 'Срок службы (лет)', 'Durata de viață (ani)'),
     ct.CASE: ('Removable cover', 'Съемный чехол', 'Husa detasabila'),
