@@ -3,14 +3,14 @@
     "MATTRESSES": {
       "All Mattresses;Mattress/all": [],
       "Collections;Mattress/collection": [
-        "Mattresses Modern",
-        "Mattresses Exclusive",
-        "Mattresses Comfort",
-        "Mattresses Ecolatex",
-        "Mattresses Active",
-        "Mattresses Alba",
-        "Mattresses Smart",
-        "Mattresses Special",
+        "Modern",
+        "Exclusive",
+        "Comfort",
+        "Ecolatex",
+        "Active",
+        "Alba",
+        "Smart",
+        "Special",
         "Vegas Kids"
       ],
       "Springless;Mattress/springless": [
@@ -34,15 +34,6 @@
         "Mattresses with latex",
         "Mattresses with coconut coir",
         "Mattresses with memory effect"
-      ],
-      "Popular sizes;Mattress/sizes": [
-        "Mattresses 80 x 190",
-        "Mattresses 80 x 200",
-        "Mattresses 90 x 190",
-        "Mattresses 90 x 200",
-        "Mattresses 140 x 200",
-        "Mattresses 160 x 200",
-        "Mattresses 180 x 200"
       ]
     },
     "PILLOWS": {
@@ -65,7 +56,8 @@
       ],
       "Special pillows;Pillow/special": [
         "Pillow Beauty for beauty and youngness",
-        "Pillow Baby Boom for pregnants and breastfeeding"
+        "Pillow Baby Boom for pregnants and breastfeeding",
+        "Pillow Sleep Constructor"
       ]
     },
     "ACCESSORIES": {
@@ -89,19 +81,11 @@
       ],
       "Beds;Bed/children": [],
       "Mattress pads;MattressPad/children": [
-        "Size 55 x 115",
         "Size 60 x 120",
-        "Size 65 x 125",
         "Size 70 x 140"
       ],
       "Pillows for children;Pillow/children": [],
-      "Blankets for children;Blanket/children": [
-        "All child Blankets",
-        "Light blanket",
-        "All season blanket",
-        "Insulated blanket",
-        "Double blanket (2 in 1)"
-      ]
+      "Blankets for children;Blanket/children": []
     },
     "FURNITURE": {
       "Beds;Bed": [
@@ -126,14 +110,14 @@
     "МАТРАСЫ": {
       "Все матрасы;Mattress/all": [],
       "Коллекции;Mattress/collection": [
-        "Матрасы Modern",
-        "Матрасы Exclusive",
-        "Матрасы Comfort",
-        "Матрасы Ecolatex",
-        "Матрасы Active",
-        "Матрасы Alba",
-        "Матрасы Smart",
-        "Mattresses Special",
+        "Modern",
+        "Exclusive",
+        "Comfort",
+        "Ecolatex",
+        "Active",
+        "Alba",
+        "Smart",
+        "Special",
         "Vegas Kids"
       ],
       "Беспружинные;Mattress/springless": [
@@ -157,15 +141,6 @@
         "Матрасы с латексом",
         "Матрасы с кокосовой койрой",
         "Матрасы с эффектом «памяти»"
-      ],
-      "Популярные размеры;Mattress/sizes": [
-        "Матрасы 80 x 190",
-        "Матрасы 80 x 200",
-        "Матрасы 90 x 190",
-        "Матрасы 90 x 200",
-        "Матрасы 140 x 200",
-        "Матрасы 160 x 200",
-        "Матрасы 180 x 200"
       ]
     },
     "ПОДУШКИ": {
@@ -188,7 +163,8 @@
       ],
       "Специальные Подушки;Pillow/special": [
         "Подушка Beauty для красоты и молодости",
-        "Подушка Baby Boom для беременных и кормления"
+        "Подушка Baby Boom для беременных и кормления",
+        "Подушка Sleep Constructor"
       ]
     },
     "АКСЕССУАРЫ": {
@@ -212,19 +188,11 @@
       ],
       "Кровати;Bed/children": [],
       "Детские наматрасники;MattressPad/children": [
-        "Размер 55x115",
         "Размер 60x120",
-        "Размер 65x125",
         "Размер 70x140"
       ],
       "Подушки для детей;Pillow/children": [],
-      "Одеяла для детей;Blanket/children": [
-        "Все детские одеяла",
-        "Легкое одеяло",
-        "Всесезонное одеяло",
-        "Утепленное одеяло",
-        "Одеяло двойное (2 в 1)"
-      ]
+      "Одеяла для детей;Blanket/children": []
     },
     "МЕБЕЛЬ": {
       "Кровати;Bed": [
@@ -249,14 +217,14 @@
     "SALTELE": {
       "Toate Saltele;Mattress/all": [],
       "Colecții;Mattress/collection": [
-        "Saltele Modern",
-        "Saltele Exclusive",
-        "Saltele Comfort",
-        "Saltele Ecolatex",
-        "Saltele Active",
-        "Saltele Alba",
-        "Saltele Smart",
-        "Mattresses Special",
+        "Modern",
+        "Exclusive",
+        "Comfort",
+        "Ecolatex",
+        "Active",
+        "Alba",
+        "Smart",
+        "Special",
         "Vegas Kids"
       ],
       "Fără arcuri;Mattress/springless": [
@@ -280,15 +248,6 @@
         "Saltele cu latex",
         "Saltele cu nucă de cocos",
         "Saltele Memory"
-      ],
-      "Dimensiuni populare;Mattress/sizes": [
-        "Saltele 80 x 190",
-        "Saltele 80 x 200",
-        "Saltele 90 x 190",
-        "Saltele 90 x 200",
-        "Saltele 140 x 200",
-        "Saltele 160 x 200",
-        "Saltele 180 x 200"
       ]
     },
     "PERNE": {
@@ -311,7 +270,8 @@
       ],
       "Perne speciale;Pillow/special": [
         "Perna Beauty pentru frumusețe si tinirețe",
-        "Perna Baby Boom pentru femeile insarcinate si alăptare"
+        "Perna Baby Boom pentru femeile insarcinate si alăptare",
+        "Perna Sleep Constructor"
       ]
     },
     "ACCESORII": {
@@ -335,19 +295,11 @@
       ],
       "Paturi;Bed/children": [],
       "Huse pentru copii;MattressPad/children": [
-        "Marimea 55x115",
         "Marimea 60x120",
-        "Marimea 65x125",
         "Marimea 70x140"
       ],
       "Perne pentru copii;Pillow/children": [],
-      "Plapume pentru copii;Blanket/children": [
-        "Toate plapume pentru copii",
-        "Plapuma ușoara",
-        "Plapuma pentru orice vreme",
-        "Plapuma captușita",
-        "plapuma dublu (2 in 1)"
-      ]
+      "Plapume pentru copii;Blanket/children": []
     },
     "MOBILA": {
       "Paturi;Bed": [
