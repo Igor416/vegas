@@ -7,6 +7,27 @@ manager = Manager()
 
 langs = ['en', 'ru', 'ro']
 
+class MattressColectionsPriceSerializer(ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Choice
+
+    def to_representation(self, obj):
+        size = None
+        for m in models.Mattress.objects.filter(collection=obj):
+            if size is None:
+                size = m.sizes.first()
+            elif not m.sizes.first() is None:
+                if size.priceEUR > m.sizes.first().priceEUR:
+                    size = m.sizes.first()
+
+        r = {
+            'priceMDL': size.priceMDL,
+            'priceEUR': size.priceEUR,
+        }
+        
+        return r
+
 class CategorySerializer(ModelSerializer):
     class Meta:
         fields = '__all__'
@@ -115,7 +136,9 @@ class MarkerSerializer(ModelSerializer):
         self.lang = lang
 
     def to_representation(self, obj):
-        return f'/media/markers/{obj.name}_{self.lang}.jpg'
+        if obj.name.startswith('rigidity_'):
+            return f'/media/markers/{obj.name}_{self.lang}.jpg'
+        return f'/media/markers/{obj.name}.jpg'
 
 class BedSheetsSizeSerializer(ModelSerializer):
     duvet_cover_size = SizeSerializer()
