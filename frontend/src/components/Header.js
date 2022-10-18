@@ -45,8 +45,13 @@ class Header extends Component {
 
   componentDidMount() {
     getMattressColectionsPrice().then(data => {
+      let sorted_data = {}
+      for (let el of data) {
+        sorted_data[Object.keys(el)] = Object.values(el)[0]
+      }
+      
       this.setState({
-        mattressColectionsPrice: data
+        mattressColectionsPrice: sorted_data
       })
     })
   }
@@ -179,7 +184,9 @@ class Header extends Component {
         <div className="container-fluid d-flex align-items-center row px-5 pt-4">
           <div className="col-1"></div>
           <div className="col-1">
-            <img style={{ maxWidth: '80%' }} src="/static/images/logo.png"/>
+            <Link to={"/?lang=" + this.props.lang}>
+              <img style={{ maxWidth: '80%' }} src="/static/images/logo.png"/>
+            </Link>
           </div>
           <div id="searchBar" className="col-3 ps-0">
             <SearchBar width={document.getElementById('searchBar')?.offsetWidth} currency={this.props.currency} lang={this.props.lang} />
@@ -221,7 +228,10 @@ class Header extends Component {
             <div className="col-10 h6 m-0">
               <div className="d-flex flex-inline justify-content-between transition">
                 <div>
-                  <CustomLink to="/" text={t('home')} />
+                  <CustomLink to="/sales" text={t('sales')} />
+                </div>
+                <div>
+                  <CustomLink to="/stock" text={t('stock')} />
                 </div>
                 {Object.keys(CATEGORIES[this.props.lang]).map((category, index) => {
                 return (
@@ -246,92 +256,104 @@ class Header extends Component {
           <div
             onMouseEnter={() => this.onMouseEnter(true)}
             onMouseLeave={() => this.onMouseLeave()}
-            className={(this.state.category ? "menu-show" : "menu-hide") + " row border-top row transition"}
+            className={(this.state.category ? "menu-show" : "menu-hide") + " d-flex flex-column transition"}
           >
-            <div className="col-2"></div>
-            <div
-              className="col-2 border-start"
-              onMouseLeave={() => this.state.category && this.onMouseLeave(true)}
-            >
-              {this.state.category && Object.keys(CATEGORIES[this.props.lang][this.state.category]).map((sub_category, index) => {
-              return (
-                <div
-                  className="d-flex pb-2"
-                  key={index}
-                  onMouseEnter={() => this.onMouseEnter(true, this.state.category, sub_category)}
-                  onMouseLeave={() => this.onMouseLeave(true, sub_category)}
-                >
-                  <CustomLink to={this.getLink(sub_category)} text={sub_category.split(';')[0]} />
-                </div>
-              )})}
-            </div>
-            <div
-              className="col-2 border-start"
-              onMouseEnter={() => this.state.sub_category && this.onMouseEnter(true, this.state.category, this.state.sub_category, true)}
-              onMouseLeave={() => this.state.sub_category && this.onMouseLeave(true, this.state.sub_category, true)}
-            >
-              {this.state.sub_category && CATEGORIES[this.props.lang][this.state.category][this.state.sub_category].map((link, index) => {
-              if (this.state.sub_category.endsWith(';Mattress/collection')) {
+            <div className="row border-top py-2">
+              <div className="col-2"></div>
+              <div
+                className="col-2"
+                onMouseLeave={() => this.state.category && this.onMouseLeave(true)}
+              >
+                {this.state.category && Object.keys(CATEGORIES[this.props.lang][this.state.category]).map((sub_category, index) => {
+                return (
+                  <div
+                    className="d-flex pb-2"
+                    key={index}
+                    onMouseEnter={() => this.onMouseEnter(true, this.state.category, sub_category)}
+                    onMouseLeave={() => this.onMouseLeave(true, sub_category)}
+                  >
+                    <CustomLink to={this.getLink(sub_category)} text={sub_category.split(';')[0]} />
+                  </div>
+                )})}
+              </div>
+              <div
+                className="col-4 border-start"
+                onMouseEnter={() => this.state.sub_category && this.onMouseEnter(true, this.state.category, this.state.sub_category, true)}
+                onMouseLeave={() => this.state.sub_category && this.onMouseLeave(true, this.state.sub_category, true)}
+              >
+                {this.state.sub_category && CATEGORIES[this.props.lang][this.state.category][this.state.sub_category].map((link, index) => {
+                if (this.state.sub_category.endsWith(';Mattress/collection')) {
+                  return (
+                    <div className="d-flex pb-2" key={index}>
+                      <CustomLink to={this.getLink(this.state.sub_category, link)} text={`${link}    ${t('from')}: ${this.state.mattressColectionsPrice[link]['price' + this.props.currency]} (${this.props.currency})`}/>
+                    </div>
+                  )
+                }
                 return (
                   <div
                     className={"d-flex pb-2"}
                     key={index}
                   >
-                    <CustomLink to={this.getLink(this.state.sub_category, link)} text={`${link} ${t('from')}: ${this.state.mattressColectionsPrice[index]['price' + this.props.currency]} (${this.props.currency})`}/>
+                    <CustomLink to={this.getLink(this.state.sub_category, link)} text={link}/>
                   </div>
-                )
-              }
+                )})}
+              </div>
+              <div className="col-2">
+              </div>
+            </div>
+            {this.state.category &&
+            <div className="row py-2">
+              <div className="col-6"></div>
+              <div className="col-2 d-flex align-items-end justify-content-center">
+                <span style={{color: 'var(--dark-cyan)'}} className="h4">Hit Sales</span>
+              </div>
+            </div>
+            }
+            <div className="row">
+              <div className="col-4"></div>
+              {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
               return (
-                <div
-                  className={"d-flex pb-2"}
-                  key={index}
-                >
-                  <CustomLink to={this.getLink(this.state.sub_category, link)} text={link}/>
-                </div>
+              <div key={index} className={(index != 0 ? "border-start" : "") + " col-2 p-2"}>
+                <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>
+                  <span className="h6">{product.category_name} {product.name}</span>
+                  <div className="text-start" style={{color: 'gold'}}>
+                    <FontAwesomeIcon icon="fa-star"/>
+                  </div>
+                  <img src={product.shortcut} />
+                  {product.discount != 0
+                  ?
+                  <div className="d-flex flex-column">
+                    <div style={{textDecoration: 'line-through'}}>
+                      <span>
+                        {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        {`${t('from')} `}
+                      </span>
+                      <span style={{color: 'var(--lime-green)'}} className="h6">
+                        {product.size['price' + this.props.currency] * (100 - product.discount) / 100}
+                      </span>
+                      <span>
+                        {` (${this.props.currency})`}
+                      </span>
+                    </div>
+                  </div>
+                  :
+                  <div className="d-flex flex-column">
+                    <div>
+                      <span>
+                        {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
+                      </span>
+                    </div>
+                  </div>
+                  }
+                </Link>
+              </div>
               )})}
+              <div className="col-2"></div>
             </div>
-            {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
-            return (
-            <div key={index} className="col-2 border-start p-2">
-              <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>
-                <span className="h6">{product.category_name} {product.name}</span>
-                <div className="text-start" style={{color: 'gold'}}>
-                  <FontAwesomeIcon icon="fa-star"/>
-                </div>
-                <img src={product.shortcut} />
-                {product.discount != 0
-                ?
-                <div className="d-flex flex-column">
-                  <div style={{textDecoration: 'line-through'}}>
-                    <span>
-                      {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
-                    </span>
-                  </div>
-                  <div>
-                    <span>
-                      {`${t('from')} `}
-                    </span>
-                    <span style={{color: 'var(--lime-green)'}} className="h6">
-                      {product.size['price' + this.props.currency] * (100 - product.discount) / 100}
-                    </span>
-                    <span>
-                      {` (${this.props.currency})`}
-                    </span>
-                  </div>
-                </div>
-                :
-                <div className="d-flex flex-column">
-                  <div>
-                    <span>
-                      {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
-                    </span>
-                  </div>
-                </div>
-                }
-              </Link>
-            </div>
-            )})}
-            <div className="col-2 border-start"></div>
           </div>
         </nav>
         <div className="modal fade" id="modalHelp" tabIndex="-1">

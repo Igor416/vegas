@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { withTranslation } from "react-i18next";
 
 import LocationListener from './reusables/LocationListener.js';
+import { getBestProducts, getMattressColectionsPrice } from "./reusables/APICallPoints.js";
 import { langs as Langs } from './reusables/Globals.js';
 import SearchBar from "./reusables/SearchBar.js";
 import CustomLink from './reusables/CustomLink.js';
@@ -14,6 +15,7 @@ class MobileHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      bestProducts: null,
       menuOpened: false,
       langs: () => {
         let langs = {...Langs};
@@ -23,8 +25,36 @@ class MobileHeader extends Component {
       pathname: location.pathname,
       category: null,
       categoryEN: null,
-      sub_category: null
+      sub_category: null,
+      mattressColectionsPrice: []
     };
+
+    this.updateBestProducts = this.updateBestProducts.bind(this);
+  }
+
+  componentDidMount() {
+    getMattressColectionsPrice().then(data => {
+      let sorted_data = {}
+      for (let el of data) {
+        sorted_data[Object.keys(el)] = Object.values(el)[0]
+      }
+      
+      this.setState({
+        mattressColectionsPrice: sorted_data
+      })
+    })
+  }
+
+  updateBestProducts(location) {
+    this.setState({
+      pathname: location.pathname
+    }, () => {
+      getBestProducts().then(data => {
+        this.setState({
+          bestProducts: data
+        })
+      })
+    })
   }
 
   toggleMenu() {
@@ -84,7 +114,7 @@ class MobileHeader extends Component {
     const t = this.props.t
     return (
       <div id="header" style={{zIndex: 1200}} className="bg-white">
-        <LocationListener locationChanged={(location) => this.setState({pathname: location.pathname})} />
+        <LocationListener locationChanged={this.updateBestProducts} />
         <div style={{boxShadow: '0 1rem 1.5rem -.5rem rgba(0, 0, 0, .25)'}} className="container-fluid row p-3 align-items-center m-0">
           <div className="d-flex col-3 justify-content-center align-items-center">
             <div
@@ -111,7 +141,9 @@ class MobileHeader extends Component {
             </div>
           </div>
           <div className="col-3 p-3">
-            <img src="/static/images/logo.png"/>
+            <Link to={"/?lang=" + this.props.lang}>
+              <img src="/static/images/logo.png"/>
+            </Link>
           </div>
           <div className="col-2"></div>
           <div className="col-2 d-flex row-nowrap justify-content-around p-3">
@@ -147,10 +179,17 @@ class MobileHeader extends Component {
             </div>
             <Link
               onClick={() => this.toggleMenu()}
-              to={"/?lang=" + this.props.lang}
+              to={"/sales?lang=" + this.props.lang}
               className="w-100 p-3 border-bottom no-link no-hover"
             >
-              <span>{t('home')}</span>
+              <span>{t('sales')}</span>
+            </Link>
+            <Link
+              onClick={() => this.toggleMenu()}
+              to={"/stock?lang=" + this.props.lang}
+              className="w-100 p-3 border-bottom no-link no-hover"
+            >
+              <span>{t('stock')}</span>
             </Link>
           {Object.keys(CATEGORIES[this.props.lang]).map((category, index) => {
           return (
@@ -174,10 +213,10 @@ class MobileHeader extends Component {
           <div style={{backgroundColor: 'var(--milk)'}} className="flex-grow-1 w-100 d-flex row-nowrap">
             <div className="w-50 pt-3 text-center">
               <span>
-                <FontAwesomeIcon icon='hand-holding-usd' />
+                <FontAwesomeIcon icon='phone' />
               </span>
               <br />
-              <span className="h6" style={{whiteSpace: "pre-line"}}>{t('credit')}</span>
+              <span className="h6">{t('order')}: <br/>079 40-70-32</span>
             </div>
             <Link
               onClick={() => this.toggleMenu()}
@@ -219,6 +258,51 @@ class MobileHeader extends Component {
                 <FontAwesomeIcon icon='angle-right' color="var(--lime-green)" />
               </div>
             )})}
+            <div className="d-flex align-items-end justify-content-center">
+              <span style={{color: 'var(--dark-cyan)'}} className="h4">Hit Sales</span>
+            </div>
+            {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
+              return (
+              <div key={index} className={(index != 0 ? "border-top" : "") + " p-2"}>
+                <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>
+                  <span className="h6">{product.category_name} {product.name}</span>
+                  <div className="text-start h4" style={{color: 'gold'}}>
+                    <FontAwesomeIcon icon="fa-star"/>
+                  </div>
+                  <img src={product.shortcut} />
+                  {product.discount != 0
+                  ?
+                  <div className="d-flex flex-column">
+                    <div style={{textDecoration: 'line-through'}}>
+                      <span>
+                        {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
+                      </span>
+                    </div>
+                    <div>
+                      <span>
+                        {`${t('from')} `}
+                      </span>
+                      <span style={{color: 'var(--lime-green)'}} className="h6">
+                        {product.size['price' + this.props.currency] * (100 - product.discount) / 100}
+                      </span>
+                      <span>
+                        {` (${this.props.currency})`}
+                      </span>
+                    </div>
+                  </div>
+                  :
+                  <div className="d-flex flex-column">
+                    <div>
+                      <span>
+                        {`${t('from')} ${product.size['price' + this.props.currency]} (${this.props.currency})`}
+                      </span>
+                    </div>
+                  </div>
+                  }
+                </Link>
+              </div>
+              )})}
+              <div style={{height: '20vh'}} className="w-100"></div>
             </div>
           </div>
           <div style={{left: 0, opacity: 0, height: '100vh'}} className={(this.state.sub_category ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
@@ -232,6 +316,14 @@ class MobileHeader extends Component {
                 <span>{this.state.sub_category?.split(';')[0]}</span>
               </div>
             {this.state.sub_category && CATEGORIES[this.props.lang][this.state.category][this.state.sub_category].map((link, index) => {
+            if (this.state.sub_category.endsWith(';Mattress/collection')) {
+              return (
+                <div key={index} className="w-100 p-3 d-flex justify-content-between border-bottom">
+                  <CustomLink to={this.getLink(this.state.sub_category, link)} text={link}/>
+                  <span>{`${t('from')}: ${this.state.mattressColectionsPrice[link]['price' + this.props.currency]} (${this.props.currency})`}</span>
+                </div>
+              )
+            }
             return (
               <div key={index} className="w-100 p-3 d-flex justify-content-between border-bottom">
                 <CustomLink to={this.getLink(this.state.sub_category, link)} text={link}/>
