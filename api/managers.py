@@ -186,9 +186,7 @@ class MattressPadManager(ProductManager):
         return self.objs.filter(mattresspad_type=self.get_prop(ct.MATTRESSPAD_TYPE, type))
 
     def get_by_children(self, filter):
-        width, length = filter.replace('Size ', '').split(' x ')#english x (eks)
-        sizes = self.get_size(width, length)
-        return self.objs.filter(name__in=[size.product for size in sizes])
+        return self.objs.filter(name='Stressfree Frotte L4')
 
 class BlanketManager(ProductManager):
     def __init__(self, *args, **kwargs):
