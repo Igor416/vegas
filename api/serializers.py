@@ -22,8 +22,10 @@ class MattressColectionsPriceSerializer(ModelSerializer):
                     size = m.sizes.first()
 
         r = {
-            'priceMDL': size.priceMDL,
-            'priceEUR': size.priceEUR,
+            obj.property_en: {
+                'priceMDL': size.priceMDL,
+                'priceEUR': size.priceEUR,
+            }
         }
         
         return r
@@ -159,6 +161,7 @@ class ProductBestSerializer(ProductSerializer):
         r = super(ProductBestSerializer, self).to_representation(obj)
         r['category'] = obj.category.name
         r['size'] = r['sizes'][0]
+        del r['sizes']
         r['category_name'] = getattr(obj.category, f'name_{self.lang}_s')
         return r
 
