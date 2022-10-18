@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CategorySerializer, create_best_product_serializer, create_list_serializer, create_detail_serializer
+from .serializers import MattressColectionsPriceSerializer, CategorySerializer, create_best_product_serializer, create_list_serializer, create_detail_serializer
 from .catalog import Manager
 from . import models
 
@@ -73,18 +73,26 @@ class BestView(APIView):
         lang = request.GET.get(self.lookup_url_kwarg)
         products = {}
 
-        products['MATTRESSES'] = [models.Mattress.objects.get_by_name('F3'), models.Mattress.objects.get_by_name('X3')]
-        products['PILLOWS'] = [models.Pillow.objects.get_by_name('20'), models.Pillow.objects.get_by_name('Extra Memory')]
-        products['ACCESSORIES'] = [models.MattressPad.objects.get_by_name('Stressfree L1'), models.Blanket.objects.get_by_name('SumWin')]
-        products['FOR KIDS'] = [models.Mattress.objects.get_by_name('Cocolatex'), models.Pillow.objects.get_by_name('Junior')]
-        products['BASISES'] = [models.Basis.objects.get_by_name('SuperLux'), models.Basis.objects.get_by_name('Premium')]
-        products['FURNITURE'] = [models.Bed.objects.get_by_name('Milana II'), models.Bed.objects.get_by_name('Victoria')]
+        products['MATTRESSES'] = [('Mattress', 'F3'), ('Mattress', 'X3'), ('Mattress', 'S-3')]
+        products['PILLOWS'] = [('Pillow', '20'), ('Pillow', 'Extra Memory'), ('Pillow', '14')]
+        products['ACCESSORIES'] = [('MattressPad', 'Stressfree L1'), ('Blanket', 'SumWin'), ('MattressPad', 'Bamboo A1')]
+        products['FOR KIDS'] = [('Mattress', 'Cocolatex'), ('Pillow', 'Junior'), ('Pillow', 'Baby Boom')]
+        products['BASISES'] = [('Basis', 'SuperLux'), ('Basis', 'SuperLux'), ('Basis', 'Premium')]
+        #SuperLux 160*200, SuperLux 90*200, Premium 16*200
+        products['FURNITURE'] = [('Bed', 'Milana II'), ('Bed', 'Victoria'), ('Bed', 'Milana IV')]
 
-
+        get_serializer = lambda model: create_best_product_serializer(getattr(models, model), lang)
+        get_product = lambda model, name: getattr(models, model).objects.get_by_name(name)
+        
         for key, vals in products.items():
-            products[key] = [create_best_product_serializer(product.__class__, lang)(product).data for product in vals]
+            products[key] = [get_serializer(model)(get_product(model, name)).data for model, name in vals]
 
         return Response(products)
+
+class MattressColectionsPriceView(APIView):
+    def get(self, request):
+        serializer = MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
+        return Response(serializer.data)
 
 class CategoryView(APIView):
     lookup_url_kwarg = 'lang'
