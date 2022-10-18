@@ -80,10 +80,7 @@
         "Springless"
       ],
       "Beds;Bed/children": [],
-      "Mattress pads;MattressPad/children": [
-        "Size 60 x 120",
-        "Size 70 x 140"
-      ],
+      "Mattress pads;MattressPad/children": [],
       "Pillows for children;Pillow/children": [],
       "Blankets for children;Blanket/children": []
     },
@@ -187,10 +184,7 @@
         "Беспружинные"
       ],
       "Кровати;Bed/children": [],
-      "Детские наматрасники;MattressPad/children": [
-        "Размер 60x120",
-        "Размер 70x140"
-      ],
+      "Детские наматрасники;MattressPad/children": [],
       "Подушки для детей;Pillow/children": [],
       "Одеяла для детей;Blanket/children": []
     },
@@ -294,10 +288,7 @@
         "Fără arcuri"
       ],
       "Paturi;Bed/children": [],
-      "Huse pentru copii;MattressPad/children": [
-        "Marimea 60x120",
-        "Marimea 70x140"
-      ],
+      "Huse pentru copii;MattressPad/children": [],
       "Perne pentru copii;Pillow/children": [],
       "Plapume pentru copii;Blanket/children": []
     },
