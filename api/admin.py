@@ -22,7 +22,7 @@ class TechnologAdmin(admin.ModelAdmin):
 
 @admin.register(models.Size)
 class SizeAdmin(admin.ModelAdmin):
-    list_filter = ('category',)
+    list_filter = ('category', 'product')
     exclude = ['category', 'product']
     ordering = ['category', 'product', 'length', 'priceEUR']
 
