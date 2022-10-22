@@ -21,10 +21,10 @@ def save_langs(val_en, val_ru, val_ro):
 
     return val_en, val_ru, val_ro
 
-def create_related_field(prop, postfix='', plural=False):
+def create_related_field(prop, multiple=False, plural=False):
     kwargs = {
         'to': Choice,
-        'related_name': prop + postfix
+        'related_name': prop + ('%(class)s' if multiple else '')
     }
 
     if plural:
@@ -96,12 +96,14 @@ class Choice(models.Model):
         verbose_name_plural = 'варианты выбора'
 
 class Size(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Категория')
     product = models.CharField('Название продукта', max_length=32, blank=True)
     width = models.SmallIntegerField('Ширина', default=80)
     length = models.SmallIntegerField('Длина', default=200)
     priceEUR = models.SmallIntegerField('Цена (евро)', default=0)
     priceMDL = models.SmallIntegerField('Цена (леи)', default=0)
+    discount = models.SmallIntegerField('Скидка (%)', default=0)
+    on_sale = models.BooleanField('На распродаже', default=False)
 
     def __str__(self):
         return f'Размер продукта {self.product}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL)'
@@ -261,7 +263,7 @@ class Product(models.Model):
         super(Product, self).save(*args, **kwargs)
         if self.category:
             for size in self.sizes.all():
-                if not size.category or size.product == '':
+                if size.product == '' or not size.category:
                     size.category = self.category
                     size.product = self.name
                     size.save()
@@ -292,9 +294,9 @@ class Mattress(Product):
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
     
     mattress_type = create_related_field('mattress_type', '', True)
-    age = create_related_field('age', '%(class)s', True)
-    rigidity1 = create_related_field('rigidity1', '%(class)s')
-    rigidity2 = create_related_field('rigidity2', '%(class)s')
+    age = create_related_field('age', True, True)
+    rigidity1 = create_related_field('rigidity1', True)
+    rigidity2 = create_related_field('rigidity2', True)
     collection = create_related_field('collection')
     springblock = create_related_field('springblock')
     construction = create_related_field('construction')
@@ -347,9 +349,9 @@ class Pillow(Product):
 
     structure = models.ManyToManyField(Technology, through=LayerPillow, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
 
-    age = create_related_field('age', '%(class)s', True)
+    age = create_related_field('age', True, True)
     material_filler = create_related_field('material_filler', '', True)
-    cover = create_related_field('cover', '%(class)s', True)
+    cover = create_related_field('cover', True, True)
 
     @classmethod
     def get_order(cls):
@@ -366,10 +368,10 @@ class MattressPad(Product):
     structure = models.ManyToManyField(Technology, through=LayerMattressPad, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
 
-    age = create_related_field('age', '%(class)s', True)
+    age = create_related_field('age', True, True)
     mattresspad_type = create_related_field('mattresspad_type', '', True)
     binding = create_related_field('binding')
-    cover = create_related_field('cover', '%(class)s', True)
+    cover = create_related_field('cover', True, True)
 
     @classmethod
     def get_order(cls):
@@ -383,10 +385,10 @@ class Blanket(Product):
     density = models.IntegerField(default=0)
     
     blanket_type = create_related_field('blanket_type', '', True)
-    age = create_related_field('age', '%(class)s', True)
-    filling = create_related_field('filling', '%(class)s', True)
+    age = create_related_field('age', True, True)
+    filling = create_related_field('filling', True, True)
     blanket_color = create_related_field('blanket_color')
-    cover = create_related_field('cover', '%(class)s', True)
+    cover = create_related_field('cover', True, True)
 
     @classmethod
     def get_order(cls):
