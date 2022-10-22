@@ -102,7 +102,7 @@ class TechnologySerializer(ModelSerializer):
 
 class SizeSerializer(ModelSerializer):
     class Meta:
-        exclude = ['id', 'category', 'product']
+        exclude = ['id', 'category', 'product', 'on_sale']
         model = models.Size
 
 class FileSerializer(ModelSerializer):
@@ -156,6 +156,11 @@ class ProductSerializer(ModelSerializer):
     shortcut = ImageSerializer()
     sizes = SizeSerializer(many=True)
 
+    def to_representation(self, obj):
+        r = super(ProductSerializer, self).to_representation(obj)
+        r['sizes'] = sorted(r['sizes'], key=lambda size: size['priceEUR'] * (100 - size['discount']) / 100)
+        return r
+
 class ProductBestSerializer(ProductSerializer):
     def to_representation(self, obj):
         r = super(ProductBestSerializer, self).to_representation(obj)
@@ -191,12 +196,16 @@ class ProductListSerializer(ProductSerializer):
         try:
             r['size'] = r['sizes'][0]
         except:
-            r['size'] = dict({
+            r['size'] = {
                 "width": 0,
                 "length": 0,
                 "priceEUR": 0,
-                "priceMDL": 0
-            })
+                "priceMDL": 0,
+                "discount": 0,
+                "on_sale": False,
+            }
+        finally:
+            del r['sizes']
         if not r['name']:
             r['name'] = f"{manager.get_pr_trans('BedSheets', langs.index(self.lang), False)} ({r['name_' + self.lang]})"
         return r
