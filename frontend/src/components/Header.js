@@ -310,7 +310,7 @@ class Header extends Component {
             </div>
             }
             <div className="row">
-              <div className="col-4"></div>
+              <div className={this.state.categoryEN == "MATTRESSES" ? "col-2" : "col-4"}></div>
               {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
               return (
               <div key={index} className={(index != 0 ? "border-start" : "") + " col-2 p-2"}>
