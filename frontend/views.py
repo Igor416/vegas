@@ -17,8 +17,20 @@ def index(request, *args, **kwargs):
     except MultiValueDictKeyError:
         lang = 'en'
 
+    langs = ['en', 'ro', 'ru']
+    try:
+        langs.remove(lang)
+    except:
+        pass
+
+    data = requests.get('http://' + request.get_host() + f'/public/locales/main/{lang}.json').json()
+
     context = {
-        'title': requests.get('http://' + request.get_host() + f'/public/locales/titles/{lang}.json').json()[title]
+        'title': data['titles'][title],
+        'lang': lang,
+        'langs': langs,
+        'description': data['description'],
+        'keywords': data['keywords'],
     }
     
     return render(request, 'frontend/index.html', context=context)
