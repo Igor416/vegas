@@ -145,7 +145,7 @@ class Home extends Component {
             <div className="col-sm-3"></div>
             <div className="col-12 col-sm-6">
               <p className="h2">{t('main')}</p>
-              <br />
+              <br/>
               <p style={{fontWeight: 400, whiteSpace: "pre-line"}}>{t('desc')}</p>
             </div>
             <div className="col-sm-3"></div>
