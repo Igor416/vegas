@@ -98,8 +98,8 @@
       "Puffs;Stand/Puffs": []
     },
     "BASISES": {
-      "Basis \"Lux\";Basis/Lux": [],
       "Basis \"SuperLux\";Basis/SuperLux": [],
+      "Basis \"Lux\";Basis/Lux": [],
       "Basis \"Premium\";Basis/Premium": []
     }
   },
@@ -202,8 +202,8 @@
       "Пуфы;Stand/Puffs": []
     },
     "ОСНОВАНИЯ": {
-      "Основание Люкс;Basis/Lux": [],
       "Основание СуперЛюкс;Basis/SuperLux": [],
+      "Основание Люкс;Basis/Lux": [],
       "Основание Премиум;Basis/Premium": []
     }
   },
@@ -306,8 +306,8 @@
       "Pufături;Stand/Puffs": []
     },
     "SOMIERE": {
-      "Somiera Lux;Basis/Lux": [],
       "Somiera SuperLux;Basis/SuperLux": [],
+      "Somiera Lux;Basis/Lux": [],
       "Somiera Premium;Basis/Premium": []
     }
   }
