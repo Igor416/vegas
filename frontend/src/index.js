@@ -22,6 +22,7 @@ import i18n from './i18n.js';
 import App from "./components/App.js";
 import Home from "./components/Home.js";
 import Catalog from "./components/Catalog.js";
+import Stock from "./components/Stock.js";
 import ProductDetails from "./components/ProductDetails.js";
 import Cart from "./components/Cart.js";
 import Shops from "./components/Shops.js";
@@ -54,6 +55,8 @@ root.render(
         <Route path="catalog/:category/:sub_category/" element={<Catalog />}>
           <Route path=":filter" element={<Catalog />} />
         </Route>
+        <Route path="sales" element={<Catalog />} />
+        <Route path="stock" element={<Stock />} />
         <Route path="product/:category/:id" element={<ProductDetails />} />
         <Route path="cart" element={<Cart />} />
         <Route path="shops" element={<Shops />} />

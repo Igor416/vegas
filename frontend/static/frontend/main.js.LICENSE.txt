@@ -60,6 +60,8 @@ object-assign
 
 /*! ./components/Shops.js */
 
+/*! ./components/Stock.js */
+
 /*! ./context */
 
 /*! ./factoryWithTypeCheckers */
@@ -218,6 +220,10 @@ object-assign
 
 /*!*********************************!*\
   !*** ./src/components/Shops.js ***!
+  \*********************************/
+
+/*!*********************************!*\
+  !*** ./src/components/Stock.js ***!
   \*********************************/
 
 /*!**********************************!*\
