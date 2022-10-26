@@ -60,6 +60,12 @@ export function getBestProducts() {
   return fetchAPI(url)
 }
 
+export function getStock() {
+  let url = '/api/stock/'
+
+  return fetchAPI(url)
+}
+
 export function getMattressColectionsPrice() {
   let url = '/api/mattress_category_prices/'
 
@@ -80,6 +86,12 @@ export function getProducts(name, sub_category, filter=null) {
   }
 
   return fetchAPI(url);
+}
+
+export function getSales() {
+  let url = '/api/sales/'
+
+  return fetchAPI(url)
 }
 
 export function getProduct(name, id) {
