@@ -14,6 +14,7 @@ if (lang == '') {
 
 i18n.use(Backend).use(initReactI18next).init({
   lng: lang,
+  fallbackLng: 'en',
   react: {
     useSuspense: false,
   },
@@ -23,7 +24,7 @@ i18n.use(Backend).use(initReactI18next).init({
   ns: ['home'],
   defaultNS: 'home',
   backend: {
-    loadPath: '/public/locales/{{lng}}/{{ns}}.json',
+    loadPath: '/public/locales/{{ns}}/{{lng}}.json',
   },
 });
 
