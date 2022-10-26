@@ -1,4 +1,5 @@
 from django import forms
+from datetime import date
 from . import models
 from .catalog import Manager
 from .translations import RU
@@ -89,3 +90,15 @@ class BedSheetsSizesForm(forms.ModelForm):
                     category = models.Category.objects.get(name=models.BedSheets.get_name())
                     by_category = models.Size.objects.filter(category=category) 
                     field.queryset = by_category | models.Size.objects.filter(category=None, priceMDL__gt=0)
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        fields = '__all__'
+        model = models.Stock
+
+    def __init__(self, *args, **kwargs):
+        super(StockForm, self).__init__(*args, **kwargs)
+        today = date.today()
+        self.fields['expiry'].initial = date(today.year, today.month + 1, 1)
+        self.fields['collections'].queryset = models.Choice.objects.filter(name='collection')
+        self.fields['sizes'].queryset = models.Size.objects.filter(priceMDL=0, priceEUR=0, discount__gt=0)

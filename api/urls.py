@@ -1,12 +1,14 @@
 from django.urls import path
-from .views import SearchView, BestView, MattressColectionsPriceView, CategoryView, ProductsView, ProductDetailsView, WorkerView
+from . import views
 
 urlpatterns = [
-    path('search/', SearchView.as_view()),
-    path('best/', BestView.as_view()),
-    path('mattress_category_prices/', MattressColectionsPriceView.as_view()),
-    path('category/<str:category>/', CategoryView.as_view()),
-    path('products/<str:product>/<str:category>/', ProductsView.as_view()),
-    path('products/<str:product>/<str:category>/<str:filter>/', ProductsView.as_view()),
-    path('product/<str:product>/<int:id>/', ProductDetailsView.as_view())
+    path('search/', views.SearchView.as_view()),
+    path('best/', views.BestView.as_view()),
+    path('mattress_category_prices/', views.MattressColectionsPriceView.as_view()),
+    path('category/<str:category>/', views.CategoryView.as_view()),
+    path('products/<str:product>/<str:category>/', views.ProductsView.as_view()),
+    path('products/<str:product>/<str:category>/<str:filter>/', views.ProductsView.as_view()),
+    path('product/<str:product>/<int:id>/', views.ProductDetailsView.as_view()),
+    path('sales/', views.SalesView.as_view()),
+    path('stock/', views.StockView.as_view())
 ]

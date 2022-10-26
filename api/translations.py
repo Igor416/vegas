@@ -1,8 +1,13 @@
 from . import catalog as ct
 
+langs = ['en', 'ru', 'ro']
+
 EN = 0
 RU = 1
 RO = 2
+
+def get_lang(lang):
+    return langs.index(lang)
 
 products = {
     ct.MATTRESS: ((('Mattress', 'Mattresses'), ('Матрас', 'Матрасы'), ('Saltea', 'Saltele'))),
@@ -50,4 +55,9 @@ choices = {
     ct.TISSUE: ('Tissue', 'Ткань', 'țesătură'),
     ct.BED_TYPE: ('Bed Type', 'Вид кровати', 'Tip de pat'),
     ct.MATERIAL: ('Material', 'Материал', 'Material')
+}
+
+sales = {
+    'name_s': ('Sale', 'Распродажа', 'Vânzăre'),
+    'name_pl': ('Sales', 'Распродажи', 'Vânzări')
 }

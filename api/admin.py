@@ -1,7 +1,7 @@
 from django.contrib import admin
 from . import models
 from .catalog import Manager
-from .forms import ProductForm, BedSheetsSizesForm
+from .forms import ProductForm, BedSheetsSizesForm, StockForm
 from .translations import RU
 
 manager = Manager()
@@ -73,15 +73,15 @@ class BedSheetsSizeAdmin(admin.ModelAdmin):
     exclude = ['category', 'product']
     ordering = ['category', 'product', 'length', 'priceEUR']
 
-@admin.action(description='Mark as best products')
+@admin.action(description='Пометить как лучший')
 def set_best(modeladmin, request, queryset):
     queryset.update(best=True)
 
-@admin.action(description='Unmark best products')
+@admin.action(description='Убрать пометку лучших')
 def unset_best(modeladmin, request, queryset):
     queryset.update(best=False)
 
-@admin.action(description='Remove discount')
+@admin.action(description='Убрать скидку')
 def remove_discount(modeladmin, request, queryset):
     queryset.update(discount=0)
 
@@ -117,3 +117,7 @@ for product_name in manager.get_all_products():
         
     admin.site.register(model, admin_model)
 
+
+@admin.register(models.Stock)
+class StockAdmin(admin.ModelAdmin):
+    form = StockForm

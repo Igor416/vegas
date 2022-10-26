@@ -1,11 +1,9 @@
-from dataclasses import field
-from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from . import models
 from .catalog import Manager
+from .translations import get_lang, langs
 
 manager = Manager()
-
-langs = ['en', 'ru', 'ro']
 
 class MattressColectionsPriceSerializer(ModelSerializer):
     class Meta:
@@ -43,7 +41,7 @@ class CategorySerializer(ModelSerializer):
         return manager.get_default_filtering(obj.name)
 
     def get_default_filtering_lang(self, obj):
-        return manager.get_prop_trans(self.get_default_filtering(obj), langs.index(self.lang))
+        return manager.get_prop_trans(self.get_default_filtering(obj), get_lang(self.lang))
 
     def to_representation(self, obj):
         if isinstance(obj, models.Basis) or obj.name == 'Basis':
@@ -102,7 +100,7 @@ class TechnologySerializer(ModelSerializer):
 
 class SizeSerializer(ModelSerializer):
     class Meta:
-        exclude = ['id', 'category', 'product', 'on_sale']
+        exclude = ['id', 'category', 'product']
         model = models.Size
 
 class FileSerializer(ModelSerializer):
@@ -158,7 +156,11 @@ class ProductSerializer(ModelSerializer):
 
     def to_representation(self, obj):
         r = super(ProductSerializer, self).to_representation(obj)
-        r['sizes'] = sorted(r['sizes'], key=lambda size: size['priceEUR'] * (100 - size['discount']) / 100)
+        r['sizes'] = sorted(
+            sorted(r['sizes'], key=lambda size: size['priceEUR'] * (100 - size['discount']) / 100),
+            key=lambda size: size['on_sale'],
+            reverse=True
+        )
         return r
 
 class ProductBestSerializer(ProductSerializer):
@@ -207,7 +209,7 @@ class ProductListSerializer(ProductSerializer):
         finally:
             del r['sizes']
         if not r['name']:
-            r['name'] = f"{manager.get_pr_trans('BedSheets', langs.index(self.lang), False)} ({r['name_' + self.lang]})"
+            r['name'] = f"{manager.get_pr_trans('BedSheets', get_lang(self.lang), False)} ({r['name_' + self.lang]})"
         return r
 
 def create_list_serializer(model, lang):
@@ -248,9 +250,9 @@ class ProductDetailsSerializer(ProductSerializer):
         r['characteristic'], r['description'] = {}, {}
         for key in self.model.get_order():
             if key.startswith('rigidity'):
-                key_lang = manager.get_prop_trans(key[:-1], langs.index(self.lang)) + f' {key[-1]}'
+                key_lang = manager.get_prop_trans(key[:-1], get_lang(self.lang)) + f' {key[-1]}'
             else:
-                key_lang = manager.get_prop_trans(key, langs.index(self.lang))
+                key_lang = manager.get_prop_trans(key, get_lang(self.lang))
             
             if key.startswith('extra'):
                 r['characteristic'][key_lang] = r[key]
@@ -305,3 +307,21 @@ def create_detail_serializer(model, lang):
         fields.update({'recomended': RecomendedSerializer(many=True)})
 
     return type(model.get_name() + 'Serializer', (ProductDetailsSerializer, ), fields)
+
+class StockSerializer(ModelSerializer):
+    class Meta:
+        exclude = ['id', 'collections', 'sizes']
+        model = models.Stock
+
+    def __init__(self, lang, *args, **kwargs):
+        super(StockSerializer, self).__init__(*args, **kwargs)
+        self.lang = lang
+
+    def to_representation(self, obj):
+        r = super(StockSerializer, self).to_representation(obj)
+        r['desc'] = r['desc_' + self.lang]
+        for lang in langs:
+            del r['desc_' + lang]
+        r['collections'] = ChoiceSerializer(instance=obj.collections.all(), lang=self.lang, many=True).data
+        
+        return r

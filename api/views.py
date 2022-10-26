@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import MattressColectionsPriceSerializer, CategorySerializer, create_best_product_serializer, create_list_serializer, create_detail_serializer
+from . import serializers
+from .translations import sales, get_lang
 from .catalog import Manager
 from . import models
 
@@ -71,27 +72,32 @@ class BestView(APIView):
 
     def get(self, request):
         lang = request.GET.get(self.lookup_url_kwarg)
-        products = {}
+        products = {
+            'MATTRESSES': [('Mattress', 'Favorit'), ('Mattress', 'F3'), ('Mattress', 'X3'), ('Mattress', 'S-3'), ('Mattress', 'Compact2')],
+            'PILLOWS': [('Pillow', '20'), ('Pillow', 'Extra Memory'), ('Pillow', '14')],
+            'ACCESSORIES': [('MattressPad', 'Stressfree L1'), ('Blanket', 'SumWin'), ('MattressPad', 'Bamboo A1')],
+            'FOR KIDS': [('Mattress', 'Cocolatex'), ('Pillow', 'Junior'), ('Pillow', 'Baby Boom')],
+            'BASISES': [('Basis', 'SuperLux'), ('Basis', 'SuperLux'), ('Basis', 'Premium')],
+            'FURNITURE': [('Bed', 'Milana II'), ('Bed', 'Victoria'), ('Bed', 'Milana IV')]
+        }
+        sizes = [(160, 200), (90, 200), (160, 200)]
 
-        products['MATTRESSES'] = [('Mattress', 'F3'), ('Mattress', 'X3'), ('Mattress', 'S-3')]
-        products['PILLOWS'] = [('Pillow', '20'), ('Pillow', 'Extra Memory'), ('Pillow', '14')]
-        products['ACCESSORIES'] = [('MattressPad', 'Stressfree L1'), ('Blanket', 'SumWin'), ('MattressPad', 'Bamboo A1')]
-        products['FOR KIDS'] = [('Mattress', 'Cocolatex'), ('Pillow', 'Junior'), ('Pillow', 'Baby Boom')]
-        products['BASISES'] = [('Basis', 'SuperLux'), ('Basis', 'SuperLux'), ('Basis', 'Premium')]
-        #SuperLux 160*200, SuperLux 90*200, Premium 16*200
-        products['FURNITURE'] = [('Bed', 'Milana II'), ('Bed', 'Victoria'), ('Bed', 'Milana IV')]
-
-        get_serializer = lambda model: create_best_product_serializer(getattr(models, model), lang)
+        get_serializer = lambda model: serializers.create_best_product_serializer(getattr(models, model), lang)
         get_product = lambda model, name: getattr(models, model).objects.get_by_name(name)
         
         for key, vals in products.items():
             products[key] = [get_serializer(model)(get_product(model, name)).data for model, name in vals]
 
+        for base, size in zip(products['BASISES'], sizes):
+            width, length = size
+            size = models.Size.objects.get(product=base['name'], width=width, length=length)
+            base['size'] = serializers.SizeSerializer(size).data
+
         return Response(products)
 
 class MattressColectionsPriceView(APIView):
     def get(self, request):
-        serializer = MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
+        serializer = serializers.MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
         return Response(serializer.data)
 
 class CategoryView(APIView):
@@ -100,7 +106,7 @@ class CategoryView(APIView):
     def get(self, request, category):
         lang = request.GET.get(self.lookup_url_kwarg)
         queryset = models.Category.objects.get(name=category)
-        serializer = CategorySerializer(lang, queryset)
+        serializer = serializers.CategorySerializer(lang, queryset)
         return Response(serializer.data)
 
 class ProductsView(APIView):
@@ -112,7 +118,7 @@ class ProductsView(APIView):
 
         filter = filter.replace('_', ' ') if filter else None
         queryset = model.objects.get_filtered(category, filter)
-        serializer = create_list_serializer(model, lang)(queryset, many=True)
+        serializer = serializers.create_list_serializer(model, lang)(queryset, many=True)
         return Response(serializer.data)
 
 class ProductDetailsView(APIView):
@@ -123,5 +129,36 @@ class ProductDetailsView(APIView):
         model = getattr(models, product)
 
         queryset = model.objects.get(id=id)
-        serializer = create_detail_serializer(model, lang)(queryset)
+        serializer = serializers.create_detail_serializer(model, lang)(queryset)
         return Response(serializer.data)
+
+class SalesView(APIView):
+    lookup_url_kwarg = 'lang'
+
+    def get(self, request):
+        lang = request.GET.get(self.lookup_url_kwarg)
+        sizes = [s for s in models.Size.objects.all() if s.on_sale]
+        resp = []
+        for s in sizes:
+            model = getattr(models, s.category.name)
+            p = model.objects.get_by_name(s.product)
+            data = serializers.create_list_serializer(model, lang)(p).data
+            data['size'] = serializers.SizeSerializer(s).data
+            data['category'] = model.get_name()
+            resp.append(data)
+        
+        resp = {
+            'products': resp,
+            'name_s': sales['name_s'][get_lang(lang)],
+            'name_pl': sales['name_pl'][get_lang(lang)],
+        }
+        return Response(resp)
+
+class StockView(APIView):
+    lookup_url_kwarg = 'lang'
+
+    def get(self, request):
+        lang = request.GET.get(self.lookup_url_kwarg)
+        queryset = models.Stock.objects.all()
+        serializer = serializers.StockSerializer(instance=queryset, lang=lang, many=True)
+        return Response(sorted(serializer.data, key=lambda stock: stock['discount'], reverse=True))
