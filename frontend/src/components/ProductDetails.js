@@ -86,19 +86,12 @@ class ProductDetails extends Component {
   }
 
   changeSize(value, dimension) {
-    let width, length;
-    if (dimension == 'width') {
-      [width, length] = [value, this.state.size.length]
-    }
-    else {
-      [width, length] = [this.state.size.width, value]
-    }
-    
     for (let size of this.state.product.sizes) {
-      if (size.width == width && size.length == length) {
+      if (size[dimension] == value) {
         this.setState({
           size: size
         })
+        return
       }
     }
   }
@@ -202,7 +195,7 @@ class ProductDetails extends Component {
                 <div className="d-flex flex-column w-100">
                   <div className="d-flex border bg-light justify-content-center row-nowrap pt-2 mt-5 mt-sm-0 mb-sm-5">
                     <div className="border-end p-3 text-end">
-                    {this.state.product.discount != 0 && 
+                    {(this.state.product.discount != 0 || this.state.size.discount != 0) && 
                       <div style={{textDecoration: 'line-through'}}>
                         <span>
                           {`${t('old_price')}: ${this.state.size['price' + this.state.currency]} (${this.state.currency})`}
@@ -214,7 +207,22 @@ class ProductDetails extends Component {
                           {`${t('current_price')}: `}
                         </span>
                         <span style={{color: 'var(--lime-green)'}} className="h5">
-                          {this.state.product.discount == 0 ? this.state.size['price' + this.state.currency] : this.state.size['price' + this.state.currency] * (100 - this.state.product.discount) / 100}
+                          {this.state.product.discount == 0
+                          ?
+                          (this.state.size.discount == 0
+                          ?
+                          this.state.size['price' + this.state.currency]
+                          :
+                          this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100
+                          )
+                          :
+                          (this.state.size.discount > this.state.product.discount
+                          ?
+                          this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100
+                          :
+                          this.state.size['price' + this.state.currency] * (100 - this.state.product.discount) / 100
+                          )
+                          }
                         </span>
                         <span>
                           {` (${this.state.currency})`}
@@ -240,6 +248,9 @@ class ProductDetails extends Component {
                       {this.state.product.markers.map((marker, index) => {
                         return <img className="me-2" key={index} src={marker} style={{width: '6vh', height: '6vh'}}/>
                       })}
+                      {this.state.size.on_sale &&
+                        <img style={{width: '6vh', height: '6vh'}} src="/static/images/sale.jpg"/>
+                      }
                     </div>
                   }
                   <div className="d-flex border flex-column mt-sm-5 p-3">
@@ -266,7 +277,12 @@ class ProductDetails extends Component {
                       {Object.keys(this.dimensions).map((dimension, index) => {
                       return (
                         <div key={index} className="mt-3">
-                          <span>{t(dimension)}:</span>
+                          <div className="d-flex justify-content-between">
+                            <span>{t(dimension)}:</span>
+                            {index == 0 && this.state.size.discount != 0 &&
+                            <span style={{color: 'var(--deep-sky-blue)'}}>-{this.state.size.discount}%</span>
+                            }
+                          </div>
                           <div className="mt-2">
                             <div className="d-flex justify-content-between border-bottom p-2 dropdown-toggle" data-bs-toggle="dropdown">
                               <span>{this.state.size[dimension]}</span>
