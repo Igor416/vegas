@@ -75,7 +75,14 @@ class Header extends Component {
     }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
   
-  updateBestProducts(location) {
+  updateBestProducts(location, locChanged) {
+    if (locChanged) {
+      this.setState({
+        category: null,
+        categoriesEN: null,
+        sub_category: null
+      })
+    }
     this.setState({
       pathname: location.pathname
     }, () => {
@@ -205,24 +212,24 @@ class Header extends Component {
           </div>
           <div className="col-2 text-center border-start border-end">
             <FontAwesomeIcon icon='phone' />
-            <br />
+            <br/>
             <span className="h6">{t('order')}: <br/>079 40-70-32</span>
           </div>
           <div className="col-2 text-center border-end" data-bs-toggle="modal" data-bs-target="#modalHelp">
             <FontAwesomeIcon icon='hand-holding-usd' />
-            <br />
+            <br/>
             <span className="h6" style={{whiteSpace: "pre-line"}}>{t('credit')}</span>
           </div>
           <div className="col-1 text-center">
             <Link to={'/cart' + location.search} className="h6 no-link no-hover">
               <FontAwesomeIcon icon='shopping-cart' />
-              <br />
+              <br/>
               <span>{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
           <div className="col-1"></div>
         </div>
-        <nav style={{zIndex: 1000}} className="container-fluid position-absolute bg-white px-5 pt-4">
+        <nav style={{zIndex: 1100}} className="container-fluid position-absolute bg-white px-5 pt-4">
           <div className="row">
             <div className="col-1"></div>
             <div className="col-10 h6 m-0">
@@ -318,6 +325,11 @@ class Header extends Component {
                   <span className="h6">{product.category_name} {product.name}</span>
                   <div className="text-start" style={{color: 'gold'}}>
                     <FontAwesomeIcon icon="fa-star"/>
+                    {product.discount != 0 &&
+                    <span className="ms-1 ms-sm-2" style={{color: 'var(--deep-sky-blue)', borderBottom: '1px solid var(--deep-sky-blue)'}}>
+                      -{product.discount}%
+                    </span>
+                    }
                   </div>
                   <img src={product.shortcut} />
                   {product.discount != 0

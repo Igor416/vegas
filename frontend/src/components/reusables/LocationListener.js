@@ -10,15 +10,19 @@ export default function LocationListener({locationChanged}) {
   useEffect(() => {
     if (prevlocation != undefined) {
       let title = location.pathname.split('/')[1]
-      if (title == '') {
-        title = 'home'
+      let titles = {
+        '': 'home',
+        'sales': 'catalog'
+      }
+      if (title in titles) {
+        title = titles[title]
       }
       document.title = t(title);
     }
-    locationChanged(location);
+    locationChanged(location, location.search == prevlocation?.search);
   }, [location]);
 
-  return <div></div>;
+  return <div className="location-listener"></div>;
 }
 
 function usePrevious(value) {

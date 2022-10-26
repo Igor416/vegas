@@ -45,7 +45,10 @@ class MobileHeader extends Component {
     })
   }
 
-  updateBestProducts(location) {
+  updateBestProducts(location, locChanged) {
+    if (locChanged && this.state.menuOpened) {
+      this.toggleMenu()
+    }
     this.setState({
       pathname: location.pathname
     }, () => {
@@ -140,12 +143,12 @@ class MobileHeader extends Component {
               />
             </div>
           </div>
-          <div className="col-3 p-3">
+          <div className="col-4">
             <Link to={"/?lang=" + this.props.lang}>
               <img src="/static/images/logo.png"/>
             </Link>
           </div>
-          <div className="col-2"></div>
+          <div className="col-1"></div>
           <div className="col-2 d-flex row-nowrap justify-content-around p-3">
           {Object.keys(this.state.langs()).map((lang, index) => {
           return (
@@ -215,7 +218,7 @@ class MobileHeader extends Component {
               <span>
                 <FontAwesomeIcon icon='phone' />
               </span>
-              <br />
+              <br/>
               <span className="h6">{t('order')}: <br/>079 40-70-32</span>
             </div>
             <Link
@@ -226,7 +229,7 @@ class MobileHeader extends Component {
               <span>
                 <FontAwesomeIcon icon='shopping-cart' />
               </span>
-              <br />
+              <br/>
               <span className="h6">{t('cart')} <br/> {this.props.total} ({this.props.currency})</span>
             </Link>
           </div>
@@ -268,6 +271,11 @@ class MobileHeader extends Component {
                   <span className="h6">{product.category_name} {product.name}</span>
                   <div className="text-start h4" style={{color: 'gold'}}>
                     <FontAwesomeIcon icon="fa-star"/>
+                    {product.discount != 0 &&
+                    <span className="ms-2 ms-sm-4" style={{color: 'var(--deep-sky-blue)', borderBottom: '1px solid var(--deep-sky-blue)'}}>
+                      -{product.discount}%
+                    </span>
+                    }
                   </div>
                   <img src={product.shortcut} />
                   {product.discount != 0
