@@ -43,7 +43,7 @@ img {
 footer {
   font-size: 0.8rem;
   text-align: center;
-  padding: 2rem 4rem 2rem 0;
+  padding: 2rem 4rem 2rem;
   background-color: var(--dark-grey);
   color: white;
 }
