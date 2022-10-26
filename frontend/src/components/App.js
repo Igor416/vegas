@@ -161,7 +161,7 @@ export default class App extends Component {
     let products = this.state.cart.products
     let product = products.filter(pr => pr.category == category && pr.id == id)[0]
     for (let currency of currencies) {
-      product['sum' + currency] = product['sum' + currency] * quantity / product.quantity
+      product['sum' + currency] = +(product['sum' + currency] * quantity / product.quantity).toFixed(2)
     }
     product.quantity = quantity
     products[products.indexOf(product)] == product

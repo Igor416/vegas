@@ -89,7 +89,7 @@ class Cart extends Component {
     let products = this.state.products
     let product = products.filter(pr => pr.category.name == category.name && pr.id == id)[0]
     for (let currency of currencies) {
-      product['sum' + currency] = product['sum' + currency] * quantity / product.quantity
+      product['sum' + currency] = +(product['sum' + currency] * quantity / product.quantity).toFixed(2)
     }
     product.quantity = quantity
     products[products.indexOf(product)] == product
@@ -345,14 +345,14 @@ class Cart extends Component {
               <div style={{height: '25vh'}} className="d-flex flex-column justify-content-around">
                 <div>
                   <span className="h3">{t('empty')}</span>
-                  <br />
+                  <br/>
                   <Link className="link h5" to="/">
                     <span>{t('return')}</span>
                   </Link>
                 </div>
                 <div className="link mt-3 h5">
                   <span className="no-link h3">{t('unfound')}?</span>
-                  <br />
+                  <br/>
                   <Hoverable text={t('request')} />
                 </div>
               </div>
