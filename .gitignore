@@ -1,12 +1,6 @@
 *.env
 *.pyc
 *.sqlite3
-migrations
-images
-media
 *.node
 node_modules
 __pycache__
-*.png
-*.jpg
-*.ico
