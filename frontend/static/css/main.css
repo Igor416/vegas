@@ -79,6 +79,16 @@
   background-color: var(--deep-sky-blue);
 }
 
+#stock::before {
+  content: "";
+  position: absolute;
+  border: 5px solid var(--milk);
+  width: calc(50vh / 3 * 2);
+  height: calc(50vh / 3 * 2);
+  margin: calc(50vh / 6);
+  border-radius: 50%;
+}
+
 .switch {
   flex-flow: row wrap;
   padding: 0.5vw;

@@ -18,7 +18,7 @@
 }
 
 .burger > div {
-  height: 1.8vw;
+  height: 1.2vw;
   left: 0
 }
 
@@ -29,11 +29,24 @@
 }
 
 .burger-top {
+  height: 0.6vw !important;
   transform: rotate(45deg)
 }
 
 .burger-bottom {
+  height: 0.6vw !important;
   transform: rotate(-45deg)
+}
+
+#stock::before {
+  content: "";
+  position: absolute;
+  border: 5px solid var(--milk);
+  width: calc(95vw / 3 * 2);
+  height: calc(95vw / 3 * 2);
+  margin-left: calc(95vw / 6);
+  margin-top: calc(125vw / 6);
+  border-radius: 50%;
 }
 
 .section-grid > div.shadow {
