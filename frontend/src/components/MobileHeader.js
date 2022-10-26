@@ -47,7 +47,10 @@ class MobileHeader extends Component {
 
   updateBestProducts(location, locChanged) {
     if (locChanged && this.state.menuOpened) {
-      this.toggleMenu()
+      this.toggleMenu();
+      $('html, body').animate({
+        scrollTop: 0
+    }, 0);
     }
     this.setState({
       pathname: location.pathname
