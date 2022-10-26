@@ -6,7 +6,7 @@ import { withTranslation } from "react-i18next";
 
 import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./reusables/SectionImage.js";
-import { getCategory, getProducts, sendForm } from "./reusables/APICallPoints.js";
+import { getCategory, getProducts, getSales, sendForm } from "./reusables/APICallPoints.js";
 import { currencies } from './reusables/Globals.js';
 import Hoverable from './reusables/Hoverable.js';
 import CustomButton from './reusables/CustomButton.js';
@@ -26,7 +26,7 @@ class Catalog extends Component {
       lang: this.props.context.lang,
       currency: this.props.context.currency,
       category: {
-        name: this.props.params.category
+        name: this.props.params.category ? this.props.params.category : 'sales'
       },
       sub_category: this.props.params.sub_category,
       filter: this.props.params.filter,
@@ -45,57 +45,89 @@ class Catalog extends Component {
 
   updateProducts(path) {
     let lang = path.search.replace('?lang=', '');
-    let [_, category, sub_category, filter] = path.pathname.slice(1).split('/')
-    //['catalog', '<category>', '<sub_category>', '<?filter>']
+    let [type, category, sub_category, filter] = path.pathname.slice(1).split('/')
+    //['catalog|sales', '<category>', '<sub_category>', '<?filter>']
 
-    this.setState({
-      lang: lang,
-      category: {
-        name: category
-      },
-      sub_category: sub_category,
-      filter: filter || null
-    }, () => {
-      getCategory(category).then((category_data) => {
-        this.setState({
-          category: category_data
-        }, () => {
-          getProducts(category, sub_category, filter).then((data) => {
-            let sorted_products = {};
-            let filtering, remainder;
-
-            if (Array.isArray(data[0][category_data.default_filtering])) {
-              for (let i = 0; i < data.length; i++) {
-                for (let j = 0; j < ( data.length - i -1 ); j++) {
-                  if (data[j][category_data.default_filtering].length < data[j+1][category_data.default_filtering].length) {
-                    [data[j], data[j+1]] = [data[j + 1], data[j]]
+    if (type == 'catalog') {
+      this.setState({
+        lang: lang,
+        category: {
+          name: category
+        },
+        sub_category: sub_category,
+        filter: filter || null
+      }, () => {
+        getCategory(category).then((category_data) => {
+          this.setState({
+            category: category_data
+          }, () => {
+            getProducts(category, sub_category, filter).then((data) => {
+              let sorted_products = {};
+              let filtering, remainder;
+  
+              if (Array.isArray(data[0][category_data.default_filtering])) {
+                for (let i = 0; i < data.length; i++) {
+                  for (let j = 0; j < ( data.length - i -1 ); j++) {
+                    if (data[j][category_data.default_filtering].length < data[j+1][category_data.default_filtering].length) {
+                      [data[j], data[j+1]] = [data[j + 1], data[j]]
+                    }
                   }
                 }
               }
-            }
-
-            for (let product of data) {
-              filtering = product[category_data.default_filtering]
-              if (filtering in sorted_products) {
-                sorted_products[filtering].push(product)
-              }
-              else {
-                sorted_products[filtering] = [product]
-              }
-            }
-            
-            for (let filtering in sorted_products) {
-              remainder = sorted_products[filtering].length % 3
-              if (remainder != 0) {
-                for (let i = 0; i < remainder; i++) {
-                  sorted_products[filtering].push(null)
+  
+              for (let product of data) {
+                filtering = product[category_data.default_filtering]
+                if (filtering in sorted_products) {
+                  sorted_products[filtering].push(product)
+                }
+                else {
+                  sorted_products[filtering] = [product]
                 }
               }
-            }
-            this.setState({
-              products: sorted_products
+              
+              for (let filtering in sorted_products) {
+                remainder = sorted_products[filtering].length % 3
+                if (remainder != 0) {
+                  for (let i = 0; i < 3 - remainder; i++) {
+                    sorted_products[filtering].push(null)
+                  }
+                }
+              }
+              this.setState({
+                products: sorted_products
+              })
             })
           })
+        })
+      })
+      return
+    }
+    this.setState({
+      lang: lang,
+      category: {
+        name: 'sales',
+      },
+      sub_category: null,
+      filter: null
+    }, () => {
+      getSales().then((data) => {
+        let remainder = data.products.length % 3
+        if (remainder != 0) {
+          for (let i = 0; i < 3 - remainder; i++) {
+            data.products.push(null)
+          }
+        }
+        this.setState({
+          products: {
+            '': data.products
+          },
+          category: {
+            name: 'sales',
+            name_s: data.name_s,
+            name_pl: data.name_pl,
+            default_filtering: '',
+            default_filtering_lang: data.name_pl
+          }
         })
       })
     })
@@ -118,7 +150,7 @@ class Catalog extends Component {
 
   submitForm() {
     let r = sendForm({
-      'category': this.state.category.name,
+      'category': this.state.category.name != 'sales' ? this.state.category.name_s : this.state.active.category,
       'product': this.state.active.name,
       'name': this.state.form.name,
       'phone': this.state.form.phone
@@ -142,12 +174,11 @@ class Catalog extends Component {
 
   render() {
     const t = this.props.t
-    let i = 0
 
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateProducts} />
-        {!this.isMobile && <SectionImage category={this.state.category} />}
+        {!this.isMobile && this.state.category.name !='sales' && <SectionImage category={this.state.category} />}
         <div className="d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
           {this.state.products &&
@@ -185,7 +216,6 @@ class Catalog extends Component {
               if (product == null) {
                 return <div key={index} />
               }
-              i++;
               return (
                 <div key={index} className="d-flex shadow no-link mb-3 p-3">
                   <div style={{zIndex: 1000}} className="position-absolute d-flex p-3 h4">
@@ -199,8 +229,13 @@ class Catalog extends Component {
                     }
                   </div>
                   <div className="d-flex row-nowrap">
-                    <div className="d-flex flex-column flex-grow-1 flex-shrink-1">
+                    <div className="position-relative d-flex flex-column flex-grow-1 flex-shrink-1">
                       <img src={product.shortcut}/>
+                      {this.state.category.name == 'sales' &&
+                      <div className="position-absolute bottom-0 start-0 h5">
+                        <span>{`${product.size.length} x ${product.size.width}`}</span>
+                      </div>
+                      }
                     </div>
                     {this.state.isGrid && product.markers &&
                     <div style={{width: this.isMobile ? '50vw' : '12.5vw', height: this.isMobile ? 'calc(50vw + 2.5rem)' : 'calc(12.5vw + 2.5rem)'}} className="d-flex flex-column justify-content-start mt-3">
@@ -221,12 +256,12 @@ class Catalog extends Component {
                         <div className="d-flex flex-column">
                           <div style={{textDecoration: 'line-through'}}>
                             <span>
-                              {`${t('from')} ${product.size['price' + this.state.currency]} (${this.state.currency})`}
+                              {`${product.size['price' + this.state.currency]} (${this.state.currency})`}
                             </span>
                           </div>
                           <div>
                             <span>
-                              {`${t('from')} `}
+                              {`${this.state.category.name != 'sales' ? t('from') : ''} `}
                             </span>
                             <span style={{color: 'var(--lime-green)'}} className="h5">
                               {product.size['price' + this.state.currency] * (100 - product.discount) / 100}
@@ -239,7 +274,7 @@ class Catalog extends Component {
                       :
                         <div className="d-flex flex-column">
                           <span>
-                            {`${t('from')} ${product.size['price' + this.state.currency]} (${this.state.currency})`}
+                            {`${this.state.category.name != 'sales' ? t('from') : ''} ${product.size['price' + this.state.currency]} (${this.state.currency})`}
                           </span>
                         </div>
                       }
@@ -257,9 +292,16 @@ class Catalog extends Component {
                     </div>
                     }
                     <div className="d-flex mt-4 flex-row row-nowrap justify-content-between h5">
+                      {this.state.category.name != 'sales'
+                      ?
                       <Link to={`/product/${this.state.category.name}/${product.id}` + location.search}>
                         <CustomButton color="lime-green" text={t('details')} />
                       </Link>
+                      :
+                      <Link to={`/product/${product.category}/${product.id}` + location.search}>
+                        <CustomButton color="lime-green" text={t('details')} />
+                      </Link>
+                      }
                       <div onClick={() => this.setState({active: product})} data-bs-toggle="modal" data-bs-target="#modal">
                         <CustomButton color="deep-sky-blue" text={t('call')} />
                       </div>
