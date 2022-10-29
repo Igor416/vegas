@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function LocationListener({locationChanged}) {
-  const [t, i18n] = useTranslation('titles');
+  const [t, i18n] = useTranslation('main');
 
   let location = useLocation();
   let prevlocation = usePrevious(location);
@@ -17,7 +17,7 @@ export default function LocationListener({locationChanged}) {
       if (title in titles) {
         title = titles[title]
       }
-      document.title = t(title);
+      document.title = t('titles')[title];
     }
     locationChanged(location, location.search == prevlocation?.search);
   }, [location]);
