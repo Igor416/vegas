@@ -17,7 +17,7 @@ export default function LocationListener({locationChanged}) {
       if (title in titles) {
         title = titles[title]
       }
-      document.title = t('titles')[title];
+      document.title = t(`titles.${title}`);
     }
     locationChanged(location, location.search == prevlocation?.search);
   }, [location]);
