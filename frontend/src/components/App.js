@@ -53,7 +53,7 @@ export default class App extends Component {
     } else {
       lang = lang.replace('?lang=', '')
     }
-    console.log(lang)
+    
     this.state = {
       lang: lang,
       currency: currencies[0],

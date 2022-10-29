@@ -229,7 +229,7 @@ class Header extends Component {
           </div>
           <div className="col-1"></div>
         </div>
-        <nav style={{zIndex: 1100}} className="container-fluid position-absolute bg-white px-5 pt-4">
+        <nav style={{zIndex: 1020}} className="container-fluid position-absolute bg-white px-5 pt-4">
           <div className="row">
             <div className="col-1"></div>
             <div className="col-10 h6 m-0">
