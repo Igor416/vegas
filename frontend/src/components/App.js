@@ -13,18 +13,47 @@ import { currencies } from './reusables/Globals.js';
 export default class App extends Component {
   constructor(props) {
     super(props);
-    let lang;
-    let search = location.search
-    if (search) {
-      lang = search.split('?lang=')[1];
-    }
-    else {
-      lang = navigator.language;
+    let lang = location.search
+
+    if (lang == '') {
+      lang = navigator.language
+      
       if (lang.includes('-')) {
         lang = lang.split('-')[0]
       }
       location.replace(location.pathname + `?lang=${lang}`)
+    } else if (lang.includes('&')) {
+      let params = lang.split('&')
+      let lang_param;
+      for (let param of params) {
+        if (param.startsWith('?lang=')) {
+          lang_param = param
+          break
+        }
+      }
+      if (lang_param) {
+        lang = lang_param.replace('?lang=', '')
+      } else {
+        lang = navigator.language
+      
+        if (lang.includes('-')) {
+          lang = lang.split('-')[0]
+        }
+      }
+      location.replace(location.pathname + `?lang=${lang}`)
     }
+
+    if (lang == '' || !lang.includes('?lang=')) {
+      lang = navigator.language
+      
+      if (lang.includes('-')) {
+        lang = lang.split('-')[0]
+      }
+      location.replace(location.pathname + `?lang=${lang}`)
+    } else {
+      lang = lang.replace('?lang=', '')
+    }
+    console.log(lang)
     this.state = {
       lang: lang,
       currency: currencies[0],
