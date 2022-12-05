@@ -27,5 +27,9 @@ export const Shops = {
   'Showroom Ciocana': [
     'Mun Chișinău, bd. Mircea cel Bătrîn 14',
     '0 (79) 40-70-22'
+  ],
+  'Municipiul Brașov': [
+    'Municipiul Brașov, Bulevardul  MUNCII, Nr.4, PARTER, MAGAZINUL Nr. 7, Scara C-D, Județ Brașov',
+    '-'
   ]
 }
