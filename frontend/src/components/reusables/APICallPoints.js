@@ -127,8 +127,8 @@ export function sendForm(data, csrftoken, help=false) {
   })
 }
 
-async function fetchAPI(url) {
-  const response = await fetch(url + location.search);
+async function fetchAPI(url, postfix=location.search) {
+  const response = await fetch(url + postfix);
   const data = await response.json();
   return data;
 }
