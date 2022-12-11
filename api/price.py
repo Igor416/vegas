@@ -30,6 +30,6 @@ class PriceManager:
     def add_curr(self):
         for curr, k in CURRENCIES[self.country]:
             if self.path is None:
-                self.container['price' + curr] = self.EUR * k
+                self.container['price' + curr] = round(self.EUR * k, 2)
             else:
-                self.container[self.path]['price' + curr] = self.EUR * k
+                self.container[self.path]['price' + curr] = round(self.EUR * k, 2)
