@@ -261,7 +261,7 @@ class Catalog extends Component {
                               {`${this.state.category.name != 'sales' ? t('from') : ''} `}
                             </span>
                             <span style={{color: 'var(--lime-green)'}} className="h5">
-                              {product.size['price' + this.state.currency] * (100 - product.discount) / 100}
+                              {(product.size['price' + this.state.currency] * (100 - product.discount) / 100).toFixed(2)}
                             </span>
                             <span>
                               {` (${this.state.currency})`}

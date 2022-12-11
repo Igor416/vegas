@@ -294,7 +294,7 @@ class MobileHeader extends Component {
                         {`${t('from')} `}
                       </span>
                       <span style={{color: 'var(--lime-green)'}} className="h6">
-                        {product.size['price' + this.props.currency] * (100 - product.discount) / 100}
+                        {(product.size['price' + this.state.currency] * (100 - product.discount) / 100).toFixed(2)}
                       </span>
                       <span>
                         {` (${this.props.currency})`}

@@ -212,14 +212,14 @@ class ProductDetails extends Component {
                           ?
                           this.state.size['price' + this.state.currency]
                           :
-                          this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100
+                          (this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100).toFixed(2)
                           )
                           :
                           (this.state.size.discount > this.state.product.discount
                           ?
-                          this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100
+                          (this.state.size['price' + this.state.currency] * (100 - this.state.size.discount) / 100).toFixed(2)
                           :
-                          this.state.size['price' + this.state.currency] * (100 - this.state.product.discount) / 100
+                          (this.state.size['price' + this.state.currency] * (100 - this.state.product.discount) / 100).toFixed(2)
                           )
                           }
                         </span>

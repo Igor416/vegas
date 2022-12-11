@@ -70,7 +70,7 @@ export default function SearchBar({width, currency}) {
                   {`${t('from')} `}
                 </span>
                 <span style={{color: 'var(--lime-green)'}} className="h6">
-                  {item['price' + currency] * (100 - item.discount) / 100}
+                  {(item['price' + currency] * (100 - item.discount) / 100).toFixed(2)}
                 </span>
                 <span>
                   {` (${currency})`}
