@@ -22,7 +22,7 @@ class PriceManager:
     
     def set_EUR(self):
         self.EUR *= 1.2 if self.country == 'RO' else 1
-        self.EUR = round(self.EUR, 2)
+        self.EUR = round(self.EUR)
         if self.path is None:
             self.container['priceEUR'] = self.EUR
         else:
