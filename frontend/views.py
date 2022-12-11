@@ -32,5 +32,10 @@ def index(request, *args, **kwargs):
         'description': data['description'],
         'keywords': data['keywords'],
     }
+
+    response = render(request, 'frontend/index.html', context=context)
     
-    return render(request, 'frontend/index.html', context=context)
+    
+    if 'country' not in response.cookies:
+        response.set_cookie('country', requests.get('https://ipinfo.io/json/').json()['country'])
+    return response
