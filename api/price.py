@@ -17,8 +17,7 @@ class PriceManager:
         try:
             self.country = request.COOKIES['country']
         except:
-            print('error')
-            self.country = 'MD'
+            self.country = 'RO'
 
         self.set_EUR()
         self.add_curr()
