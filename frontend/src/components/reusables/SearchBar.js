@@ -61,7 +61,7 @@ export default function SearchBar({width, currency}) {
               {item.discount != 0 && 
               <div style={{fontSize: '0.75em', textDecoration: 'line-through'}}>
                 <span>
-                  {`${t('from')} ${item.price[currency]} (${currency})`}
+                  {`${t('from')} ${item['price' + currency]} (${currency})`}
                 </span>
               </div>
             }
@@ -70,7 +70,7 @@ export default function SearchBar({width, currency}) {
                   {`${t('from')} `}
                 </span>
                 <span style={{color: 'var(--lime-green)'}} className="h6">
-                  {item.price[currency] * (100 - item.discount) / 100}
+                  {item['price' + currency] * (100 - item.discount) / 100}
                 </span>
                 <span>
                   {` (${currency})`}
