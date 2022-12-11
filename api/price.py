@@ -1,5 +1,3 @@
-import requests
-
 CURRENCIES = {
     'MD': [('MDL', 20.5)],
     'RO': [('RON', 5)]
