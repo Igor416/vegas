@@ -6,7 +6,6 @@ import { withTranslation } from "react-i18next";
 
 import LocationListener from "./reusables/LocationListener.js";
 import { getCategory, getProduct, sendForm } from "./reusables/APICallPoints.js";
-import { currencies } from "./reusables/Globals.js";
 import Hoverable from './reusables/Hoverable.js';
 import CustomPhoneInput from "./reusables/CustomPhoneInput.js";
 import CustomButton from "./reusables/CustomButton.js";
@@ -59,7 +58,7 @@ class Cart extends Component {
               quantity: raw_product.quantity,
               size: this.extractSize(data.sizes, raw_product.size)
             }, data);
-            for (let currency of currencies) {
+            for (let currency of this.props.context.getCurrencies()) {
               product['sum' + currency] = raw_product['sum' + currency]
             }
             products.push(product)
@@ -88,7 +87,7 @@ class Cart extends Component {
 
     let products = this.state.products
     let product = products.filter(pr => pr.category.name == category.name && pr.id == id)[0]
-    for (let currency of currencies) {
+    for (let currency of this.props.context.getCurrencies()) {
       product['sum' + currency] = +(product['sum' + currency] * quantity / product.quantity).toFixed(2)
     }
     product.quantity = quantity

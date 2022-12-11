@@ -7,7 +7,6 @@ import { withTranslation } from "react-i18next";
 import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./reusables/SectionImage.js";
 import { getCategory, getProducts, getSales, sendForm } from "./reusables/APICallPoints.js";
-import { currencies } from './reusables/Globals.js';
 import Hoverable from './reusables/Hoverable.js';
 import CustomButton from './reusables/CustomButton.js';
 import CustomPhoneInput from './reusables/CustomPhoneInput.js';
@@ -19,7 +18,6 @@ function withParams(Component) {
 class Catalog extends Component {
   constructor(props) {
     super(props);
-
     this.isMobile = this.props.context.isMobile;
     this.state = {
       isGrid: true,
@@ -37,7 +35,6 @@ class Catalog extends Component {
         phone: ''
       },
     }
-    
     this.updateProducts = this.updateProducts.bind(this);
     this.changeLayout = this.changeLayout.bind(this);
     this.submitForm = this.submitForm.bind(this);
@@ -174,7 +171,7 @@ class Catalog extends Component {
 
   render() {
     const t = this.props.t
-
+    
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateProducts} />
@@ -186,7 +183,7 @@ class Catalog extends Component {
             {!this.isMobile && 
             <div className="d-flex flex-row justify-content-end align-items-center h6">
               <div className="d-flex flex-row me-2 me-sm-5 align-items-center">
-                {currencies.map((currency, index) => {
+                {this.props.context.getCurrencies().map((currency, index) => {
                 return (
                   <div
                     onClick={() => this.updateCurrency(currency)}

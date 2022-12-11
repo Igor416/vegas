@@ -1,5 +1,3 @@
-export const currencies = ['MDL', 'EUR']
-
 export const langs = {
   en: 'english',
   ru: 'russian',

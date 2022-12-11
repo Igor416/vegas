@@ -6,7 +6,6 @@ import { withTranslation } from "react-i18next";
 import LocationListener from "./reusables/LocationListener.js";
 import SectionImage from "./reusables/SectionImage.js";
 import { getCategory, getProduct } from "./reusables/APICallPoints.js";
-import { currencies } from './reusables/Globals.js';
 import BedSheetsSizesManager from './reusables/BedSheetsSizesManager.js';
 import BedSizesManager from './reusables/BedSizesManager.js';
 import Hoverable from './reusables/Hoverable.js';
@@ -230,7 +229,7 @@ class ProductDetails extends Component {
                       </div>
                     </div>
                     <div className="d-flex flex-column p-3">
-                    {currencies.map((currency, index) => {
+                    {this.props.context.getCurrencies().map((currency, index) => {
                     return (
                       <div
                         onClick={() => this.updateCurrency(currency)}
