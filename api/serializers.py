@@ -21,7 +21,6 @@ class MattressColectionsPriceSerializer(ModelSerializer):
 
         r = {
             obj.property_en: {
-                'priceMDL': size.priceMDL,
                 'priceEUR': size.priceEUR,
             }
         }
