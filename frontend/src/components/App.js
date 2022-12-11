@@ -5,58 +5,18 @@ import Cookies from 'js-cookie';
 import i18n from "i18next";
 
 import Header from "./Header.js";
+import { getCountry } from "./reusables/APICallPoints.js";
 import MobileHeader from "./MobileHeader.js";
 import Footer from "./Footer.js";
 import MobileFooter from "./MobileFooter.js";
-import { currencies } from './reusables/Globals.js';
 
 export default class App extends Component {
   constructor(props) {
     super(props);
-    let lang = location.search
-
-    if (lang == '') {
-      lang = navigator.language
-      
-      if (lang.includes('-')) {
-        lang = lang.split('-')[0]
-      }
-      location.replace(location.pathname + `?lang=${lang}`)
-    } else if (lang.includes('&')) {
-      let params = lang.split('&')
-      let lang_param;
-      for (let param of params) {
-        if (param.startsWith('?lang=')) {
-          lang_param = param
-          break
-        }
-      }
-      if (lang_param) {
-        lang = lang_param.replace('?lang=', '')
-      } else {
-        lang = navigator.language
-      
-        if (lang.includes('-')) {
-          lang = lang.split('-')[0]
-        }
-      }
-      location.replace(location.pathname + `?lang=${lang}`)
-    }
-
-    if (lang == '' || !lang.includes('?lang=')) {
-      lang = navigator.language
-      
-      if (lang.includes('-')) {
-        lang = lang.split('-')[0]
-      }
-      location.replace(location.pathname + `?lang=${lang}`)
-    } else {
-      lang = lang.replace('?lang=', '')
-    }
-    
     this.state = {
-      lang: lang,
-      currency: currencies[0],
+      lang: this.detectLang(),
+      country: Cookies.get('country'),
+      currency: 'EUR',
       cart: {
         products: this.decodeProducts(Cookies.get('products')),
         total: 0
@@ -69,6 +29,28 @@ export default class App extends Component {
     this.addProduct = this.addProduct.bind(this)
     this.deleteProduct = this.deleteProduct.bind(this)
     this.updateQuantity = this.updateQuantity.bind(this)
+    this.getCurrencies = this.getCurrencies.bind(this)
+  }
+
+  detectLang() {
+    let lang;
+    let search = location.search;
+
+    if (search.includes('?lang=')) {
+      lang = search.replace('?lang=', '').slice(0, 2);
+    } else {
+      lang = navigator.language
+      
+      if (lang.includes('-')) {
+        lang = lang.split('-')[0]
+      }
+    }
+    
+    if (search != `?lang=${lang}`) {
+      location.replace(location.pathname + `?lang=${lang}`)
+    }
+
+    return lang;
   }
 
   componentDidMount() {
@@ -93,6 +75,19 @@ export default class App extends Component {
     this.setState({
       lang: lang
     })
+  }
+
+  getCurrencies() {
+    const currencies = {
+      'MD': ['MDL', 'EUR'],
+      'RO': ['RON', 'EUR']
+    }
+
+    if (this.state.country) {
+      return currencies[this.state.country]
+    }
+
+    return currencies.MD
   }
 
   updateCurrency(currency) {
@@ -124,7 +119,7 @@ export default class App extends Component {
       quantity: quantity
     }
 
-    for (let currency of currencies) {
+    for (let currency of this.getCurrencies()) {
       newProduct['price' + currency] = size['price' + currency]
       newProduct['sum' + currency] = size['price' + currency] * (100 - product.discount) / 100 * quantity
     }
@@ -189,7 +184,7 @@ export default class App extends Component {
   updateQuantity(category, id, quantity) {
     let products = this.state.cart.products
     let product = products.filter(pr => pr.category == category && pr.id == id)[0]
-    for (let currency of currencies) {
+    for (let currency of this.getCurrencies()) {
       product['sum' + currency] = +(product['sum' + currency] * quantity / product.quantity).toFixed(2)
     }
     product.quantity = quantity
@@ -223,10 +218,12 @@ export default class App extends Component {
         }
         <Outlet context={Object.assign(this.state, {
           isMobile: this.isMobile,
+          country: this.state.country,
           updateCurrency: this.updateCurrency,
           addProduct: this.addProduct,
           deleteProduct: this.deleteProduct,
-          updateQuantity: this.updateQuantity
+          updateQuantity: this.updateQuantity,
+          getCurrencies: this.getCurrencies,
         })}/>
         {this.isMobile
         ?
