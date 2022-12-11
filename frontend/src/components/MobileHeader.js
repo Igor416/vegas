@@ -267,7 +267,7 @@ class MobileHeader extends Component {
             <div className="d-flex align-items-end justify-content-center">
               <span style={{color: 'var(--dark-cyan)'}} className="h4">Hit Sales</span>
             </div>
-            {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
+            {this.state.bestProducts && this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
               return (
               <div key={index} className={(index != 0 ? "border-top" : "") + " p-2"}>
                 <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>

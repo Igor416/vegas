@@ -55,25 +55,6 @@ class Header extends Component {
       })
     })
   }
-
-  onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
-    let category_temp = this.state.category
-    let sub_category_temp = this.state.sub_category
-
-    if (!inMenu) {
-      category_temp = category
-    }
-    else {
-      if (sub_category) {
-        sub_category_temp = sub_category
-      }
-    }
-    this.setState({
-      category: category_temp,
-      categoryEN: this.getEnCategory(category_temp),
-      sub_category: sub_category_temp
-    }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
-  }
   
   updateBestProducts(location, locChanged) {
     if (locChanged) {
@@ -92,6 +73,25 @@ class Header extends Component {
         })
       })
     })
+  }
+
+  onMouseEnter(inMenu, category, sub_category=null, inActualLinks=false) {
+    let category_temp = this.state.category
+    let sub_category_temp = this.state.sub_category
+
+    if (!inMenu) {
+      category_temp = category
+    }
+    else {
+      if (sub_category) {
+        sub_category_temp = sub_category
+      }
+    }
+    this.setState({
+      category: category_temp,
+      categoryEN: this.getEnCategory(category_temp),
+      sub_category: sub_category_temp
+    }, () => {this.inMenu = inMenu; this.inActualLinks = inActualLinks})
   }
 
   onMouseLeave(inSubCategories=false, sub_category=null, inActualLinks=false) {
@@ -308,7 +308,7 @@ class Header extends Component {
               <div className="col-2">
               </div>
             </div>
-            {this.state.category &&
+            {this.state.bestProducts &&
             <div className="row py-2">
               <div className="col-6"></div>
               <div className="col-2 d-flex align-items-end justify-content-center">
@@ -318,7 +318,7 @@ class Header extends Component {
             }
             <div className="row">
               <div className={this.state.categoryEN == "MATTRESSES" ? "col-2" : "col-4"}></div>
-              {this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
+              {this.state.bestProducts && this.state.category && this.state.bestProducts[this.state.categoryEN].map((product, index) => {
               return (
               <div key={index} className={(index != 0 ? "border-start" : "") + " col-2 p-2"}>
                 <Link className="no-hover no-link text-end" to={`/product/${product.category}/${product.id}?lang=` + this.props.lang}>
