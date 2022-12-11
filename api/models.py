@@ -101,7 +101,6 @@ class Size(models.Model):
     width = models.SmallIntegerField('Ширина', default=80)
     length = models.SmallIntegerField('Длина', default=200)
     priceEUR = models.SmallIntegerField('Цена (евро)', default=0)
-    priceMDL = models.SmallIntegerField('Цена (леи)', default=0)
     discount = models.SmallIntegerField('Скидка (%)', default=0)
     on_sale = models.BooleanField('На распродаже', default=False)
 
