@@ -1,16 +1,12 @@
-import environ
 from pathlib import Path
-
-env = environ.Env()
-environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'y1@^^#r(f8=wl6q62c&0t8jr#*j9l*_ljx(9llmbw8dd=%^y5q'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['vegasmd.pythonanywhere.com', 'www.vegas.md', 'www.vegas-md.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_cleanup.apps.CleanupConfig',
     'api.apps.ApiConfig',
     'news.apps.NewsConfig',
     'telegram_bot.apps.TelegramBotConfig',
@@ -40,9 +37,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vegas.urls'
 
-BOT_TOKEN = env('TELEGRAM_TOKEN')
+BOT_TOKEN = '5393234759:AAGUl9fM4lPBYa54L_4t9BIxR2-BvF-r0Bc'
 BOT_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'
-CHANNEL_ID = env('CHANNEL_ID')
+CHANNEL_ID = '-1001797280618'
 
 TEMPLATES = [
     {
@@ -95,11 +92,13 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/vegasmd/vegas/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 

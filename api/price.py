@@ -11,7 +11,11 @@ class PriceManager:
             self.EUR = container['priceEUR']
         else:
             self.EUR = container[path]['priceEUR']
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 57342b3378486e94b74dc056581fc81813e180f0
         try:
             self.country = request.COOKIES['country']
         except:
@@ -19,7 +23,11 @@ class PriceManager:
 
         self.set_EUR()
         self.add_curr()
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 57342b3378486e94b74dc056581fc81813e180f0
     def set_EUR(self):
         self.EUR *= 1.2 if self.country == 'RO' else 1
         self.EUR = round(self.EUR)

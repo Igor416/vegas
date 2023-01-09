@@ -98,7 +98,7 @@ for product_name in manager.get_all_products():
         ordering = ['name']
     else:
         ordering = [manager.get_default_filtering(product_name), 'name']
-        
+
     attrs = {
         'form': form,
         'exclude': ['markers'],
@@ -114,7 +114,7 @@ for product_name in manager.get_all_products():
         setattr(admin_model, 'inlines', (LayerPillowInline, ))
     elif model is models.MattressPad:
         setattr(admin_model, 'inlines', (LayerMattressPadInline, ))
-        
+
     admin.site.register(model, admin_model)
 
 

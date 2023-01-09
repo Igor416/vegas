@@ -11,7 +11,7 @@ urlpatterns = [
     path('stock', index),
     path('catalog/<string1>/<string2>', index),
     path('catalog/<string1>/<string2>/<string3>', index),
-    path('product/<string1>/<string2>', index),
+    path('product/<string1>/<string2>', index)
 ]
 
 urlpatterns += static('/public/', document_root=BASE_DIR.joinpath('frontend/public'))
