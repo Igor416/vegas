@@ -1,4 +1,3 @@
-from math import ceil
 from django.db import models
 from django.core.exceptions import ObjectDoesNotExist
 from urllib.request import urlretrieve
@@ -32,9 +31,9 @@ def create_related_field(prop, multiple=False, plural=False):
     else:
         field = models.ForeignKey
         kwargs.update({'on_delete': models.SET_NULL, 'null': True})
-    
+
     return field(**kwargs)
-        
+
 def has_multiple_rels(model, field):
     if field == 'rigidity':
         return False
@@ -42,7 +41,7 @@ def has_multiple_rels(model, field):
 
 class Category(models.Model):
     choices = manager.get_pr_choices()
-    
+
     name = models.CharField('Название', max_length=32, choices=choices, unique=True, primary_key=True)
     name_en_s = models.CharField(max_length=32)
     name_en_pl = models.CharField(max_length=32)
@@ -90,7 +89,7 @@ class Choice(models.Model):
         for category in manager.get_categories(self.name):
             self.category.add(Category.objects.get(name=category))
         super(Choice, self).save(*args, **kwargs)
-    
+
     class Meta:
         verbose_name = 'вариант выбора'
         verbose_name_plural = 'варианты выбора'
@@ -101,21 +100,15 @@ class Size(models.Model):
     width = models.SmallIntegerField('Ширина', default=80)
     length = models.SmallIntegerField('Длина', default=200)
     priceEUR = models.SmallIntegerField('Цена (евро)', default=0)
-    priceMDL = models.SmallIntegerField('Цена (леи)', default=0)
     discount = models.SmallIntegerField('Скидка (%)', default=0)
     on_sale = models.BooleanField('На распродаже', default=False)
 
     def __str__(self):
-        return f'Размер продукта {self.product}: {self.width} x {self.length} по цене {self.priceEUR} (EUR); {self.priceMDL} (MDL){f", со скидкой {self.discount}%" if self.discount != 0 else ""}'
-
-    def save(self, *args, **kwargs):
-        if self.priceMDL == 0:
-            self.priceMDL = ceil(self.priceEUR * 20.5)
-        super(Size, self).save(*args, **kwargs)
+        return f'Размер продукта {self.product}: {self.width} x {self.length} по цене {self.priceEUR} (EUR){f", со скидкой {self.discount}%" if self.discount != 0 else ""}'
 
     class Meta:
         verbose_name = 'размер'
-        verbose_name_plural = 'размеры'   
+        verbose_name_plural = 'размеры'
 
 class File(models.Model):
     folder = ''
@@ -142,12 +135,12 @@ class Image(File):
         else:
             name = name.replace('_', ' ')
             name = ' '.join(name.split(' ')[:-1]) + ' № ' + name.split(' ')[-1]
-            
+
         return name
 
     def is_shortcut(self):
         return not self.get_name().split('_')[-1].isdigit()
-        
+
     class Meta:
         verbose_name = 'фотография'
         verbose_name_plural = 'фотографии'
@@ -225,7 +218,7 @@ class Marker(models.Model):
     class Meta:
         verbose_name = 'маркер'
         verbose_name_plural = 'маркеры'
-    
+
     def __str__(self):
         return f'маркер {self.name}'
 
@@ -292,7 +285,7 @@ class Mattress(Product):
 
     structure = models.ManyToManyField(Technology, through=LayerMattress, through_fields=('product', 'technology'), related_name='structure_%(class)s', verbose_name='Структура', blank=True)
     technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
-    
+
     mattress_type = create_related_field('mattress_type', '', True)
     age = create_related_field('age', True, True)
     rigidity1 = create_related_field('rigidity1', True)
@@ -383,7 +376,7 @@ class MattressPad(Product):
 
 class Blanket(Product):
     density = models.IntegerField(default=0)
-    
+
     blanket_type = create_related_field('blanket_type', '', True)
     age = create_related_field('age', True, True)
     filling = create_related_field('filling', True, True)
@@ -441,7 +434,7 @@ class BedSheets(Product):
                     size.sheet_size.category = self.category
                 except AttributeError:
                     pass
-                
+
                 try:
                     size.elasticated_sheet_size.product = self
                     size.elasticated_sheet_size.category = self.category
@@ -535,4 +528,4 @@ class Stock(models.Model):
 
     class Meta:
         verbose_name = 'акция'
-        verbose_name_plural = 'акции'   
+        verbose_name_plural = 'акции'

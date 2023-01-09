@@ -4,6 +4,7 @@ from . import serializers
 from .translations import sales, get_lang
 from .catalog import Manager
 from . import models
+from .price import PriceManager
 
 manager = Manager()
 
@@ -55,15 +56,14 @@ class SearchView(APIView):
                 queryset_products = model.objects.filter(name__icontains=search)
 
             for entry in queryset_products:
-                products.append({
+                product = {
                     'link': f'/product/{entry.category.name}/{entry.id}',
                     'text': f'{getattr(entry.category, f"name_{lang}_s")}: {entry.name}',
-                    'price': {
-                        'MDL': entry.sizes.all()[0].priceMDL,
-                        'EUR': entry.sizes.all()[0].priceEUR
-                    },
+                    'priceEUR': entry.sizes.all()[0].priceEUR,
                     'discount': entry.discount
-                })
+                }
+                price = PriceManager(product, request)
+                products.append(price.container)
 
         return Response({'categories': categories, 'choices': choices, 'products': products})
 
@@ -87,18 +87,21 @@ class BestView(APIView):
         
         for key, vals in products.items():
             products[key] = [get_serializer(model)(get_product(model, name)).data for model, name in vals]
+            for i in range(len(products[key])):
+                price = PriceManager(products[key][i], request, 'size')
+                products[key][i] = price.container
 
         for base, size in zip(products['BASISES'], sizes):
             width, length = size
             size = models.Size.objects.get(product=base['name'], width=width, length=length)
-            base['size'] = serializers.SizeSerializer(size).data
+            base['size'] = PriceManager(serializers.SizeSerializer(size).data, request).container
 
         return Response(products)
 
 class MattressColectionsPriceView(APIView):
     def get(self, request):
         serializer = serializers.MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
-        return Response(serializer.data)
+        return Response(map(lambda item: PriceManager(item, request, list(item.keys())[0]).container, serializer.data))
 
 class CategoryView(APIView):
     lookup_url_kwarg = 'lang'
@@ -119,7 +122,7 @@ class ProductsView(APIView):
         filter = filter.replace('_', ' ') if filter else None
         queryset = model.objects.get_filtered(category, filter)
         serializer = serializers.create_list_serializer(model, lang)(queryset, many=True)
-        return Response(serializer.data)
+        return Response(map(lambda item: PriceManager(item, request, 'size').container, serializer.data))
 
 class ProductDetailsView(APIView):
     lookup_url_kwarg = 'lang'
@@ -130,6 +133,8 @@ class ProductDetailsView(APIView):
 
         queryset = model.objects.get(id=id)
         serializer = serializers.create_detail_serializer(model, lang)(queryset)
+        for i in range(len(serializer.data['sizes'])):
+            serializer.data['sizes'][i] = PriceManager(serializer.data['sizes'][i], request).container
         return Response(serializer.data)
 
 class SalesView(APIView):
@@ -143,7 +148,7 @@ class SalesView(APIView):
             model = getattr(models, s.category.name)
             p = model.objects.get_by_name(s.product)
             data = serializers.create_list_serializer(model, lang)(p).data
-            data['size'] = serializers.SizeSerializer(s).data
+            data['size'] = PriceManager(serializers.SizeSerializer(s).data, request).container
             data['category'] = model.get_name()
             resp.append(data)
         

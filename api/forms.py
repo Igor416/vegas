@@ -26,8 +26,8 @@ class ProductForm(forms.ModelForm):
 
                 elif name == 'sizes':
                     category = models.Category.objects.get(name=self.model.get_name())
-                    by_category = models.Size.objects.filter(category=category, product=self.instance.name) 
-                    field.queryset = by_category | models.Size.objects.filter(category=None, priceMDL__gt=0)
+                    by_category = models.Size.objects.filter(category=category, product=self.instance.name)
+                    field.queryset = by_category | models.Size.objects.filter(category=None, priceEUR__gt=0)
 
                 elif name == 'shortcut':
                     filtered = filter(lambda i: i.is_shortcut(), images)
@@ -35,7 +35,7 @@ class ProductForm(forms.ModelForm):
                         field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__endswith=image_name + '.jpg')
                     except (TypeError, ValueError):
                         field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__endswith=image_name + '.jpg')
-                       
+
                 elif name == 'images':
                     filtered = filter(lambda i: not i.is_shortcut(), images)
                     try:
@@ -88,7 +88,7 @@ class BedSheetsSizesForm(forms.ModelForm):
             if hasattr(field, 'queryset'):
                 if name not in ['category', 'product']:
                     category = models.Category.objects.get(name=models.BedSheets.get_name())
-                    by_category = models.Size.objects.filter(category=category) 
+                    by_category = models.Size.objects.filter(category=category)
                     field.queryset = by_category | models.Size.objects.filter(category=None, priceMDL__gt=0)
 
 class StockForm(forms.ModelForm):
@@ -99,6 +99,6 @@ class StockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(StockForm, self).__init__(*args, **kwargs)
         today = date.today()
-        self.fields['expiry'].initial = date(today.year, today.month + 1, 1)
+        self.fields['expiry'].initial = date(today.year, 1 if today.month == 12 else today.month + 1, 1)
         self.fields['collections'].queryset = models.Choice.objects.filter(name='collection')
-        self.fields['sizes'].queryset = models.Size.objects.filter(priceMDL=0, priceEUR=0, discount__gt=0)
+        self.fields['sizes'].queryset = models.Size.objects.filter(priceEUR=0, discount__gt=0)
