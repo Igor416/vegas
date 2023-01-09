@@ -83,6 +83,7 @@ class Catalog extends Component {
               }
               
               for (let filtering in sorted_products) {
+                sorted_products[filtering] = sorted_products[filtering].sort((p1, p2) => p1.name.localeCompare(p2.name))
                 remainder = sorted_products[filtering].length % 3
                 if (remainder != 0) {
                   for (let i = 0; i < 3 - remainder; i++) {
