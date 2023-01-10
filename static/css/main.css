@@ -1,0 +1,179 @@
+.link {
+  text-decoration: none;
+  color: var(--deep-sky-blue);
+  cursor: pointer;
+  transition: 0.5s;
+}
+
+.search-show {
+  opacity: 1;
+  height: auto
+}
+
+.search-hide {
+  opacity: 0;
+  height: 0%
+}
+
+.hoverable > div {
+  background-color: var(--dark-grey);
+  height: 1px;
+  opacity: 0;
+  width: 0%;
+}
+
+.hoverable:hover > div {
+  opacity: 1;
+  width: 100%
+}
+
+.angle-active {
+  transform: rotate(180deg)
+}
+
+.angle-unactive {
+  transform: rotate(0deg)
+}
+
+.menu-show {
+  opacity: 1;
+  padding: 1rem 3rem;
+  height: 100%
+}
+
+.menu-hide {
+  opacity: 0;
+  height: 0%
+}
+
+.lime-green-button {
+  color: var(--lime-green);
+  border: 1px solid var(--lime-green);
+  background-color: white;
+}
+
+.lime-green-button:hover {
+  color: white;
+  background-color: var(--lime-green);
+}
+
+.dark-cyan-button {
+  color: var(--dark-cyan);
+  border: 1px solid var(--dark-cyan);
+  background-color: white;
+}
+
+.dark-cyan-button:hover {
+  color: white;
+  background-color: var(--dark-cyan);
+}
+
+.deep-sky-blue-button {
+  color: var(--deep-sky-blue);
+  border: 1px solid var(--deep-sky-blue);
+  background-color: white;
+}
+
+.deep-sky-blue-button:hover {
+  color: white;
+  background-color: var(--deep-sky-blue);
+}
+
+#stock::before {
+  content: "";
+  position: absolute;
+  border: 5px solid var(--milk);
+  width: calc(50vh / 3 * 2);
+  height: calc(50vh / 3 * 2);
+  margin: calc(50vh / 6);
+  border-radius: 50%;
+}
+
+.switch {
+  flex-flow: row wrap;
+  padding: 0.5vw;
+  width: 3vw;
+  height: 3vw;
+  background-color: var(--dark-cyan)
+}
+
+.switch-column {
+  gap: 0.55vw;
+}
+
+.switch-grid {
+  gap: 0.5vw
+}
+
+.switch-column > div {
+  height: 0.3vw;
+  width: 2vw
+}
+
+.switch-grid > div {
+  height: 0.75vw;
+  width: 0.75vw
+}
+
+.section-column > div.shadow {
+  width: 100%;
+  flex-flow: row nowrap;
+  transition: 0.5s width;
+}
+
+.section-column > div.shadow:nth-child(1n) > img {
+  width: 40%;
+  transition: width 0s cubic-bezier(1, 0, 0, 1) 1.5s;
+}
+
+.section-grid > div {
+  width: 31.5%;
+  flex-direction: column;
+  transition: 0.5s width;
+}
+
+.section-grid > div.shadow > div > .price {
+  height: 5vh;
+}
+
+.section-grid > div > div > .desc {
+  height: 25vh;
+}
+
+.section-grid > div.shadow:nth-child(1n) > img {
+  width: auto;
+  transition: width 0s cubic-bezier(1, 0, 0, 1) 1.5s;
+}
+
+.shadow {
+  transition: 0.5s box-shadow;
+}
+
+.shadow:hover {
+  box-shadow: 0 1rem 1.5rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.dimension {
+  font-weight: 400
+}
+
+.dimension:hover {
+  background-color: var(--dark-cyan)
+}
+
+.structure-quantity {
+  background-color: var(--deep-sky-blue);
+  width: 1.5vw;
+  height: 1.5vw;
+  margin-left: -0.75vw;
+}
+
+.form-button-active {
+  color: white;
+  background-color: var(--deep-sky-blue)
+}
+
+.form-button-unactive {
+  color: var(--dark);
+  background-color: white
+}

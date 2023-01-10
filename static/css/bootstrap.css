@@ -1,0 +1,65 @@
+.dropdown-toggle::after {
+  content: none;
+}
+
+.tab-content>.active {
+  display: flex !important;
+}
+
+#carousel .carousel-indicators {
+  position: relative !important;
+  margin: 1rem 0 0 !important;
+}
+
+#carousel .carousel-indicators.many-items {
+  justify-content: space-between !important;
+}
+
+#carousel .carousel-indicators.one-item {
+  justify-content: center !important;
+}
+
+.media {
+  height: auto !important;
+  padding: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+  text-indent: 0px !important;
+  border: 1px solid var(--lime-green) !important;
+  opacity: 1 !important;
+  transition: 0.5s !important;
+}
+
+.media.active {
+  border: 1px solid var(--dark-cyan) !important;
+}
+
+.nav-link {
+  border-color: white !important;
+  border-bottom-color: var(--deep-sky-blue) !important
+}
+
+.nav-link.active {
+  border-color: var(--deep-sky-blue) !important;
+  border-bottom-color: white !important
+}
+
+.tooltip-inner {
+  background-color: white;
+  color: var(--bs-dark);
+  box-shadow: 0px 0px 4px black;
+  opacity: 1 !important;
+}
+
+.tooltip.bs-tooltip-right {
+  border-right-color: white !important;
+}
+.tooltip.bs-tooltip-left, .tooltip-arrow::before {
+  border-left-color: white !important;
+}
+.tooltip.bs-tooltip-bottom {
+  border-bottom-color: white !important;
+}
+.tooltip.bs-tooltip-top {
+  border-top-color: white !important;
+}
