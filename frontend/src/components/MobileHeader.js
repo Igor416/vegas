@@ -148,7 +148,7 @@ class MobileHeader extends Component {
           </div>
           <div className="col-4">
             <Link to={"/?lang=" + this.props.lang}>
-              <img src="/static/images/logo.png"/>
+              <img src="static/images/logo.png"/>
             </Link>
           </div>
           <div className="col-1"></div>

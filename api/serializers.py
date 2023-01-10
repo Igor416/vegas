@@ -201,7 +201,6 @@ class ProductListSerializer(ProductSerializer):
                 "width": 0,
                 "length": 0,
                 "priceEUR": 0,
-                "priceMDL": 0,
                 "discount": 0,
                 "on_sale": False,
             }

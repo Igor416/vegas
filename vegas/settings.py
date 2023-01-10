@@ -1,12 +1,16 @@
+import environ
 from pathlib import Path
+
+env = environ.Env()
+environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'y1@^^#r(f8=wl6q62c&0t8jr#*j9l*_ljx(9llmbw8dd=%^y5q'
+SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['vegasmd.pythonanywhere.com', 'www.vegas.md', 'www.vegas-md.com']
+ALLOWED_HOSTS = ['vegasmd.pythonanywhere.com', 'www.vegas.md', 'www.vegas-md.com', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,9 +41,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vegas.urls'
 
-BOT_TOKEN = '5393234759:AAGUl9fM4lPBYa54L_4t9BIxR2-BvF-r0Bc'
+BOT_TOKEN = env('TELEGRAM_TOKEN')
 BOT_URL = f'https://api.telegram.org/bot{BOT_TOKEN}/'
-CHANNEL_ID = '-1001797280618'
+CHANNEL_ID = env('CHANNEL_ID')
 
 TEMPLATES = [
     {

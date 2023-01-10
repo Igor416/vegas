@@ -89,7 +89,7 @@ class BedSheetsSizesForm(forms.ModelForm):
                 if name not in ['category', 'product']:
                     category = models.Category.objects.get(name=models.BedSheets.get_name())
                     by_category = models.Size.objects.filter(category=category)
-                    field.queryset = by_category | models.Size.objects.filter(category=None, priceMDL__gt=0)
+                    field.queryset = by_category | models.Size.objects.filter(category=None, priceEUR__gt=0)
 
 class StockForm(forms.ModelForm):
     class Meta:
