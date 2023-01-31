@@ -1,5 +1,5 @@
 CURRENCIES = {
-    'MD': [('MDL', 20.5)],
+    'MD': [('MDL', 21)],
     'RO': [('RON', 5)]
 }
 
