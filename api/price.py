@@ -1,6 +1,7 @@
 CURRENCIES = {
     'MD': [('MDL', 21)],
-    'RO': [('RON', 5)]
+    'RO': [('RON', 5)],
+    'US': [('USD', 1.1)]
 }
 
 class PriceManager:
