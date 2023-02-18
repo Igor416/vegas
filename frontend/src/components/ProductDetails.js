@@ -248,7 +248,7 @@ class ProductDetails extends Component {
                         return <img className="me-2" key={index} src={marker} style={{width: '6vh', height: '6vh'}}/>
                       })}
                       {this.state.size.on_sale &&
-                        <img style={{width: '6vh', height: '6vh'}} src="static/images/sale.jpg"/>
+                        <img style={{width: '6vh', height: '6vh'}} src="/static/images/sale.jpg"/>
                       }
                     </div>
                   }

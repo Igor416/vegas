@@ -192,7 +192,7 @@ class Header extends Component {
           <div className="col-1"></div>
           <div className="col-1">
             <Link to={"/?lang=" + this.props.lang}>
-              <img style={{ maxWidth: '80%' }} src="static/images/logo.png"/>
+              <img style={{ maxWidth: '80%' }} src="/static/images/logo.png"/>
             </Link>
           </div>
           <div id="searchBar" className="col-3 ps-0">
