@@ -80,10 +80,11 @@ export default class App extends Component {
   getCurrencies() {
     const currencies = {
       'MD': ['MDL', 'EUR'],
-      'RO': ['RON', 'EUR']
+      'RO': ['RON', 'EUR'],
+      'US': ['USD', 'EUR']
     }
 
-    if (this.state.country) {
+    if (this.state.country && this.state.country in currencies) {
       return currencies[this.state.country]
     }
 
