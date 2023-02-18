@@ -172,11 +172,10 @@ class Catalog extends Component {
 
   render() {
     const t = this.props.t
-    
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateProducts} />
-        {!this.isMobile && this.state.category.name !='sales' && <SectionImage category={this.state.category} />}
+        {!this.isMobile && this.state.category.name !='sales' && <SectionImage category={this.state.category} collection={this.state.sub_category == 'collection' ? this.state.filter.toLowerCase() : null} />}
         <div className="d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
           {this.state.products &&

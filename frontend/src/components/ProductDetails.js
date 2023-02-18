@@ -120,7 +120,7 @@ class ProductDetails extends Component {
     return (
       <div className="mt-5">
         <LocationListener locationChanged={this.updateProduct} />
-        {!this.isMobile && <SectionImage category={this.state.category} />}
+        {!this.isMobile && <SectionImage category={this.state.category} collection={this.state.category.name == 'Mattress' ? this.state.product?.characteristic.Collection.toLowerCase() : null} />}
         <div className="container-fluid d-flex mt-5 mb-5 px-2 py-1 mb-sm-0 px-sm-5 py-sm-4">
           <div className="col-sm-1"></div>
           {this.state.product && 
