@@ -168,7 +168,10 @@ class ProductBestSerializer(ProductSerializer):
         r['category'] = obj.category.name
         r['size'] = r['sizes'][0]
         del r['sizes']
-        r['category_name'] = getattr(obj.category, f'name_{self.lang}_s')
+        try:
+            r['category_name'] = getattr(obj.category, f'name_{self.lang}_s')
+        except:
+            r['category_name'] = obj.category.name_en_s
         return r
 
 def create_best_product_serializer(model, lang):
