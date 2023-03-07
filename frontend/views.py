@@ -1,4 +1,3 @@
-from django.utils.datastructures import MultiValueDictKeyError
 from django.shortcuts import render
 import requests
 
@@ -14,7 +13,7 @@ def index(request, *args, **kwargs):
     
     try:
         lang = request.GET['lang']
-    except MultiValueDictKeyError:
+    except:
         lang = 'en'
 
     langs = ['en', 'ro', 'ru']
