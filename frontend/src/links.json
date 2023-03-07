@@ -99,7 +99,6 @@
     },
     "BASISES": {
       "Basis \"SuperLux\";Basis/SuperLux": [],
-      "Basis \"Lux\";Basis/Lux": [],
       "Basis \"Premium\";Basis/Premium": []
     }
   },
@@ -203,7 +202,6 @@
     },
     "ОСНОВАНИЯ": {
       "Основание СуперЛюкс;Basis/SuperLux": [],
-      "Основание Люкс;Basis/Lux": [],
       "Основание Премиум;Basis/Premium": []
     }
   },
@@ -307,7 +305,6 @@
     },
     "SOMIERE": {
       "Somiera SuperLux;Basis/SuperLux": [],
-      "Somiera Lux;Basis/Lux": [],
       "Somiera Premium;Basis/Premium": []
     }
   }

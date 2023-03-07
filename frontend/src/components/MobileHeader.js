@@ -96,6 +96,9 @@ class MobileHeader extends Component {
 
   getLink(sub_category, link=null) {
     let categories = CATEGORIES[this.props.lang][this.state.category]
+    if (this.state.categoryEN == 'BASISES') {
+      return `/product/Basis/${Object.keys(categories).indexOf(sub_category) * 2 + 1}`
+    }
     if (categories[sub_category].length == 0 || link) {
       let url = `/catalog/${sub_category.split(';')[1]}`
       if (link) {
@@ -261,7 +264,7 @@ class MobileHeader extends Component {
                 className="w-100 p-3 d-flex justify-content-between border-bottom"
               >
                 <CustomLink to={this.getLink(sub_category)} text={sub_category.split(';')[0]} />
-                <FontAwesomeIcon icon='angle-right' color="var(--lime-green)" />
+                {CATEGORIES[this.props.lang][this.state.category][sub_category].length != 0 && <FontAwesomeIcon icon='angle-right' color="var(--lime-green)" />}
               </div>
             )})}
             <div className="d-flex align-items-end justify-content-center">

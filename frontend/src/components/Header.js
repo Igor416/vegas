@@ -137,7 +137,7 @@ class Header extends Component {
   getLink(sub_category, link=null) {
     let categories = CATEGORIES[this.props.lang][this.state.category]
     if (this.state.categoryEN == 'BASISES') {
-      return `/product/Basis/${Object.keys(categories).indexOf(sub_category) + 1}`
+      return `/product/Basis/${Object.keys(categories).indexOf(sub_category) * 2 + 1}`
     }
     if (categories[sub_category].length == 0 || link) {
       let url = `/catalog/${sub_category.split(';')[1]}`
