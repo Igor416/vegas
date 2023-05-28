@@ -209,6 +209,8 @@ class ProductListSerializer(ProductSerializer):
             }
         finally:
             del r['sizes']
+        r['default_filtering'] = r.pop(self.default_filtering)
+        r['category'] = obj.get_name()
         if not r['name']:
             r['name'] = f"{manager.get_pr_trans('BedSheets', get_lang(self.lang), False)} ({r['name_' + self.lang]})"
         return r
@@ -224,10 +226,11 @@ def create_list_serializer(model, lang):
         many = False
     else:
         many = models.has_multiple_rels(model, default_filtering)
-
+        
     fields = {
         'Meta': Meta,
         'lang': lang,
+        'default_filtering': default_filtering,
         default_filtering: ChoiceSerializer(lang, many=many)
     }
  
@@ -262,6 +265,12 @@ class ProductDetailsSerializer(ProductSerializer):
 
             if key in self.model.get_short_order():
                 r['description'][key_lang] = r['characteristic'][key_lang]
+
+        for size in [*r['sizes']]:
+            if size['length'] == 200:
+                new_size = {**size}
+                new_size['length'] = 190
+                r['sizes'].append(new_size)
 
         return r
 
