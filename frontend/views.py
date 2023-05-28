@@ -32,4 +32,4 @@ def index(request, *args, **kwargs):
         'keywords': data['keywords'],
     }
 
-    return render(request, 'frontend/index.html', context=context)
+    return render(request, 'index.html', context=context)
