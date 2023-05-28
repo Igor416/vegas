@@ -28,7 +28,6 @@ class SearchView(APIView):
             queryset_categories = models.Category.objects.filter(name_ro_s__icontains=search)
 
         categories = []
-        choices = []
         products = []
         
         for entry in queryset_categories:
@@ -65,7 +64,7 @@ class SearchView(APIView):
                 price = PriceManager(product, request)
                 products.append(price.container)
 
-        return Response({'categories': categories, 'choices': choices, 'products': products})
+        return Response({'categories': categories, 'products': products})
 
 class BestView(APIView):
     lookup_url_kwarg = 'lang'
@@ -89,7 +88,7 @@ class BestView(APIView):
             products[key] = [get_serializer(model)(get_product(model, name)).data for model, name in vals]
             for i in range(len(products[key])):
                 price = PriceManager(products[key][i], request, 'size')
-                products[key][i] = price.container
+                products[key][i]['size'] = price.container
 
         for base, size in zip(products['BASISES'], sizes):
             width, length = size
@@ -101,7 +100,9 @@ class BestView(APIView):
 class MattressColectionsPriceView(APIView):
     def get(self, request):
         serializer = serializers.MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
-        return Response(map(lambda item: PriceManager(item, request, list(item.keys())[0]).container, serializer.data))
+        for item in serializer.data:
+            PriceManager(item, request, list(item.keys())[0])
+        return Response(serializer.data)
 
 class CategoryView(APIView):
     lookup_url_kwarg = 'lang'
@@ -122,7 +123,9 @@ class ProductsView(APIView):
         filter = filter.replace('_', ' ') if filter else None
         queryset = model.objects.get_filtered(category, filter)
         serializer = serializers.create_list_serializer(model, lang)(queryset, many=True)
-        return Response(map(lambda item: PriceManager(item, request, 'size').container, serializer.data))
+        for item in serializer.data:
+            item['size'] = PriceManager(item, request, 'size').container
+        return Response(serializer.data)
 
 class ProductDetailsView(APIView):
     lookup_url_kwarg = 'lang'
