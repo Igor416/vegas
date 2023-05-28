@@ -7,10 +7,12 @@
 
 .search-show {
   opacity: 1;
-  height: auto
+  height: auto;
+  display: block;
 }
 
 .search-hide {
+  display: none;
   opacity: 0;
   height: 0%
 }
