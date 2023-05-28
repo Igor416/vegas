@@ -19,11 +19,14 @@
   "yes": "da",
   "no": "nu",
   "characteristicbutton": "Afișează toate caracteristicile",
+  "mattress": "saltea",
   "brand": "Marca",
   "country": "Țara de fabricație",
   "countrytext": "Bielorusia",
+  "countrytext1": "Moldova",
   "manufacturer": "Producător",
   "manufacturertext": "VEGAS LLC, Locotenentului Ryabtsev, 118V, 224025, Brest, Belarus",
+  "manufacturertext1": "Realizat la comanda pentru VEGAS Moldova",
   "note": "Notă",
   "notetext": "Ilustrațiile prezintă prototipuri. Aspectul bunurilor și componentelor\n acestora pot diferi de ilustrații, păstrând\n în același timp proprietățile declarate de consumator."
 }

@@ -19,11 +19,14 @@
   "yes": "yes",
   "no": "no",
   "characteristicbutton": "Show All Characteristic",
+  "mattress": "mattress",
   "brand": "Brand",
   "country": "Country of manufacture",
   "countrytext": "Belarus",
+  "countrytext1": "Moldova",
   "manufacturer": "Manufacturer",
   "manufacturertext": "VEGAS LLC, Lieutenant Ryabtsev, 118V, 224025, Brest, Belarus",
+  "manufacturertext1": "Made to order for VEGAS Moldova",
   "note": "Note",
   "notetext": "The illustrations show prototypes. The appearance of goods and their components\n may differ from the illustrations\n while maintaining the declared consumer properties."
 }
