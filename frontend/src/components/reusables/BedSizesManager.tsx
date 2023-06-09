@@ -1,6 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
+
 import { Size } from "./JSONTypes";
 
 interface BedSizesManagerProps {
