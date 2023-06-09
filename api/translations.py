@@ -10,14 +10,14 @@ def get_lang(lang):
     return langs.index(lang)
 
 products = {
-    ct.MATTRESS: ((('Mattress', 'Mattresses'), ('Матрас', 'Матрасы'), ('Saltea', 'Saltele'))),
-    ct.PILLOW: ((('Pillow', 'Pillows'), ('Подушка', 'Подушки'), ('Perna', 'Perne'))),
-    ct.MATTRESSPAD: ((('Mattress Pad', 'Mattress Pads'), ('Наматрасник', 'Наматрасники'), ('Husa', 'Huse'))),
-    ct.BLANKET: ((('Blanket', 'Blankets'), ('Одеяло', 'Одеяла'), ('Plapuma', 'Plapume'))),
-    ct.BEDSHEETS: ((('Bed Sheets Kit', 'Bed Sheets Kit'), ('Комплект постельного белья', 'Комплекты постельного белья'), ('Cearceafuri', 'Cearceafuri'))),
-    ct.BED: ((('Bed', 'Beds'), ('Кровать', 'Кровати'), ('Pat', 'Paturi'))),
-    ct.STAND: ((('Stand', 'Stands'), ('Тумба', 'Тумбы'), ('Noptiera', 'Noptiere'))),
-    ct.BASIS: ((('Basis', 'Basises'), ('Основание', 'Основания'), ('Somiera', 'Somiere')))
+    ct.MATTRESS: (('Mattress', 'Mattresses'), ('Матрас', 'Матрасы'), ('Saltea', 'Saltele')),
+    ct.PILLOW: (('Pillow', 'Pillows'), ('Подушка', 'Подушки'), ('Perna', 'Perne')),
+    ct.MATTRESSPAD: (('Mattress Pad', 'Mattress Pads'), ('Наматрасник', 'Наматрасники'), ('Husa', 'Huse')),
+    ct.BLANKET: (('Blanket', 'Blankets'), ('Одеяло', 'Одеяла'), ('Plapuma', 'Plapume')),
+    ct.BEDSHEETS: (('Bed Sheets Kit', 'Bed Sheets Kit'), ('Комплект постельного белья', 'Комплекты постельного белья'), ('Cearceafuri', 'Cearceafuri')),
+    ct.BED: (('Bed', 'Beds'), ('Кровать', 'Кровати'), ('Pat', 'Paturi')),
+    ct.STAND: (('Stand', 'Stands'), ('Тумба', 'Тумбы'), ('Noptiera', 'Noptiere')),
+    ct.BASIS: (('Basis', 'Basises'), ('Основание', 'Основания'), ('Somiera', 'Somiere'))
 }
 
 properties = {
