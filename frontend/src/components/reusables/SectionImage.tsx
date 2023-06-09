@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Category } from "./JSONTypes";
 
 interface SectionImageProps {
