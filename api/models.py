@@ -60,7 +60,7 @@ class Category(models.Model):
         self.name_ru_pl = manager.get_pr_trans(self.name, RU, True)
         self.name_ro_s = manager.get_pr_trans(self.name, RO, False)
         self.name_ro_pl = manager.get_pr_trans(self.name, RO, True)
-        super(Category, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'категория'
@@ -82,13 +82,13 @@ class Choice(models.Model):
 
     def save(self, *args, **kwargs):
         self.property_en, self.property_ru, self.property_ro = save_langs(self.property_en, self.property_ru, self.property_ro)
-        super(Choice, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         self.set_category(*args, **kwargs)
 
     def set_category(self, *args, **kwargs):
         for category in manager.get_categories(self.name):
             self.category.add(Category.objects.get(name=category))
-        super(Choice, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'вариант выбора'
@@ -155,7 +155,7 @@ class Video(File):
         elif 'youtu.be' in self.video_id:
             self.video_id = self.video_id.split('/')[-1]
         self.image = urlretrieve(f'http://img.youtube.com/vi/{self.video_id}/hqdefault.jpg', str(BASE_DIR) + f'\media\\videos\{self.video_id}.jpg')[0]
-        super(Video, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def get_name(self):
         return self.video_id
@@ -182,7 +182,7 @@ class Technology(models.Model):
 
     def save(self, *args, **kwargs):
         self.name_en, self.name_ru, self.name_ro = save_langs(self.name_en, self.name_ru, self.name_ro)
-        super(Technology, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'технология {self.name_ru}'
@@ -246,14 +246,11 @@ class Product(models.Model):
         return cls.__name__
 
     def __str__(self):
-        try:
-            default_filtering = manager.get_default_filtering(self.get_name())
-            return f'{self._meta.verbose_name}: {self.name}, {manager.get_prop_trans(default_filtering, RU)}: {getattr(self, default_filtering).property_ru}'
-        except AttributeError:
-            return f'{self._meta.verbose_name}: {self.name}'
+        default_filtering = manager.get_default_filtering(self.get_name())
+        return f'{self._meta.verbose_name}: {self.name}, {manager.get_prop_trans(default_filtering, RU)}: {getattr(self, default_filtering).property_ru}'
 
     def save(self, *args, **kwargs):
-        super(Product, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.category:
             for size in self.sizes.all():
                 if size.product == '' or not size.category:
@@ -269,7 +266,7 @@ class Product(models.Model):
             for t in self.technologies.all():
                 t.isTechnology = True
                 t.save()
-        super(Product, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     class Meta:
         abstract = True
@@ -294,16 +291,8 @@ class Mattress(Product):
     springblock = create_related_field('springblock')
     construction = create_related_field('construction')
 
-    @classmethod
-    def get_order(cls):
-        return ('mattress_type', 'age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'lifetime', 'collection', 'springblock', 'construction', 'case')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('age', 'height', 'max_pressure', 'rigidity1', 'rigidity2', 'springs', 'construction', 'case')
-
     def save(self, *args, **kwargs):
-        super(Mattress, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.category and self.max_pressure:
             markers = [
                 'height_' + str(self.height),
@@ -334,7 +323,7 @@ class Mattress(Product):
                     except ObjectDoesNotExist:
                         self.markers.create(name=marker.lower())
 
-        super(Mattress, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 class Pillow(Product):
     height = models.IntegerField(default=0)
@@ -345,14 +334,6 @@ class Pillow(Product):
     age = create_related_field('age', True, True)
     material_filler = create_related_field('material_filler', '', True)
     cover = create_related_field('cover', True, True)
-
-    @classmethod
-    def get_order(cls):
-        return ('age', 'material_filler', 'height', 'case', 'cover')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('age', 'material_filler', 'case', 'cover')
 
 class MattressPad(Product):
     height = models.IntegerField(default=0)
@@ -366,14 +347,6 @@ class MattressPad(Product):
     binding = create_related_field('binding')
     cover = create_related_field('cover', True, True)
 
-    @classmethod
-    def get_order(cls):
-        return ('age', 'mattresspad_type', 'height', 'case', 'binding', 'cover')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('age', 'mattresspad_type', 'case', 'cover')
-
 class Blanket(Product):
     density = models.IntegerField(default=0)
 
@@ -382,14 +355,6 @@ class Blanket(Product):
     filling = create_related_field('filling', True, True)
     blanket_color = create_related_field('blanket_color')
     cover = create_related_field('cover', True, True)
-
-    @classmethod
-    def get_order(cls):
-        return ('blanket_type', 'age', 'filling', 'density', 'cover', 'blanket_color')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('blanket_type', 'age', 'filling', 'density', 'cover')
 
 class BedSheetsSize(Size):
     duvet_cover_size = models.ForeignKey(Size, related_name='duvet_cover_size%(class)s', on_delete=models.SET_NULL, null=True, verbose_name='Пододеяльник')
@@ -414,16 +379,8 @@ class BedSheets(Product):
     def __str__(self):
         return f'{self._meta.verbose_name}: {self.name_ru}, {self.bedsheets_color.property_ru}'
 
-    @classmethod
-    def get_order(cls):
-        return ('bedsheets_type', 'bedsheets_color', 'tissue')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('bedsheets_type', 'bedsheets_color')
-
     def save(self, *args, **kwargs):
-        super(BedSheets, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.category:
             for size in self.sizes.all():
                 size.duvet_cover_size.product = self
@@ -444,7 +401,7 @@ class BedSheets(Product):
                 for pillowcase_size in size.pillowcase_sizes.all():
                     pillowcase_size.product = self
                     pillowcase_size.category = self.category
-            super(BedSheets, self).save(*args, **kwargs)
+            super().save(*args, **kwargs)
 
 class Bed(Product):
     headboard_height = models.IntegerField(default=0)
@@ -453,26 +410,10 @@ class Bed(Product):
 
     bed_type = create_related_field('bed_type', '', True)
 
-    @classmethod
-    def get_order(cls):
-        return ('bed_type', 'headboard_height', 'extra_length', 'extra_width')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('bed_type', 'headboard_height')
-
 class Stand(Product):
     height = models.IntegerField(default=0)
 
     material = create_related_field('material', '', True)
-
-    @classmethod
-    def get_order(cls):
-        return ('height', 'material')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('height', 'material')
 
 class Basis(Product):
     distance = models.IntegerField(default=45)
@@ -483,14 +424,6 @@ class Basis(Product):
 
     def __str__(self):
         return self._meta.verbose_name + ': ' + self.name
-
-    @classmethod
-    def get_order(cls):
-        return ('distance', 'width', 'legs_height', 'recomended')
-
-    @classmethod
-    def get_short_order(cls):
-        return ('distance', 'width', 'recomended')
 
 class Stock(models.Model):
     discount = models.SmallIntegerField('Скидка', default=0)
@@ -507,7 +440,7 @@ class Stock(models.Model):
         return f'Акции на {self.discount} процентов на коллекци{"ю" if len(lst) == 1 else "и"}: {", ".join(lst)}'
 
     def save(self, *args, **kwargs):
-        super(Stock, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if len(self.sizes.all()) == 0:
             for collection in self.collections.all():
                 for m in Mattress.objects.filter(collection=collection):
