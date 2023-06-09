@@ -71,6 +71,26 @@ CATALOG = {
     BASIS: []
 }
 
+ORDER = {
+    MATTRESS: ((AGE, HEIGHT, MAX_PRESSURE, RIGIDITY + '1', RIGIDITY + '2', SPRINGS, CONSTRUCTION, CASE), (MATTRESS_TYPE, AGE, HEIGHT, MAX_PRESSURE, RIGIDITY + '1', RIGIDITY + '2', SPRINGS, LIFETIME, COLLECTION, SPRINGBLOCK, CONSTRUCTION, CASE)),
+    PILLOW: ((AGE, MATERIAL_FILLER, CASE, COVER), (AGE, MATERIAL_FILLER, HEIGHT, CASE, COVER)),
+    MATTRESSPAD: ((AGE, MATTRESSPAD_TYPE, CASE, COVER), (AGE, MATTRESSPAD_TYPE, HEIGHT, CASE, BINDING, COVER)),
+    BLANKET: ((BLANKET_TYPE, AGE, FILLING, DENSITY, COVER), (BLANKET_TYPE, AGE, FILLING, DENSITY, COVER, BLANKET_COLOR)),
+    BEDSHEETS: ((BEDSHEETS_TYPE, BEDSHEETS_COLOR), (BEDSHEETS_TYPE, BEDSHEETS_COLOR, TISSUE)),
+    BED: ((BED_TYPE, HEADBOARD_HEIGHT), (BED_TYPE, HEADBOARD_HEIGHT, EXTRA_LENGTH, EXTRA_WIDTH)),
+    STAND: ((HEIGHT, MATERIAL), (HEIGHT, MATERIAL)),
+    BASIS: ((DISTANCE, WIDTH, RECOMENDED), (DISTANCE, WIDTH, LEGS_HEIGHT, RECOMENDED))
+}
+
+BEST = {
+    'MATTRESSES': [(MATTRESS, 'Favorit'), (MATTRESS, 'F3'), (MATTRESS, 'X3'), (MATTRESS, 'S-3'), (MATTRESS, 'Compact2')],
+    'PILLOWS': [(PILLOW, '20'), (PILLOW, 'Extra Memory'), (PILLOW, '14')],
+    'ACCESSORIES': [(MATTRESSPAD, 'Stressfree L1'), (BLANKET, 'SumWin'), (MATTRESSPAD, 'Bamboo A1')],
+    'FOR KIDS': [(MATTRESS, 'Cocolatex'), (PILLOW, 'Junior'), (PILLOW, 'Baby Boom')],
+    'BASISES': [(BASIS, 'SuperLux'), (BASIS, 'SuperLux'), (BASIS, 'Premium')],
+    'FURNITURE': [(BED, 'Milana II'), (BED, 'Victoria'), (BED, 'Milana IV')]
+}
+
 from .translations import RU
 class Manager:
     def get_pr_choices(self):
@@ -137,3 +157,9 @@ class Manager:
         for prop, tranlation in choices.items():
             if tranlation[lang] == trans:
                 return prop
+    
+    def get_order(self, model):
+        return ORDER[model]
+    
+    def get_best(self):
+        return (BEST, [(160, 200), (90, 200), (160, 200)])
