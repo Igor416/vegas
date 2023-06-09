@@ -2,6 +2,9 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 
+import geti18n from './i18n';
+import Cookies from "js-cookie";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faHandHoldingUsd,
@@ -20,17 +23,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
-import geti18n from './i18n';
-import Cookies from "js-cookie";
-
-import App from "./components/App";
-import Home from "./components/Home";
-import Catalog from "./components/Catalog";
-import Stock from "./components/Stock";
-import ProductDetails from "./components/ProductDetails";
-import Cart from "./components/Cart";
-import Shops from "./components/Shops";
-
 const icons = [
   faHandHoldingUsd,
   faPhone,
@@ -44,13 +36,13 @@ const icons = [
   faTrash,
   faCalendarAlt,
   faEnvelope,
-  faCheckCircle
+  faCheckCircle,
+  faFacebook
 ]
 
 library.add.apply(library, icons);
-library.add(faFacebook)
 
-const appDiv = document.getElementById('app') as HTMLElement;
+const appDiv = document.getElementById('main') as HTMLElement;
 const root = createRoot(appDiv);
 
 geti18n()
@@ -62,6 +54,14 @@ if (Cookies.get('country')) {
     render();
   })
 }
+
+import App from "./components/App";
+import Home from "./components/Home";
+import Catalog from "./components/Catalog";
+import Stock from "./components/Stock";
+import ProductDetails from "./components/ProductDetails";
+import Cart from "./components/Cart";
+import Shops from "./components/Shops";
 
 function render() {
   root.render(
