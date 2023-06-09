@@ -4,7 +4,7 @@ from . import catalog as ct
 
 class ProductManager(Manager):
     def __init__(self, model, *args, **kwargs):
-        super(ProductManager, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.model = model
         self.category = Category.objects.get(name=self.model.get_name())
         self.objs = model.objects.all()
@@ -19,31 +19,24 @@ class ProductManager(Manager):
         if not filter:
             return self.get_by_type(type.replace('_', ' '))
 
-        queryset = getattr(self, 'get_by_' + type)(filter)
-
-        return queryset
+        return getattr(self, 'get_by_' + type)(filter)
 
     def get_by_name(self, name):
         return self.objs.get(name=name)
 
     def get_props(self, name):
-        queryset = Choice.objects.filter(name=name)
-        return queryset
+        return Choice.objects.filter(name=name)
 
     def get_prop(self, name, property):
         if len(property.split(' ')) > 1:
-            queryset = Choice.objects.get(name=name, property_en=property)
-        else:
-            queryset = Choice.objects.get(name=name, property_en=property.title())
-        return queryset
+            return Choice.objects.get(name=name, property_en=property)
+            
+        return Choice.objects.get(name=name, property_en=property.title())
 
     def get_size(self, width, length):
         return Size.objects.filter(category=self.category, width=width, length=length)
 
 class MattressManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(MattressManager, self).__init__(*args, **kwargs)
-
     def get_by_collection(self, filter):
         filter = filter.replace('Mattresses ', '') #'Матрасы Modern' -> 'Modern'
         collection = self.get_prop(ct.COLLECTION, filter)
@@ -121,9 +114,6 @@ class MattressManager(ProductManager):
         return self.objs.filter(name__in=[size.product for size in sizes])
         
 class PillowManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(PillowManager, self).__init__(*args, **kwargs)
-
     def get_by_types_and_forms(self, filter):
         queryset = self.objs.none()
 
@@ -179,9 +169,6 @@ class PillowManager(ProductManager):
         return self.objs.filter(name=name)
 
 class MattressPadManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(MattressPadManager, self).__init__(*args, **kwargs)
-
     def get_by_type(self, type):
         return self.objs.filter(mattresspad_type=self.get_prop(ct.MATTRESSPAD_TYPE, type))
 
@@ -189,9 +176,6 @@ class MattressPadManager(ProductManager):
         return self.objs.filter(name='Stressfree Frotte L4')
 
 class BlanketManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(BlanketManager, self).__init__(*args, **kwargs)
-
     def get_by_type(self, type):
         if type == 'children':
             return self.objs.all()
@@ -212,13 +196,9 @@ class BlanketManager(ProductManager):
         return queryset
 
 class BedSheetsManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(BedSheetsManager, self).__init__(*args, **kwargs)
+    pass
 
 class BedManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(BedManager, self).__init__(*args, **kwargs)
-
     def get_by_type(self, type):
         if type == 'All beds':
             queryset = self.get_all()
@@ -242,9 +222,6 @@ class BedManager(ProductManager):
         return queryset
 
 class StandManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(StandManager, self).__init__(*args, **kwargs)
-
     def get_by_type(self, type):
         puffs = {'Vicont', 'Ludovic II', 'Ludovic I', 'Filip'}
         if type == "Puffs":
@@ -263,8 +240,5 @@ class StandManager(ProductManager):
         return queryset
 
 class BasisManager(ProductManager):
-    def __init__(self, *args, **kwargs):
-        super(BasisManager, self).__init__(*args, **kwargs)
-
     def get_by_type(self, type):
         return self.objs.filter(name=type)
