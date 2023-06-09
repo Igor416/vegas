@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PhoneInput from 'react-phone-input-2';
 
 interface CustomPhoneInput {
@@ -14,25 +14,16 @@ export default function CustomPhoneInput({lang, color, phone, setPhone}: CustomP
     lang_version = 'Phone'
   } else if (lang == 'ru') {
     lang_version = 'Телефон'
-  } else if (lang == 'ru') {
+  } else if (lang == 'ro') {
     lang_version = 'Telefon'
   }
 
-  useEffect(() => {
-    let div = document.getElementsByClassName('react-tel-input')[0]
-    let label = div.children[0] as HTMLElement
-    let input = div.children[1] as HTMLElement
-    
-    label.innerHTML = lang_version
-    input.style.border = 'none'
-    input.style.borderBottom = `1px solid var(--${color})`
-    input.style.padding = '0 inherit'
-    input.classList.forEach(el => input.classList.remove(el))
-    input.classList.add('w-100')
-    input.classList.add('no-hover')
-  }, []);
-
   return (
-    <PhoneInput country={'md'} value={phone} onChange={setPhone} />
+    <PhoneInput country='md' value={phone} onChange={setPhone} specialLabel={lang_version} inputProps={{
+      name: 'phone',
+      required: true,
+      style: {border: 'none', borderBottom: `1px solid var(--${color})`},
+      className: 'w-100 no-hover'
+    }} />
   )
 }
