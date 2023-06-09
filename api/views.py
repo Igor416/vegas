@@ -1,20 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from .decorators import detect_lang, detect_country
 from . import serializers
+from .serializer_factory import BestProductSerializerFactory, ListedProductsSerializerFactory, DetailedProductSerializerFactory
+from .price import PriceManager
 from .translations import sales, get_lang
 from .catalog import Manager
 from . import models
-from .price import PriceManager
 
 manager = Manager()
 
 class SearchView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def post(self, request):
-        lang = request.GET.get(self.lookup_url_kwarg).lower()
+    @detect_country
+    @detect_lang
+    def post(self, request, lang, country):
         search = request.data['search']
-
         if lang == 'en':
             queryset_categories = models.Category.objects.filter(name_en_s__icontains=search)
 
@@ -22,13 +22,12 @@ class SearchView(APIView):
             #sqllite3 doesn't support utf-8 search with insensitive case
             objects_categories = models.Category.objects
             queryset_categories = objects_categories.filter(name_ru_s__contains=search.lower())
-            queryset_categories = queryset_categories | objects_categories.filter(name_ru_s__contains=search.title())
+            queryset_categories |= objects_categories.filter(name_ru_s__contains=search.title())
 
         elif lang == 'ro':
             queryset_categories = models.Category.objects.filter(name_ro_s__icontains=search)
 
         categories = []
-        products = []
         
         for entry in queryset_categories:
             categories.append({
@@ -37,6 +36,7 @@ class SearchView(APIView):
                 'count': len(getattr(models, entry.name).objects.get_all())
             })
 
+        products = []
         for product_name in manager.get_all_products():
             model = getattr(models, product_name)
             if model is models.BedSheets:
@@ -47,7 +47,7 @@ class SearchView(APIView):
                     #sqllite3 doesn't support utf-8 search with insensitive case
                     objects = models.BedSheets.objects
                     queryset_products = objects.filter(name_ru__contains=search.lower())
-                    queryset_products = queryset_products | objects.filter(name_ru__contains=search.title())
+                    queryset_products |= objects.filter(name_ru__contains=search.title())
 
                 elif lang == 'ro':
                     queryset_products = model.objects.filter(name_ro__icontains=search)
@@ -61,112 +61,79 @@ class SearchView(APIView):
                     'priceEUR': entry.sizes.all()[0].priceEUR,
                     'discount': entry.discount
                 }
-                price = PriceManager(product, request)
-                products.append(price.container)
+                products.append(PriceManager(product, country).container)
 
         return Response({'categories': categories, 'products': products})
 
 class BestView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request):
-        lang = request.GET.get(self.lookup_url_kwarg)
-        products = {
-            'MATTRESSES': [('Mattress', 'Favorit'), ('Mattress', 'F3'), ('Mattress', 'X3'), ('Mattress', 'S-3'), ('Mattress', 'Compact2')],
-            'PILLOWS': [('Pillow', '20'), ('Pillow', 'Extra Memory'), ('Pillow', '14')],
-            'ACCESSORIES': [('MattressPad', 'Stressfree L1'), ('Blanket', 'SumWin'), ('MattressPad', 'Bamboo A1')],
-            'FOR KIDS': [('Mattress', 'Cocolatex'), ('Pillow', 'Junior'), ('Pillow', 'Baby Boom')],
-            'BASISES': [('Basis', 'SuperLux'), ('Basis', 'SuperLux'), ('Basis', 'Premium')],
-            'FURNITURE': [('Bed', 'Milana II'), ('Bed', 'Victoria'), ('Bed', 'Milana IV')]
-        }
-        sizes = [(160, 200), (90, 200), (160, 200)]
-
-        get_serializer = lambda model: serializers.create_best_product_serializer(getattr(models, model), lang)
-        get_product = lambda model, name: getattr(models, model).objects.get_by_name(name)
+    @detect_country
+    @detect_lang
+    def get(self, request, lang, country):
+        products, sizes = manager.get_best()
+        resp = dict()
         
         for key, vals in products.items():
-            products[key] = [get_serializer(model)(get_product(model, name)).data for model, name in vals]
-            for i in range(len(products[key])):
-                price = PriceManager(products[key][i], request, 'size')
-                products[key][i]['size'] = price.container
+            resp[key] = []
+            for model, name in vals:
+                model = getattr(models, model)
+                queryset = model.objects.get_by_name(name)
+                serializer = BestProductSerializerFactory(model, lang).create(queryset, country=country, lang=lang)
+                resp[key].append(serializer.data)
 
-        for base, size in zip(products['BASISES'], sizes):
+        for i, base, size in zip(range(len(sizes)), resp['BASISES'], sizes):
             width, length = size
-            size = models.Size.objects.get(product=base['name'], width=width, length=length)
-            base['size'] = PriceManager(serializers.SizeSerializer(size).data, request).container
+            queryset = models.Size.objects.get(product=base['name'], width=width, length=length)
+            resp['BASISES'][i]['size'] = serializers.SizeSerializer(queryset, country=country).data
 
-        return Response(products)
+        return Response(resp)
 
 class MattressColectionsPriceView(APIView):
-    def get(self, request):
-        serializer = serializers.MattressColectionsPriceSerializer(models.Choice.objects.filter(name='collection'), many=True)
-        for item in serializer.data:
-            PriceManager(item, request, list(item.keys())[0])
-        return Response(serializer.data)
-
-class CategoryView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request, category):
-        lang = request.GET.get(self.lookup_url_kwarg)
-        queryset = models.Category.objects.get(name=category)
-        serializer = serializers.CategorySerializer(lang, queryset)
+    @detect_country
+    def get(self, request, country):
+        queryset = models.Choice.objects.filter(name='collection')
+        serializer = serializers.MattressColectionsPriceSerializer(queryset, country=country, many=True)
         return Response(serializer.data)
 
 class ProductsView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request, product, category, filter=None):
-        lang = request.GET.get(self.lookup_url_kwarg)
-        model = getattr(models, product)
-
+    @detect_country
+    @detect_lang
+    def get(self, request, lang, country, category, sub_category, filter=None):
+        model = getattr(models, category)
         filter = filter.replace('_', ' ') if filter else None
-        queryset = model.objects.get_filtered(category, filter)
-        serializer = serializers.create_list_serializer(model, lang)(queryset, many=True)
-        for item in serializer.data:
-            item['size'] = PriceManager(item, request, 'size').container
+        queryset = model.objects.get_filtered(sub_category, filter)
+        serializer = ListedProductsSerializerFactory(model, lang).create(queryset, country=country, lang=lang, many=True)
         return Response(serializer.data)
 
 class ProductDetailsView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request, product, id):
-        lang = request.GET.get(self.lookup_url_kwarg)
-        model = getattr(models, product)
-
+    @detect_country
+    @detect_lang
+    def get(self, request, lang, country, category, id):
+        model = getattr(models, category)
         queryset = model.objects.get(id=id)
-        serializer = serializers.create_detail_serializer(model, lang)(queryset)
-        for i in range(len(serializer.data['sizes'])):
-            serializer.data['sizes'][i] = PriceManager(serializer.data['sizes'][i], request).container
+        serializer = DetailedProductSerializerFactory(model, lang).create(queryset, country=country, lang=lang)
         return Response(serializer.data)
 
 class SalesView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request):
-        lang = request.GET.get(self.lookup_url_kwarg)
+    @detect_country
+    @detect_lang
+    def get(self, request, lang, country):
         sizes = [s for s in models.Size.objects.all() if s.on_sale]
         resp = []
         for s in sizes:
             model = getattr(models, s.category.name)
-            p = model.objects.get_by_name(s.product)
-            data = serializers.create_list_serializer(model, lang)(p).data
-            data['size'] = PriceManager(serializers.SizeSerializer(s).data, request).container
-            data['category'] = model.get_name()
+            queryset = model.objects.get_by_name(s.product)
+            data = ListedProductsSerializerFactory(model, lang).create(queryset, country=country, lang=lang).data
             resp.append(data)
-        
-        resp = {
+
+        return Response({
             'products': resp,
             'name_s': sales['name_s'][get_lang(lang)],
             'name_pl': sales['name_pl'][get_lang(lang)],
-        }
-        return Response(resp)
+        })
 
 class StockView(APIView):
-    lookup_url_kwarg = 'lang'
-
-    def get(self, request):
-        lang = request.GET.get(self.lookup_url_kwarg)
+    @detect_lang
+    def get(self, request, lang):
         queryset = models.Stock.objects.all()
         serializer = serializers.StockSerializer(instance=queryset, lang=lang, many=True)
         return Response(sorted(serializer.data, key=lambda stock: stock['discount'], reverse=True))
