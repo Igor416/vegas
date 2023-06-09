@@ -50,16 +50,6 @@ export interface BedSheetsSize extends Size {
   pillowcase_sizes: Size[],
 }
 
-interface BestProduct {
-  id: 39,
-  shortcut: string,
-  name: string,
-  discount: number,
-  category: string,
-  size: Size,
-  category_name: string
-}
-
 export interface BestProducts {
   "MATTRESSES": BestProduct[],
   "PILLOWS": BestProduct[],
@@ -89,22 +79,29 @@ export interface Category {
   default_filtering_lang: string
 }
 
-export interface BasicProduct {
-  category: string,
-  name: string,
+interface Product {
   id: number,
+  name: string,
   discount: number,
+}
+
+interface BestProduct extends Product {
+  shortcut: string,
+  category: Category,
+  size: Size,
+  category_name: string
+}
+
+export interface BasicProduct extends Product {
+  category: string,
   size: string,
   quantity: number,
   price: Price,
   sum: Price
 }
 
-export interface Product {
-  id: number,
-  category: string,
-  name: string,
-  discount: number,
+export interface ListProduct extends Product {
+  category: Category,
   best: boolean,
   desc: string,
   shortcut: string,
@@ -114,15 +111,13 @@ export interface Product {
 }
 
 export interface Sales {
-  products: Product[],
+  products: ListProduct[],
   name_s: string,
   name_pl: string
 }
 
-export interface DetailedProduct {
-  id: number,
-  name: string,
-  discount: number,
+export interface DetailedProduct extends Product {
+  category: Category,
   best: boolean,
   desc: string,
   shortcut: string,
@@ -151,11 +146,8 @@ export interface DetailedProduct {
   extra_width?: number
 }
 
-export interface OrderedProduct {
-  id: number,
-  name: string,
+export interface OrderedProduct extends Product {
   category: Category,
-  discount: number,
   shortcut: string,
   quantity: number,
   size: Size,
@@ -163,7 +155,7 @@ export interface OrderedProduct {
 }
 
 export interface Order {
-  products: BasicProduct[],
+  products: OrderedProduct[],
   total: string,
   name: string,
   town: string,
@@ -174,8 +166,11 @@ export interface Order {
 }
 
 export interface Help {
-  category?: string,
-  product?: string,
   name: string,
   phone: string
+}
+
+export interface ProductHelp extends Help {
+  category: string,
+  product: string
 }
