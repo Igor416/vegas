@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 
 # Create your views here.
@@ -15,6 +15,7 @@ def index(request, *args, **kwargs):
         lang = request.GET['lang']
     except:
         lang = 'en'
+        return redirect(request.path + '?lang=' + lang)
 
     langs = ['en', 'ro', 'ru']
     try:
