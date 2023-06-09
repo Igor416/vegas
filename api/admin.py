@@ -108,12 +108,14 @@ for product_name in manager.get_all_products():
 
     admin_model = type(product_name + 'Admin', (admin.ModelAdmin,), attrs)
 
-    if model is models.Mattress:
-        setattr(admin_model, 'inlines', (LayerMattressInline, ))
-    elif model is models.Pillow:
-        setattr(admin_model, 'inlines', (LayerPillowInline, ))
-    elif model is models.MattressPad:
-        setattr(admin_model, 'inlines', (LayerMattressPadInline, ))
+    layers = {
+        models.Mattress: LayerMattressInline,
+        models.Pillow: LayerPillowInline,
+        models.MattressPad: LayerMattressPadInline
+    }
+
+    if type(model) in layers.keys():
+        setattr(admin_model, 'inlines', (layers[type(model)]))
 
     admin.site.register(model, admin_model)
 
