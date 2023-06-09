@@ -7,7 +7,7 @@ class BannerSerializer(ModelSerializer):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        super(BannerSerializer, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.lang = kwargs['context']['request'].GET.get('lang')
 
     def to_representation(self, obj):
