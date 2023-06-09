@@ -11,11 +11,11 @@ class ProductForm(forms.ModelForm):
         fields = '__all__'
 
     def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         images = models.Image.objects.all()
         try:
             image_name = self.instance.name_en.replace(' ', '_')
-        except (AttributeError):
+        except AttributeError:
             image_name = self.instance.name.replace(' ', '_')
 
         for name, field in self.fields.items():
@@ -31,23 +31,14 @@ class ProductForm(forms.ModelForm):
 
                 elif name == 'shortcut':
                     filtered = filter(lambda i: i.is_shortcut(), images)
-                    try:
-                        field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__endswith=image_name + '.jpg')
-                    except (TypeError, ValueError):
-                        field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__endswith=image_name + '.jpg')
+                    field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__endswith=image_name + '.jpg')
 
                 elif name == 'images':
                     filtered = filter(lambda i: not i.is_shortcut(), images)
-                    try:
-                        field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__contains=image_name + '_')
-                    except (TypeError, ValueError):
-                        field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__contains=image_name + '_')
+                    field.queryset = images.filter(pk__in=[item.pk for item in filtered], image__contains=image_name + '_')
 
                 elif name == 'videos':
-                    try:
-                        field.queryset = models.Video.objects.filter(image__contains=self.instance.name)
-                    except (TypeError, ValueError):
-                        field.queryset = models.Video.objects.none()
+                    field.queryset = models.Video.objects.filter(image__contains=self.instance.name)
 
                 elif name == 'visible_markers':
                     field.queryset = models.Marker.objects.filter(name__in=['3_zones', 'garanty', 'rolled'])
@@ -56,11 +47,8 @@ class ProductForm(forms.ModelForm):
                     field.label = manager.get_prop_trans(name[:-1], RU) + ' ' + name[-1]
                     field.queryset = models.Choice.objects.filter(name=name[:-1])
 
-                elif name == 'technologies':
-                    field.queryset = models.Technology.objects.filter(isTechnology=True)
-
-                elif name == 'structure':
-                    field.queryset = models.Technology.objects.filter(isTechnology=False)
+                elif name in ['technologies', 'structure']:
+                    field.queryset = models.Technology.objects.filter(isTechnology=name == 'technologies')
 
                 elif name == 'recomended':
                     field.queryset = models.Choice.objects.filter(name='collection')
@@ -83,7 +71,7 @@ class BedSheetsSizesForm(forms.ModelForm):
         model = models.BedSheetsSize
 
     def __init__(self, *args, **kwargs):
-        super(BedSheetsSizesForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for name, field in self.fields.items():
             if hasattr(field, 'queryset'):
                 if name not in ['category', 'product']:
@@ -97,7 +85,7 @@ class StockForm(forms.ModelForm):
         model = models.Stock
 
     def __init__(self, *args, **kwargs):
-        super(StockForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         today = date.today()
         self.fields['expiry'].initial = date(today.year, 1 if today.month == 12 else today.month + 1, 1)
         self.fields['collections'].queryset = models.Choice.objects.filter(name='collection')
