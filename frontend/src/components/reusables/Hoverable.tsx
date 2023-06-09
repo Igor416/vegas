@@ -5,7 +5,6 @@ interface HoverableProps {
 }
 
 export default function Hoverable({text}: HoverableProps) {
-
   return (
     <div className="hoverable">
       <span>{text}</span>
