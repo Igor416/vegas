@@ -5,10 +5,9 @@ CURRENCIES = {
 }
 
 class PriceManager:
-    def __init__(self, container, request, path=None):
-        self.path = path
-        self.container = container if self.path is None else container[path]
-        self.country = request.COOKIES['country']
+    def __init__(self, container, country):
+        self.container = container
+        self.country = country
         self.EUR = self.container['priceEUR']
 
         self.set_EUR()
