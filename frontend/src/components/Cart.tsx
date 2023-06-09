@@ -1,73 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useOutletContext, Link, useLocation, Location } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
-import { getCategory, getProduct, sendOrder } from "./reusables/api";
+import { getProduct, sendOrder } from "./reusables/api";
+import { OrderedProduct, Category, Size, Order, Price } from "./reusables/JSONTypes";
+import Form from "./reusables/form";
 import Hoverable from './reusables/Hoverable';
 import CustomPhoneInput from "./reusables/CustomPhoneInput";
 import CustomButton from "./reusables/CustomButton";
+import CustomInput from "./reusables/CustomInput";
 import { OutletContext } from "./App";
-import { BasicProduct, OrderedProduct, Category, Size, Order, Price } from "./reusables/JSONTypes";
-
-interface Form {
-  name: string,
-  town: string,
-  address: string,
-  phone: string,
-  payment: string,
-  courier: string
-}
 
 export default function Cart() {
-  let outletContext: OutletContext = useOutletContext()
-  let isMobile = outletContext.isMobile;
-  const [rawProducts, setRawProducts] = useState<BasicProduct[]>(outletContext.products);
-  const [lang, setLang] = useState(outletContext.lang);
-  let [products, setProducts] = useState<OrderedProduct[]>([])
-  const [form, setForm] = useState<Form>({
-    name: '',
-    town: '',
-    address: '',
-    phone: '',
-    payment: '',
-    courier: 'yes'
-  })
+  const outletContext: OutletContext = useOutletContext()
+  const isMobile = outletContext.isMobile;
+  const cart = outletContext.cart;
+  const lang = outletContext.lang;
+  const [products, setProducts] = useState<OrderedProduct[]>([])
+  const form = new Form<Order>(sendOrder)
+  const [data, setData] = useState<Order>({} as Order)
   const [error, setError] = useState(false)
   const [t, i18n] = useTranslation('cart');
 
   const updateProducts = (path: Location, locationChanged?: boolean) => {
-    let lang = path.search.replace('?lang=', '');
-    setLang(lang)
+    outletContext.updateLang(path.search.replace('?lang=', ''))
     let newProducts: OrderedProduct[] = []
-    for (let raw_product of rawProducts) {
-      getCategory(raw_product.category).then((data) => {
-        let category: Category = data;
-        getProduct(raw_product.category, raw_product.id).then((data) => {
-          let sum: Price = {
-            EUR: 0,
-            MDL: 0,
-            RON: 0,
-            USD: 0,
-          }
-          let product = {
-            id: data.id,
-            name: data.name,
-            category: category,
-            discount: data.discount,
-            shortcut: data.shortcut,
-            size: extractSize(data.sizes, raw_product.size),
-            quantity: raw_product.quantity,
-            sum: sum
-          }
-          for (let currency of outletContext.getCurrencies()) {
-            product.sum[currency] = raw_product.sum[currency]
-          }
-          newProducts.push(product)
-          setProducts(newProducts)
-        })
+    for (let raw_product of cart.products) {
+      getProduct(raw_product.category, raw_product.id).then((data) => {
+        let sum: Price = {
+          EUR: 0,
+          MDL: 0,
+          RON: 0,
+          USD: 0,
+        }
+        let product = {
+          id: data.id,
+          name: data.name,
+          category: data.category,
+          discount: data.discount,
+          shortcut: data.shortcut,
+          size: extractSize(data.sizes, raw_product.size),
+          quantity: raw_product.quantity,
+          sum: sum
+        }
+        for (let currency of outletContext.getCurrencies()) {
+          product.sum[currency] = raw_product.sum[currency]
+        }
+        newProducts.push(product)
+        setProducts(newProducts)
       })
     }
   }
@@ -85,28 +67,20 @@ export default function Cart() {
 
   const updateQuantity = (category: Category, id: number, quantity: number) => {
     outletContext.updateQuantity(category.name, id, quantity)
-
+    
     let product = products.filter(pr => pr.category.name == category.name && pr.id == id)[0]
     for (let currency of outletContext.getCurrencies()) {
       product.sum[currency] = +(product.sum[currency] * quantity / product.quantity).toFixed(2)
     }
     product.quantity = quantity
     products[products.indexOf(product)] == product
-
-    setProducts(products)
-  }
-
-  const updateForm = (key: keyof Form, value: string) => {
-    const changedForm = {...form}
-    changedForm[key as keyof Form] = value
-    setForm(changedForm)
+    setProducts([...products])
   }
 
   const submitForm = () => {
-    let r = sendOrder(Object.assign({
-      products: rawProducts,
-      total: outletContext.total + ` (${outletContext.currency})`
-    }, form) as Order, Cookies.get('csrftoken') as string)
+    data.products = products
+    data.total = cart.total + ` (${outletContext.currency})`
+    let r = form.submitForm(data)
 
     if (r == 'error: empty') {
       setError(true)
@@ -114,12 +88,9 @@ export default function Cart() {
   }
 
   const deleteProduct = (category: string, product: OrderedProduct, size: Size) => {
-    setRawProducts(rawProducts.filter(pr => !(pr.id == product.id && pr.category == category && pr.size == size.width + ' x ' + size.length)))
-
+    setProducts([...products.filter(pr => !(pr.id == product.id && pr.category.name == category && pr.size == size))])
     outletContext.deleteProduct(category, product.id, size.width + ' x ' + size.length)
-    updateProducts(useLocation())
   }
-
   
   return (
     <div className="mt-5">
@@ -136,27 +107,27 @@ export default function Cart() {
             {!isMobile &&
             <div
               style={{backgroundColor: 'var(--dark-cyan)'}}
-              className="text-white row align-items-center text-center mt-3 rounded-pill"
+              className="text-white d-flex align-items-center text-center mt-3 rounded-pill"
             >
-              <div className="col-2 h6 py-3 border-end border-white m-0">
+              <div className="col-2 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('name')}: </span>
               </div>
-              <div className="col-3 h6 py-3 border-end border-white m-0">
+              <div className="col-3 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('shortcut')}: </span>
               </div>
-              <div className="col-2 h6 py-3 border-end border-white m-0">
+              <div className="col-2 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('size')}: </span>
               </div>
-              <div className="col-1 h6 py-3 border-end border-white m-0">
+              <div className="col-1 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('price')}: ({outletContext.currency})</span>
               </div>
-              <div className="col-1 h6 py-3 border-end border-white m-0">
+              <div className="col-1 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('discount')}: </span>
               </div>
-              <div className="col-2 h6 py-3 border-end border-white m-0">
+              <div className="col-2 h-100 h6 py-3 border-end border-white m-0">
                 <span>{t('quantity')}: </span>
               </div>
-              <div className="col-1 h6 py-3 m-0">
+              <div className="col-1 h-100 h6 py-3 m-0">
                 <span>{t('total')}: </span>
               </div>
             </div>
@@ -203,7 +174,7 @@ export default function Cart() {
             </div>
             )}
             return (
-            <div key={index} className="row">
+            <div key={index} className="d-flex ">
               <div className="col-2 h5 d-flex align-items-center justify-content-center border-bottom border-end m-0">
                 <span>{pr.category.name_s} {pr.name}</span>
                 <span
@@ -211,7 +182,7 @@ export default function Cart() {
                   className="link"
                   onClick={() => deleteProduct(pr.category.name, pr, pr.size)}
                 >
-                  &nbsp; <FontAwesomeIcon icon='trash' />
+                  &nbsp;<FontAwesomeIcon icon='trash' />
                 </span>
               </div>
               <div className="col-3 border-bottom border-end">
@@ -244,13 +215,13 @@ export default function Cart() {
               </div>
             </div>
             )})}
-            <div className="row text-center">
-              <Link to={"/" + location.search} className={"d-flex justify-content-center no-link col-6 col-sm-2 pt-3" + (isMobile ? "" : "border-end")}>
+            <div className="d-flex text-center">
+              <Link to={"/" + location.search} className="d-flex justify-content-center no-link col-6 col-sm-2 mt-3 pt-3 ">
                 <CustomButton text={t('add')} color="lime-green"/>
               </Link>
               {!isMobile && <div className="col-9 border-end"></div>}
               <div style={{ color: 'var(--deep-sky-blue)' }} className="col-6 col-sm-1 d-flex justify-content-center align-items-center h5 m-0">
-                <span>{outletContext.total} ({outletContext.currency})</span>
+                <span>{cart.total} ({outletContext.currency})</span>
               </div>
             </div>
           </div>
@@ -264,17 +235,17 @@ export default function Cart() {
                 return(
                   <div key={index}>
                     <label htmlFor={field}>{t(field)}</label>
-                    <input
-                      id={field}
-                      value={form[field as keyof Form].toString()}
-                      onChange={e => updateForm(field as keyof Form, e.target.value)}
+                    <CustomInput
+                      color="lime-green"
+                      className="px-0 mb-3 col-12"
                       type="text"
-                      style={{border: 'none', borderBottom: '1px solid var(--lime-green)'}}
-                      className="outline-0 no-hover w-100 px-0 mb-3 col-12"
+                      id={field}
+                      value={data[field as keyof Order]}
+                      onChange={value => setData(form.updateForm(data, field as keyof Order, value))}
                     />
                   </div>
                 )}})}
-                <CustomPhoneInput lang={lang} color='lime-green' phone={form.phone} setPhone={phone => updateForm('phone', phone)} />
+                <CustomPhoneInput lang={lang} color='lime-green' phone={data.phone} setPhone={phone => setData(form.updateForm(data, 'phone', phone))} />
                 </div>
               </div>
               {!isMobile && <div className="col-1"></div>}
@@ -286,12 +257,14 @@ export default function Cart() {
                   className="d-flex justify-content-start row-nowrap pb-3 mb-4"
                   style={{border: 'none', borderBottom: '1px solid var(--lime-green)'}}
                 >
-                  <input
-                    id={'payment' + num}
-                    value={t('payment' + num)}
-                    className="me-3"
-                    onClick={() => {updateForm('payment', t('payment' + num))}}
+                  <CustomInput
+                    color="none"
+                    className="me-3 w-auto"
                     type="radio"
+                    id={'payment' + num}
+                    checked={t('payment' + num) == data.payment}
+                    value={t('payment' + num)}
+                    onChange={value => setData(form.updateForm(data, 'payment', t('payment' + num)))}
                   />
                   <label htmlFor={'payment' + num}>{t('payment' + num)}</label>
                 </div>
@@ -299,16 +272,16 @@ export default function Cart() {
               </div>
               <div className="d-flex row-nowrap justify-content-end align-items-start col-sm-3 mt-3 mt-sm-0">
                 <div
-                  onClick={() => updateForm('courier', 'yes')}
+                  onClick={() => setData(form.updateForm(data, 'courier', 'yes'))}
                   style={{border: '1px solid var(--deep-sky-blue)', borderRight: 'none'}}
-                  className={(form.courier ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
+                  className={(data.courier == 'yes' ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
                 >
                   <span>{t('courier')}</span>
                 </div>
                 <div
-                  onClick={() => updateForm('courier', 'no')}
+                  onClick={() => setData(form.updateForm(data, 'courier', 'no'))}
                   style={{border: '1px solid var(--deep-sky-blue)', borderLeft: 'none'}}
-                  className={(!form.courier ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
+                  className={(data.courier != 'yes' ? "form-button-active" : "form-button-unactive") + " p-3 transition"}
                 >
                   <span>{t('pickup')}</span>
                 </div>
@@ -334,7 +307,7 @@ export default function Cart() {
               <div>
                 <span className="h3">{t('empty')}</span>
                 <br/>
-                <Link className="link h5" to="/">
+                <Link className="link h5" to={"/" + location.search}>
                   <span>{t('return')}</span>
                 </Link>
               </div>

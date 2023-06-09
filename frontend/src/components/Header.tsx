@@ -3,17 +3,18 @@ import { Link, useLocation, Location } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
-import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from './reusables/LocationListener';
 import { getBestProducts, getMattressColectionsPrice, sendHelp } from "./reusables/api";
+import { BestProducts, MattressColectionPrice, Price, Help } from "./reusables/JSONTypes.js";
+import Form from "./reusables/form";
 import SearchBar from "./reusables/SearchBar";
 import Hoverable from './reusables/Hoverable';
 import CustomLink from './reusables/CustomLink';
 import CustomButton from './reusables/CustomButton';
 import CustomPhoneInput from './reusables/CustomPhoneInput';
-import { BestProducts, MattressColectionPrice, Price } from "./reusables/JSONTypes.js";
+import CustomInput from "./reusables/CustomInput";
 
 const CATEGORIES = require("../links.json");
 
@@ -22,11 +23,6 @@ interface HeaderProps {
   lang: string
   currency: keyof Price,
   total: number
-}
-
-interface Form {
-  name: string,
-  phone: string,
 }
 
 interface Langs {
@@ -43,7 +39,7 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
   }
   const [bestProducts, setBestProducts] = useState<BestProducts | null>()
   const langs = () => {
-    return Object.keys(Langs).filter((lang: string) => lang != lang)
+    return Object.keys(Langs).filter((l: string) => l != lang)
   }
   const [pathname, setPathname] = useState(useLocation().pathname)
   let [category, setCategory] = useState<string | null>(null)
@@ -51,10 +47,8 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
   let [subCategory, setSubCategory] = useState<string | null>(null)
   const [mattressColectionsPrice, setMattressColectionsPrice] = useState<MattressColectionPrice>()
   const [ordered, setOrdered] = useState(false)
-  const [form, setForm] = useState<Form>({
-    name: '',
-    phone: ''
-  })
+  const form = new Form<Help>(sendHelp)
+  const [data, setData] = useState<Help>({} as Help)
   const [error, setError] = useState(false)
   const [t, i18n] = useTranslation('header');
 
@@ -68,7 +62,7 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
       setMattressColectionsPrice(sortedData)
     })
   }, [])
-  
+
   const updateBestProducts = (location: Location, locChanged: boolean) => {
     if (locChanged) {
       setCategory(null)
@@ -159,17 +153,8 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
     return ''
   }
 
-  const updateForm = (key: keyof Form, value: string) => {
-    const changedForm = {...form}
-    changedForm[key as keyof Form] = value
-    setForm(changedForm)
-  }
-
   const submitForm = () => {
-    let r = sendHelp({
-      'name': form.name,
-      'phone': form.phone
-    }, Cookies.get('csrftoken') as string)
+    let r = form.submitForm(data)
 
     if (r == 'error: empty') {
       setError(true)
@@ -220,7 +205,7 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
           <Link to={'/cart' + location.search} className="h6 no-link no-hover">
             <FontAwesomeIcon icon='shopping-cart' />
             <br/>
-            <span>{t('cart')} <br/> {total} ({currency})</span>
+            <span className="text-nowrap">{t('cart')} <br/> {total} ({currency})</span>
           </Link>
         </div>
         <div className="col-1"></div>
@@ -384,20 +369,19 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
               <form style={{display: ordered ? 'block' : 'none'}} className="mt-3">
                 <label htmlFor="name">{t('name')}</label>
                 <br/>
-                <input
-                  style={{border: 'none', borderBottom: '1px solid var(--dark-cyan)'}}
-                  className="outline-0 no-hover w-100 px-0 mb-3"
+                <CustomInput
+                  color="dark-cyan"
+                  className="px-0 mb-3"
                   type="text"
                   id="name"
-                  placeholder="..."
-                  value={form.name}
-                  onChange={e => updateForm('name', e.target.value)}
+                  value={data.name}
+                  onChange={value => setData(form.updateForm(data, 'name', value))}
                 />
                 <CustomPhoneInput
                   lang={lang}
                   color="dark-cyan" 
-                  phone={form.phone}
-                  setPhone={phone => updateForm('phone', phone)}
+                  phone={data.phone}
+                  setPhone={phone => setData(form.updateForm(data, 'phone', phone))}
                 />
               </form>
             </div>

@@ -6,15 +6,15 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
+import { getProduct } from "./reusables/api";
+import { BedSheetsSize, Category, DetailedProduct, Size } from "./reusables/JSONTypes";
 import SectionImage from "./reusables/SectionImage";
-import { getCategory, getProduct } from "./reusables/api";
-import BedSheetsSizesManager from './reusables/BedSheetsSizesManager';
-import BedSizesManager from './reusables/BedSizesManager';
 import Hoverable from './reusables/Hoverable';
 import CustomButton from './reusables/CustomButton';
 import CustomLink from "./reusables/CustomLink";
+import BedSheetsSizesManager from './reusables/BedSheetsSizesManager';
+import BedSizesManager from './reusables/BedSizesManager';
 import { OutletContext } from "./App";
-import { BedSheetsSize, Category, DetailedProduct, Price, Size } from "./reusables/JSONTypes";
 
 interface Dimensions {
   width: number[],
@@ -22,21 +22,14 @@ interface Dimensions {
 }
 
 export default function ProductDetails() {
-  let outletContext: OutletContext = useOutletContext()
-  let isMobile = outletContext.isMobile;
+  const outletContext: OutletContext = useOutletContext()
+  const isMobile = outletContext.isMobile;
   const params = useParams()
-  const [lang, setLang] = useState(outletContext.lang);
-  const [currency, setCurrency] = useState(outletContext.currency)
+  const currency = outletContext.currency
   const [product, setProduct] = useState<DetailedProduct>()
-  const [category, setCategory] = useState<Category>({
-    name: params.category as string,
-    name_s: '',
-    name_pl: '',
-    default_filtering: '',
-    default_filtering_lang: ''
-  })
+  const [category, setCategory] = useState<Category>({} as Category)
   const [id, setId] = useState(Number(params.id));
-  const [size, setSize] = useState<Size | null>(null);
+  const [size, setSize] = useState<Size>();
   const [madeInMD, setMadeInMD] = useState(false)
   const [quantity, setQuantity] = useState(1)
   const [tabs, setTabs] = useState<string[]>([])
@@ -48,15 +41,13 @@ export default function ProductDetails() {
   const [t, i18n] = useTranslation('productDetails');
 
   const updateProduct = (path: Location) => {
-    setLang(path.search.replace('?lang=', ''))
-    let args = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
+    outletContext.updateLang(path.search.replace('?lang=', ''))
+    const args = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
     
-    setId(Number(id))
-    getCategory(args[1]).then((data) => {
-      setCategory(data)
-      setMadeInMD(['Bed', 'Basis', 'Stand'].includes(data.name))
-    })
-    getProduct(args[1], id).then((data) => {
+    setId(Number(args[2]))
+    getProduct(args[1], Number(args[2])).then((data) => {
+      setCategory(data.category)
+      setMadeInMD(['Bed', 'Basis', 'Stand'].includes(data.category.name))
       let tabs = ['description', 'characteristic'];
       if (data['structure']) {
         tabs.push('structure')
@@ -69,6 +60,7 @@ export default function ProductDetails() {
         data.characteristic[extra_length] = t('mattress') + ' + ' + data.characteristic[extra_length]
         data.characteristic[extra_width] = t('mattress') + ' + ' + data.characteristic[extra_width]
       }
+      
       setProduct(data)
       setSize(data.sizes[0])
       setTabs(tabs)
@@ -105,11 +97,6 @@ export default function ProductDetails() {
         return
       }
     }
-  }
-
-  const updateCurrency = (currency: keyof Price) => {
-    setCurrency(currency)
-    updateCurrency(currency)
   }
 
   const repr = (val: any) => {
@@ -240,7 +227,7 @@ export default function ProductDetails() {
                   {outletContext.getCurrencies().map((currency, index) => {
                   return (
                     <div
-                      onClick={() => updateCurrency(currency)}
+                      onClick={() => outletContext.updateCurrency(currency)}
                       className={"d-flex flex-row " + (currency != currency && "link")}
                       key={index}
                     >

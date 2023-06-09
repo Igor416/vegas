@@ -1,7 +1,8 @@
 import React from "react";
-import { useOutletContext, Location  } from "react-router-dom";
+import { useOutletContext } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from "react-i18next";
+
 import { OutletContext } from "./App";
 
 interface Shops {
@@ -9,8 +10,8 @@ interface Shops {
 }
 
 export default function Shops() {
-  let outletContext: OutletContext = useOutletContext()
-  let isMobile = outletContext.isMobile;
+  const outletContext: OutletContext = useOutletContext()
+  const isMobile = outletContext.isMobile;
   const [t, i18n] = useTranslation('shops');
 
   const shops: Shops = {

@@ -7,94 +7,79 @@ import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
+import { getProducts, getSales, sendProductHelp } from "./reusables/api";
+import { Category, Price, ListProduct, ProductHelp } from "./reusables/JSONTypes";
+import Form from "./reusables/form";
 import SectionImage from "./reusables/SectionImage";
-import { getCategory, getProducts, getSales, sendHelp } from "./reusables/api";
 import Hoverable from './reusables/Hoverable';
 import CustomButton from './reusables/CustomButton';
+import CustomInput from "./reusables/CustomInput";
 import CustomPhoneInput from './reusables/CustomPhoneInput';
 import { OutletContext } from "./App";
-import { Category, Price, Product } from "./reusables/JSONTypes";
-
-interface Form {
-  name: string,
-  phone: string
-}
 
 interface SortedProducts {
-  [key: string]: Array<Product | null>
+  [key: string]: Array<ListProduct | null>
 }
 
 export default function Catalog() {
-  let outletContext: OutletContext = useOutletContext()
-  let isMobile = outletContext.isMobile;
+  const outletContext: OutletContext = useOutletContext()
+  const isMobile = outletContext.isMobile;
   const params = useParams()
+  const lang = outletContext.lang;
+  const currency = outletContext.currency
   const [isGrid, toggleGrid] = useState(true)
-  const [lang, setLang] = useState(outletContext.lang);
-  const [currency, setCurrency] = useState(outletContext.currency)
-  const [category, setCategory] = useState<Category>({
-    name: params.category ? params.category : 'sales',
-    name_s: '',
-    name_pl: '',
-    default_filtering: '',
-    default_filtering_lang: ''
-  })
+  const [category, setCategory] = useState<Category>({} as Category)
   const [subCategory, setSubCategory] = useState<string>(params.sub_category as string)
   const [filter, setFilter] = useState(params.filter)
   const [products, setProducts] = useState<SortedProducts>()
-  const [active, setActive] = useState<null | Product>(null)
-  const [form, setForm] = useState<Form>({
-    name: '',
-    phone: ''
-  })
+  const [active, setActive] = useState<ListProduct>()
+  const form = new Form<ProductHelp>(sendProductHelp)
+  const [data, setData] = useState({} as ProductHelp)
   const [error, setError] = useState(false)
   const [t, i18n] = useTranslation('catalog');
 
   const updateProducts = (path: Location) => {
-    setLang(path.search.replace('?lang=', ''))
-    let args = path.pathname.slice(1).split('/')
-    //['catalog|sales', '<category>', '<subCategory>', '<?filter>']
+    outletContext.updateLang(path.search.replace('?lang=', ''))
+    const args = path.pathname.slice(1).split('/')
+    //['catalog'|'sales', '<category>', '<subCategory>', '<?filter>']
 
     if (args[0] == 'catalog') {
       setSubCategory(args[2])
       setFilter(args.length == 4 ? args[3] : '')
-      getCategory(args[1]).then((category_data) => {
-        setCategory(category_data);
-        getProducts(category.name, subCategory, filter).then((data) => {
-          let sortedProducts: SortedProducts = {
-            
-          };
-          let filtering, remainder;
+      getProducts(args[1], args[2], args.length == 4 ? args[3] : '').then((data) => {
+        setCategory(data[0].category);
+        let sortedProducts: SortedProducts = {};
+        let remainder;
 
-          if (Array.isArray(data[0].default_filtering)) {
-            for (let i = 0; i < data.length; i++) {
-              for (let j = 0; j < ( data.length - i -1 ); j++) {
-                if (data[j].default_filtering.length < data[j+1].default_filtering.length) {
-                  [data[j], data[j+1]] = [data[j + 1], data[j]]
-                }
+        if (Array.isArray(data[0].default_filtering)) {
+          for (let i = 0; i < data.length; i++) {
+            for (let j = 0; j < ( data.length - i -1 ); j++) {
+              if (data[j].default_filtering.length < data[j+1].default_filtering.length) {
+                [data[j], data[j+1]] = [data[j + 1], data[j]]
               }
             }
           }
+        }
 
-          for (let product of data) {
-            if (product.default_filtering in sortedProducts) {
-              sortedProducts[product.default_filtering].push(product)
-            }
-            else {
-              sortedProducts[product.default_filtering] = [product]
+        for (let product of data) {
+          if (product.default_filtering in sortedProducts) {
+            sortedProducts[product.default_filtering].push(product)
+          }
+          else {
+            sortedProducts[product.default_filtering] = [product]
+          }
+        }
+        
+        for (let filtering in sortedProducts) {
+          sortedProducts[filtering] = sortedProducts[filtering].sort((p1, p2) => p1 && p2 ? p1.name.localeCompare(p2.name) : -1)
+          remainder = sortedProducts[filtering].length % 3
+          if (remainder != 0) {
+            for (let i = 0; i < 3 - remainder; i++) {
+              sortedProducts[filtering].push(null)
             }
           }
-          
-          for (let filtering in sortedProducts) {
-            sortedProducts[filtering] = sortedProducts[filtering].sort((p1, p2) => p1 && p2 ? p1.name.localeCompare(p2.name) : -1)
-            remainder = sortedProducts[filtering].length % 3
-            if (remainder != 0) {
-              for (let i = 0; i < 3 - remainder; i++) {
-                sortedProducts[filtering].push(null)
-              }
-            }
-          }
-          setProducts(sortedProducts)
-        })
+        }
+        setProducts(sortedProducts)
       })
       return
     }
@@ -119,24 +104,10 @@ export default function Catalog() {
     })
   }
 
-  const updateCurrency = (currency: keyof Price) => {
-    setCurrency(currency)
-    outletContext.updateCurrency(currency)
-  }
-
-  const updateForm = (key: keyof Form, value: string) => {
-    const changedForm = {...form}
-    changedForm[key as keyof Form] = value
-    setForm(changedForm)
-  }
-
   const submitForm = () => {
-    let r = sendHelp({
-      category: category.name != 'sales' ? category.name_s : active?.category,
-      product: active?.name,
-      name: form.name,
-      phone: form.phone
-    }, Cookies.get('csrftoken') as string)
+    data.category = category.name != 'sales' ? category.name_s : active?.category.name_s as string
+    data.product = active?.name as string
+    let r = form.submitForm(data)
 
     if (r == 'error: empty') {
       setError(true)
@@ -166,7 +137,7 @@ export default function Catalog() {
               {outletContext.getCurrencies().map((currency, index) => {
               return (
                 <div
-                  onClick={() => updateCurrency(currency)}
+                  onClick={() => outletContext.updateCurrency(currency)}
                   className={"d-flex flex-row " + (currency != currency && "link")}
                   key={index}
                 >
@@ -307,20 +278,19 @@ export default function Catalog() {
               <form className="mt-3">
                 <label htmlFor="name">{t('name')}</label>
                 <br/>
-                <input
-                  style={{border: 'none', borderBottom: '1px solid var(--dark-cyan)'}}
-                  className="outline-0 no-hover w-100 px-0 mb-3"
+                <CustomInput
+                  color="dark-cyan"
+                  className="px-0 mb-3"
                   type="text"
                   id="name"
-                  placeholder="..."
-                  value={form.name}
-                  onChange={e => updateForm('name', e.target.value)}
+                  value={data.name}
+                  onChange={value => setData(form.updateForm(data, 'name', value))}
                 />
                 <CustomPhoneInput
                   lang={lang}
                   color="dark-cyan" 
-                  phone={form.phone}
-                  setPhone={phone => updateForm('phone', phone)}
+                  phone={data.phone}
+                  setPhone={phone => setData(form.updateForm(data, 'phone', phone))}
                 />
               </form>
             </div>

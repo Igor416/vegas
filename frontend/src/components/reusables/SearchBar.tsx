@@ -3,8 +3,9 @@ import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 
 import { sendSearch } from "./api"
-import CustomLink from './CustomLink';
 import { SearchResults } from "./JSONTypes";
+import CustomLink from './CustomLink';
+import CustomInput from "./CustomInput";
 
 interface SearchBarProps {
   width: string,
@@ -31,14 +32,14 @@ export default function SearchBar({width, currency}: SearchBarProps) {
 
   return (
     <div onMouseEnter={() => setShow(search.length > 1)} onMouseLeave={() => setShow(false)}>
-      <div className="input-group">
-        <input
-          className="form-control rounded-end rounded-pill bg-light h6 m-0 p-3 border-0 outline-0 no-hover"
+      <div className="input-group flex-nowrap">
+        <CustomInput
+          color="none"
+          className="form-control rounded-end rounded-pill bg-light h6 m-0 p-3"
           type="text"
-          name="searchQueryInput"
-          placeholder={t('search')}
+          id="searchQueryInput"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={value => setSearch(value)}
         />
         <button
           className="input-group-btn px-3 rounded-start rounded-pill mt-n5 bg-light border-0 outline-0 no-hover"

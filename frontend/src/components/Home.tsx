@@ -1,38 +1,30 @@
 import React, { useState } from "react";
 import { useOutletContext, Location } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Cookies from 'js-cookie'
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
 import { getBanners, getReviews, sendReview } from "./reusables/api";
-import CustomButton from "./reusables/CustomButton"
-import { OutletContext } from "./App";
 import { Banner, Review } from "./reusables/JSONTypes";
-
-interface Form {
-  title: string,
-  city: string,
-  text: string
-}
+import Form from "./reusables/form";
+import CustomButton from "./reusables/CustomButton"
+import CustomInput from "./reusables/CustomInput";
+import { OutletContext } from "./App";
 
 export default function Home() {
-  let outletContext: OutletContext = useOutletContext();
-  let isMobile = outletContext.isMobile;
-  const [lang, setLang] = useState(outletContext.lang);
+  const outletContext: OutletContext = useOutletContext();
+  const isMobile = outletContext.isMobile;
+  const lang = outletContext.lang;
   const [banners, setBanners] = useState<Banner[]>()
   const [reviews, setReviews] = useState<Review[]>()
-  const [form, setForm] = useState<Form>({
-    title: '',
-    city: '',
-    text: ''
-  })
+  const form = new Form<Review>(sendReview)
+  const [data, setData] = useState<Review>({} as Review)
   const [t, i18n] = useTranslation('home');
 
   const colors = ['lime-green', 'dark-cyan', 'deep-sky-blue']
 
   const updateLang = (path: Location) => {
-    setLang(path.search.replace('?lang=', ''))
+    outletContext.updateLang(path.search.replace('?lang=', ''))
 
     getBanners().then((data) => {
       setBanners(data)
@@ -42,20 +34,10 @@ export default function Home() {
     })
   }
 
-  const updateForm = (key: keyof Form, value: string) => {
-    const changedForm = {...form}
-    changedForm[key as keyof Form] = value
-    setForm(changedForm)
-  }
-
   const submitForm = () => {
     let today = new Date()
-    sendReview({
-      date: `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`,
-      title: form.title,
-      city: form.city,
-      text: form.text
-    }, Cookies.get('csrftoken') as string)
+    data.date = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+    form.submitForm(data)
   }
 
   return (
@@ -195,17 +177,17 @@ export default function Home() {
               </div>
             </div>
             <form className="my-5 text-start">
-              {Object.keys(form).map((key, index) => {
+              {Object.keys(data).filter(key => key != 'date').map((key, index) => {
               return (
               <div key={index} className="mt-2 d-flex flex-column">
                 <label htmlFor={key} className="h6">{t(key)}: </label>
-                <input
+                <CustomInput
+                  color="dark-cyan"
+                  className="px-0"
                   type="text"
                   id={key}
-                  value={form[key as keyof Form]}
-                  onChange={(e) => updateForm(key as keyof Form, e.target.value)}
-                  style={{border: 'none', borderBottom: '1px solid var(--dark-cyan)'}}
-                  className="outline-0 no-hover w-100 px-0"
+                  value={data[key as keyof Review]}
+                  onChange={value => setData(form.updateForm(data, key as keyof Review, value))}
                 />
               </div>
               )})}

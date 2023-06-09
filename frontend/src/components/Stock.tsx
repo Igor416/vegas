@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useOutletContext, Location } from "react-router-dom";
+import { useOutletContext, Location } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
 import { getStock } from "./reusables/api";
+import { Stock } from "./reusables/JSONTypes";
 import CustomLink from "./reusables/CustomLink";
 import { OutletContext } from "./App";
-import { Stock } from "./reusables/JSONTypes";
 
 export default function Stock() {
-  let outletContext: OutletContext = useOutletContext()
-  let isMobile = outletContext.isMobile;
-  const [lang, setLang] = useState(outletContext.lang);
+  const outletContext: OutletContext = useOutletContext()
+  const isMobile = outletContext.isMobile;
   const [stock, setStock] = useState<Stock[] | null>(null)
   const [currentStock, setCurrentStock] = useState<Stock | null>(null)
   const [t, i18n] = useTranslation('stock');
 
   const updateStock = (path: Location) => {
-    setLang(path.search.replace('?lang=', ''))
+    outletContext.updateLang(path.search.replace('?lang=', ''))
     getStock().then((data) => {
       setStock(data)
       setCurrentStock(data[0])

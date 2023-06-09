@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 
 import LocationListener from './reusables/LocationListener';
 import { getBestProducts, getMattressColectionsPrice } from "./reusables/api";
+import { BestProducts, MattressColectionPrice, Price } from "./reusables/JSONTypes.js";
 import SearchBar from "./reusables/SearchBar";
 import CustomLink from './reusables/CustomLink';
-import { BestProducts, MattressColectionPrice, Price } from "./reusables/JSONTypes.js";
 
 const CATEGORIES = require("../links.json");
 
@@ -29,15 +29,15 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
     ru: 'russian',
     ro: 'romanian'
   }
-  const [bestProducts, setBestProducts] = useState<BestProducts | null>()
+  const [bestProducts, setBestProducts] = useState<BestProducts>()
   const [menuOpened, setMenuOpened] = useState(false)
   const langs = () => {
     return Object.keys(Langs).filter((lang: string) => lang != lang)
   }
   const [pathname, setPathname] = useState(useLocation().pathname)
-  let [category, setCategory] = useState<string | null>(null)
-  let [categoryEN, setCategoryEN] = useState<string | null>(null)
-  let [subCategory, setSubCategory] = useState<string | null>(null)
+  const [category, setCategory] = useState<string>()
+  const [categoryEN, setCategoryEN] = useState<string>()
+  const [subCategory, setSubCategory] = useState<string>()
   const [mattressColectionsPrice, setMattressColectionsPrice] = useState<MattressColectionPrice>()
   const [t, i18n] = useTranslation('header');
 
@@ -69,27 +69,27 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
     setMenuOpened(!menuOpened)
     document.getElementById('header')?.classList.toggle('sticky-top')
     if (!menuOpened) {
-      setCategory(null)
-      setCategoryEN(null)
-      setSubCategory(null)
+      setCategory(undefined)
+      setCategoryEN(undefined)
+      setSubCategory(undefined)
     }
   }
 
-  const getEnCategory = (category: string | null) => {
+  const getEnCategory = (category: string) => {
     if (lang == 'en') {
       return category
     }
 
-    let categories = CATEGORIES[lang]
-    let keys = Object.keys(categories)
-    let categoriesEn = CATEGORIES.en
+    const categories = CATEGORIES[lang]
+    const keys = Object.keys(categories)
+    const categoriesEn = CATEGORIES.en
     
     for (let i = 0; i < keys.length; i++) {
       if (category == keys[i]) {
         return Object.keys(categoriesEn)[i]
       }
     }
-    return null
+    return undefined
   }
 
   const getLink = (subCategory: string, link: string | null = null): string => {
@@ -240,7 +240,7 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
         <div style={{left: 0, opacity: 0, height: '100vh'}} className={(category ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
           <div className="d-flex flex-column">
             <div
-              onClick={() => {setCategory(null); setCategoryEN(null)}}
+              onClick={() => {setCategory(undefined); setCategoryEN(undefined)}}
               style={{backgroundColor: 'var(--dark-cyan)'}}
               className="w-100 p-3 d-flex justify-content-between align-items-center border-bottom text-white"
             >
@@ -320,7 +320,7 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
         <div style={{left: 0, opacity: 0, height: '100vh'}} className={(subCategory ? "menu-show" : "menu-hide") + " position-absolute transition bg-white d-flex flex-column"}>
           <div className="d-flex flex-column">
             <div
-              onClick={() => setSubCategory(null)}
+              onClick={() => setSubCategory(undefined)}
               style={{backgroundColor: 'var(--dark-cyan)'}}
               className="w-100 p-3 d-flex justify-content-between align-items-center border-bottom text-white"
             >
