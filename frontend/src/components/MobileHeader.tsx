@@ -32,7 +32,7 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
   const [bestProducts, setBestProducts] = useState<BestProducts>()
   const [menuOpened, setMenuOpened] = useState(false)
   const langs = () => {
-    return Object.keys(Langs).filter((lang: string) => lang != lang)
+    return Object.keys(Langs).filter((l: string) => l != lang)
   }
   const [pathname, setPathname] = useState(useLocation().pathname)
   const [category, setCategory] = useState<string>()
