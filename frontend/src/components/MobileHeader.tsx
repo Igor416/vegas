@@ -154,7 +154,7 @@ export default function MobileHeader({updateLang, lang, currency, total}: Header
         </div>
         <div className="col-1"></div>
         <div className="col-2 d-flex row-nowrap justify-content-around p-3">
-        {Object.keys(langs()).map((lang, index) => {
+        {langs().map((lang, index) => {
         return (
           <Link key={index} to={pathname + '?lang=' + lang}>
             <button onClick={() => updateLang(lang)} className="p-2 bg-white border-0 outline-0 no-hover h4">
