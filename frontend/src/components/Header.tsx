@@ -183,9 +183,7 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
         {langs().map((lang, index) => {
         return (
           <Link key={index} to={pathname + '?lang=' + lang}>
-            <button
-              onClick={() => updateLang(lang)}
-              className="p-2 bg-white border-0 outline-0 no-hover">
+            <button onClick={() => updateLang(lang)} className="p-2 bg-white border-0 outline-0 no-hover">
               <img className="border" style={{ width: "2.5vw" }} src={"/static/images/" + Langs[lang] + ".png"}/>
             </button>
           </Link>
