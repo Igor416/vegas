@@ -1,4 +1,5 @@
-import { Banner, BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp } from "./JSONTypes"
+import Cookies from 'js-cookie'
+import { Banner, BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp } from './JSONTypes'
 
 export function getBanners(): Promise<Banner[]> {
   const url = '/news/banners/'
@@ -68,7 +69,7 @@ export function sendOrder(data: Order, csrftoken: string): Promise<Order> | stri
   }
   const url = '/telegram/order/'
 
-  return sendPostRequest<Order, Order>(url, data, csrftoken, '')
+  return sendPostRequest<Order, Order>(url, data, csrftoken)
 }
 
 export function sendProductHelp(data: ProductHelp, csrftoken: string): Promise<ProductHelp> | string {
@@ -79,7 +80,7 @@ export function sendProductHelp(data: ProductHelp, csrftoken: string): Promise<P
   }
   const url = '/telegram/order_call/'
 
-  return sendPostRequest<ProductHelp, ProductHelp>(url, data, csrftoken, '')
+  return sendPostRequest<ProductHelp, ProductHelp>(url, data, csrftoken)
 }
 
 export function sendHelp(data: Help, csrftoken: string): Promise<Help> | string {
@@ -90,25 +91,25 @@ export function sendHelp(data: Help, csrftoken: string): Promise<Help> | string 
   }
   const url = '/telegram/order_call/'
 
-  return sendPostRequest<Help, Help>(url, data, csrftoken, '')
+  return sendPostRequest<Help, Help>(url, data, csrftoken)
 }
 
-async function sendPostRequest<T, R>(url: string, body: T, csrftoken: string, postfix=location.search): Promise<R> {
+async function sendPostRequest<T, R>(url: string, body: T, csrftoken: string): Promise<R> {
   const options = {
-    method: "POST",
+    method: 'POST',
     headers: {
       'X-CSRFToken': csrftoken,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
   }
-  const response = await fetch(url + postfix, options);
+  const response = await fetch(url + '?lang=' + Cookies.get('lang'), options);
   const data = await response.json();
   return data;
 }
 
-async function sendGetRequest<T>(url: string, postfix=location.search): Promise<T> {
-  const response = await fetch(url + postfix);
+async function sendGetRequest<T>(url: string): Promise<T> {
+  const response = await fetch(url + '?lang=' + Cookies.get('lang'));
   const data = await response.json();
   return data;
 }

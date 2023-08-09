@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from "./reusables/LocationListener";
-import { getStock } from "./reusables/api";
-import { Stock } from "./reusables/JSONTypes";
+import { getStock } from "../api";
+import { Stock } from "../JSONTypes";
 import CustomLink from "./reusables/CustomLink";
 import { OutletContext } from "./App";
 
@@ -17,7 +17,6 @@ export default function Stock() {
   const [t, i18n] = useTranslation('stock');
 
   const updateStock = (path: Location) => {
-    outletContext.updateLang(path.search.replace('?lang=', ''))
     getStock().then((data) => {
       setStock(data)
       setCurrentStock(data[0])

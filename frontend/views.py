@@ -12,10 +12,11 @@ def index(request, *args, **kwargs):
         title = titles[title]
     
     try:
-        lang = request.GET['lang']
+        lang = request.COOKIES.get('lang').lower()
     except:
-        lang = 'en'
-        return redirect(request.path + '?lang=' + lang)
+        response = redirect(request.path)
+        response.set_cookie('lang', 'en')
+        return response
 
     langs = ['en', 'ro', 'ru']
     try:

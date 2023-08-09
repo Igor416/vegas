@@ -1,23 +1,18 @@
-import i18n from "i18next";
+import i18n from 'i18next';
 import Backend from 'i18next-http-backend';
-import { initReactI18next } from "react-i18next";
+import Cookies from 'js-cookie';
+import { initReactI18next } from 'react-i18next';
 
 export function detectLang(): string {
-  let lang;
-  let search = location.search;
+  let lang = Cookies.get('lang');
 
-  if (search.includes('?lang=')) {
-    lang = search.replace('?lang=', '').slice(0, 2);
-  } else {
+  if (!lang) {
     lang = navigator.language
     
     if (lang.includes('-')) {
       lang = lang.split('-')[0]
     }
-  }
-  
-  if (search != `?lang=${lang}`) {
-    location.replace(location.pathname + `?lang=${lang}`)
+    Cookies.set('lang', lang)
   }
   
   return lang;

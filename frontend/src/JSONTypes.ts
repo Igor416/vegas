@@ -51,11 +51,11 @@ export interface BedSheetsSize extends Size {
 }
 
 export interface BestProducts {
-  "MATTRESSES": BestProduct[],
-  "PILLOWS": BestProduct[],
-  "FOR KIDS": BestProduct[],
-  "BASISES": BestProduct[],
-  "FURNITURE": BestProduct[]
+  'MATTRESSES': BestProduct[],
+  'PILLOWS': BestProduct[],
+  'FOR KIDS': BestProduct[],
+  'BASISES': BestProduct[],
+  'FURNITURE': BestProduct[]
 }
 
 export interface Stock {

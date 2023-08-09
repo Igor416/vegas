@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface CustomInputProps {
   color: string,
@@ -14,7 +14,7 @@ export default function CustomInput({color, className, type, id, value, onChange
   return (
     <input
       style={{border: 'none', borderBottom: `1px solid var(--${color})`}}
-      className={"outline-0 no-hover w-100 " + className}
+      className={'outline-0 no-hover w-100 ' + className}
       type={type}
       checked={checked}
       id={id}

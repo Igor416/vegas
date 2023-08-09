@@ -1,6 +1,6 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
-import { BasicProduct, DetailedProduct, Price, Size } from "./JSONTypes"
+import { BasicProduct, DetailedProduct, Price, Size } from '../../JSONTypes'
 
 export default class Cart {
   products: BasicProduct[] = [];

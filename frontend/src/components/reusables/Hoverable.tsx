@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface HoverableProps {
   text: string
@@ -6,9 +6,9 @@ interface HoverableProps {
 
 export default function Hoverable({text}: HoverableProps) {
   return (
-    <div className="hoverable">
+    <div className='hoverable'>
       <span>{text}</span>
-      <div className="mt-1 transition"></div>
+      <div className='mt-1 transition'></div>
     </div>
   )
 }

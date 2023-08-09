@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 
-import { BedSheetsSize, Size } from "./JSONTypes";
+import { BedSheetsSize, Size } from '../../JSONTypes';
 
 interface BedSheetsSizesManagerProps {
   sizes: BedSheetsSize[],
@@ -23,21 +23,21 @@ export default function BedSheetsSizesManager({sizes, currentSize, changeSize}: 
 
   return (
     <div>
-      <div className="d-flex flex-column flex-wrap align-items-stretch h6">
-        <div className="mt-3">
+      <div className='d-flex flex-column flex-wrap align-items-stretch h6'>
+        <div className='mt-3'>
           <span>{t('width')} & {t('length')}:</span>
-          <div className="mt-2">
-            <div className="d-flex justify-content-between border-bottom p-2 dropdown-toggle" data-bs-toggle="dropdown">
+          <div className='mt-2'>
+            <div className='d-flex justify-content-between border-bottom p-2 dropdown-toggle' data-bs-toggle='dropdown'>
               <span>{reprSize(currentSize, true)}</span>
               <FontAwesomeIcon icon='angle-down' />
             </div>
-            <ul className="dropdown-menu">
+            <ul className='dropdown-menu'>
             {sizes.map((size, index) => {
             return (
               <li
                 onClick={() => size.price.EUR != currentSize.price.EUR && changeSize(size)}
                 key={index}
-                className="dimension p-1 ps-2"
+                className='dimension p-1 ps-2'
               >
                 {reprSize(size, true)}
               </li>
@@ -46,11 +46,11 @@ export default function BedSheetsSizesManager({sizes, currentSize, changeSize}: 
           </div>
         </div>
       </div>
-      <div className="d-flex flex-row flex-nowrap justify-content-between">
+      <div className='d-flex flex-row flex-nowrap justify-content-between'>
         <div>
           <span>{t('bedding_set')}:</span>
         </div>
-        <div className="d-flex flex-column mx-2">
+        <div className='d-flex flex-column mx-2'>
           <span>{t('duvet_cover')}: {reprSize(currentSize.duvet_cover_size)}</span>
           {currentSize['sheet_size']
           ?

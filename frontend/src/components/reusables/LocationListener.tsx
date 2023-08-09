@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation, Location } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 
 interface LocationListenerProps {
   locationChanged: (location: Location, locChanged: boolean) => void
@@ -9,10 +10,12 @@ interface LocationListenerProps {
 export default function LocationListener({locationChanged}: LocationListenerProps) {
   const [t, i18n] = useTranslation('main');
 
-  let location = useLocation();
-  let prevlocation = usePrevious(location);
+  const location = useLocation();
+  const prevlocation = usePrevious(location);
+  const [cookies, setCookie, removeCookie] = useCookies(['lang'])
+  const prevCookie = usePrevious(cookies)
   useEffect(() => {
-    if (prevlocation != undefined) {
+    if (prevlocation != undefined || prevCookie != undefined) {
       let title = location.pathname.split('/')[1]
       let titles = {
         '': 'home',
@@ -23,16 +26,16 @@ export default function LocationListener({locationChanged}: LocationListenerProp
       }
       document.title = t(`titles.${title}`);
     }
-    locationChanged(location, location.search == prevlocation?.search);
-  }, [location]);
+    locationChanged(location, location.pathname == prevlocation?.pathname);
+  }, [location, cookies.lang]);
 
-  return <div className="location-listener"></div>;
+  return <div id='location_listener'></div>;
 }
 
-function usePrevious(value: Location) {
-  const ref = useRef<Location>();
+function usePrevious(value?: any) {
+  const ref = useRef<any>();
   useEffect(() => {
     ref.current = value;
-  });
+  }, [value]);
   return ref.current;
 }
