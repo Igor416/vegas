@@ -1,10 +1,7 @@
 from django.contrib import admin
 from . import models
-from .catalog import Manager
+from . import catalog as ct
 from .forms import ProductForm, BedSheetsSizesForm, StockForm
-from .translations import RU
-
-manager = Manager()
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -31,7 +28,7 @@ class ImageListFilter(admin.SimpleListFilter):
     parameter_name = 'category'
 
     def lookups(self, request, model_admin):
-        return [(product_name, manager.get_pr_trans(product_name, 1, True)) for product_name in manager.get_all_products()]
+        return [(product_name, ct.get_pr_trans(product_name)) for product_name in ct.get_all_categories()]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -85,19 +82,19 @@ def unset_best(modeladmin, request, queryset):
 def remove_discount(modeladmin, request, queryset):
     queryset.update(discount=0)
 
-for product_name in manager.get_all_products():
+for product_name in ct.get_all_categories():
     form = type(product_name + 'Form', (ProductForm,), {})
     model = getattr(models, product_name)
-    model._meta.verbose_name = f'{manager.get_pr_trans(product_name, RU, False)}'
-    model._meta.verbose_name_plural = manager.get_pr_trans(product_name, RU, True)
+    model._meta.verbose_name = f'{ct.get_pr_trans(product_name)}'
+    model._meta.verbose_name_plural = ct.get_pr_trans(product_name)
     setattr(form, 'model', model)
 
     if model is models.BedSheets:
-        ordering = [manager.get_default_filtering(product_name), 'name_ru']
+        ordering = [ct.get_default_filtering(product_name), 'name_ru']
     elif model is models.Basis:
         ordering = ['name']
     else:
-        ordering = [manager.get_default_filtering(product_name), 'name']
+        ordering = [ct.get_default_filtering(product_name), 'name']
 
     attrs = {
         'form': form,
