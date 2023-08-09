@@ -1,75 +1,31 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .decorators import detect_lang, detect_country
-from . import serializers
-from .serializer_factory import BestProductSerializerFactory, ListedProductsSerializerFactory, DetailedProductSerializerFactory
-from .price import PriceManager
+from .serializers import CategoryResultSerializer, ProductResultSerializer, SizeSerializer, MattressColectionsPriceSerializer, StockSerializer
+from .serializers import BestProductSerializerFactory, ListedProductsSerializerFactory, DetailedProductSerializerFactory
+from .detectors import detect_lang, detect_country
+from .search import search_categories, search_products
 from .translations import sales, get_lang
-from .catalog import Manager
+from . import catalog as ct
 from . import models
-
-manager = Manager()
 
 class SearchView(APIView):
     @detect_country
     @detect_lang
     def post(self, request, lang, country):
         search = request.data['search']
-        if lang == 'en':
-            queryset_categories = models.Category.objects.filter(name_en_s__icontains=search)
+        categories_serializer = CategoryResultSerializer(search_categories(search, lang), country=country, lang=lang, many=True)
 
-        elif lang == 'ru':
-            #sqllite3 doesn't support utf-8 search with insensitive case
-            objects_categories = models.Category.objects
-            queryset_categories = objects_categories.filter(name_ru_s__contains=search.lower())
-            queryset_categories |= objects_categories.filter(name_ru_s__contains=search.title())
+        products_data = []
+        for queryset in search_products(search, lang):
+            products_data.append(ProductResultSerializer(queryset, country=country, lang=lang, many=True))
 
-        elif lang == 'ro':
-            queryset_categories = models.Category.objects.filter(name_ro_s__icontains=search)
-
-        categories = []
-        
-        for entry in queryset_categories:
-            categories.append({
-                'link': f'/catalog/{entry.name}/all',
-                'text': getattr(entry, f'name_{lang}_pl'),
-                'count': len(getattr(models, entry.name).objects.get_all())
-            })
-
-        products = []
-        for product_name in manager.get_all_products():
-            model = getattr(models, product_name)
-            if model is models.BedSheets:
-                if lang == 'en':
-                    queryset_products = model.objects.filter(name_en__icontains=search)
-
-                elif lang == 'ru':
-                    #sqllite3 doesn't support utf-8 search with insensitive case
-                    objects = models.BedSheets.objects
-                    queryset_products = objects.filter(name_ru__contains=search.lower())
-                    queryset_products |= objects.filter(name_ru__contains=search.title())
-
-                elif lang == 'ro':
-                    queryset_products = model.objects.filter(name_ro__icontains=search)
-            else:
-                queryset_products = model.objects.filter(name__icontains=search)
-
-            for entry in queryset_products:
-                product = {
-                    'link': f'/product/{entry.category.name}/{entry.id}',
-                    'text': f'{getattr(entry.category, f"name_{lang}_s")}: {entry.name}',
-                    'priceEUR': entry.sizes.all()[0].priceEUR,
-                    'discount': entry.discount
-                }
-                products.append(PriceManager(product, country).container)
-
-        return Response({'categories': categories, 'products': products})
+        return Response({'categories': categories_serializer.data, 'products': products_data})
 
 class BestView(APIView):
     @detect_country
     @detect_lang
     def get(self, request, lang, country):
-        products, sizes = manager.get_best()
+        products, sizes = ct.get_best()
         resp = dict()
         
         for key, vals in products.items():
@@ -83,7 +39,7 @@ class BestView(APIView):
         for i, base, size in zip(range(len(sizes)), resp['BASISES'], sizes):
             width, length = size
             queryset = models.Size.objects.get(product=base['name'], width=width, length=length)
-            resp['BASISES'][i]['size'] = serializers.SizeSerializer(queryset, country=country).data
+            resp['BASISES'][i]['size'] = SizeSerializer(queryset, country=country).data
 
         return Response(resp)
 
@@ -91,10 +47,10 @@ class MattressColectionsPriceView(APIView):
     @detect_country
     def get(self, request, country):
         queryset = models.Choice.objects.filter(name='collection')
-        serializer = serializers.MattressColectionsPriceSerializer(queryset, country=country, many=True)
+        serializer = MattressColectionsPriceSerializer(queryset, country=country, many=True)
         return Response(serializer.data)
 
-class ProductsView(APIView):
+class ListedProductsView(APIView):
     @detect_country
     @detect_lang
     def get(self, request, lang, country, category, sub_category, filter=None):
@@ -104,7 +60,7 @@ class ProductsView(APIView):
         serializer = ListedProductsSerializerFactory(model, lang).create(queryset, country=country, lang=lang, many=True)
         return Response(serializer.data)
 
-class ProductDetailsView(APIView):
+class DetailedProductView(APIView):
     @detect_country
     @detect_lang
     def get(self, request, lang, country, category, id):
@@ -125,15 +81,11 @@ class SalesView(APIView):
             data = ListedProductsSerializerFactory(model, lang).create(queryset, country=country, lang=lang).data
             resp.append(data)
 
-        return Response({
-            'products': resp,
-            'name_s': sales['name_s'][get_lang(lang)],
-            'name_pl': sales['name_pl'][get_lang(lang)],
-        })
+        return Response({'products': resp, 'name_s': sales['name_s'][get_lang(lang)], 'name_pl': sales['name_pl'][get_lang(lang)]})
 
 class StockView(APIView):
     @detect_lang
     def get(self, request, lang):
         queryset = models.Stock.objects.all()
-        serializer = serializers.StockSerializer(instance=queryset, lang=lang, many=True)
+        serializer = StockSerializer(queryset, lang=lang, many=True)
         return Response(sorted(serializer.data, key=lambda stock: stock['discount'], reverse=True))
