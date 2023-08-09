@@ -2,9 +2,9 @@ from django.db import models
 
 # Create your models here.
 class Banner(models.Model):
-    banner_en = models.ImageField('Баннер (en)', upload_to="news")
-    banner_ru = models.ImageField('Баннер (ru)', upload_to="news")
-    banner_ro = models.ImageField('Баннер (ro)', upload_to="news")
+    banner_en = models.ImageField('Баннер (en)', upload_to='news')
+    banner_ru = models.ImageField('Баннер (ru)', upload_to='news')
+    banner_ro = models.ImageField('Баннер (ro)', upload_to='news')
 
     def __str__(self):
         return self.banner_ru.name
