@@ -1,10 +1,9 @@
-from . import models
-from .serializers import BestProductSerializer, ListedProductsSerializer, DetailedProductSerializer
-from .serializers import ChoiceSerializer, MarkerSerializer, TechnologySerializer, BedSheetsSizeSerializer, RecomendedSerializer
-from .catalog import Manager
-#from .translations import get_lang
-
-manager = Manager()
+from . import models, catalog as ct
+from .meta_products import BestProductSerializer, ListedProductsSerializer, DetailedProductSerializer
+from .choice import ChoiceSerializer
+from .technologies import TechnologySerializer
+from .marker import MarkerSerializer
+from .size import BedSheetsSizeSerializer
 
 class ProductSerializerFactory:
     class Meta:
@@ -40,7 +39,7 @@ class ListedProductsSerializerFactory(ProductSerializerFactory):
         self.Meta.fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', 'category']
         
         if self.model is not models.Basis:
-            self.Meta.fields.append(manager.get_default_filtering(self.model.get_name()))
+            self.Meta.fields.append(ct.get_default_filtering(self.model.get_name()))
             if self.model is models.Mattress:
                 self.Meta.fields.append('markers')
             elif self.model is models.BedSheets:
@@ -48,7 +47,7 @@ class ListedProductsSerializerFactory(ProductSerializerFactory):
             
     def set_fields(self):
         if self.model is not models.Basis:
-            default_filtering = manager.get_default_filtering(self.model.get_name())
+            default_filtering = ct.get_default_filtering(self.model.get_name())
             many = self.model is not models.Basis and models.has_multiple_rels(self.model, default_filtering)
                 
             self.fields.update({
@@ -67,7 +66,7 @@ class DetailedProductSerializerFactory(ProductSerializerFactory):
         self.Meta.fields = '__all__'
             
     def set_fields(self):
-        for prop in filter(lambda prop: prop != 'rigidity', manager.get_all_props(self.model.get_name())):
+        for prop in filter(lambda prop: prop != 'rigidity', ct.get_all_props(self.model.get_name())):
             many = models.has_multiple_rels(self.model, prop)
             serializer = ChoiceSerializer(self.lang, many=many)
             self.fields.update({prop: serializer})
@@ -86,4 +85,4 @@ class DetailedProductSerializerFactory(ProductSerializerFactory):
         elif self.model is models.BedSheets:
             self.fields.update({'sizes': BedSheetsSizeSerializer(self.lang, many=True)})
         elif self.model is models.Basis:
-            self.fields.update({'recomended': RecomendedSerializer(many=True)})
+            self.fields.update({'recomended': ChoiceSerializer(many=True)})
