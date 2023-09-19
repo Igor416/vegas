@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import LocationListener from './reusables/LocationListener';
 import { getBanners, getCategories, getReviews, sendReview } from '../api';
-import { Banner, Category, Review } from '../JSONTypes';
+import { Category, Review } from '../JSONTypes';
 import Form from './services/form';
 import CustomButton from './reusables/CustomButton'
 import CustomInput from './reusables/CustomInput';
@@ -15,7 +15,7 @@ export default function Home() {
   const outletContext: OutletContext = useOutletContext();
   const isMobile = outletContext.isMobile;
   const lang = outletContext.lang;
-  const [banners, setBanners] = useState<Banner[]>()
+  const [banners, setBanners] = useState<string[]>()
   const [reviews, setReviews] = useState<Review[]>()
   const [categories, setCategories] = useState<Category[]>()
   const [pickedCategory, pickCategory] = useState(0)
@@ -50,7 +50,7 @@ export default function Home() {
               {banners.map((banner, index) => {
               return (
                 <div key={index} className={'carousel-item ' + (index == 0 ? 'active' : '')}>
-                  <img src={banner.banner} className='d-block w-100' />
+                  <img src={banner} className='d-block w-100' />
                 </div>
               )})}
               </div>

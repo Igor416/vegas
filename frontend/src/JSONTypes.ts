@@ -1,7 +1,3 @@
-export interface Banner {
-  banner: string,
-}
-
 export interface Review {
   title: string,
   date: string,

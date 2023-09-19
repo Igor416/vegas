@@ -1,11 +1,10 @@
 import Cookies from 'js-cookie'
-import { Banner, BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp, Category } from './JSONTypes'
-import { func } from 'prop-types'
+import { BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp, Category } from './JSONTypes'
 
-export function getBanners(): Promise<Banner[]> {
+export function getBanners(): Promise<string[]> {
   const url = '/news/banners/'
 
-  return sendGetRequest<Banner[]>(url)
+  return sendGetRequest<string[]>(url)
 }
 
 export function getReviews(): Promise<Review[]> {
