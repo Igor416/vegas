@@ -31,8 +31,12 @@ export default function Shops() {
       'Mun Chișinău, bd. Mircea cel Bătrîn 14',
       '0 (79) 40-70-22'
     ],
+    'Ternopan Confort': [
+      'Mun Orhei, str. Chișinău 5',
+      '0 (69) 47-29-56'
+    ],
     'Municipiul Brașov': [
-      'Municipiul Brașov, Bulevardul  MUNCII, Nr.4, PARTER, MAGAZINUL Nr. 7, Scara C-D, Județ Brașov',
+      'Mun Brașov, Bulevardul  MUNCII, Nr.4, PARTER, MAGAZINUL Nr. 7, Scara C-D, Județ Brașov',
       '-'
     ]
   }
