@@ -75,12 +75,12 @@ export interface Category {
   name: string,
   name_s: string,
   name_pl: string,
+  desc: string,
   default_filtering: string,
   default_filtering_lang: string
 }
 
 interface Product {
-  id: number,
   name: string,
   discount: number,
 }

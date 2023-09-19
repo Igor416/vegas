@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
-import { Banner, BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp } from './JSONTypes'
+import { Banner, BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp, Category } from './JSONTypes'
+import { func } from 'prop-types'
 
 export function getBanners(): Promise<Banner[]> {
   const url = '/news/banners/'
@@ -13,16 +14,16 @@ export function getReviews(): Promise<Review[]> {
   return sendGetRequest<Review[]>(url)
 }
 
-export function sendReview(review: Review, csrftoken: string): Promise<Review> {
+export function sendReview(review: Review): Promise<Review> {
   const url = '/news/reviews/'
 
-  return sendPostRequest<Review, Review>(url, review, csrftoken)
+  return sendPostRequest<Review, Review>(url, review)
 }
 
-export function sendSearch(search: string, csrftoken: string): Promise<SearchResults> {
+export function sendSearch(search: string): Promise<SearchResults> {
   const url = '/api/search/'
   
-  return sendPostRequest<Search, SearchResults>(url, {search: search}, csrftoken)
+  return sendPostRequest<Search, SearchResults>(url, {search: search})
 }
 
 export function getBestProducts(): Promise<BestProducts> {
@@ -43,6 +44,12 @@ export function getMattressColectionsPrice(): Promise<MattressColectionPrice[]> 
   return sendGetRequest<MattressColectionPrice[]>(url)
 }
 
+export function getCategories(): Promise<Category[]> {
+  const url = 'api/categories/'
+
+  return sendGetRequest<Category[]>(url)
+}
+
 export function getProducts(name: string, sub_category: string, filter: string | null = null): Promise<ListProduct[]> {
   const url = `/api/products/${name}/${sub_category}/` + (filter ? filter + '/' : '')
 
@@ -55,13 +62,13 @@ export function getSales(): Promise<Sales> {
   return sendGetRequest<Sales>(url)
 }
 
-export function getProduct(name: string, id: number): Promise<DetailedProduct> {
-  const url = `/api/product/${name}/${id}/`
+export function getProduct(category: string, name: string): Promise<DetailedProduct> {
+  const url = `/api/product/${category}/${name}/`
 
   return sendGetRequest<DetailedProduct>(url);
 }
 
-export function sendOrder(data: Order, csrftoken: string): Promise<Order> | string {
+export function sendOrder(data: Order): Promise<Order> | string {
   for (let key in data) {
     if (data[key as keyof Order] == '') {
       return 'error: empty'
@@ -69,10 +76,10 @@ export function sendOrder(data: Order, csrftoken: string): Promise<Order> | stri
   }
   const url = '/telegram/order/'
 
-  return sendPostRequest<Order, Order>(url, data, csrftoken)
+  return sendPostRequest<Order, Order>(url, data)
 }
 
-export function sendProductHelp(data: ProductHelp, csrftoken: string): Promise<ProductHelp> | string {
+export function sendProductHelp(data: ProductHelp): Promise<ProductHelp> | string {
   for (let key in data) {
     if (data[key as keyof Help] == '' || data[key as keyof Help] == undefined) {
       return 'error: empty'
@@ -80,10 +87,10 @@ export function sendProductHelp(data: ProductHelp, csrftoken: string): Promise<P
   }
   const url = '/telegram/order_call/'
 
-  return sendPostRequest<ProductHelp, ProductHelp>(url, data, csrftoken)
+  return sendPostRequest<ProductHelp, ProductHelp>(url, data)
 }
 
-export function sendHelp(data: Help, csrftoken: string): Promise<Help> | string {
+export function sendHelp(data: Help): Promise<Help> | string {
   for (let key in data) {
     if (data[key as keyof Help] == '' || data[key as keyof Help] == undefined) {
       return 'error: empty'
@@ -91,14 +98,14 @@ export function sendHelp(data: Help, csrftoken: string): Promise<Help> | string 
   }
   const url = '/telegram/order_call/'
 
-  return sendPostRequest<Help, Help>(url, data, csrftoken)
+  return sendPostRequest<Help, Help>(url, data)
 }
 
-async function sendPostRequest<T, R>(url: string, body: T, csrftoken: string): Promise<R> {
+async function sendPostRequest<T, R>(url: string, body: T): Promise<R> {
   const options = {
     method: 'POST',
     headers: {
-      'X-CSRFToken': csrftoken,
+      'X-CSRFToken': Cookies.get('csrftoken') as string,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
