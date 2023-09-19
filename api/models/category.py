@@ -12,9 +12,9 @@ class Category(models.Model):
   name_ro_s = models.CharField(max_length=32)
   name_ro_pl = models.CharField(max_length=32)
   
-  desc_en = models.TextField('Описание (en)', default='')
-  desc_ru = models.TextField('Описание (ru)', default='')
-  desc_ro = models.TextField('Описание (ro)', default='')
+  desc_en = models.TextField('Описание (en)', blank=True)
+  desc_ru = models.TextField('Описание (ru)', blank=True)
+  desc_ro = models.TextField('Описание (ro)', blank=True)
 
   def __str__(self):
       return self.name_ru_s
