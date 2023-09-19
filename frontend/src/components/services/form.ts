@@ -1,9 +1,7 @@
-import Cookies from 'js-cookie'
-
 export default class Form<T> {
-  private apiCallback: (data: T, csrftoken: string) => Promise<T> | string
+  private apiCallback: (data: T) => Promise<T> | string
 
-  constructor(apiCallback: (data: T, csrftoken: string) => Promise<T> | string) {
+  constructor(apiCallback: (data: T) => Promise<T> | string) {
     this.apiCallback = apiCallback;
   }
 
@@ -13,6 +11,6 @@ export default class Form<T> {
   }
 
   submitForm(data: T): Promise<T> | string {
-    return this.apiCallback(data, Cookies.get('csrftoken') as string)
+    return this.apiCallback(data)
   }
 }
