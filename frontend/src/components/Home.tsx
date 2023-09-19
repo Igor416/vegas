@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useOutletContext, Location } from 'react-router-dom';
+import { useOutletContext, Location, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
 
 import LocationListener from './reusables/LocationListener';
-import { getBanners, getReviews, sendReview } from '../api';
-import { Banner, Review } from '../JSONTypes';
+import { getBanners, getCategories, getReviews, sendReview } from '../api';
+import { Banner, Category, Review } from '../JSONTypes';
 import Form from './services/form';
 import CustomButton from './reusables/CustomButton'
 import CustomInput from './reusables/CustomInput';
@@ -17,6 +17,8 @@ export default function Home() {
   const lang = outletContext.lang;
   const [banners, setBanners] = useState<Banner[]>()
   const [reviews, setReviews] = useState<Review[]>()
+  const [categories, setCategories] = useState<Category[]>()
+  const [pickedCategory, pickCategory] = useState(0)
   const form = new Form<Review>(sendReview)
   const [data, setData] = useState<Review>({} as Review)
   const [t, i18n] = useTranslation('home');
@@ -24,12 +26,9 @@ export default function Home() {
   const colors = ['lime-green', 'dark-cyan', 'deep-sky-blue']
 
   const updateLang = (path: Location) => {
-    getBanners().then((data) => {
-      setBanners(data)
-    })
-    getReviews().then((data) => {
-      setReviews(data)
-    })
+    getBanners().then(setBanners)
+    getReviews().then(setReviews)
+    getCategories().then(setCategories)
   }
 
   const submitForm = () => {
@@ -76,6 +75,23 @@ export default function Home() {
           </div>
           <div className='col-sm-1'></div>
         </div>
+        {categories && isMobile && <div className='d-flex flex-column col-12 mt-5'>
+          <div className='d-flex flex-nowrap overflow-scroll col-12'>
+            {categories.map((category, i) => {
+              return <div onClick={() => pickCategory(i)} key={i} className='d-flex flex-column align-items-center col-5'>
+                <img src={`/static/images/${category.name.toLowerCase()}_icon.png`} />
+                <span className='h5'>{category.name_s}</span>
+              </div>
+            })}
+          </div>
+          <div className='d-flex flex-column align-items-center col-12 p-2'>
+            <span className='h3 col-12 text-center'>{categories[pickedCategory].name_s}</span>
+            <span className='h6 col-12'>{categories[pickedCategory].desc}</span>
+            <Link to={'/catalog/' + categories[pickedCategory].name + '/all'}>
+              <CustomButton color='lime-green' text={t('category')} />
+            </Link>
+          </div>
+        </div>}
         <div className={(isMobile ? 'flex-column' : 'row-nowrap') + ' d-flex p-2 py-sm-5 px-sm-0 bg-light justify-content-center align-items-center mt-5'}>
           <img src='/static/images/logo.png'/>
           <span style={{fontWeight: 400}} className='ms-sm-5 h1'>{t('is')}</span>
