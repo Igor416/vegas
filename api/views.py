@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import CategoryResultSerializer, ProductResultSerializer, SizeSerializer, MattressColectionsPriceSerializer, StockSerializer
+from .serializers import CategoryResultSerializer, ProductResultSerializer, SizeSerializer, MattressColectionsPriceSerializer, CategorySerializer, StockSerializer
 from .serializers import BestProductSerializerFactory, ListedProductsSerializerFactory, DetailedProductSerializerFactory
 from .detectors import detect_lang, detect_country
 from .search import search_categories, search_products
@@ -50,6 +50,13 @@ class MattressColectionsPriceView(APIView):
         serializer = MattressColectionsPriceSerializer(queryset, country=country, many=True)
         return Response(serializer.data)
 
+class CategoryView(APIView):
+    @detect_lang
+    def get(self, request, lang):
+        queryset = models.Category.objects.exclude(desc_en='')
+        serializer = CategorySerializer(queryset, lang=lang, many=True)
+        return Response(serializer.data)
+
 class ListedProductsView(APIView):
     @detect_country
     @detect_lang
@@ -63,9 +70,13 @@ class ListedProductsView(APIView):
 class DetailedProductView(APIView):
     @detect_country
     @detect_lang
-    def get(self, request, lang, country, category, id):
+    def get(self, request, lang, country, category, name):
         model = getattr(models, category)
-        queryset = model.objects.get(id=id)
+        if model is models.BedSheets:
+            queryset = models.objects.filter(name_ru=name) | models.objects.filter(name_en=name) | models.objects.filter(name_ro=name)
+            queryset = queryset[0]
+        else:
+            queryset = model.objects.get(name=name)
         serializer = DetailedProductSerializerFactory(model, lang).create(queryset, country=country, lang=lang)
         return Response(serializer.data)
 
@@ -89,3 +100,9 @@ class StockView(APIView):
         queryset = models.Stock.objects.all()
         serializer = StockSerializer(queryset, lang=lang, many=True)
         return Response(sorted(serializer.data, key=lambda stock: stock['discount'], reverse=True))
+    
+class WorkerView(APIView):
+    def get(self, request):
+        return Response()
+            
+            
