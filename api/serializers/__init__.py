@@ -12,6 +12,7 @@ class PriceSerializer(PriceExtractor, ModelSerializer):
   def  __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
+from .category import CategorySerializer
 from .search import CategoryResultSerializer, ProductResultSerializer
 from .size import SizeSerializer
 from .mattres_collection_price import MattressColectionsPriceSerializer

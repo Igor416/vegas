@@ -11,6 +11,10 @@ class Category(models.Model):
   name_ru_pl = models.CharField(max_length=32)
   name_ro_s = models.CharField(max_length=32)
   name_ro_pl = models.CharField(max_length=32)
+  
+  desc_en = models.TextField('Описание (en)', default='')
+  desc_ru = models.TextField('Описание (ru)', default='')
+  desc_ro = models.TextField('Описание (ro)', default='')
 
   def __str__(self):
       return self.name_ru_s

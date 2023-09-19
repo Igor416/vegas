@@ -16,6 +16,7 @@ class CategorySerializer(LangDetectiveSerializer):
       'name': obj.name,
       'name_s': getattr(obj, f'name_{self.lang}_s'),
       'name_pl': getattr(obj, f'name_{self.lang}_pl'),
+      'desc': getattr(obj, f'desc_{self.lang}')
     }
     
     if obj.name != 'Basis':
