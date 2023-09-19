@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { useTranslation } from 'react-i18next';
 
 import { sendSearch } from '../../api'
@@ -21,7 +20,7 @@ export default function SearchBar({width, currency}: SearchBarProps) {
   let submitForm = () => {
     if (search.length > 1) {
       setShow(true)
-      sendSearch(search, Cookies.get('csrftoken') as string).then(data => setRes(data))
+      sendSearch(search).then(data => setRes(data))
       return
     }
     setRes({categories: [], products: []})
@@ -31,7 +30,7 @@ export default function SearchBar({width, currency}: SearchBarProps) {
   useEffect(submitForm, [search])
 
   return (
-    <div onMouseEnter={() => setShow(search.length > 1)} onMouseLeave={() => setShow(false)}>
+    <div onMouseEnter={() => setShow(search.length > 1)} onMouseLeave={() => setShow(false)} className='flex-grow-1'>
       <div className='input-group flex-nowrap'>
         <CustomInput
           color='none'
