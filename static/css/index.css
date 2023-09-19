@@ -35,9 +35,12 @@ img {
   background-color: var(--dark-cyan);
   padding: 1.5em;
   color: white;
-  font-size: 0.8rem;
-  font-weight: bold;
   text-align: center;
+}
+
+#announcement h1 {
+  font-size: 0.8rem !important;
+  font-weight: bold !important;
 }
 
 footer {
