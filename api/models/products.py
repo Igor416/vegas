@@ -32,7 +32,11 @@ class Product(models.Model):
 
     def __str__(self):
         default_filtering = ct.get_default_filtering(self.get_name())
-        return f'{self._meta.verbose_name}: {self.name}, {ct.get_prop_trans(default_filtering)}: {getattr(self, default_filtering).property_ru}'
+        try:
+            property = getattr(self, default_filtering).property_ru
+        except:
+            property = getattr(self, default_filtering).first().property_ru
+        return f'{self._meta.verbose_name}: {self.name}, {ct.get_prop_trans(default_filtering)}: {property}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
