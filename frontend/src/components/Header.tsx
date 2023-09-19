@@ -298,7 +298,7 @@ export default function Header({updateLang, lang, currency, total}: HeaderProps)
             {bestProducts && category && bestProducts[categoryEN as keyof BestProducts].map((product, index) => {
             return (
             <div key={index} className={(index != 0 ? 'border-start' : '') + ' col-2 p-2'}>
-              <Link className='no-hover no-link text-end' to={`/product/${product.category}/${product.id}`}>
+              <Link className='no-hover no-link text-end' to={`/product/${product.category}/${product.name}`}>
                 <span className='h6'>{product.category_name} {product.name}</span>
                 <div className='text-start' style={{color: 'gold'}}>
                   <FontAwesomeIcon icon={faStar as IconProp}/>

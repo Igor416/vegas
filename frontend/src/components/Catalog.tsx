@@ -95,6 +95,7 @@ export default function Catalog() {
         name: 'sales',
         name_s: data.name_s,
         name_pl: data.name_pl,
+        desc: '',
         default_filtering: '',
         default_filtering_lang: data.name_pl
       })
@@ -240,11 +241,11 @@ export default function Catalog() {
                   <div className='d-flex mt-4 flex-row row-nowrap justify-content-between h5'>
                     {category.name != 'sales'
                     ?
-                    <Link to={`/product/${category.name}/${product.id}`}>
+                    <Link to={`/product/${category.name}/${product.name}`}>
                       <CustomButton color='lime-green' text={t('details')} />
                     </Link>
                     :
-                    <Link to={`/product/${product.category}/${product.id}`}>
+                    <Link to={`/product/${product.category.name}/${product.name}`}>
                       <CustomButton color='lime-green' text={t('details')} />
                     </Link>
                     }

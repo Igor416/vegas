@@ -44,20 +44,19 @@ export default class Cart {
   addProduct(category: string, product: DetailedProduct, size: Size, quantity: number) {
     let contains, pr
     for (pr of this.products) {
-      if (pr.id == product.id && pr.category == category && pr.size == size.width + ' x ' + size.length) {
+      if (pr.name == product.name && pr.category == category && pr.size == size.width + ' x ' + size.length) {
         contains = true
         break
       }
     }
     if (contains) {
-      this.updateQuantity(category, product.id, (pr as BasicProduct).quantity + quantity)
+      this.updateQuantity(category, product.name, (pr as BasicProduct).quantity + quantity)
       return
     }
 
     let newProduct: BasicProduct = {
       category: category,
       name: product.name,
-      id: product.id,
       discount: product.discount,
       size: size.width + ' x ' + size.length,
       quantity: quantity,
@@ -85,14 +84,14 @@ export default class Cart {
     Cookies.set('products', this.encodeProducts(this.products))
   }
 
-  deleteProduct(category: string, id: number, size: string) {
-    this.products = this.products.filter(pr => !(pr.id == id && pr.category == category && pr.size == size))
+  deleteProduct(category: string, name: string, size: string) {
+    this.products = this.products.filter(pr => !(pr.name == name && pr.category == category && pr.size == size))
     this.calcTotal()
     Cookies.set('products', this.encodeProducts(this.products))
   }
 
-  updateQuantity(category: string, id: number, quantity: number) {
-    const product = this.products.filter(pr => pr.category == category && pr.id == id)[0]
+  updateQuantity(category: string, name: string, quantity: number) {
+    const product = this.products.filter(pr => pr.category == category && pr.name == name)[0]
     for (let currency of this.getCurrencies()) {
       product.sum[currency] = +(product.sum[currency] * quantity / product.quantity).toFixed(2)
     }
@@ -134,7 +133,6 @@ export default class Cart {
       let productEnc: BasicProduct = {
         category: '',
         name: '',
-        id: 0,
         discount: 0,
         size: '',
         quantity: 0,
@@ -159,7 +157,7 @@ export default class Cart {
             productEnc.price[key.slice(-3)] = Number(value)
           } else if (key.includes('sum')) {
             productEnc.sum[key.slice(-3)] = Number(value)
-          } else if (key == 'id' || key == 'discount' || key == 'quantity') {
+          } else if (key == 'discount' || key == 'quantity') {
             productEnc[key] = Number(value)
           } else if (key == 'category' || key == 'name' || key == 'size') {
             productEnc[key] = value

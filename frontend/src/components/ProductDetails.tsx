@@ -28,7 +28,7 @@ export default function ProductDetails() {
   const currency = outletContext.currency
   const [product, setProduct] = useState<DetailedProduct>()
   const [category, setCategory] = useState<Category>({} as Category)
-  const [id, setId] = useState(Number(params.id));
+  const [name, setName] = useState(params.name);
   const [size, setSize] = useState<Size>();
   const [madeInMD, setMadeInMD] = useState(false)
   const [quantity, setQuantity] = useState(1)
@@ -41,10 +41,10 @@ export default function ProductDetails() {
   const [t, i18n] = useTranslation('productDetails');
 
   const updateProduct = (path: Location) => {
-    const args = path.pathname.slice(1).split('/') //['product', '<category>', '<id>']
+    const args = path.pathname.slice(1).split('/') //['product', '<category>', '<name>']
     
-    setId(Number(args[2]))
-    getProduct(args[1], Number(args[2])).then((data) => {
+    setName(args[2])
+    getProduct(args[1], args[2]).then((data) => {
       setCategory(data.category)
       setMadeInMD(['Bed', 'Basis', 'Stand'].includes(data.category.name))
       let tabs = ['description', 'characteristic'];

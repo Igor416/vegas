@@ -27,7 +27,7 @@ export default function Cart() {
   const updateProducts = (path: Location, locationChanged?: boolean) => {
     let newProducts: OrderedProduct[] = []
     for (let raw_product of cart.products) {
-      getProduct(raw_product.category, raw_product.id).then((data) => {
+      getProduct(raw_product.category, raw_product.name).then((data) => {
         let sum: Price = {
           EUR: 0,
           MDL: 0,
@@ -35,7 +35,6 @@ export default function Cart() {
           USD: 0,
         }
         let product = {
-          id: data.id,
           name: data.name,
           category: data.category,
           discount: data.discount,
@@ -64,10 +63,10 @@ export default function Cart() {
     return sizes[0]
   }
 
-  const updateQuantity = (category: Category, id: number, quantity: number) => {
-    outletContext.updateQuantity(category.name, id, quantity)
+  const updateQuantity = (category: Category, name: string, quantity: number) => {
+    outletContext.updateQuantity(category.name, name, quantity)
     
-    let product = products.filter(pr => pr.category.name == category.name && pr.id == id)[0]
+    let product = products.filter(pr => pr.category.name == category.name && pr.name === name)[0]
     for (let currency of outletContext.getCurrencies()) {
       product.sum[currency] = +(product.sum[currency] * quantity / product.quantity).toFixed(2)
     }
@@ -87,8 +86,8 @@ export default function Cart() {
   }
 
   const deleteProduct = (category: string, product: OrderedProduct, size: Size) => {
-    setProducts([...products.filter(pr => !(pr.id == product.id && pr.category.name == category && pr.size == size))])
-    outletContext.deleteProduct(category, product.id, size.width + ' x ' + size.length)
+    setProducts([...products.filter(pr => !(pr.name == product.name && pr.category.name == category && pr.size == size))])
+    outletContext.deleteProduct(category, product.name, size.width + ' x ' + size.length)
   }
   
   return (
@@ -156,13 +155,13 @@ export default function Cart() {
               </div>
               <div className='d-flex row-nowrap justify-content-around align-items-center p-2'>
                 <div style={{border: '1px solid var(--lime-green)'}} className='d-flex flex-row justify-content-between align-items-center p-3 h5'>
-                  <div onClick={() => updateQuantity(pr.category, pr.id, pr.quantity == 1 ? pr.quantity : pr.quantity - 1)}>
+                  <div onClick={() => updateQuantity(pr.category, pr.name, pr.quantity == 1 ? pr.quantity : pr.quantity - 1)}>
                     <span>-</span>
                   </div>
                   <div style={{width: '2rem'}} className='d-flex justify-content-center'>
                     <span>{pr.quantity}</span>
                   </div>
-                  <div onClick={() => updateQuantity(pr.category, pr.id, pr.quantity == 99 ? pr.quantity : Number(pr.quantity) + 1)}>
+                  <div onClick={() => updateQuantity(pr.category, pr.name, pr.quantity == 99 ? pr.quantity : Number(pr.quantity) + 1)}>
                     <span>+</span>
                   </div>
                 </div>
@@ -198,13 +197,13 @@ export default function Cart() {
               </div>
               <div className='col-2 h6 d-flex align-items-center justify-content-center border-bottom border-end m-0'>
                 <div style={{border: '1px solid var(--lime-green)'}} className='d-flex flex-row justify-content-between align-items-center p-3 h5'>
-                  <div onClick={() => updateQuantity(pr.category, pr.id, pr.quantity == 1 ? pr.quantity : pr.quantity - 1)}>
+                  <div onClick={() => updateQuantity(pr.category, pr.name, pr.quantity == 1 ? pr.quantity : pr.quantity - 1)}>
                     <span>-</span>
                   </div>
                   <div style={{width: '2rem'}} className='d-flex justify-content-center'>
                     <span>{pr.quantity}</span>
                   </div>
-                  <div onClick={() => updateQuantity(pr.category, pr.id, pr.quantity == 99 ? pr.quantity : Number(pr.quantity) + 1)}>
+                  <div onClick={() => updateQuantity(pr.category, pr.name, pr.quantity == 99 ? pr.quantity : Number(pr.quantity) + 1)}>
                     <span>+</span>
                   </div>
                 </div>

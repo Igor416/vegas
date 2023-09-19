@@ -18,8 +18,8 @@ export interface OutletContext {
   cart: Cart,
   updateCurrency: (currency: keyof Price) => void,
   addProduct: (category: string, product: DetailedProduct, size: Size, quantity: number) => void,
-  deleteProduct: (category: string, id: number, size: string) => void,
-  updateQuantity: (category: string, id: number, quantity: number) => void,
+  deleteProduct: (category: string, name: string, size: string) => void,
+  updateQuantity: (category: string, name: string, quantity: number) => void,
   getCurrencies: () => Array<keyof Price>
 }
 
@@ -48,13 +48,13 @@ export default function App() {
     setTotal(cart.total)
   }
 
-  const deleteProduct = (category: string, id: number, size: string) => {
-    cart.deleteProduct(category, id, size)
+  const deleteProduct = (category: string, name: string, size: string) => {
+    cart.deleteProduct(category, name, size)
     setTotal(cart.total)
   }
 
-  const updateQuantity = (category: string, id: number, quantity: number) => {
-    cart.updateQuantity(category, id, quantity)
+  const updateQuantity = (category: string, name: string, quantity: number) => {
+    cart.updateQuantity(category, name, quantity)
     setTotal(cart.total)
   }
 
