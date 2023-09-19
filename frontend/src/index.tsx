@@ -73,7 +73,7 @@ function render() {
           </Route>
           <Route path='sales' element={<Catalog />} />
           <Route path='stock' element={<Stock />} />
-          <Route path='product/:category/:id' element={<ProductDetails />} />
+          <Route path='product/:category/:name' element={<ProductDetails />} />
           <Route path='cart' element={<Cart />} />
           <Route path='shops' element={<Shops />} />
           <Route path='' element={<Home />} />
