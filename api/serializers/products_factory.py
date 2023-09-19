@@ -27,7 +27,7 @@ class BestProductSerializerFactory(ProductSerializerFactory):
         self.serializer = BestProductSerializer
         
     def set_Meta_fields(self):
-        self.Meta.fields = ['id', 'shortcut', 'name', 'sizes', 'discount', 'category']
+        self.Meta.fields = ['shortcut', 'name', 'sizes', 'discount', 'category']
     
     def set_fields(self): pass
     
@@ -36,7 +36,7 @@ class ListedProductsSerializerFactory(ProductSerializerFactory):
         self.serializer = ListedProductsSerializer
     
     def set_Meta_fields(self):
-        self.Meta.fields = ['id', 'name', 'discount', 'best', 'desc', 'sizes', 'shortcut', 'category']
+        self.Meta.fields = ['name', 'discount', 'best', 'desc', 'sizes', 'shortcut', 'category']
         
         if self.model is not models.Basis:
             self.Meta.fields.append(ct.get_default_filtering(self.model.get_name()))

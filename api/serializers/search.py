@@ -1,4 +1,4 @@
-from rest_framework.serializers import Serializer, CharField, IntegerField
+from rest_framework.serializers import CharField, IntegerField
 from . import models, LangExtractor, PriceExtractor
 
 class SearchResultSerializer(LangExtractor, PriceExtractor):
@@ -21,8 +21,8 @@ class ProductResultSerializer(SearchResultSerializer):
   
   def to_representation(self, obj):
     return {
-      'link': f'/product/{obj.category.name}/{obj.id}',
-      'text': f'{getattr(obj.category, f"name_{self.lang}_s")}: {obj.name_ru if obj.get_name() == models.BedSheets.get_name() else obj.name}',
+      'link': f'/product/{obj.category.name}/{getattr(obj, f"name_{self.lang}")}',
+      'text': f'{getattr(obj.category, f"name_{self.lang}_s")}: {getattr(obj, f"name_{self.lang}") if obj.get_name() == models.BedSheets.get_name() else obj.name}',
       'priceEUR': obj.sizes.all()[0].priceEUR,
       'discount': obj.discount
     }
