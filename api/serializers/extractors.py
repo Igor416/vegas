@@ -33,7 +33,7 @@ CURRENCIES = {
 class PriceManager:
   def __init__(self, container, country):
     self.container = container
-    self.country = country
+    self.country = country if country in CURRENCIES else 'US'
     self.EUR = self.container['priceEUR']
 
     self.set_EUR()
