@@ -29,9 +29,7 @@ def index(request, *args, **kwargs):
     context = {
         'title': data['titles'][title],
         'lang': lang,
-        'langs': langs,
-        'description': data['description'],
-        'keywords': data['keywords'],
+        'langs': langs
     }
 
     return render(request, 'index.html', context=context)
