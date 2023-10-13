@@ -12,6 +12,7 @@ export function detectLang(): string {
     if (lang.includes('-')) {
       lang = lang.split('-')[0]
     }
+    console.log(lang)
     Cookies.set('lang', lang)
   }
   

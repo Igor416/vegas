@@ -46319,6 +46319,7 @@ function detectLang() {
         if (lang.includes('-')) {
             lang = lang.split('-')[0];
         }
+        console.log(lang);
         js_cookie__WEBPACK_IMPORTED_MODULE_2__["default"].set('lang', lang);
     }
     return lang;
