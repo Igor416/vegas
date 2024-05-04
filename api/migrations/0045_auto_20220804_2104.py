@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0044_auto_20220804_2104'),
-    ]
+  dependencies = [
+    ('api', '0044_auto_20220804_2104'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='mattress',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_mattress', through='api.LayerMattress', to='api.Technology', verbose_name='Структура'),
-        ),
-        migrations.AddField(
-            model_name='mattresspad',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_mattresspad', through='api.LayerMattressPad', to='api.Technology', verbose_name='Структура'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='mattress',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_mattress', through='api.LayerMattress', to='api.Technology', verbose_name='Структура'),
+    ),
+    migrations.AddField(
+      model_name='mattresspad',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_mattresspad', through='api.LayerMattressPad', to='api.Technology', verbose_name='Структура'),
+    ),
+  ]

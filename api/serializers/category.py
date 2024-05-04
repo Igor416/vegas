@@ -1,6 +1,9 @@
-from . import models, catalog as ct, get_lang, LangDetectiveSerializer
+from rest_framework.serializers import ModelSerializer
+from api import models, catalog as ct
+from api.translations import get_lang
+from .extractors import LangExtractor
 
-class CategorySerializer(LangDetectiveSerializer):
+class CategorySerializer(LangExtractor, ModelSerializer):
   class Meta:
     fields = '__all__'
     model = models.Category
@@ -18,7 +21,7 @@ class CategorySerializer(LangDetectiveSerializer):
       'name_pl': getattr(obj, f'name_{self.lang}_pl'),
       'desc': getattr(obj, f'desc_{self.lang}')
     }
-    
+  
     if obj.name != 'Basis':
       r.update({
         'default_filtering': self.get_default_filtering(obj),

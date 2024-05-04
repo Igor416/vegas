@@ -5,14 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0078_size_is_sailng'),
-    ]
+  dependencies = [
+    ('api', '0078_size_is_sailng'),
+  ]
 
-    operations = [
-        migrations.RenameField(
-            model_name='size',
-            old_name='is_sailng',
-            new_name='on_sale',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name='size',
+      old_name='is_sailng',
+      new_name='on_sale',
+    ),
+  ]

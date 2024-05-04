@@ -1,5 +1,5 @@
 from django.db import models
-from . import save_langs, catalog as ct
+from api import catalog as ct
 from .category import Category
 
 class Choice(models.Model):
@@ -17,7 +17,6 @@ class Choice(models.Model):
 		return f'Вариант выбора для "{ct.get_prop_trans(self.name)}" в категори{"и" if len(lst) == 1 else "ях"} "{s}": "{self.property_ru}"'
 
 	def save(self, *args, **kwargs):
-		self.property_en, self.property_ru, self.property_ro = save_langs(self.property_en, self.property_ru, self.property_ro)
 		for category in ct.get_categories(self.name):
 			self.category.add(Category.objects.get(name=category))
 		super().save(*args, **kwargs)

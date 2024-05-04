@@ -5,18 +5,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0064_auto_20220828_2016'),
-    ]
+  dependencies = [
+    ('api', '0064_auto_20220828_2016'),
+  ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='blanket',
-            name='filling',
-        ),
-        migrations.AddField(
-            model_name='blanket',
-            name='filling',
-            field=models.ManyToManyField(related_name='fillingblanket', to='api.Choice'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='blanket',
+      name='filling',
+    ),
+    migrations.AddField(
+      model_name='blanket',
+      name='filling',
+      field=models.ManyToManyField(related_name='fillingblanket', to='api.Choice'),
+    ),
+  ]

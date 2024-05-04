@@ -5,23 +5,23 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0080_stock'),
-    ]
+  dependencies = [
+    ('api', '0080_stock'),
+  ]
 
-    operations = [
-        migrations.AlterModelOptions(
-            name='stock',
-            options={'verbose_name': 'размер', 'verbose_name_plural': 'размеры'},
-        ),
-        migrations.RenameField(
-            model_name='stock',
-            old_name='collection',
-            new_name='collections',
-        ),
-        migrations.AlterField(
-            model_name='stock',
-            name='sizes',
-            field=models.ManyToManyField(blank=True, related_name='sizes_stock', to='api.size', verbose_name='Размеры'),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='stock',
+      options={'verbose_name': 'размер', 'verbose_name_plural': 'размеры'},
+    ),
+    migrations.RenameField(
+      model_name='stock',
+      old_name='collection',
+      new_name='collections',
+    ),
+    migrations.AlterField(
+      model_name='stock',
+      name='sizes',
+      field=models.ManyToManyField(blank=True, related_name='sizes_stock', to='api.size', verbose_name='Размеры'),
+    ),
+  ]

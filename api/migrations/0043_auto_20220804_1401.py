@@ -6,14 +6,14 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0042_auto_20220804_1352'),
-    ]
+  dependencies = [
+    ('api', '0042_auto_20220804_1352'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='size',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='size',
+      name='category',
+      field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category'),
+    ),
+  ]

@@ -6,18 +6,18 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0048_auto_20220810_1642'),
-    ]
+  dependencies = [
+    ('api', '0048_auto_20220810_1642'),
+  ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='mattress',
-            name='construction',
-        ),
-        migrations.AddField(
-            model_name='mattress',
-            name='construction',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='construction', to='api.choice'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='mattress',
+      name='construction',
+    ),
+    migrations.AddField(
+      model_name='mattress',
+      name='construction',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='construction', to='api.choice'),
+    ),
+  ]

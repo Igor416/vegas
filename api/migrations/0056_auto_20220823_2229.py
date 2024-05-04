@@ -5,24 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0055_auto_20220823_2229'),
-    ]
+  dependencies = [
+    ('api', '0055_auto_20220823_2229'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='mattress',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_mattress', to='api.Technology', verbose_name='Структура'),
-        ),
-        migrations.AddField(
-            model_name='mattresspad',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_mattresspad', to='api.Technology', verbose_name='Структура'),
-        ),
-        migrations.AddField(
-            model_name='pillow',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_pillow', to='api.Technology', verbose_name='Структура'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='mattress',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_mattress', to='api.Technology', verbose_name='Структура'),
+    ),
+    migrations.AddField(
+      model_name='mattresspad',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_mattresspad', to='api.Technology', verbose_name='Структура'),
+    ),
+    migrations.AddField(
+      model_name='pillow',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_pillow', to='api.Technology', verbose_name='Структура'),
+    ),
+  ]

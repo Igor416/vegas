@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0071_auto_20220904_1430'),
-    ]
+  dependencies = [
+    ('api', '0071_auto_20220904_1430'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='technology',
-            name='name_ru',
-            field=models.CharField(max_length=32, unique=True, verbose_name='Название (ru)'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='technology',
+      name='name_ru',
+      field=models.CharField(max_length=32, unique=True, verbose_name='Название (ru)'),
+    ),
+  ]

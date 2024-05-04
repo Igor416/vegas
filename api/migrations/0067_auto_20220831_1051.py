@@ -5,24 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0066_auto_20220830_2136'),
-    ]
+  dependencies = [
+    ('api', '0066_auto_20220830_2136'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='bedsheetssize',
-            name='pillowcase_sizes',
-            field=models.ManyToManyField(related_name='pillowcase_sizesbedsheetssize', to='api.Size', verbose_name='Наволочки'),
-        ),
-        migrations.AlterField(
-            model_name='size',
-            name='priceEUR',
-            field=models.SmallIntegerField(default=0, verbose_name='Цена (евро)'),
-        ),
-        migrations.AlterField(
-            model_name='size',
-            name='priceMDL',
-            field=models.SmallIntegerField(default=0, verbose_name='Цена (леи)'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='bedsheetssize',
+      name='pillowcase_sizes',
+      field=models.ManyToManyField(related_name='pillowcase_sizesbedsheetssize', to='api.Size', verbose_name='Наволочки'),
+    ),
+    migrations.AlterField(
+      model_name='size',
+      name='priceEUR',
+      field=models.SmallIntegerField(default=0, verbose_name='Цена (евро)'),
+    ),
+    migrations.AlterField(
+      model_name='size',
+      name='priceMDL',
+      field=models.SmallIntegerField(default=0, verbose_name='Цена (леи)'),
+    ),
+  ]

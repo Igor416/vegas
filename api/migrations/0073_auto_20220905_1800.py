@@ -5,21 +5,21 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0072_auto_20220904_2137'),
-    ]
+  dependencies = [
+    ('api', '0072_auto_20220904_2137'),
+  ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='category',
-            name='desc_en',
-        ),
-        migrations.RemoveField(
-            model_name='category',
-            name='desc_ro',
-        ),
-        migrations.RemoveField(
-            model_name='category',
-            name='desc_ru',
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='category',
+      name='desc_en',
+    ),
+    migrations.RemoveField(
+      model_name='category',
+      name='desc_ro',
+    ),
+    migrations.RemoveField(
+      model_name='category',
+      name='desc_ru',
+    ),
+  ]

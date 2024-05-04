@@ -5,49 +5,49 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0019_image_video_basis_desc_basis_discount_bed_desc_and_more'),
-    ]
+  dependencies = [
+    ('api', '0019_image_video_basis_desc_basis_discount_bed_desc_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='basis',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='bed',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='bedsheets',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='blanket',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='mattrass',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='mattrasspad',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='pillow',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-        migrations.AlterField(
-            model_name='stand',
-            name='videos',
-            field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='basis',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='bed',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='bedsheets',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='blanket',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='mattrass',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='mattrasspad',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='pillow',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+    migrations.AlterField(
+      model_name='stand',
+      name='videos',
+      field=models.ManyToManyField(blank=True, related_name='videos%(class)s', to='api.video', verbose_name='Видео товара'),
+    ),
+  ]

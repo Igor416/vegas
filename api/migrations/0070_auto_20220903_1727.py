@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0069_auto_20220903_1709'),
-    ]
+  dependencies = [
+    ('api', '0069_auto_20220903_1709'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='technology',
-            name='isTechnology',
-            field=models.BooleanField(default=False, verbose_name='Это технология (или слой)?'),
-        ),
-        migrations.AlterField(
-            model_name='basis',
-            name='recomended',
-            field=models.ManyToManyField(related_name='recomendedBasis', to='api.Choice', verbose_name='Рекомендовано для матрассов'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='technology',
+      name='isTechnology',
+      field=models.BooleanField(default=False, verbose_name='Это технология (или слой)?'),
+    ),
+    migrations.AlterField(
+      model_name='basis',
+      name='recomended',
+      field=models.ManyToManyField(related_name='recomendedBasis', to='api.Choice', verbose_name='Рекомендовано для матрассов'),
+    ),
+  ]

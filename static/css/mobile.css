@@ -1,12 +1,10 @@
 .menu-show {
-  opacity: 1 !important;
   padding: 0 !important;
   width: 100vw
 }
 
 .menu-hide {
   width: 0;
-  opacity: 0 !important;
 }
 
 .menu-hide > * * {

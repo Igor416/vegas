@@ -5,14 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0016_size_category'),
-    ]
+  dependencies = [
+    ('api', '0016_size_category'),
+  ]
 
-    operations = [
-        migrations.RenameField(
-            model_name='mattrass',
-            old_name='mattras_type',
-            new_name='mattrass_type',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name='mattrass',
+      old_name='mattras_type',
+      new_name='mattrass_type',
+    ),
+  ]

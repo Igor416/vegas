@@ -5,22 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0051_auto_20220820_1048'),
-    ]
+  dependencies = [
+    ('api', '0051_auto_20220820_1048'),
+  ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='marker',
-            name='id',
-        ),
-        migrations.RemoveField(
-            model_name='mattress',
-            name='markers',
-        ),
-        migrations.AlterField(
-            model_name='marker',
-            name='name',
-            field=models.CharField(max_length=64, primary_key=True, serialize=False, unique=True, verbose_name='Маркер (ru)'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='marker',
+      name='id',
+    ),
+    migrations.RemoveField(
+      model_name='mattress',
+      name='markers',
+    ),
+    migrations.AlterField(
+      model_name='marker',
+      name='name',
+      field=models.CharField(max_length=64, primary_key=True, serialize=False, unique=True, verbose_name='Маркер (ru)'),
+    ),
+  ]

@@ -5,49 +5,49 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0004_alter_basis_id_alter_bed_id_alter_bedsheets_id_and_more'),
-    ]
+  dependencies = [
+    ('api', '0004_alter_basis_id_alter_bed_id_alter_bedsheets_id_and_more'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='basis',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='bed',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='bedsheets',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='blanket',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='mattrass',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='mattresspads',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='pillow',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-        migrations.AddField(
-            model_name='stand',
-            name='best',
-            field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='basis',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='bed',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='bedsheets',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='blanket',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='mattrass',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='mattresspads',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='pillow',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+    migrations.AddField(
+      model_name='stand',
+      name='best',
+      field=models.BooleanField(default=False, verbose_name='Лидер продаж'),
+    ),
+  ]

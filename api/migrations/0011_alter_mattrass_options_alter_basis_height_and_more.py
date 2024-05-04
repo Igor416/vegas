@@ -5,33 +5,33 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0010_rename_property_choice_property_ru_and_more'),
-    ]
+  dependencies = [
+    ('api', '0010_rename_property_choice_property_ru_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterModelOptions(
-            name='mattrass',
-            options={},
-        ),
-        migrations.AlterField(
-            model_name='basis',
-            name='height',
-            field=models.IntegerField(verbose_name='Высота'),
-        ),
-        migrations.AlterField(
-            model_name='choice',
-            name='name',
-            field=models.CharField(choices=[('ОБЩИЕ', 'ОБЩИЕ'), ('age', 'Для возраста'), ('package', 'Упаковка'), ('cover', 'Ткань чехла'), ('', ''), ('Mattrass', 'ТОЛЬКО МАТРАС'), ('mattrass_type', 'Тип матраса'), ('collection', 'Коллекция'), ('construction', 'Конструкция'), ('rigidity1', 'Уровень жесткости стороны 1'), ('rigidity2', 'Уровень жесткости стороны 2'), ('springblock', 'Пружинный блок'), ('', ''), ('Pillow', 'ТОЛЬКО ПОДУШКА'), ('material_filler', 'Материал наполнения'), ('', ''), ('MattrassPad', 'ТОЛЬКО НАМАТРАСНИК'), ('mattrasspad_type', 'Тип наматрасника'), ('binding', 'Крепление'), ('', ''), ('Blanket', 'ТОЛЬКО ОДЕЯЛО'), ('blanket_type', 'Тип одеяла'), ('blanket_color', 'Цвет одеяла'), ('filling', 'Наполнитель'), ('', ''), ('BedSheets', 'ТОЛЬКО ПОСТЕЛЬНОЕ БЕЛЬЕ'), ('bedsheets_type', 'Тип комплекта'), ('bedsheets_color', 'Цвет комплекта'), ('tissue', 'Ткань'), ('', ''), ('Bed', 'ТОЛЬКО КРОВАТЬ'), ('bed_type', 'Вид кровати'), ('', ''), ('Stand', 'ТОЛЬКО ТУМБА'), ('material', 'Материал'), ('', ''), ('Basis', 'ТОЛЬКО ОСНОВАНИЕ'), ('basis_type', 'Вид основания')], max_length=32, verbose_name='Характеристика'),
-        ),
-        migrations.AlterField(
-            model_name='choice',
-            name='property_ro',
-            field=models.CharField(blank=True, max_length=32, verbose_name='Вариант выбора (ro)'),
-        ),
-        migrations.AlterField(
-            model_name='choice',
-            name='property_ru',
-            field=models.CharField(max_length=32, verbose_name='Вариант выбора (ru)'),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='mattrass',
+      options={},
+    ),
+    migrations.AlterField(
+      model_name='basis',
+      name='height',
+      field=models.IntegerField(verbose_name='Высота'),
+    ),
+    migrations.AlterField(
+      model_name='choice',
+      name='name',
+      field=models.CharField(choices=[('ОБЩИЕ', 'ОБЩИЕ'), ('age', 'Для возраста'), ('package', 'Упаковка'), ('cover', 'Ткань чехла'), ('', ''), ('Mattrass', 'ТОЛЬКО МАТРАС'), ('mattrass_type', 'Тип матраса'), ('collection', 'Коллекция'), ('construction', 'Конструкция'), ('rigidity1', 'Уровень жесткости стороны 1'), ('rigidity2', 'Уровень жесткости стороны 2'), ('springblock', 'Пружинный блок'), ('', ''), ('Pillow', 'ТОЛЬКО ПОДУШКА'), ('material_filler', 'Материал наполнения'), ('', ''), ('MattrassPad', 'ТОЛЬКО НАМАТРАСНИК'), ('mattrasspad_type', 'Тип наматрасника'), ('binding', 'Крепление'), ('', ''), ('Blanket', 'ТОЛЬКО ОДЕЯЛО'), ('blanket_type', 'Тип одеяла'), ('blanket_color', 'Цвет одеяла'), ('filling', 'Наполнитель'), ('', ''), ('BedSheets', 'ТОЛЬКО ПОСТЕЛЬНОЕ БЕЛЬЕ'), ('bedsheets_type', 'Тип комплекта'), ('bedsheets_color', 'Цвет комплекта'), ('tissue', 'Ткань'), ('', ''), ('Bed', 'ТОЛЬКО КРОВАТЬ'), ('bed_type', 'Вид кровати'), ('', ''), ('Stand', 'ТОЛЬКО ТУМБА'), ('material', 'Материал'), ('', ''), ('Basis', 'ТОЛЬКО ОСНОВАНИЕ'), ('basis_type', 'Вид основания')], max_length=32, verbose_name='Характеристика'),
+    ),
+    migrations.AlterField(
+      model_name='choice',
+      name='property_ro',
+      field=models.CharField(blank=True, max_length=32, verbose_name='Вариант выбора (ro)'),
+    ),
+    migrations.AlterField(
+      model_name='choice',
+      name='property_ru',
+      field=models.CharField(max_length=32, verbose_name='Вариант выбора (ru)'),
+    ),
+  ]

@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0052_auto_20220820_1058'),
-    ]
+  dependencies = [
+    ('api', '0052_auto_20220820_1058'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='mattress',
-            name='markers',
-            field=models.ManyToManyField(related_name='markers', to='api.Marker', verbose_name='Маркеры'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='mattress',
+      name='markers',
+      field=models.ManyToManyField(related_name='markers', to='api.Marker', verbose_name='Маркеры'),
+    ),
+  ]

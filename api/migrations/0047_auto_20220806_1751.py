@@ -6,23 +6,23 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0046_auto_20220806_1751'),
-    ]
+  dependencies = [
+    ('api', '0046_auto_20220806_1751'),
+  ]
 
-    operations = [
-        migrations.CreateModel(
-            name='LayerPillow',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.SmallIntegerField(default=1)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.pillow')),
-                ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
-            ],
-        ),
-        migrations.AddField(
-            model_name='pillow',
-            name='structure',
-            field=models.ManyToManyField(blank=True, related_name='structure_pillow', through='api.LayerPillow', to='api.Technology', verbose_name='Структура'),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='LayerPillow',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('quantity', models.SmallIntegerField(default=1)),
+        ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.pillow')),
+        ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
+      ],
+    ),
+    migrations.AddField(
+      model_name='pillow',
+      name='structure',
+      field=models.ManyToManyField(blank=True, related_name='structure_pillow', through='api.LayerPillow', to='api.Technology', verbose_name='Структура'),
+    ),
+  ]

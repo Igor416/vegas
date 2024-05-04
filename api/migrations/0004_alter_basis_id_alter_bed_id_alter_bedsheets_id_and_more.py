@@ -5,49 +5,49 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0003_stand_pillow_mattresspads_mattrass_blanket_bedsheets_and_more'),
-    ]
+  dependencies = [
+    ('api', '0003_stand_pillow_mattresspads_mattrass_blanket_bedsheets_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='basis',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='bed',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='bedsheets',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='blanket',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='mattrass',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='mattresspads',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='pillow',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-        migrations.AlterField(
-            model_name='stand',
-            name='id',
-            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='basis',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='bed',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='bedsheets',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='blanket',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='mattrass',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='mattresspads',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='pillow',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+    migrations.AlterField(
+      model_name='stand',
+      name='id',
+      field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+    ),
+  ]

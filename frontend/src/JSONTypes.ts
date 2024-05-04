@@ -46,14 +46,6 @@ export interface BedSheetsSize extends Size {
   pillowcase_sizes: Size[],
 }
 
-export interface BestProducts {
-  'MATTRESSES': BestProduct[],
-  'PILLOWS': BestProduct[],
-  'FOR KIDS': BestProduct[],
-  'BASISES': BestProduct[],
-  'FURNITURE': BestProduct[]
-}
-
 export interface Stock {
   discount: number,
   expiry: string,
@@ -81,7 +73,7 @@ interface Product {
   discount: number,
 }
 
-interface BestProduct extends Product {
+export interface BestProduct extends Product {
   shortcut: string,
   category: Category,
   size: Size,

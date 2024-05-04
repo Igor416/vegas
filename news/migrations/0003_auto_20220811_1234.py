@@ -5,18 +5,18 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('news', '0002_review'),
-    ]
+  dependencies = [
+    ('news', '0002_review'),
+  ]
 
-    operations = [
-        migrations.AlterModelOptions(
-            name='review',
-            options={'verbose_name': 'отзыв', 'verbose_name_plural': 'отзывы'},
-        ),
-        migrations.AlterField(
-            model_name='review',
-            name='date',
-            field=models.DateField(auto_now_add=True, verbose_name='Дата'),
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='review',
+      options={'verbose_name': 'отзыв', 'verbose_name_plural': 'отзывы'},
+    ),
+    migrations.AlterField(
+      model_name='review',
+      name='date',
+      field=models.DateField(auto_now_add=True, verbose_name='Дата'),
+    ),
+  ]

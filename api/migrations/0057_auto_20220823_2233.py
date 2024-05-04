@@ -6,53 +6,53 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0056_auto_20220823_2229'),
-    ]
+  dependencies = [
+    ('api', '0056_auto_20220823_2229'),
+  ]
 
-    operations = [
-        migrations.AlterModelOptions(
-            name='technology',
-            options={'verbose_name': 'технология', 'verbose_name_plural': 'технологии'},
-        ),
-        migrations.RemoveField(
-            model_name='mattress',
-            name='structure',
-        ),
-        migrations.RemoveField(
-            model_name='mattresspad',
-            name='structure',
-        ),
-        migrations.RemoveField(
-            model_name='pillow',
-            name='structure',
-        ),
-        migrations.RemoveField(
-            model_name='technology',
-            name='isTechnology',
-        ),
-        migrations.CreateModel(
-            name='LayerPillow',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.pillow')),
-                ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='LayerMattressPad',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.mattresspad')),
-                ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='LayerMattress',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.mattress')),
-                ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='technology',
+      options={'verbose_name': 'технология', 'verbose_name_plural': 'технологии'},
+    ),
+    migrations.RemoveField(
+      model_name='mattress',
+      name='structure',
+    ),
+    migrations.RemoveField(
+      model_name='mattresspad',
+      name='structure',
+    ),
+    migrations.RemoveField(
+      model_name='pillow',
+      name='structure',
+    ),
+    migrations.RemoveField(
+      model_name='technology',
+      name='isTechnology',
+    ),
+    migrations.CreateModel(
+      name='LayerPillow',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.pillow')),
+        ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
+      ],
+    ),
+    migrations.CreateModel(
+      name='LayerMattressPad',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.mattresspad')),
+        ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
+      ],
+    ),
+    migrations.CreateModel(
+      name='LayerMattress',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.mattress')),
+        ('technology', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='api.technology')),
+      ],
+    ),
+  ]

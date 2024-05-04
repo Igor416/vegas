@@ -6,25 +6,25 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0065_auto_20220828_2240'),
-    ]
+  dependencies = [
+    ('api', '0065_auto_20220828_2240'),
+  ]
 
-    operations = [
-        migrations.CreateModel(
-            name='BedSheetsSize',
-            fields=[
-                ('size_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='api.size')),
-                ('duvet_cover_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='duvet_cover_sizebedsheetssize', to='api.size', verbose_name='Пододеяльник')),
-                ('elasticated_sheet_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='elasticated_sheet_sizebedsheetssize', to='api.size', verbose_name='Простыня на резинке')),
-                ('pillowcase_sizes', models.ManyToManyField(related_name='pillowcase_sizesbedsheetssize', to='api.Size', verbose_name='Подушки')),
-                ('sheet_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sheet_sizebedsheetssize', to='api.size', verbose_name='Простыня')),
-            ],
-            bases=('api.size',),
-        ),
-        migrations.AlterField(
-            model_name='bedsheets',
-            name='sizes',
-            field=models.ManyToManyField(related_name='sizesbedsheets', to='api.BedSheetsSize', verbose_name='Размеры'),
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='BedSheetsSize',
+      fields=[
+        ('size_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='api.size')),
+        ('duvet_cover_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='duvet_cover_sizebedsheetssize', to='api.size', verbose_name='Пододеяльник')),
+        ('elasticated_sheet_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='elasticated_sheet_sizebedsheetssize', to='api.size', verbose_name='Простыня на резинке')),
+        ('pillowcase_sizes', models.ManyToManyField(related_name='pillowcase_sizesbedsheetssize', to='api.Size', verbose_name='Подушки')),
+        ('sheet_size', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='sheet_sizebedsheetssize', to='api.size', verbose_name='Простыня')),
+      ],
+      bases=('api.size',),
+    ),
+    migrations.AlterField(
+      model_name='bedsheets',
+      name='sizes',
+      field=models.ManyToManyField(related_name='sizesbedsheets', to='api.BedSheetsSize', verbose_name='Размеры'),
+    ),
+  ]

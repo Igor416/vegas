@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-import { BestProducts, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp, Category } from './JSONTypes'
+import { BestProduct, DetailedProduct, Help, MattressColectionPrice, Order, ListProduct, Review, Sales, Search, SearchResults, Stock, ProductHelp, Category } from './JSONTypes'
 
 export function getBanners(): Promise<string[]> {
   const url = '/news/banners/'
@@ -25,10 +25,10 @@ export function sendSearch(search: string): Promise<SearchResults> {
   return sendPostRequest<Search, SearchResults>(url, {search: search})
 }
 
-export function getBestProducts(): Promise<BestProducts> {
+export function getBestProducts(): Promise<BestProduct[][]> {
   const url = '/api/best/'
 
-  return sendGetRequest<BestProducts>(url)
+  return sendGetRequest<BestProduct[][]>(url)
 }
 
 export function getStock(): Promise<Stock[]> {

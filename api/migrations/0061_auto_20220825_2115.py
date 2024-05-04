@@ -6,59 +6,59 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0060_auto_20220825_2113'),
-    ]
+  dependencies = [
+    ('api', '0060_auto_20220825_2113'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='basis',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='bed',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='bedsheets',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='blanket',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='choice',
-            name='category',
-            field=models.ManyToManyField(null=True, related_name='categoryC', to='api.Category'),
-        ),
-        migrations.AddField(
-            model_name='mattress',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='mattresspad',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='pillow',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-        migrations.AddField(
-            model_name='size',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category'),
-        ),
-        migrations.AddField(
-            model_name='stand',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='basis',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='bed',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='bedsheets',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='blanket',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='choice',
+      name='category',
+      field=models.ManyToManyField(null=True, related_name='categoryC', to='api.Category'),
+    ),
+    migrations.AddField(
+      model_name='mattress',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='mattresspad',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='pillow',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+    migrations.AddField(
+      model_name='size',
+      name='category',
+      field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category'),
+    ),
+    migrations.AddField(
+      model_name='stand',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+  ]

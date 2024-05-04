@@ -6,93 +6,93 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0028_remove_basis_desc_remove_bed_desc_and_more'),
-    ]
+  dependencies = [
+    ('api', '0028_remove_basis_desc_remove_bed_desc_and_more'),
+  ]
 
-    operations = [
-        migrations.CreateModel(
-            name='Mattress',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=32, unique=True, verbose_name='Название')),
-                ('desc_en', models.TextField(verbose_name='Описание (en)')),
-                ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
-                ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
-                ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка (%)')),
-                ('best', models.BooleanField(default=False, verbose_name='Лидер продаж')),
-                ('height', models.IntegerField(verbose_name='Высота')),
-                ('springs', models.IntegerField(default=0, verbose_name='Кол-во пружин в двуспальном матрасе')),
-                ('max_pressure', models.IntegerField(verbose_name='Макс. нагрузка')),
-                ('lifetime', models.IntegerField(default=10, verbose_name='Срок Службы')),
-                ('cover', models.BooleanField(default=True, verbose_name='Съемный чехол')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.CreateModel(
-            name='MattressPad',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=32, unique=True, verbose_name='Название')),
-                ('desc_en', models.TextField(verbose_name='Описание (en)')),
-                ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
-                ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
-                ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка (%)')),
-                ('best', models.BooleanField(default=False, verbose_name='Лидер продаж')),
-                ('height', models.IntegerField(verbose_name='Высота')),
-            ],
-            options={
-                'abstract': False,
-            },
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='binding',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='category',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='cover',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='images',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='mattrasspad_type',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='shortcut',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='sizes',
-        ),
-        migrations.RemoveField(
-            model_name='mattrasspad',
-            name='videos',
-        ),
-        migrations.AlterField(
-            model_name='category',
-            name='name',
-            field=models.CharField(choices=[('Mattress', 'Матрас'), ('Pillow', 'Подушка'), ('MattressPad', 'Наматрасник'), ('Blanket', 'Одеяло'), ('BedSheets', 'Постельное белье'), ('Bed', 'Кровать'), ('Stand', 'Тумба'), ('Basis', 'Основание')], max_length=32, unique=True, verbose_name='Название'),
-        ),
-        migrations.AlterField(
-            model_name='choice',
-            name='name',
-            field=models.CharField(choices=[('ОБЩИЕ', 'ОБЩИЕ'), ('age', 'Для возраста'), ('package', 'Упаковка'), ('cover', 'Ткань чехла'), ('', ''), ('Mattress', 'ТОЛЬКО МАТРАС'), ('mattress_type', 'Тип матраса'), ('collection', 'Коллекция'), ('construction', 'Конструкция'), ('rigidity', 'Уровень жесткости стороны'), ('springblock', 'Пружинный блок'), ('', ''), ('Pillow', 'ТОЛЬКО ПОДУШКА'), ('material_filler', 'Материал наполнения'), ('', ''), ('MattressPad', 'ТОЛЬКО НАМАТРАСНИК'), ('mattresspad_type', 'Тип наматрасника'), ('binding', 'Крепление'), ('', ''), ('Blanket', 'ТОЛЬКО ОДЕЯЛО'), ('blanket_type', 'Тип одеяла'), ('blanket_color', 'Цвет одеяла'), ('filling', 'Наполнитель'), ('', ''), ('BedSheets', 'ТОЛЬКО ПОСТЕЛЬНОЕ БЕЛЬЕ'), ('bedsheets_type', 'Тип комплекта'), ('bedsheets_color', 'Цвет комплекта'), ('tissue', 'Ткань'), ('', ''), ('Bed', 'ТОЛЬКО КРОВАТЬ'), ('bed_type', 'Вид кровати'), ('', ''), ('Stand', 'ТОЛЬКО ТУМБА'), ('material', 'Материал'), ('', ''), ('Basis', 'ТОЛЬКО ОСНОВАНИЕ'), ('basis_type', 'Вид основания')], max_length=32, verbose_name='Характеристика'),
-        ),
-        migrations.DeleteModel(
-            name='Mattrass',
-        ),
-        migrations.DeleteModel(
-            name='MattrassPad',
-        )
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='Mattress',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('name', models.CharField(max_length=32, unique=True, verbose_name='Название')),
+        ('desc_en', models.TextField(verbose_name='Описание (en)')),
+        ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
+        ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
+        ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка (%)')),
+        ('best', models.BooleanField(default=False, verbose_name='Лидер продаж')),
+        ('height', models.IntegerField(verbose_name='Высота')),
+        ('springs', models.IntegerField(default=0, verbose_name='Кол-во пружин в двуспальном матрасе')),
+        ('max_pressure', models.IntegerField(verbose_name='Макс. нагрузка')),
+        ('lifetime', models.IntegerField(default=10, verbose_name='Срок Службы')),
+        ('cover', models.BooleanField(default=True, verbose_name='Съемный чехол')),
+      ],
+      options={
+        'abstract': False,
+      },
+    ),
+    migrations.CreateModel(
+      name='MattressPad',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('name', models.CharField(max_length=32, unique=True, verbose_name='Название')),
+        ('desc_en', models.TextField(verbose_name='Описание (en)')),
+        ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
+        ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
+        ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка (%)')),
+        ('best', models.BooleanField(default=False, verbose_name='Лидер продаж')),
+        ('height', models.IntegerField(verbose_name='Высота')),
+      ],
+      options={
+        'abstract': False,
+      },
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='binding',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='category',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='cover',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='images',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='mattrasspad_type',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='shortcut',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='sizes',
+    ),
+    migrations.RemoveField(
+      model_name='mattrasspad',
+      name='videos',
+    ),
+    migrations.AlterField(
+      model_name='category',
+      name='name',
+      field=models.CharField(choices=[('Mattress', 'Матрас'), ('Pillow', 'Подушка'), ('MattressPad', 'Наматрасник'), ('Blanket', 'Одеяло'), ('BedSheets', 'Постельное белье'), ('Bed', 'Кровать'), ('Stand', 'Тумба'), ('Basis', 'Основание')], max_length=32, unique=True, verbose_name='Название'),
+    ),
+    migrations.AlterField(
+      model_name='choice',
+      name='name',
+      field=models.CharField(choices=[('ОБЩИЕ', 'ОБЩИЕ'), ('age', 'Для возраста'), ('package', 'Упаковка'), ('cover', 'Ткань чехла'), ('', ''), ('Mattress', 'ТОЛЬКО МАТРАС'), ('mattress_type', 'Тип матраса'), ('collection', 'Коллекция'), ('construction', 'Конструкция'), ('rigidity', 'Уровень жесткости стороны'), ('springblock', 'Пружинный блок'), ('', ''), ('Pillow', 'ТОЛЬКО ПОДУШКА'), ('material_filler', 'Материал наполнения'), ('', ''), ('MattressPad', 'ТОЛЬКО НАМАТРАСНИК'), ('mattresspad_type', 'Тип наматрасника'), ('binding', 'Крепление'), ('', ''), ('Blanket', 'ТОЛЬКО ОДЕЯЛО'), ('blanket_type', 'Тип одеяла'), ('blanket_color', 'Цвет одеяла'), ('filling', 'Наполнитель'), ('', ''), ('BedSheets', 'ТОЛЬКО ПОСТЕЛЬНОЕ БЕЛЬЕ'), ('bedsheets_type', 'Тип комплекта'), ('bedsheets_color', 'Цвет комплекта'), ('tissue', 'Ткань'), ('', ''), ('Bed', 'ТОЛЬКО КРОВАТЬ'), ('bed_type', 'Вид кровати'), ('', ''), ('Stand', 'ТОЛЬКО ТУМБА'), ('material', 'Материал'), ('', ''), ('Basis', 'ТОЛЬКО ОСНОВАНИЕ'), ('basis_type', 'Вид основания')], max_length=32, verbose_name='Характеристика'),
+    ),
+    migrations.DeleteModel(
+      name='Mattrass',
+    ),
+    migrations.DeleteModel(
+      name='MattrassPad',
+    )
+  ]

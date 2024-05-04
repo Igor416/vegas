@@ -1,6 +1,8 @@
-from . import models, LangDetectiveSerializer
+from rest_framework.serializers import ModelSerializer
+from api import models
+from .extractors import LangExtractor
 
-class MarkerSerializer(LangDetectiveSerializer):
+class MarkerSerializer(LangExtractor, ModelSerializer):
   class Meta:
     fields = ['name']
     model = models.Marker

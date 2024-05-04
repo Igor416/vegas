@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0077_alter_size_category'),
-    ]
+  dependencies = [
+    ('api', '0077_alter_size_category'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='size',
-            name='is_sailng',
-            field=models.BooleanField(default=False, verbose_name='На распродаже'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='size',
+      name='is_sailng',
+      field=models.BooleanField(default=False, verbose_name='На распродаже'),
+    ),
+  ]

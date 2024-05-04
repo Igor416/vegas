@@ -5,22 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0063_auto_20220825_2233'),
-    ]
+  dependencies = [
+    ('api', '0063_auto_20220825_2233'),
+  ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='mattresspad',
-            name='rigidity1',
-        ),
-        migrations.RemoveField(
-            model_name='mattresspad',
-            name='rigidity2',
-        ),
-        migrations.AddField(
-            model_name='mattresspad',
-            name='age',
-            field=models.ManyToManyField(related_name='agemattresspad', to='api.Choice'),
-        ),
-    ]
+  operations = [
+    migrations.RemoveField(
+      model_name='mattresspad',
+      name='rigidity1',
+    ),
+    migrations.RemoveField(
+      model_name='mattresspad',
+      name='rigidity2',
+    ),
+    migrations.AddField(
+      model_name='mattresspad',
+      name='age',
+      field=models.ManyToManyField(related_name='agemattresspad', to='api.Choice'),
+    ),
+  ]

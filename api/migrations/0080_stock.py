@@ -5,22 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0079_rename_is_sailng_size_on_sale'),
-    ]
+  dependencies = [
+    ('api', '0079_rename_is_sailng_size_on_sale'),
+  ]
 
-    operations = [
-        migrations.CreateModel(
-            name='Stock',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка')),
-                ('desc_en', models.TextField(verbose_name='Описание (en)')),
-                ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
-                ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
-                ('expiry', models.DateField(verbose_name='Дата окончания')),
-                ('collection', models.ManyToManyField(related_name='collection_stock', to='api.choice', verbose_name='Коллекции')),
-                ('sizes', models.ManyToManyField(related_name='sizes_stock', to='api.size', verbose_name='Размеры')),
-            ],
-        ),
-    ]
+  operations = [
+    migrations.CreateModel(
+      name='Stock',
+      fields=[
+        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('discount', models.SmallIntegerField(default=0, verbose_name='Скидка')),
+        ('desc_en', models.TextField(verbose_name='Описание (en)')),
+        ('desc_ru', models.TextField(verbose_name='Описание (ru)')),
+        ('desc_ro', models.TextField(verbose_name='Описание (ro)')),
+        ('expiry', models.DateField(verbose_name='Дата окончания')),
+        ('collection', models.ManyToManyField(related_name='collection_stock', to='api.choice', verbose_name='Коллекции')),
+        ('sizes', models.ManyToManyField(related_name='sizes_stock', to='api.size', verbose_name='Размеры')),
+      ],
+    ),
+  ]

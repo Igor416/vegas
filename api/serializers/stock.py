@@ -1,7 +1,9 @@
-from . import models, LangDetectiveSerializer
+from rest_framework.serializers import ModelSerializer
+from api import models
+from .extractors import LangExtractor
 from .choice import ChoiceSerializer
 
-class StockSerializer(LangDetectiveSerializer):
+class StockSerializer(LangExtractor, ModelSerializer):
   class Meta:
     exclude = ['id', 'collections', 'sizes']
     model = models.Stock

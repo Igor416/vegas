@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0039_auto_20220804_1059'),
-    ]
+  dependencies = [
+    ('api', '0039_auto_20220804_1059'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='bed',
-            name='headboard_height',
-            field=models.IntegerField(default=0),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='bed',
+      name='headboard_height',
+      field=models.IntegerField(default=0),
+    ),
+  ]

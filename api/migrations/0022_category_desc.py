@@ -5,15 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0021_alter_basis_desc_alter_bed_desc_alter_bedsheets_desc_and_more'),
-    ]
+  dependencies = [
+    ('api', '0021_alter_basis_desc_alter_bed_desc_alter_bedsheets_desc_and_more'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='category',
-            name='desc',
-            field=models.TextField(default='', verbose_name='Описание'),
-            preserve_default=False,
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='category',
+      name='desc',
+      field=models.TextField(default='', verbose_name='Описание'),
+      preserve_default=False,
+    ),
+  ]

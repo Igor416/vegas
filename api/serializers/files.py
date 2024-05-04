@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from . import models
+from api import models
 
 class FileSerializer(ModelSerializer):
   def to_representation(self, obj):
@@ -7,7 +7,7 @@ class FileSerializer(ModelSerializer):
 
   class Meta:
     fields = ['image']
-      
+    
 class ImageSerializer(FileSerializer):
   class Meta(FileSerializer.Meta):
     model = models.Image

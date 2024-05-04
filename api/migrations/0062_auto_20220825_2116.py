@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0061_auto_20220825_2115'),
-    ]
+  dependencies = [
+    ('api', '0061_auto_20220825_2115'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='choice',
-            name='category',
-            field=models.ManyToManyField(related_name='categoryC', to='api.Category'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='choice',
+      name='category',
+      field=models.ManyToManyField(related_name='categoryC', to='api.Category'),
+    ),
+  ]

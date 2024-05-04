@@ -82,53 +82,51 @@ ORDER = {
   BASIS: ((DISTANCE, WIDTH, RECOMENDED), (DISTANCE, WIDTH, LEGS_HEIGHT, RECOMENDED))
 }
 
-BEST = {
-  'MATTRESSES': [(MATTRESS, 'Favorit'), (MATTRESS, 'F3'), (MATTRESS, 'X3'), (MATTRESS, 'S-3'), (MATTRESS, 'Compact2')],
-  'PILLOWS': [(PILLOW, '20'), (PILLOW, 'Extra Memory'), (PILLOW, '14')],
-  'ACCESSORIES': [(MATTRESSPAD, 'Stressfree L1'), (BLANKET, 'SumWin'), (MATTRESSPAD, 'Bamboo A1')],
-  'FOR KIDS': [(MATTRESS, 'Cocolatex'), (PILLOW, 'Junior'), (PILLOW, 'Baby Boom')],
-  'BASISES': [(BASIS, 'SuperLux'), (BASIS, 'SuperLux'), (BASIS, 'Premium')],
-  'FURNITURE': [(BED, 'Milana II'), (BED, 'Victoria'), (BED, 'Milana IV')]
-}
+BEST = [
+  [(MATTRESS, 'Favorit'), (MATTRESS, 'F3'), (MATTRESS, 'X3'), (MATTRESS, 'S-3'), (MATTRESS, 'Compact2')],
+  [(PILLOW, '20'), (PILLOW, 'Extra Memory'), (PILLOW, '14')],
+  [(MATTRESSPAD, 'Stressfree L1'), (BLANKET, 'SumWin'), (MATTRESSPAD, 'Bamboo A1')],
+  [(MATTRESS, 'Cocolatex'), (PILLOW, 'Junior'), (PILLOW, 'Baby Boom')],
+  [(BED, 'Milana II'), (BED, 'Victoria'), (BED, 'Milana IV')],
+  [(BASIS, 'SuperLux'), (BASIS, 'Premium')]
+]
 
-from .translations import RU
+from .translations import RU, products, properties, choices
 def get_all_categories():
   return list(CATALOG.keys())
-      
+    
 def get_all_props(product):
   return CATALOG[product] + [prop for prop, prs in COMMON_PROPERTIES.items() if product in prs]
 
 def get_categories(property):
-  categories = COMMON_PROPERTIES.get(property)
+  categories = COMMON_PROPERTIES.get(property, [])
   if not categories:
     for pr, props in CATALOG.items():
       if property in props:
         categories = [pr]
-        break
+      break
   return categories
 
 def get_default_filtering(product):
   return DEFAULT_FILTERING[product]
 
 def get_pr_trans(product, lang=RU, plural=False):
-  from .translations import products
-  return products.get(product)[lang][int(plural)]
+  return products.get(product, [[]])[lang][int(plural)]
 
 def get_prop_trans(property, lang=RU):
-  from .translations import properties, choices
-  return (properties.get(property) or choices.get(property))[lang]
+  return (properties.get(property, []) or choices.get(property, []))[lang]
 
 def get_order(model):
   return ORDER[model]
 
 def get_best():
-  return (BEST, [(160, 200), (90, 200), (160, 200)])
+  return (BEST, [(160, 200), (160, 200)])
 
 def get_pr_choices():
   return [(key, get_pr_trans(key)) for key in CATALOG.keys()]
 
 def get_prop_choices():
-  choices = [
+  choices: list[tuple[str, str]] = [
     ('ОБЩИЕ', 'ОБЩИЕ')
   ]
 
@@ -137,7 +135,7 @@ def get_prop_choices():
 
   for pr, props in CATALOG.items():
     choices.append(('', ''))
-    choices.append((pr, 'ТОЛЬКО ' + get_pr_trans(pr).upper()))
-    for prop in props:
-      choices.append((prop, get_prop_trans(prop)))
+  choices.append((pr, 'ТОЛЬКО ' + get_pr_trans(pr).upper()))
+  for prop in props:
+    choices.append((prop, get_prop_trans(prop)))
   return choices

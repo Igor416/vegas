@@ -5,49 +5,49 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0020_alter_basis_videos_alter_bed_videos_and_more'),
-    ]
+  dependencies = [
+    ('api', '0020_alter_basis_videos_alter_bed_videos_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='basis',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='bed',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='bedsheets',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='blanket',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='mattrass',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='mattrasspad',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='pillow',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-        migrations.AlterField(
-            model_name='stand',
-            name='desc',
-            field=models.TextField(verbose_name='Описание'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='basis',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='bed',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='bedsheets',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='blanket',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='mattrass',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='mattrasspad',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='pillow',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+    migrations.AlterField(
+      model_name='stand',
+      name='desc',
+      field=models.TextField(verbose_name='Описание'),
+    ),
+  ]

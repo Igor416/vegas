@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Category } from '../../JSONTypes';
 
 interface SectionImageProps {
@@ -7,7 +5,7 @@ interface SectionImageProps {
   collection?: string
 }
 
-export default function SectionImage({category, collection}: SectionImageProps) {
+export function SectionImage({category, collection}: SectionImageProps) {
   if (collection) {return (
     <div className='container-fluid row' style={{marginTop: '5vh'}}>
       <div className='col-1'></div>

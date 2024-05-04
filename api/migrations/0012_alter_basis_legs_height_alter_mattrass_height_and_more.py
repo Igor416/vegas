@@ -5,29 +5,29 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0011_alter_mattrass_options_alter_basis_height_and_more'),
-    ]
+  dependencies = [
+    ('api', '0011_alter_mattrass_options_alter_basis_height_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='basis',
-            name='legs_height',
-            field=models.IntegerField(verbose_name='Высота ножек'),
-        ),
-        migrations.AlterField(
-            model_name='mattrass',
-            name='height',
-            field=models.IntegerField(verbose_name='Высота'),
-        ),
-        migrations.AlterField(
-            model_name='mattrasspad',
-            name='height',
-            field=models.IntegerField(verbose_name='Высота'),
-        ),
-        migrations.AlterField(
-            model_name='stand',
-            name='height',
-            field=models.IntegerField(verbose_name='Высота'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='basis',
+      name='legs_height',
+      field=models.IntegerField(verbose_name='Высота ножек'),
+    ),
+    migrations.AlterField(
+      model_name='mattrass',
+      name='height',
+      field=models.IntegerField(verbose_name='Высота'),
+    ),
+    migrations.AlterField(
+      model_name='mattrasspad',
+      name='height',
+      field=models.IntegerField(verbose_name='Высота'),
+    ),
+    migrations.AlterField(
+      model_name='stand',
+      name='height',
+      field=models.IntegerField(verbose_name='Высота'),
+    ),
+  ]

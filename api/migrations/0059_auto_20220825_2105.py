@@ -5,14 +5,14 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0058_auto_20220823_2233'),
-    ]
+  dependencies = [
+    ('api', '0058_auto_20220823_2233'),
+  ]
 
-    operations = [
-        migrations.RenameField(
-            model_name='size',
-            old_name='category',
-            new_name='product',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name='size',
+      old_name='category',
+      new_name='product',
+    ),
+  ]

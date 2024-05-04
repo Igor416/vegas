@@ -1,6 +1,8 @@
-from . import models, LangDetectiveSerializer
+from rest_framework.serializers import ModelSerializer
+from api import models
+from .extractors import LangExtractor
 
-class TechnologySerializer(LangDetectiveSerializer):
+class TechnologySerializer(LangExtractor, ModelSerializer):
   class Meta:
     exclude = ['id']
     model = models.Technology

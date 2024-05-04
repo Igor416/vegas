@@ -1,8 +1,7 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createRoot } from 'react-dom/client';
 
-import geti18n from './i18n';
+import { geti18n } from './i18n';
 import Cookies from 'js-cookie';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -55,28 +54,41 @@ if (Cookies.get('country')) {
   })
 }
 
-import App from './components/App';
-import Home from './components/Home';
-import Catalog from './components/Catalog';
-import Stock from './components/Stock';
-import ProductDetails from './components/ProductDetails';
-import Cart from './components/Cart';
-import Shops from './components/Shops';
+import { App } from './components/App';
+import { Home } from './components/home';
+import { Catalog } from './components/catalog';
+import { StockProducts } from './components/stockProducts';
+import { ProductDetails } from './components/productDetails';
+import { Cart } from './components/cart';
+import { Shops } from './components/shops';
+import { i18n } from 'i18next';
+
+export interface ResponsiveProps {
+  isMobile: boolean
+}
+
+export interface TranslatableProps {
+  t: (val: string) => string,
+  lang?: string,
+  i18n?: i18n
+}
 
 function render() {
+  const isMobile = window.matchMedia('(max-width: 576px)').matches
+  
   root.render(
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<App />}>
-          <Route path='catalog/:category/:sub_category/' element={<Catalog />}>
-            <Route path=':filter' element={<Catalog />} />
+        <Route path='/' element={<App isMobile={isMobile} />}>
+          <Route path='catalog/:category/:subCategory/' element={<Catalog isMobile={isMobile} isSales={false} />}>
+            <Route path=':filter' element={<Catalog isMobile={isMobile} isSales={false} />} />
           </Route>
-          <Route path='sales' element={<Catalog />} />
-          <Route path='stock' element={<Stock />} />
-          <Route path='product/:category/:name' element={<ProductDetails />} />
-          <Route path='cart' element={<Cart />} />
-          <Route path='shops' element={<Shops />} />
-          <Route path='' element={<Home />} />
+          <Route path='sales' element={<Catalog isMobile={isMobile} isSales={true} />} />
+          <Route path='stock' element={<StockProducts isMobile={isMobile} />} />
+          <Route path='product/:category/:name' element={<ProductDetails isMobile={isMobile} />} />
+          <Route path='cart' element={<Cart isMobile={isMobile} />} />
+          <Route path='shops' element={<Shops isMobile={isMobile} />} />
+          <Route path='' element={<Home isMobile={isMobile} />} />
         </Route>
       </Routes>
     </BrowserRouter>

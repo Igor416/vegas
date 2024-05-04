@@ -6,14 +6,14 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0015_alter_bedsheets_bedsheets_color_and_more'),
-    ]
+  dependencies = [
+    ('api', '0015_alter_bedsheets_bedsheets_color_and_more'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='size',
-            name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='size',
+      name='category',
+      field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='api.category', verbose_name='Категория'),
+    ),
+  ]

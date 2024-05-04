@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface CustomInputProps {
   color: string,
   className: string,
@@ -10,16 +8,14 @@ interface CustomInputProps {
   checked?: boolean
 }
 
-export default function CustomInput({color, className, type, id, value, onChange, checked}: CustomInputProps) {
-  return (
-    <input
-      style={{border: 'none', borderBottom: `1px solid var(--${color})`}}
-      className={'outline-0 no-hover w-100 ' + className}
-      type={type}
-      checked={checked}
-      id={id}
-      value={value}
-      onChange={e => onChange(e.target.value)}
-    />
-  );
+export function CustomInput({color, className, type, id, value, onChange, checked}: CustomInputProps) {
+  return <input
+    style={{border: 'none', borderBottom: `1px solid var(--${color})`}}
+    className={'outline-0 no-hover w-100 ' + className}
+    type={type}
+    checked={checked}
+    id={id}
+    value={value}
+    onChange={e => onChange(e.target.value)}
+  />
 }

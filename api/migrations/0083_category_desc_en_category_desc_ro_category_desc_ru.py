@@ -5,24 +5,24 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0082_alter_stock_options_remove_size_pricemdl'),
-    ]
+  dependencies = [
+    ('api', '0082_alter_stock_options_remove_size_pricemdl'),
+  ]
 
-    operations = [
-        migrations.AddField(
-            model_name='category',
-            name='desc_en',
-            field=models.TextField(default='', verbose_name='Описание (en)'),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='desc_ro',
-            field=models.TextField(default='', verbose_name='Описание (ro)'),
-        ),
-        migrations.AddField(
-            model_name='category',
-            name='desc_ru',
-            field=models.TextField(default='', verbose_name='Описание (ru)'),
-        ),
-    ]
+  operations = [
+    migrations.AddField(
+      model_name='category',
+      name='desc_en',
+      field=models.TextField(default='', verbose_name='Описание (en)'),
+    ),
+    migrations.AddField(
+      model_name='category',
+      name='desc_ro',
+      field=models.TextField(default='', verbose_name='Описание (ro)'),
+    ),
+    migrations.AddField(
+      model_name='category',
+      name='desc_ru',
+      field=models.TextField(default='', verbose_name='Описание (ru)'),
+    ),
+  ]

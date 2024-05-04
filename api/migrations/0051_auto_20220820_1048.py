@@ -5,22 +5,22 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0050_auto_20220820_1040'),
-    ]
+  dependencies = [
+    ('api', '0050_auto_20220820_1040'),
+  ]
 
-    operations = [
-        migrations.RenameField(
-            model_name='marker',
-            old_name='name_ru',
-            new_name='name',
-        ),
-        migrations.RemoveField(
-            model_name='marker',
-            name='name_en',
-        ),
-        migrations.RemoveField(
-            model_name='marker',
-            name='name_ro',
-        ),
-    ]
+  operations = [
+    migrations.RenameField(
+      model_name='marker',
+      old_name='name_ru',
+      new_name='name',
+    ),
+    migrations.RemoveField(
+      model_name='marker',
+      name='name_en',
+    ),
+    migrations.RemoveField(
+      model_name='marker',
+      name='name_ro',
+    ),
+  ]

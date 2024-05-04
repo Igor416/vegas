@@ -5,17 +5,17 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0081_alter_stock_options_and_more'),
-    ]
+  dependencies = [
+    ('api', '0081_alter_stock_options_and_more'),
+  ]
 
-    operations = [
-        migrations.AlterModelOptions(
-            name='stock',
-            options={'verbose_name': 'акция', 'verbose_name_plural': 'акции'},
-        ),
-        migrations.RemoveField(
-            model_name='size',
-            name='priceMDL',
-        ),
-    ]
+  operations = [
+    migrations.AlterModelOptions(
+      name='stock',
+      options={'verbose_name': 'акция', 'verbose_name_plural': 'акции'},
+    ),
+    migrations.RemoveField(
+      model_name='size',
+      name='priceMDL',
+    ),
+  ]

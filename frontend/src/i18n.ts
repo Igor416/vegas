@@ -3,24 +3,18 @@ import Backend from 'i18next-http-backend';
 import Cookies from 'js-cookie';
 import { initReactI18next } from 'react-i18next';
 
-export function detectLang(): string {
-  let lang = Cookies.get('lang');
-
+export function geti18n() {
+  let lang = Cookies.get('lang')
+  
   if (!lang) {
     lang = navigator.language
     
     if (lang.includes('-')) {
       lang = lang.split('-')[0]
     }
-    console.log(lang)
-    Cookies.set('lang', lang)
+    
+    Cookies.set('lang', lang, {path: '/'})
   }
-  
-  return lang;
-}
-
-export default function geti18n() {
-  let lang = detectLang()
 
   i18n.use(Backend).use(initReactI18next).init({
     lng: lang,

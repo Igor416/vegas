@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('api', '0035_auto_20220729_2025'),
-    ]
+  dependencies = [
+    ('api', '0035_auto_20220729_2025'),
+  ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='image',
-            name='image',
-            field=models.ImageField(upload_to='', verbose_name='Фото товара'),
-        ),
-        migrations.AlterField(
-            model_name='video',
-            name='image',
-            field=models.ImageField(upload_to='', verbose_name='Фото товара'),
-        ),
-    ]
+  operations = [
+    migrations.AlterField(
+      model_name='image',
+      name='image',
+      field=models.ImageField(upload_to='', verbose_name='Фото товара'),
+    ),
+    migrations.AlterField(
+      model_name='video',
+      name='image',
+      field=models.ImageField(upload_to='', verbose_name='Фото товара'),
+    ),
+  ]
