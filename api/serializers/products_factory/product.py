@@ -8,7 +8,7 @@ class ProductSerializerFactory:
   
   class Meta:
     model = models.products.Product
-    fields: list[str] | str = []
+    fields = []
   
   def __init__(self, model, lang, country):
     self.model = model
