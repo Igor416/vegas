@@ -31,7 +31,7 @@ export function Carousel({product}: CarouselProps) {
       </div>
       }
     </div>
-    <div id='carousel' className='carousel slide' product-interval='false'>
+    <div id='carousel' className='carousel slide' data-interval='false'>
       <div className='carousel-inner'>
       {media.map((url, i) => <div key={i} className={'carousel-item ' + (i === 0 ? 'active' : '')}>
       {
@@ -48,16 +48,16 @@ export function Carousel({product}: CarouselProps) {
       <button 
         className='carousel-control-prev h2'
         style={{width: '5%', color: 'var(--deep-sky-blue)'}} 
-        product-bs-target='#carousel' 
-        product-bs-slide='prev'
+        data-bs-target='#carousel' 
+        data-bs-slide='prev'
       >
         <FontAwesomeIcon icon='angle-left' />
       </button>
       <button 
         className='carousel-control-next h2'
         style={{width: '5%', color: 'var(--deep-sky-blue)'}} 
-        product-bs-target='#carousel' 
-        product-bs-slide='next'
+        data-bs-target='#carousel' 
+        data-bs-slide='next'
       >
         <FontAwesomeIcon icon='angle-right' />
       </button>
@@ -65,8 +65,8 @@ export function Carousel({product}: CarouselProps) {
         {media.map((url, i) => <div
           style={{width: 100 / (media.length + 1) + '%'}}
           key={i}
-          product-bs-target='#carousel'
-          product-bs-slide-to={i}
+          data-bs-target='#carousel'
+          data-bs-slide-to={i}
           className={(i === 0 ? 'active ' : '') + 'transition media'}
         >
           <img style={{aspectRatio: 1.512 / 1}} src={url} />
