@@ -40,10 +40,10 @@ export interface Size {
 }
 
 export interface BedSheetsSize extends Size {
-  duvet_cover_size: Size,
-  sheet_size: Size,
-  elasticated_sheet_size: Size,
-  pillowcase_sizes: Size[],
+  duvet_cover_size: string,
+  sheet_size: string,
+  elasticated_sheet_size: string,
+  pillowcase_sizes: string
 }
 
 export interface Stock {

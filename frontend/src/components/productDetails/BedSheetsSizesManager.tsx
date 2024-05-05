@@ -19,7 +19,7 @@ export function BedSheetsSizesManager({sizes, active, setActive}: BedSheetsSizes
     }
     return dims
   }
-
+  
   return <>
     <div className='d-flex flex-column flex-wrap align-items-stretch h6'>
       <div className='mt-3'>
@@ -47,19 +47,14 @@ export function BedSheetsSizesManager({sizes, active, setActive}: BedSheetsSizes
         <span>{t('bedding_set')}:</span>
       </div>
       {active > -1 && <div className='d-flex flex-column mx-2'>
-        <span>{t('duvet_cover')}: {reprSize(sizes[active].duvet_cover_size)}</span>
+        <span>{t('duvet_cover')}: {sizes[active].duvet_cover_size}</span>
         {sizes[active]['sheet_size']
         ?
-        <span>{t('sheet')}: {reprSize(sizes[active]['sheet_size'])}</span>
+        <span>{t('sheet')}: {sizes[active]['sheet_size']}</span>
         :
-        <span>{t('elasticated_sheet')}: {reprSize(sizes[active].elasticated_sheet_size)}</span>
+        <span>{t('elasticated_sheet')}: {sizes[active].elasticated_sheet_size}</span>
         }
-        {sizes[active]['pillowcase_sizes'].length === 1
-        ?
-        <span>2 {t('pillowcase')}: {reprSize(sizes[active].pillowcase_sizes[0])}</span>
-        :
-        <span>4 {t('pillowcase')}: {reprSize(sizes[active].pillowcase_sizes[0])}; {reprSize(sizes[active]['pillowcase_sizes'][1])}</span>
-        }
+        <span>{sizes[active]['pillowcase_sizes'].length === 5 ? 2 : 4} {t('pillowcase')}: {sizes[active].pillowcase_sizes}</span>
       </div>}
     </div>
   </>
