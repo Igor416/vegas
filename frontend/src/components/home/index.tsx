@@ -31,13 +31,17 @@ export function Home({isMobile}: ResponsiveProps) {
       </div>
       <div className='d-flex mt-5 px-2 px-sm-auto'>
         <div className='col-sm-2'></div>
-        <iframe className='col-12 col-sm-8' style={{aspectRatio: 16/9}} src={
+        <iframe className='col-12 col-sm-8' style={{aspectRatio: isMobile ? 9/16 : 16/9}} src={
+          isMobile
+          ?
+          'https://www.youtube.com/embed/oiFlUSzmDlg'
+          : (
           i18n.language === 'ru'
           ?
           'https://www.youtube.com/embed/JpgS_TvcamA'
           :
           'https://www.youtube.com/embed/g4r4hbbVV3M'
-        } title='VEGAS REKLAMA new' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen></iframe>
+        )} title='VEGAS REKLAMA new' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen></iframe>
         <div className='col-sm-2'></div>
       </div>
       <div className='d-flex mt-5 px-2 px-sm-auto'>
