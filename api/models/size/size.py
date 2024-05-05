@@ -15,6 +15,11 @@ class Size(models.Model):
     self.category = category
     self.save()
 
+  def save(self):
+    if self.on_sale:
+      self.discount = 30
+    super().save()
+
   def __str__(self):
     return f'Размер продукта {self.product}: {self.width} x {self.length} по цене {self.priceEUR} (EUR){f", со скидкой {self.discount}%" if self.discount != 0 else ""}'
 
