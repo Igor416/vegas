@@ -10,7 +10,7 @@ def create_product_admins():
     form = type(product_name + 'Form', (ProductForm,), {})
     model = getattr(models, product_name)
     model._meta.verbose_name = f'{ct.get_pr_trans(product_name)}'
-    model._meta.verbose_name_plural = ct.get_pr_trans(product_name)
+    model._meta.verbose_name_plural = ct.get_pr_trans(product_name, plural=True)
     setattr(form, 'model', model)
 
     if model is models.BedSheets:
@@ -34,8 +34,8 @@ def create_product_admins():
       models.Pillow: LayerPillowInline,
       models.MattressPad: LayerMattressPadInline
     }
-
-    if type(model) in layers.keys():
-      setattr(admin_model, 'inlines', (layers[type(model)]))
+    
+    if model in layers.keys():
+      setattr(admin_model, 'inlines', (layers[model],))
 
     admin.site.register(model, admin_model)
