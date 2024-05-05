@@ -6,5 +6,6 @@ from .technologies import TechnologyAdmin
 from .marker import MarkerAdmin
 from .product import create_product_admins
 from .stock import StockAdmin
+from .stockable import StockableAdmin
 
 create_product_admins()

@@ -6,3 +6,4 @@ from .technologies import Technology, LayerMattress, LayerPillow, LayerMattressP
 from .marker import Marker
 from .products import Mattress, Pillow, MattressPad, Blanket, BedSheets, Bed, Stand, Basis
 from .stock import Stock
+from .stockable import Stockable, Action
