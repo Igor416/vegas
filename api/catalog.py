@@ -135,7 +135,7 @@ def get_prop_choices():
 
   for pr, props in CATALOG.items():
     choices.append(('', ''))
-  choices.append((pr, 'ТОЛЬКО ' + get_pr_trans(pr).upper()))
-  for prop in props:
-    choices.append((prop, get_prop_trans(prop)))
+    choices.append((pr, 'ТОЛЬКО ' + get_pr_trans(pr).upper()))
+    for prop in props:
+      choices.append((prop, get_prop_trans(prop)))
   return choices
