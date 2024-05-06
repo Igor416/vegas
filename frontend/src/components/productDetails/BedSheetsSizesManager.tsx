@@ -15,7 +15,7 @@ export function BedSheetsSizesManager({sizes, active, setActive}: BedSheetsSizes
   let reprSize = (size: BedSheetsSize | Size, showItemsCount=false) => {
     let dims = `${size.width}x${size.length}`
     if (showItemsCount) {
-      return dims + ` ${(size as BedSheetsSize).pillowcase_sizes.length * 2 + 2}${t('pieces')}.`
+      return dims + ` ${(size as BedSheetsSize).pillowcase_sizes.length == 5 ? 4 : 6}${t('pieces')}.`
     }
     return dims
   }
@@ -48,13 +48,13 @@ export function BedSheetsSizesManager({sizes, active, setActive}: BedSheetsSizes
       </div>
       {active > -1 && <div className='d-flex flex-column mx-2'>
         <span>{t('duvet_cover')}: {sizes[active].duvet_cover_size}</span>
-        {sizes[active]['sheet_size']
+        {sizes[active].sheet_size != ''
         ?
-        <span>{t('sheet')}: {sizes[active]['sheet_size']}</span>
+        <span>{t('sheet')}: {sizes[active].sheet_size}</span>
         :
         <span>{t('elasticated_sheet')}: {sizes[active].elasticated_sheet_size}</span>
         }
-        <span>{sizes[active]['pillowcase_sizes'].length === 5 ? 2 : 4} {t('pillowcase')}: {sizes[active].pillowcase_sizes}</span>
+        <span>{sizes[active].pillowcase_sizes.length === 5 ? 2 : 4} {t('pillowcase')}: {sizes[active].pillowcase_sizes}</span>
       </div>}
     </div>
   </>
