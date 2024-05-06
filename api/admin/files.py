@@ -3,7 +3,7 @@ from api import models
 from api import catalog as ct
 
 class ImageListFilter(admin.SimpleListFilter):
-  title = ('категориям',)
+  title = 'По категориям'
   parameter_name = 'category'
 
   def lookups(self, request, model_admin):
