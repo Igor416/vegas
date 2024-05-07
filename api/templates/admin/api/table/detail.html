@@ -1,0 +1,52 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+  <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <table style="width: 100%; margin-bottom: 10px; border: 1px solid var(--header-bg)">
+    {% for entry in object_list %}
+      {% if forloop.counter0|divisibleby:25 %}
+      <tr>
+        <td style="border: 1px solid var(--header-bg)"></td>
+        <td style="border: 1px solid var(--header-bg)">Модель</td>
+        <td style="border: 1px solid var(--header-bg)">Размер</td>
+        <td style="border: 1px solid var(--header-bg)">Общее</td>
+        {% for place in entry.places.keys %}
+        <td style="border: 1px solid var(--header-bg)">{{ place }}</td>
+        {% endfor %}
+        {% for day in entry.sold %}
+        <td style="border: 1px solid var(--header-bg)">{{ forloop.counter }}</td>
+        {% endfor %}
+      </tr>
+      {% endif %}
+      <tr>
+        <td style="border: 1px solid var(--header-bg)">{{ forloop.counter }}.</td>
+        <td style="border: 1px solid var(--header-bg)">{{ entry.product }}</td>
+        <td style="border: 1px solid var(--header-bg)">{{ entry.size }}</td>
+        <td style="border: 1px solid var(--header-bg)">{{ entry.total }}</td>
+        {% for place in entry.places.values %}
+        {% if place == 0 %}
+        <td style="border: 1px solid var(--header-bg)"></td>
+        {% else %}
+        <td style="border: 1px solid var(--header-bg)">{{ place }}</td>
+        {% endif %}
+        {% endfor %}
+        {% for sold in entry.sold %}
+        {% if sold == 0 %}
+        <td style="border: 1px solid var(--header-bg)"></td>
+        {% else %}
+        <td style="border: 1px solid var(--header-bg)">{{ sold }}</td>
+        {% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

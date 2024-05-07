@@ -8,12 +8,13 @@ class Action(models.Model):
     ('O', 'Пометить как бронь'),
     ('C', 'Отменить бронь'),
     ('S', 'Отметить как проданный'),
+    ('R', 'Получить возврат'),
     ('T', 'Переместить')
   )
   
   PLACES = (
-    ('SN', 'Новый склад'),
-    ('SO', 'Старый склад'),
+    ('SN', 'Главный склад'),
+    ('SO', 'Склад 2'),
     ('JU', 'Джамбо'),
     ('CI', 'Чеканы'),
     ('RI', 'Рышкановка'),
@@ -30,7 +31,7 @@ class Action(models.Model):
   stockable = models.ForeignKey(Stockable, on_delete=models.CASCADE, verbose_name='Модель', related_name='actions')
   
   def __str__(self):
-    return f'{self.person} сделал действие: {self.type} над {self.stockable.size} {self.date} и теперь он в месте: {self.place}'
+    return f'{self.person} сделал действие: "{self.get_type_display()}" над {self.stockable.print_size()} {self.date} и теперь он в месте: {self.get_place_display()}'
 
   class Meta:
     verbose_name = 'действие'
