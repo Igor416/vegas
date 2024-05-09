@@ -8,5 +8,6 @@ urlpatterns = [
   path('news/', include('news.urls')),
   path('telegram/', include('telegram_bot.urls')),
   path('api/', include('api.urls')),
+  path('stock/', include('stock.urls')),
   path('', include('frontend.urls'))
 ] + static(settings.STATIC_URL, document_root = settings.STATIC_ROOT)  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.PUBLIC_URL, document_root=settings.PUBLIC_ROOT)

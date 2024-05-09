@@ -5,7 +5,7 @@ from .table import Table
 class Stockable(models.Model):
   product = models.CharField('Модель', max_length=32)
   size = models.CharField('Размер', max_length=7)
-  table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='stockables')
+  table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='stockables', verbose_name='Таблица')
 
   def print_size(self):
     return f'Размер продукта {self.product}: {self.size}'
