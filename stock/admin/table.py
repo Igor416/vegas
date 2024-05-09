@@ -1,7 +1,7 @@
 from django.contrib import admin
-from api.models import Table
 from django.urls import path, reverse
 from django.utils.html import format_html
+from stock.models import Table
 from .view import TableDetailView
 
 @admin.register(Table)

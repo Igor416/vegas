@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Action, Stockable
+from stock.models import Action, Stockable
 from .action import ActionInline, set_as_ordered, set_as_saling, set_as_sold, set_as_returned
 
 class StockableListFilter(admin.SimpleListFilter):
@@ -31,6 +31,8 @@ class StockableAdmin(admin.ModelAdmin):
     return qs
   
   def save_model(self, request, obj, form, change):
+    print(obj)
+    return
     super().save_model(request, obj, form, change)
     if len(obj.actions.all()) == 0:
       obj.actions.add(Action.objects.create(type=type, person=request.user.username, place='CA', entry=obj))

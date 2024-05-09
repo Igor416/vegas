@@ -13,6 +13,7 @@ class Action(models.Model):
   )
   
   PLACES = (
+    ('CA', 'Машина'),
     ('SN', 'Главный склад'),
     ('SO', 'Склад 2'),
     ('JU', 'Джамбо'),
@@ -21,7 +22,6 @@ class Action(models.Model):
     ('D1', 'Игорь'),
     ('D2', 'Оргеев'),
     ('D3', 'Унгены'),
-    ('CA', 'Машина'),
   )
   
   type = models.CharField('Тип действия', max_length=1, choices=TYPES, default='A')

@@ -1,13 +1,13 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic.detail import DetailView
 from django.contrib import admin
-from api.models import Action, Table
+from stock.models import Action, Table
 from calendar import monthrange
 from django.utils.timezone import datetime
 
 class TableDetailView(PermissionRequiredMixin, DetailView):
-  permission_required = 'api.view_table'
-  template_name = 'admin/api/table/detail.html'
+  permission_required = 'stock.view_table'
+  template_name = 'admin/stock/table/detail.html'
   model = Table
   
   def get_context_data(self, **kwargs):

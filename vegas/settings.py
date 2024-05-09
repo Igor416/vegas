@@ -23,6 +23,7 @@ INSTALLED_APPS = [
   'api.apps.ApiConfig',
   'news.apps.NewsConfig',
   'telegram_bot.apps.TelegramBotConfig',
+  'stock.apps.StockConfig',
   'frontend.apps.FrontendConfig',
   'rest_framework',
 ]

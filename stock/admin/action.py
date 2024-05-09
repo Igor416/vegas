@@ -1,5 +1,5 @@
 from django.contrib import admin
-from api.models import Action
+from stock.models import Action
 
 class ActionInline(admin.TabularInline):
   exclude = ('person',)
