@@ -94,9 +94,8 @@ export function Tabs({isMobile, t, product}: TabsProps) {
           <Line isMobile={isMobile} t={t} label={t('note')} val={t('notetext')} little={true} />
         </div>
       </div>
-      {tabs.includes('structure') &&
-      <div className='flex-column border border-top-0 p-4 tab-pane fade' id='structure'>
-      {product.structure.map((layer, i) => <div key={i} className={(isMobile ? 'flex-column' : 'row-nowrap') + ' d-flex border-bottom py-4'}>
+      {tabs.includes('structure') && <div className='flex-column border border-top-0 p-4 tab-pane fade' id='structure'>
+      {product.structure && product.structure.map((layer, i) => <div key={i} className={(isMobile ? 'flex-column' : 'row-nowrap') + ' d-flex border-bottom py-4'}>
           <div style={{color: 'var(--deep-sky-blue)'}} className='col-sm-3 h5'>
             <span>{layer.name}</span>
           </div>
@@ -111,11 +110,9 @@ export function Tabs({isMobile, t, product}: TabsProps) {
           </div>
         </div>
       )}
-      </div>
-      }
-      {tabs.includes('technologies') &&
-      <div className='flex-column border border-top-0 p-4 tab-pane fade' id='technologies'>
-      {product.technologies.map((technology, i) => <div key={i} className='d-flex row-nowrap border-bottom py-4'>
+      </div>}
+      {tabs.includes('technologies') && <div className='flex-column border border-top-0 p-4 tab-pane fade' id='technologies'>
+      {product.technologies && product.technologies.map((technology, i) => <div key={i} className='d-flex row-nowrap border-bottom py-4'>
           <div className='d-flex align-items-center justify-content-center col-2'>
             <img className='w-75' src={technology.image} />
           </div>
@@ -129,8 +126,7 @@ export function Tabs({isMobile, t, product}: TabsProps) {
           </div>
         </div>
       )}
-      </div>
-      }
+      </div>}
     </div>
   </div>
 }
