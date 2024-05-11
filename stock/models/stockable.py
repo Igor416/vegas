@@ -32,5 +32,6 @@ class Stockable(models.Model):
     return self.last_action.date
 
   class Meta:
+    ordering = ['product', 'size']
     verbose_name = 'модель'
     verbose_name_plural = 'модели'

@@ -20,7 +20,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView):
           'product': entry.product,
           'size': entry.size,
           'places': {place[1]: 0 for place in Action.PLACES},
-          'sold': [0 for _ in range(monthrange(datetime.today().year, datetime.today().month)[1] - 1)],
+          'sold': [0 for _ in range(monthrange(datetime.today().year, datetime.today().month)[1])],
           'total': '0'
         }
       else:
