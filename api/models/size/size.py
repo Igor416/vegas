@@ -16,8 +16,6 @@ class Size(models.Model):
     self.save()
 
   def save(self, *args, **kwargs):
-    if self.on_sale:
-      self.discount = 30
     super().save(*args, **kwargs)
 
   def __str__(self):
