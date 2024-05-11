@@ -46,8 +46,14 @@ export function Catalog({isMobile, isSales}: CatalogProps) {
   }, [i18n.language, params])
 
   return <div className='mt-5'>
-    {!isMobile && !isSales && <SectionImage category={category} collection={subCategory === 'collection' ? filter?.toLowerCase() : undefined} />}
-    <div className={'d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4' + (isSales ? ' mt-5' : '')}>
+    {!isMobile && (
+      isSales
+      ?
+      <div style={{height: '5vh'}} />
+      :
+      <SectionImage category={category} collection={subCategory === 'collection' ? filter?.toLowerCase() : undefined} />
+    )}
+    <div className='d-flex mt-5 px-2 py-1 px-sm-5 py-sm-4'>
       <div className='col-sm-1'></div>
       <div className='col-sm-10'>
         <CategoryPanel
