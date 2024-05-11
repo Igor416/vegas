@@ -10,11 +10,6 @@ class Size(models.Model):
   discount = models.SmallIntegerField('Скидка (%)', default=0)
   on_sale = models.BooleanField('На распродаже', default=False)
 
-  def set_product_and_category(self, product, category):
-    self.product = product
-    self.category = category
-    self.save()
-
   def save(self, *args, **kwargs):
     super().save(*args, **kwargs)
 

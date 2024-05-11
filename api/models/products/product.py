@@ -34,16 +34,12 @@ class Product(models.Model):
 
   def save(self, *args, **kwargs):
     super().save(*args, **kwargs)
-    if self.category:
-      for size in self.sizes.all():
-        if size.product == '' or not size.category:
-          size.set_product_and_category(self.name, self.category)
-
     if self.structure:
-       self.structure.update(isTechnology=False)
+      self.structure.update(isTechnology=False)
     if self.technologies:
-       self.technologies.update(isTechnology=True)
-    super().save(*args, **kwargs)
+      self.technologies.update(isTechnology=True)
+    if self.category:
+      self.sizes.all().update(product=self.name, category=self.category)
 
   @staticmethod
   def has_multiple_rels(model, field):
