@@ -2,51 +2,90 @@
 {% load i18n admin_urls %}
 
 {% block breadcrumbs %}
-  <div class="breadcrumbs">
-    <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
-    &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
-    &rsaquo; <a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+  <div class='breadcrumbs'>
+    <a href='{% url 'admin:index' %}'>{% translate 'Home' %}</a>
+    &rsaquo; <a href='{% url 'admin:app_list' app_label=opts.app_label %}'>{{ opts.app_config.verbose_name }}</a>
+    &rsaquo; <a href='{% url opts|admin_urlname:'changelist' %}'>{{ opts.verbose_name_plural|capfirst }}</a>
   </div>
 {% endblock %}
 
 {% block content %}
-  <table style="width: 100%; margin-bottom: 10px; border: 1px solid var(--header-bg)">
-    {% for entry in object_list %}
-      {% if forloop.counter0|divisibleby:25 %}
-      <tr>
-        <td style="border: 1px solid var(--header-bg)"></td>
-        <td style="border: 1px solid var(--header-bg)">Модель</td>
-        <td style="border: 1px solid var(--header-bg)">Размер</td>
-        <td style="border: 1px solid var(--header-bg)">Общее</td>
-        {% for place in entry.places.keys %}
-        <td style="border: 1px solid var(--header-bg)">{{ place }}</td>
-        {% endfor %}
-        {% for day in entry.sold %}
-        <td style="border: 1px solid var(--header-bg)">{{ forloop.counter }}</td>
-        {% endfor %}
-      </tr>
-      {% endif %}
-      <tr>
-        <td style="border: 1px solid var(--header-bg)">{{ forloop.counter }}.</td>
-        <td style="border: 1px solid var(--header-bg)">{{ entry.product }}</td>
-        <td style="border: 1px solid var(--header-bg)">{{ entry.size }}</td>
-        <td style="border: 1px solid var(--header-bg)">{{ entry.total }}</td>
-        {% for place in entry.places.values %}
-        {% if place == 0 %}
-        <td style="border: 1px solid var(--header-bg)"></td>
-        {% else %}
-        <td style="border: 1px solid var(--header-bg)">{{ place }}</td>
+  <form action='/admin/stock/table/{{table_id}}/detail' method='post'>
+    {% csrf_token %}
+    <table id='table_details' style='width: 100%; margin-bottom: 10px; border: 1px solid var(--header-bg)'>
+      {% for entry in object_list %}
+        {% if forloop.counter0|divisibleby:25 %}
+        <tr>
+          <td style='border: 1px solid var(--header-bg)'></td>
+          <td style='border: 1px solid var(--header-bg)'>Модель</td>
+          <td style='border: 1px solid var(--header-bg)'>Размер</td>
+          <td style='border: 1px solid var(--header-bg)'>Общее</td>
+          {% for place in entry.places.keys %}
+          <td style='border: 1px solid var(--header-bg)'>{{ place }}</td>
+          {% endfor %}
+          {% for day in entry.sold %}
+          <td style='border: 1px solid var(--header-bg)'>{{ forloop.counter }}</td>
+          {% endfor %}
+        </tr>
         {% endif %}
-        {% endfor %}
-        {% for sold in entry.sold %}
-        {% if sold == 0 %}
-        <td style="border: 1px solid var(--header-bg)"></td>
-        {% else %}
-        <td style="border: 1px solid var(--header-bg)">{{ sold }}</td>
-        {% endif %}
-        {% endfor %}
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+        <tr>
+          <td style='border: 1px solid var(--header-bg)'>{{ forloop.counter }}.</td>
+          <td style='border: 1px solid var(--header-bg)'>{{ entry.product }}</td>
+          <td style='border: 1px solid var(--header-bg)'>{{ entry.size }}</td>
+          <td style='border: 1px solid var(--header-bg)'>{{ entry.total }}</td>
+          {% for place in entry.places.values %}
+          {% if place == 0 %}
+          <td style='border: 1px solid var(--header-bg)'></td>
+          {% else %}
+          <td style='border: 1px solid var(--header-bg)'>{{ place }}</td>
+          {% endif %}
+          {% endfor %}
+          {% for sold in entry.sold %}
+          {% if sold == 0 %}
+          <td style='border: 1px solid var(--header-bg)'></td>
+          {% else %}
+          <td style='border: 1px solid var(--header-bg)'>{{ sold }}</td>
+          {% endif %}
+          {% endfor %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <input id='submit_button' type='submit' hidden>
+    <input id='product' name='product' hidden>
+    <input id='size' name='size' hidden>
+    <input id='prev' name='prev' hidden>
+    <input id='place' name='place' hidden>
+  </form>
+  <script>
+    const submit_button = document.getElementById('submit_button')
+    const product_input = document.getElementById('product')
+    const size_input = document.getElementById('size')
+    const prev_input = document.getElementById('prev')
+    const place_input = document.getElementById('place')
+    const header = document.getElementById('table_details').getElementsByTagName('tr')[0]
+    for (let tr of document.getElementsByTagName('tr')) {
+      if (tr.firstElementChild.innerText) {
+        for (let i = 3; i < tr.children.length; i++) {
+          tr.children[i].addEventListener('click', e => {
+            const el = e.target;
+            if (el.tagName.toUpperCase() != 'TD' || product_input.value != '') {
+              return
+            }
+            const parent = e.target.parent, text = e.target.innerText;
+            const input = document.createElement('input')
+            product_input.value = tr.children[1].innerText
+            size_input.value = tr.children[2].innerText
+            place_input.value = i == 3 ? 'total' : header.children[i].innerText
+            prev_input.value = text
+            input.setAttribute('name', 'value')
+            input.value = text
+            e.target.innerText = ''
+            el.appendChild(input)
+            input.focus()
+          })
+        }
+      }
+    }
+  </script>
 {% endblock %}

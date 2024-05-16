@@ -1,13 +1,12 @@
 from django.contrib import admin
 from stock.models import Action, Stockable
-from .action import ActionInline, set_as_ordered, set_as_saling, set_as_sold, set_as_returned
+from .action import ActionInline
 
 @admin.register(Stockable)
 class StockableAdmin(admin.ModelAdmin):
   search_fields = ('product', 'size')
   list_filter = ('table', 'product', 'size')
   inlines = (ActionInline,)
-  actions = (set_as_ordered, set_as_saling, set_as_sold, set_as_returned)
   
   def get_queryset(self, request):
     qs = super().get_queryset(request)

@@ -12,7 +12,7 @@ class Stockable(models.Model):
 
   def __str__(self):
     if self.pk and self.last_action:
-      return f'{self.print_size()}, последнее действие: {self.last_action.get_type_display()}, сейчас в месте: {self.current_place}'
+      return f'{self.print_size()}, последнее действие: {self.last_action.get_type_display()}, сейчас в месте: {self.last_action.get_place_display()}'
     return f'Размер продукта {self.product}: {self.size}'
 
   @cached_property
@@ -21,7 +21,7 @@ class Stockable(models.Model):
   
   @cached_property
   def current_place(self):
-    return self.last_action.get_place_display()
+    return self.last_action.place
 
   @cached_property
   def current_state(self):

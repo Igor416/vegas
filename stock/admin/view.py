@@ -1,16 +1,20 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.http import HttpResponseRedirect
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import UpdateView
 from django.contrib import admin
-from stock.models import Action, Table
 from calendar import monthrange
 from django.utils.timezone import datetime
+from stock.models import Action, Stockable, Table
+from .form import TableForm
 
-class TableDetailView(PermissionRequiredMixin, DetailView):
+class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
+  fields = '__all__'
   permission_required = 'stock.view_table'
   template_name = 'admin/stock/table/detail.html'
   model = Table
   
-  def get_context_data(self, **kwargs):
+  def get_context_data(self, *args, **kwargs):
     obj = kwargs.get('object')
     get_id = lambda x: x.product + ':' + x.size
     object_dict = dict()
@@ -19,7 +23,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView):
         data = {
           'product': entry.product,
           'size': entry.size,
-          'places': {place[1]: 0 for place in Action.PLACES},
+          'places': {place[0]: 0 for place in Action.PLACES},
           'sold': [0 for _ in range(monthrange(datetime.today().year, datetime.today().month)[1])],
           'total': '0'
         }
@@ -27,7 +31,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView):
         data = object_dict[str(get_id(entry))]
       
       if entry.current_state == 'S':
-        if entry.last_update.month == datetime.today().month - 1:
+        if entry.last_update.month == datetime.today().month:
           data['sold'][entry.last_update.day - 1] += 1
       else:
         data['places'][entry.current_place] += 1
@@ -40,8 +44,58 @@ class TableDetailView(PermissionRequiredMixin, DetailView):
       object_dict[str(get_id(entry))] = data
       
     return {
-      **super().get_context_data(**kwargs),
+      **super().get_context_data(*args, **kwargs),
       **admin.site.each_context(self.request),
+      'table_id': obj.id,
       'object_list': object_dict.values(),
       'opts': self.model._meta,
     }
+    
+  def post(self, request, *args, **kwargs):
+    create_action = lambda type, stockable: Action.objects.create(
+      type=type,
+      person=request.user.username,
+      place=stockables[i].current_place,
+      stockable=stockable
+    )
+    table = Table.objects.get(pk=kwargs.get('pk'))
+    form = TableForm(request.POST)
+    if form.is_valid() and form.data['prev'] != form.data['value']:
+      product, size, value, prev, place = form.cleaned_data.values()
+      stockables = Stockable.objects.filter(product=product, size=size, table=table)
+      value_s, value_o = map(int, map(lambda x: x.strip(), value.split('+'))) if '+' in value else (int(value.strip() if value != '' else 0), 0)
+      prev_s, prev_o = map(int, map(lambda x: x.strip(), prev.split('+'))) if '+' in prev else (int(prev.strip() if prev != '' else 0), 0)
+      i = 0
+      if place == 'total':
+        if value_o > prev_o:
+          for _ in range(value_o - prev_o):
+            while stockables[i].current_state in ['O' or 'S']:
+              i+=1
+            stockables[i].actions.add(create_action('O', stockables[i]))
+            i+=1
+        else:
+          for _ in range(prev_o - value_o):
+            while stockables[i].current_state != 'O':
+              i+=1
+            stockables[i].actions.add(create_action('C', stockables[i]))
+            i+=1
+      elif request.user.groups.first().name != 'Консультант':
+        if value_s < prev_s:
+          for _ in range(prev_s - value_s):
+            is_place = place in [place[0] for place in Action.PLACES]
+            cond = lambda s: ((s.current_place != place) if is_place else (s.current_state != 'S' and s.last_update.day != int(place)))
+            while cond(stockables[i]):
+              i+=1
+            stockables[i].actions.add(create_action('H' if is_place else 'R', stockables[i]))
+            i+=1
+        else:
+          for _ in range(value_s - prev_s):
+            while stockables[i].current_state != 'H':
+              i+=1
+            a = Action.objects.filter(type='H', stockable=stockables[i])
+            if place in [place[0] for place in Action.PLACES]:
+              a.update(place=place, type='T')
+            else:
+              a.update(type='S', date=datetime(table.year, table.month, int(place)))
+            i+=1
+    return HttpResponseRedirect(f'http://127.0.0.1:8000/admin/stock/table/{table.id}/detail')

@@ -4,6 +4,7 @@ from .stockable import Stockable
 
 class Action(models.Model):
   TYPES = (
+    ('H', 'В ожидании действия'),
     ('A', 'Добавить в систему'),
     ('O', 'Пометить как бронь'),
     ('C', 'Отменить бронь'),
