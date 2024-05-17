@@ -98,4 +98,4 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
             else:
               a.update(type='S', date=datetime(table.year, table.month, int(place)))
             i+=1
-    return HttpResponseRedirect(f'http://127.0.0.1:8000/admin/stock/table/{table.id}/detail')
+    return HttpResponseRedirect(f'/admin/stock/table/{table.id}/detail')
