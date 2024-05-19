@@ -6,7 +6,7 @@ from django.contrib import admin
 from calendar import monthrange
 from django.utils.timezone import datetime
 from stock.models import Action, Stockable, Table
-from .form import TableForm
+from stock.admin.form import TableForm
 
 class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
   fields = '__all__'
@@ -14,11 +14,17 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
   template_name = 'admin/stock/table/detail.html'
   model = Table
   
+  def get(self, request, *args, **kwargs):
+    self.object = self.get_object()
+    context = self.get_context_data(object=self.object, *args, **kwargs)
+    return self.render_to_response(context)
+  
   def get_context_data(self, *args, **kwargs):
     obj = kwargs.get('object')
+    category = kwargs.get('category')
     get_id = lambda x: x.product + ':' + x.size
     object_dict = dict()
-    for entry in obj.stockables.all():
+    for entry in obj.stockables.filter(category=category):
       if str(get_id(entry)) not in object_dict:
         data = {
           'product': entry.product,
@@ -47,6 +53,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
       **super().get_context_data(*args, **kwargs),
       **admin.site.each_context(self.request),
       'table_id': obj.id,
+      'category': category,
       'object_list': object_dict.values(),
       'opts': self.model._meta,
     }
@@ -59,10 +66,12 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
       stockable=stockable
     )
     table = Table.objects.get(pk=kwargs.get('pk'))
+    category = kwargs.get('category')
     form = TableForm(request.POST)
     if form.is_valid() and form.data['prev'] != form.data['value']:
       product, size, value, prev, place = form.cleaned_data.values()
-      stockables = Stockable.objects.filter(product=product, size=size, table=table)
+      width, length = list(map(int, size.split('x')))
+      stockables = Stockable.objects.filter(product=product, width=width, length=length, table=table)
       value_s, value_o = map(int, map(lambda x: x.strip(), value.split('+'))) if '+' in value else (int(value.strip() if value != '' else 0), 0)
       prev_s, prev_o = map(int, map(lambda x: x.strip(), prev.split('+'))) if '+' in prev else (int(prev.strip() if prev != '' else 0), 0)
       i = 0
@@ -98,4 +107,4 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
             else:
               a.update(type='S', date=datetime(table.year, table.month, int(place)))
             i+=1
-    return HttpResponseRedirect(f'/admin/stock/table/{table.id}/detail')
+    return HttpResponseRedirect(f'/admin/stock/table/{table.id}/{category}/detail')

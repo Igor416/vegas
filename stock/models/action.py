@@ -14,12 +14,12 @@ class Action(models.Model):
   )
   
   PLACES = (
-    ('CA', 'Машина'),
-    ('SN', 'Главный склад'),
-    ('SO', 'Склад 2'),
-    ('JU', 'Джамбо'),
-    ('CI', 'Чеканы'),
-    ('RI', 'Рышкановка'),
+    ('Машина', 'Машина'),
+    ('S1', 'Главный склад'),
+    ('S2', 'Склад 2'),
+    ('J', 'Джамбо'),
+    ('C', 'Чеканы'),
+    ('R', 'Рышкановка'),
     ('D1', 'Игорь'),
     ('D2', 'Оргеев'),
     ('D3', 'Унгены'),
@@ -27,7 +27,7 @@ class Action(models.Model):
   
   type = models.CharField('Тип действия', max_length=1, choices=TYPES, default='A')
   person = models.CharField('Деятель', max_length=2)
-  place = models.CharField('Место товара', max_length=2, choices=PLACES)
+  place = models.CharField('Место товара', max_length=6, choices=PLACES)
   date = models.DateField('Дата', default=datetime.today)
   stockable = models.ForeignKey(Stockable, on_delete=models.CASCADE, verbose_name='Модель', related_name='actions')
   

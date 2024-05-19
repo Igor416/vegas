@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-  <form action='/admin/stock/table/{{table_id}}/detail' method='post'>
+  <form action='/admin/stock/table/{{table_id}}/{{category}}/detail' method='post'>
     {% csrf_token %}
     <table id='table_details' style='width: 100%; margin-bottom: 10px; border: 1px solid var(--header-bg)'>
       {% for entry in object_list %}

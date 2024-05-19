@@ -83,7 +83,7 @@ ORDER = {
 }
 
 BEST = [
-  [(MATTRESS, 'Favorit'), (MATTRESS, 'F3'), (MATTRESS, 'X3'), (MATTRESS, 'S-3'), (MATTRESS, 'Compact2')],
+  [(MATTRESS, 'Favorit'), (MATTRESS, 'F3'), (MATTRESS, 'X3'), (MATTRESS, 'S3'), (MATTRESS, 'Compact2')],
   [(PILLOW, '20'), (PILLOW, 'Extra Memory'), (PILLOW, '14')],
   [(MATTRESSPAD, 'Stressfree L1'), (BLANKET, 'SumWin'), (MATTRESSPAD, 'Bamboo A1')],
   [(MATTRESS, 'Cocolatex'), (PILLOW, 'Junior'), (PILLOW, 'Baby Boom')],
