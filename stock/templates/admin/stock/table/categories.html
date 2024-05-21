@@ -13,7 +13,7 @@
   <ul>
     {% for category in categories %}
     <li>
-      <h2><a target="_blank" href="{% url 'admin:detail' pk=table_id category=category.0 %}">{{ category.1 }}</a></h2>
+      <h2><a href="{% url 'admin:detail' pk=table_id category=category.0 %}">{{ category.1 }}</a></h2>
     </li>
     {% endfor %}
   </ul>
