@@ -78,7 +78,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
       if place == 'total':
         if value_o > prev_o:
           for _ in range(value_o - prev_o):
-            while stockables[i].current_state in ['O' or 'S']:
+            while stockables[i].current_state in ['O', 'S']:
               i+=1
             stockables[i].actions.add(create_action('O', stockables[i]))
             i+=1
