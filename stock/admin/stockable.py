@@ -7,18 +7,3 @@ class StockableAdmin(admin.ModelAdmin):
   search_fields = ('product', 'width', 'length')
   list_filter = ('table', 'category', 'product')
   inlines = (ActionInline,)
-  
-  def get_queryset(self, request):
-    qs = super().get_queryset(request)
-    if request.user.is_superuser:
-      return qs
-    for entry in qs.all():
-      if entry.current_state == 'S':
-        qs = qs.exclude(pk=entry.pk)
-    return qs
-  
-  def save_model(self, request, obj, form, change):
-    super().save_model(request, obj, form, change)
-    if len(obj.actions.all()) == 0:
-      obj.actions.add(Action.objects.create(type=type, person=request.user.username, place='Машина', entry=obj))
-    obj.actions.filter(person='').update(person=request.user.username)

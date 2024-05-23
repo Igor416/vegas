@@ -30,7 +30,17 @@
         {% endif %}
         <tr>
           <td style='border: 1px solid var(--header-bg)'>{{ forloop.counter }}.</td>
-          <td style='border: 1px solid var(--header-bg)'>{{ entry.product }}</td>
+          <td style='border: 1px solid var(--header-bg)'>
+            {{ entry.product }}
+            {% if is_admin %}
+            <span class='related-widget-wrapper-link add-related' onclick='action("add", "{{entry.product}}", "{{entry.size}}")'>
+              <img src='/static/admin/img/icon-addlink.svg' width='10' height='10'>
+            </span>
+            <span class='related-widget-wrapper-link delete-related' onclick='action("delete", "{{entry.product}}", "{{entry.size}}")'>
+              <img src='/static/admin/img/icon-deletelink.svg' width='10' height='10'>
+            </span>
+            {% endif %}
+          </td>
           <td style='border: 1px solid var(--header-bg)'>{{ entry.size }}</td>
           <td style='border: 1px solid var(--header-bg)'>{{ entry.total }}</td>
           {% for place in entry.places.values %}
@@ -58,7 +68,7 @@
     <input id='place' name='place' hidden>
   </form>
   <script>
-    const submit_button = document.getElementById('submit_button')
+    const is_admin = {% if is_admin %} true {% else %} false {% endif %}
     const product_input = document.getElementById('product')
     const size_input = document.getElementById('size')
     const prev_input = document.getElementById('prev')
@@ -66,7 +76,7 @@
     const header = document.getElementById('table_details').getElementsByTagName('tr')[0]
     for (let tr of document.getElementsByTagName('tr')) {
       if (tr.firstElementChild.innerText) {
-        for (let i = 3; i < tr.children.length; i++) {
+        for (let i = 3; i < (is_admin ? tr.children.length : 4); i++) {
           tr.children[i].addEventListener('click', e => {
             const el = e.target;
             if (el.tagName.toUpperCase() != 'TD' || product_input.value != '') {
@@ -82,10 +92,26 @@
             input.value = text
             e.target.innerText = ''
             el.appendChild(input)
+            input.addEventListener('keyup', e => {
+              if (e.key === "Escape") {
+                el.removeChild(input)
+                el.innerText = text
+                product_input.value = ''
+              }
+            })
             input.focus()
           })
         }
       }
+    }
+
+    const submit_button = document.getElementById('submit_button')
+    
+    function action(type, product, size) {
+      place_input.value = type
+      product_input.value = product
+      size_input.value = size
+      submit_button.click()
     }
   </script>
 {% endblock %}
