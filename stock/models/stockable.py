@@ -4,19 +4,20 @@ from .table import Table
 
 class Stockable(models.Model):
   CATEGORIES = (
-    ('MSP', 'Матрас Special'),
-    ('MSM', 'Матрас Smart'),
-    ('MAL', 'Матрас Alba'),
-    ('MVK', 'Матрас Vegas Kids'),
-    ('MAC', 'Матрас Active'),
-    ('MEC', 'Матрас Ecolatex'),
-    ('MEX', 'Матрас Exclusive'),
-    ('MMO', 'Матрас Modern'),
-    ('MCO', 'Матрас Comfort'),
-    ('PI', 'Подушка'),
-    ('MPP', 'Наматрасник Protect'),
-    ('MPT', 'Наматрасник Transform'),
-    ('BE', 'Кровать')
+    ('MSP', 'Матрасы Special'),
+    ('MSM', 'Матрасы Smart'),
+    ('MAL', 'Матрасы Alba'),
+    ('MVK', 'Матрасы Vegas Kids'),
+    ('MAC', 'Матрасы Active'),
+    ('MEC', 'Матрасы Ecolatex'),
+    ('MEX', 'Матрасы Exclusive'),
+    ('MMO', 'Матрасы Modern'),
+    ('MCO', 'Матрасы Comfort'),
+    ('PI', 'Подушки'),
+    ('MPP', 'Наматрасники Protect'),
+    ('MPT', 'Наматрасники Transform'),
+    ('BL', 'Одеяла'),
+    ('BE', 'Кровати')
   )
   
   category = models.CharField('Категория', max_length=3, choices=CATEGORIES)

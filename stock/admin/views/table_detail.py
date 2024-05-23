@@ -77,7 +77,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
       i = 0
       if place == 'add':
         stockable = Stockable.objects.create(category=category, product=product, width=width, length=length, table=table)
-        stockable.actions.add(Action.objects.create(type='A', person=request.user.username, place='S1', date=datetime.today(), stockable=stockable))
+        stockable.actions.add(Action.objects.create(type='A', person=request.user.username, place='S1', stockable=stockable))
       elif place == 'delete':
         while stockables[i].current_place != 'Машина':
           i+=1
