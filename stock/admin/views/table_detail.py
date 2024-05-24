@@ -106,9 +106,9 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
           if value_s < prev_s:
             for _ in range(prev_s - value_s):
               if is_place:
-                cond = lambda s: s.current_state == 'S' and s.current_place != place
+                cond = lambda s: s.current_state == 'S' or s.current_place != place
               else:
-                cond = lambda s: s.current_state != 'S' and s.last_update.day != int(place)
+                cond = lambda s: s.current_state != 'S' or s.last_update.day != int(place)
               while cond(stockables[i]):
                 i+=1
               stockables[i].actions.add(create_action('H' if is_place else 'R', stockables[i]))
