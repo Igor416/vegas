@@ -25,6 +25,9 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
     get_id = lambda x: x.product + ':' + x.size
     object_dict = dict()
     for entry in obj.stockables.filter(category=category):
+      if entry.current_state == 'H':
+        continue
+      
       if str(get_id(entry)) not in object_dict:
         data = {
           'product': entry.product,
@@ -69,7 +72,6 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
     table = Table.objects.get(pk=kwargs.get('pk'))
     category = kwargs.get('category')
     form = TableForm(request.POST)
-    print(form, form.data)
     if form.is_valid():
       product, size, value, prev, place = form.cleaned_data.values()
       width, length = list(map(int, size.split('x')))
@@ -100,11 +102,14 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
               stockables[i].actions.add(create_action('C', stockables[i]))
               i+=1
         else:
+          is_place = place in [place[0] for place in Action.PLACES]
           if value_s < prev_s:
             for _ in range(prev_s - value_s):
-              is_place = place in [place[0] for place in Action.PLACES]
-              cond = lambda s: (s.current_place != place if is_place else s.last_update.day != int(place))
-              while stockables[i].current_state != 'S' and cond(stockables[i]):
+              if is_place:
+                cond = lambda s: s.current_state == 'S' and s.current_place != place
+              else:
+                cond = lambda s: s.current_state != 'S' and s.last_update.day != int(place)
+              while cond(stockables[i]):
                 i+=1
               stockables[i].actions.add(create_action('H' if is_place else 'R', stockables[i]))
               i+=1
@@ -113,7 +118,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
               while stockables[i].current_state != 'H':
                 i+=1
               a = Action.objects.filter(type='H', stockable=stockables[i])
-              if place in [place[0] for place in Action.PLACES]:
+              if is_place:
                 a.update(place=place, type='T')
               else:
                 a.update(type='S', date=datetime(table.year, table.month, int(place)))
