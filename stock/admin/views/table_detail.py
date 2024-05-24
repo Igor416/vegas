@@ -25,14 +25,11 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
     get_id = lambda x: x.product + ':' + x.size
     object_dict = dict()
     for entry in obj.stockables.filter(category=category):
-      if entry.current_state == 'H':
-        continue
-      
       if str(get_id(entry)) not in object_dict:
         data = {
           'product': entry.product,
           'size': entry.size,
-          'places': {place[0]: 0 for place in Action.PLACES},
+          'places': {place[0]: '' for place in Action.PLACES},
           'sold': [0 for _ in range(monthrange(datetime.today().year, datetime.today().month)[1])],
           'total': '0'
         }
@@ -43,7 +40,10 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
         if entry.last_update.month == datetime.today().month:
           data['sold'][entry.last_update.day - 1] += 1
       else:
-        data['places'][entry.current_place] += 1
+        if data['places'][entry.current_place] == '':
+          data['places'][entry.current_place] = 0 if entry.current_state == 'H' else 1
+        else:
+          data['places'][entry.current_place] += 1
         total = data['total']
         if entry.current_state == 'O':
           data['total'] = total + '+1' if '+' not in total else total.split('+')[0] + '+' + str(int(total.split('+')[1]) + 1)

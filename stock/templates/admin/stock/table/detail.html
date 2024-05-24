@@ -45,11 +45,7 @@
           <td style='border: 1px solid var(--header-bg)'>{{ entry.size }}</td>
           <td style='border: 1px solid var(--header-bg)'>{{ entry.total }}</td>
           {% for place in entry.places.values %}
-          {% if place == 0 %}
-          <td style='border: 1px solid var(--header-bg)'></td>
-          {% else %}
           <td style='border: 1px solid var(--header-bg)'>{{ place }}</td>
-          {% endif %}
           {% endfor %}
           {% for sold in entry.sold %}
           {% if sold == 0 %}
