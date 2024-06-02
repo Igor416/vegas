@@ -66,7 +66,7 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
     create_action = lambda type, stockable: Action.objects.create(
       type=type,
       person=request.user.username,
-      place=stockables[i].current_place,
+      place=stockable.current_place,
       stockable=stockable
     )
     table = Table.objects.get(pk=kwargs.get('pk'))
@@ -77,9 +77,10 @@ class TableDetailView(PermissionRequiredMixin, DetailView, UpdateView):
       width, length = list(map(int, size.split('x')))
       stockables = Stockable.objects.filter(category=category, product=product, width=width, length=length, table=table)
       i = 0
-      if place == 'add':
-        stockable = Stockable.objects.create(category=category, product=product, width=width, length=length, table=table)
-        stockable.actions.add(Action.objects.create(type='A', person=request.user.username, place='S1', stockable=stockable))
+      if place == 'add' or not stockables.exists():
+        for _ in range(int(prev)):
+          stockable = Stockable.objects.create(category=category, product=product, width=width, length=length, table=table)
+          stockable.actions.add(Action.objects.create(type='A', person=request.user.username, place='Машина', stockable=stockable))
       elif place == 'delete':
         while stockables[i].current_place != 'Машина':
           i+=1

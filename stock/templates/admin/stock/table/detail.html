@@ -56,13 +56,35 @@
           {% endfor %}
         </tr>
       {% endfor %}
+      {% if is_admin %}
+      <tr>
+        <td style='border: 1px solid var(--header-bg)'></td>
+        <td style='border: 1px solid var(--header-bg)'>
+          <input id='product' name='product'>
+        </td>
+        <td style='border: 1px solid var(--header-bg)'>
+          <input id='size' name='size' size="7">
+        </td>
+        <td style='border: 1px solid var(--header-bg)'>
+          <input id='prev' name='prev' size="2">
+        </td>
+        <td style='border: 1px solid var(--header-bg); border-right: none'>
+          <input id='place' name='place' value="Машина" size="4">
+        </td>
+        <td colspan="10" style='border: 1px solid var(--header-bg); border-right: none'>
+          <input id='submit_button' type='submit'>
+        </td>
+      </tr>
+      {% endif %}
       </tbody>
     </table>
+    {% if not is_admin %}
     <input id='submit_button' type='submit' hidden>
     <input id='product' name='product' hidden>
     <input id='size' name='size' hidden>
     <input id='prev' name='prev' hidden>
     <input id='place' name='place' hidden>
+    {% endif %}
   </form>
   <script>
     const is_admin = {% if is_admin %} true {% else %} false {% endif %}
@@ -94,6 +116,9 @@
                 el.removeChild(input)
                 el.innerText = text
                 product_input.value = ''
+                size_input.value = ''
+                place_input.value = 'Машина'
+                prev_input.value = ''
               }
             })
             input.focus()
@@ -108,6 +133,7 @@
       place_input.value = type
       product_input.value = product
       size_input.value = size
+      prev_input.value = 1
       submit_button.click()
     }
   </script>

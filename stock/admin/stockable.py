@@ -1,6 +1,10 @@
 from django.contrib import admin
 from stock.models import Action, Stockable
-from .action import ActionInline
+
+class ActionInline(admin.TabularInline):
+  exclude = ('person',)
+  model = Action
+  extra = 0
 
 @admin.register(Stockable)
 class StockableAdmin(admin.ModelAdmin):

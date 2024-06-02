@@ -15,6 +15,7 @@ class TableCategoriesView(PermissionRequiredMixin, DetailView):
       **super().get_context_data(*args, **kwargs),
       **admin.site.each_context(self.request),
       'table_id': obj.id,
+      'month': obj.month,
       'categories': Stockable.CATEGORIES,
       'opts': self.model._meta,
     }
