@@ -19,7 +19,7 @@ export function Best({t, i18n, category}: BestProps) {
     getBestProducts().then(setBestProducts)
   }, [i18n?.language])
 
-  return category > -1 && bestProducts.length > 0 ? bestProducts[category].map((product, i) => <div
+  return bestProducts[category] ? bestProducts[category].map((product, i) => <div
     key={i}
     className={(i != 0 ? 'border-top' : '') + ' p-2'}
   >

@@ -61,7 +61,7 @@ export function Card({isMobile, t, product, isSales, isGrid, setActive}: CardPro
             </div>
             <div>
               <span>
-                {isSales ? '' : t('from')}
+                {isSales ? '' : `${t('from')} `}
               </span>
               <span style={{color: 'var(--lime-green)'}} className='h5'>
                 {(product.size.price[currency] * (100 - product.discount) / 100).toFixed(2)}
@@ -74,7 +74,7 @@ export function Card({isMobile, t, product, isSales, isGrid, setActive}: CardPro
         :
           <div className='d-flex flex-column'>
             <span>
-              {isSales ? '' : t('from')} {product.size.price[currency]} ({currency})
+              {isSales ? '' : `${t('from')} `}{product.size.price[currency]} ({currency})
             </span>
           </div>
         }

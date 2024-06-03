@@ -21,7 +21,7 @@ export function Best({t, i18n, category}: BestProps) {
 
   return <div className='row'>
     <div className={category === 0 ? 'col-2' : category === 5 ? 'col-6'  : 'col-4'}></div>
-    {category > -1 && bestProducts[category].map((product, i) => <div key={i} className={(i != 0 ? 'border-start' : '') + ' col-2 p-2'}>
+    {bestProducts[category] && bestProducts[category].map((product, i) => <div key={i} className={(i != 0 ? 'border-start' : '') + ' col-2 p-2'}>
       <Link className='no-hover no-link text-end' to={`/product/${product.category}/${product.name}`}>
         <span className='h6'>{product.category_name} {product.name}</span>
         <div className='text-start' style={{color: 'gold'}}>

@@ -21,7 +21,7 @@ export function App({isMobile}: ResponsiveProps) {
   }, [i18n.language])
 
   return <div id='app'>
-    <CurrencyProvider value='EUR'>
+    <CurrencyProvider value='MDL'>
       <CartProvider value={[]}>
         {isMobile
         ?
