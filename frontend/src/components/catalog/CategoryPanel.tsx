@@ -1,10 +1,7 @@
-import { useContext, useEffect, useState } from "react"
-import { Hoverable } from "../reusables"
+import { useEffect, useState } from "react"
 import { Card } from "./Card"
 import { ResponsiveProps, TranslatableProps } from "../.."
 import { Category, ListProduct } from "../../JSONTypes"
-import { useCurrencies } from "../../hooks"
-import { CurrencyDispatchContext } from "../../providers"
 
 interface SortedProducts {
   [key: string]: Array<ListProduct | null>
@@ -18,8 +15,6 @@ interface CategoryPanelProps extends ResponsiveProps, TranslatableProps {
 }
 
 export function CategoryPanel({isMobile, t, isSales, rawProducts, category, setActive}: CategoryPanelProps) {
-  const dispatch = useContext(CurrencyDispatchContext)
-  const currencies = useCurrencies()
   const [isGrid, toggleGrid] = useState(true)
   const [products, setProducts] = useState<SortedProducts>()
 
@@ -76,17 +71,6 @@ export function CategoryPanel({isMobile, t, isSales, rawProducts, category, setA
 
   return <>
     <div className='d-flex flex-row justify-content-end align-items-center h6'>
-      <div className='d-flex flex-row me-2 me-sm-5 align-items-center'>
-        {currencies.map((currency, i) => <div
-            onClick={() => dispatch({type: 'updated', currency: currency})}
-            className={'d-flex flex-row ' + (currency != currency && 'link')}
-            key={i}
-          >
-            <Hoverable text={currency as string}/>
-            <span>&nbsp;</span>
-          </div>
-        )}
-      </div>
       {!isMobile && <div onClick={() => toggleGrid(!isGrid)} className={(isGrid ? 'switch-grid' : 'switch-column') + ' switch d-flex transition'}>
         {[0, 1, 2].map((value) => <div key={value} className='bg-white transition' />)}
       </div>}

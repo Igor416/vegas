@@ -1,9 +1,7 @@
 import { useContext } from "react"
 import { TranslatableProps } from "../.."
 import { Size } from "../../JSONTypes"
-import { useCurrencies } from "../../hooks"
 import { CurrencyContext } from "../../providers"
-import { Hoverable } from "../reusables"
 
 interface PriceProps extends TranslatableProps {
   discount: number,
@@ -12,7 +10,6 @@ interface PriceProps extends TranslatableProps {
 
 export function PricePanel({t, discount, size}: PriceProps) {
   const currency = useContext(CurrencyContext)
-  const currencies = useCurrencies()
 
   return <div className='d-flex border bg-light justify-content-center row-nowrap pt-2 mt-5 mt-sm-0 mb-sm-5'>
     <div className='p-3 text-end'>
