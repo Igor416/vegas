@@ -44827,20 +44827,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _reusables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../reusables */ "./src/components/reusables/index.tsx");
-/* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Card */ "./src/components/catalog/Card.tsx");
-/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../hooks */ "./src/hooks/index.tsx");
-/* harmony import */ var _providers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../providers */ "./src/providers/index.tsx");
-
-
-
+/* harmony import */ var _Card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Card */ "./src/components/catalog/Card.tsx");
 
 
 
 function CategoryPanel(_a) {
     var isMobile = _a.isMobile, t = _a.t, isSales = _a.isSales, rawProducts = _a.rawProducts, category = _a.category, setActive = _a.setActive;
-    var dispatch = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_providers__WEBPACK_IMPORTED_MODULE_5__.CurrencyDispatchContext);
-    var currencies = (0,_hooks__WEBPACK_IMPORTED_MODULE_4__.useCurrencies)();
     var _b = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(true), isGrid = _b[0], toggleGrid = _b[1];
     var _c = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(), products = _c[0], setProducts = _c[1];
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -44892,12 +44884,12 @@ function CategoryPanel(_a) {
         }
         setProducts(sortedProducts);
     }, [rawProducts]);
-    return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: 'd-flex flex-row justify-content-end align-items-center h6', children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: 'd-flex flex-row me-2 me-sm-5 align-items-center', children: currencies.map(function (currency, i) { return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { onClick: function () { return dispatch({ type: 'updated', currency: currency }); }, className: 'd-flex flex-row ' + (currency != currency && 'link'), children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_reusables__WEBPACK_IMPORTED_MODULE_2__.Hoverable, { text: currency }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "\u00A0" })] }, i); }) }), !isMobile && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { onClick: function () { return toggleGrid(!isGrid); }, className: (isGrid ? 'switch-grid' : 'switch-column') + ' switch d-flex transition', children: [0, 1, 2].map(function (value) { return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: 'bg-white transition' }, value); }) })] }), products && Object.keys(products).map(function (filtering, i) { return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: 'd-flex mb-5 flex-column', children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", { className: 'h4', children: [category.default_filtering_lang, " ", filtering] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: (isGrid ? 'section-grid' : 'section-column') + ' d-flex flex-wrap mt-3 justify-content-between transition', children: products[filtering].map(function (product, i) {
+    return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: 'd-flex flex-row justify-content-end align-items-center h6', children: !isMobile && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { onClick: function () { return toggleGrid(!isGrid); }, className: (isGrid ? 'switch-grid' : 'switch-column') + ' switch d-flex transition', children: [0, 1, 2].map(function (value) { return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: 'bg-white transition' }, value); }) }) }), products && Object.keys(products).map(function (filtering, i) { return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: 'd-flex mb-5 flex-column', children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("span", { className: 'h4', children: [category.default_filtering_lang, " ", filtering] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: (isGrid ? 'section-grid' : 'section-column') + ' d-flex flex-wrap mt-3 justify-content-between transition', children: products[filtering].map(function (product, i) {
                             return product === null
                                 ?
                                     (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", {}, i)
                                 :
-                                    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Card__WEBPACK_IMPORTED_MODULE_3__.Card, { isMobile: isMobile, t: t, product: product, isSales: isSales, isGrid: isGrid, setActive: setActive }, i);
+                                    (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_Card__WEBPACK_IMPORTED_MODULE_2__.Card, { isMobile: isMobile, t: t, product: product, isSales: isSales, isGrid: isGrid, setActive: setActive }, i);
                         }) })] }, i); })] });
 }
 
@@ -46001,16 +45993,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../hooks */ "./src/hooks/index.tsx");
-/* harmony import */ var _providers__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../providers */ "./src/providers/index.tsx");
-
+/* harmony import */ var _providers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../providers */ "./src/providers/index.tsx");
 
 
 
 function PricePanel(_a) {
     var t = _a.t, discount = _a.discount, size = _a.size;
-    var currency = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_providers__WEBPACK_IMPORTED_MODULE_3__.CurrencyContext);
-    var currencies = (0,_hooks__WEBPACK_IMPORTED_MODULE_2__.useCurrencies)();
+    var currency = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(_providers__WEBPACK_IMPORTED_MODULE_2__.CurrencyContext);
     return (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { className: 'd-flex border bg-light justify-content-center row-nowrap pt-2 mt-5 mt-sm-0 mb-sm-5', children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { className: 'p-3 text-end', children: [(size && (discount != 0 || (size === null || size === void 0 ? void 0 : size.discount) != 0)) &&
                     (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("div", { style: { textDecoration: 'line-through' }, children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "".concat(t('old_price'), ": ").concat(size === null || size === void 0 ? void 0 : size.price[currency], " (").concat(currency, ")") }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("div", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { children: "".concat(t('current_price'), ": ") }), size && (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("span", { style: { color: 'var(--lime-green)' }, className: 'h5', children: discount === 0
                                 ?
