@@ -17,7 +17,8 @@ class Stockable(models.Model):
     ('MPP', 'Наматрасники Protect'),
     ('MPT', 'Наматрасники Transform'),
     ('BL', 'Одеяла'),
-    ('BE', 'Кровати')
+    ('BE', 'Кровати'),
+    ('BA', 'Основания')
   )
   
   category = models.CharField('Категория', max_length=3, choices=CATEGORIES)
