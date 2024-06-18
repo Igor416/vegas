@@ -9,6 +9,11 @@ class TableCategoriesView(PermissionRequiredMixin, DetailView):
   template_name = 'admin/stock/table/categories.html'
   model = Table
   
+  def get(self, request, *args, **kwargs):
+    self.object = self.get_object()
+    context = self.get_context_data(object=self.object, request=request, *args, **kwargs)
+    return self.render_to_response(context)
+  
   def get_context_data(self, *args, **kwargs):
     obj = kwargs.get('object')
     return {
@@ -17,5 +22,6 @@ class TableCategoriesView(PermissionRequiredMixin, DetailView):
       'table_id': obj.id,
       'month': obj.month,
       'categories': Stockable.CATEGORIES,
+      'is_admin': kwargs.get('request').user.groups.first().name != 'Консультант',
       'opts': self.model._meta,
     }

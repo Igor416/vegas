@@ -17,5 +17,7 @@
     </li>
     {% endfor %}
   </ul>
+  {% if is_admin %}
   <h2><a href="/stock/transfer/{{month}}/">Перенести остатки на существующий месяц</a></h2>
+  {% endif %}
 {% endblock %}

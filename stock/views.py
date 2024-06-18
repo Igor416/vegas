@@ -12,11 +12,12 @@ class TransferToNewMonthView(View):
     today = datetime.today()
     old = Table.objects.get(year=today.year, month=month)
     new, _ = Table.objects.get_or_create(year=today.year, month=today.month)
-    stockables = Stockable.objects.filter(table=old)
-    for s in stockables:
-      if s.current_state == 'S':
-        s.delete()
-      else:
-        s.table = new
-        s.save()
+    if old.id != new.id:
+      stockables = Stockable.objects.filter(table=old)
+      for s in stockables:
+        if s.current_state == 'S':
+          s.delete()
+        else:
+          s.table = new
+          s.save()
     return HttpResponseRedirect(f'/admin/stock/table/{new.id}/categories')
