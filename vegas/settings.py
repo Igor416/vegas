@@ -10,7 +10,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['vegasmd.pythonanywhere.com', 'www.vegas.md', 'www.vegas-md.com', '127.0.0.1']
+ALLOWED_HOSTS = ['vegasmd.pythonanywhere.com', 'www.vegas.md', 'www.vegas-md.com', '127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
   'django.contrib.admin',
@@ -25,12 +25,14 @@ INSTALLED_APPS = [
   'telegram_bot.apps.TelegramBotConfig',
   'stock.apps.StockConfig',
   'frontend.apps.FrontendConfig',
+  'corsheaders',
   'rest_framework',
 ]
 
 MIDDLEWARE = [
   'django.middleware.security.SecurityMiddleware',
   'django.contrib.sessions.middleware.SessionMiddleware',
+  'corsheaders.middleware.CorsMiddleware',
   'django.middleware.common.CommonMiddleware',
   'django.middleware.csrf.CsrfViewMiddleware',
   'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -82,6 +84,15 @@ AUTH_PASSWORD_VALIDATORS = [
   {
     'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
   },
+]
+
+CORS_ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:8000',
+  'http://127.0.0.1:8000',
+  'https://vegasmd.pythonanywhere.com',
+  'https://www.vegas.md',
+  'https://vegas-md.com',
 ]
 
 LANGUAGE_CODE = 'ru'

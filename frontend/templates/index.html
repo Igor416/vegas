@@ -1,57 +1,57 @@
-{% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <!--<base href="https://www.vegas.md/">-->
-    <base href="/">
-    <title>Vegas Shop</title>
-    
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta property="og:site_name" content="Vegas.md Online Mattress Shop">
-    <meta property="og:title" content="Vegas Shop">
-    <meta property="og:image" content="{% static '/images/favicon.ico' %}">
-    <meta property="og:type" content="online-shop">
-    <meta property="og:description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова">
-    <meta name="last-updated" content="2023-08-17 17:54:03 UTC">
-    <meta name="description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова Saltea, Perna, Patura etc magazin in Chisinau Moldova">
-    <meta name="keywords" content="матрасы vegas.md vegas Молдова Кишинев подушка кровати одеяло saltele vegas Moldova Chisinau pature plapume perne">
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    
-    <link rel="stylesheet" type="text/css" href="{% static '/css/index.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/bootstrap.css' %}"/>
-    <link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static '/css/mobile.css' %}" media="screen and (max-width: 576px)"/>
-    <link rel="icon" type="image/x-icon" href="{% static '/images/favicon.ico' %}">
-
-    {% for lang in langs %}
-    <link href="/lang={{lang}}/" rel="alternate" hreflang="{{lang}}">
-    {% endfor %}
-  </head>
-  <body>
-    <div id="announcement">
-      <h1>VEGAS - TAKE THE BEST!</h1>
-    </div>
-    <div id="main"></div>
-    <footer>
-      <span>SRL DECIMUS LEGIO Limited</span>
-      <br>
-      <span>2022 Made by Grosu Igor</span>
-    </footer>
-    <script src="{% static '/js/main.js' %}"></script>
-    <script>
-      setTimeout(() => {
-        let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-          return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-      }, 1000)
-    </script>
-  </body>
+  <base href="/">
+  <title>Vegas Shop</title>
+  <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta property="og:site_name" content="Vegas.md Online Mattress Shop">
+  <meta property="og:title" content="Vegas Shop">
+  <meta property="og:image" content="/static/images/favicon.ico">
+  <meta property="og:type" content="online-shop">
+  <meta property="og:description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова">
+  <meta name="last-updated" content="2023-08-17 17:54:03 UTC">
+  <meta name="description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова Saltea, Perna, Patura etc magazin in Chisinau Moldova">
+  <meta name="keywords" content="матрасы vegas.md vegas Молдова Кишинев подушка кровати одеяло saltele vegas Moldova Chisinau pature plapume perne">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+  
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous">
+  
+</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous">
+  
+</script>
+  <link rel="stylesheet" href="/static/css/index.css"/>
+  <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+  <link rel="stylesheet" href="/static/css/mobile.css" media="screen and (max-width:576px)"/>
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+  <link href="/lang=en/" rel="alternate" hreflang="en">
+  <link href="/lang=ru/" rel="alternate" hreflang="ru">
+  <link href="/lang=ro/" rel="alternate" hreflang="ro">
+  <script defer="defer" src="/static/js/main.15ae9ec2.js">
+  
+</script>
+</head>
+<body>
+  <div id="announcement">
+  <h1>VEGAS - TAKE THE BEST!</h1>
+</div>
+  <div id="main">
+  
+</div>
+  <footer>
+  <span>SRL DECIMUS LEGIO Limited</span>
+  <br>
+  <span>2022 Made by Grosu Igor</span>
+</footer>
+  <script src="/static/js/main.js">
+  
+</script>
+  <script>setTimeout((()=>{[].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]')).map((function(t){return new bootstrap.Tooltip(t)}))}),1e3)</script>
+</body>
 </html>
