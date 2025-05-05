@@ -1,6 +1,5 @@
 {
   "category": "Go To Category",
-  "is": "is",
   "char1": "European components",
   "char2": "Extended warranty up to 25 years",
   "char3": "Individual sizes",
@@ -10,5 +9,7 @@
   "leave": "Leave your review",
   "title": "Title",
   "city": "City",
-  "text": "Text"
+  "text": "Text",
+  "page": "This page is currently under development, sorry for the inconvenience",
+  "home": "Back to home page"
 }

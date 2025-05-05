@@ -1,18 +1,10 @@
 from django.views import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.timezone import datetime
-from stock.models import Table, Stockable, Action
-from api.models.products.basis import Basis
+from stock.models import Table, Stockable
 
 class WorkerView(View):
   def get(self, request):
-    dict = {
-      'SuperLux': [3640, 3850, 3895, 3915, 4065, 4215, 4625, 4755]
-    }
-    for b in Basis.objects.filter(name='SuperLux'):
-      for size, price in zip(b.sizes.all().order_by('width'), dict[b.name]):
-        size.priceEUR = int(price / 20.5)
-        size.save()
     return HttpResponse('ok')
   
 class TransferToNewMonthView(View):

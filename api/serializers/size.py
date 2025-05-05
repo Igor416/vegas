@@ -1,15 +1,42 @@
-from rest_framework.serializers import ModelSerializer
-from api import models
-from .extractors import PriceExtractor
+from rest_framework.serializers import ModelSerializer, FloatField, SerializerMethodField
+from api.models import Size
 
-class SizeSerializer(PriceExtractor, ModelSerializer):
+CURRENCIES = ('EUR', 'MDL', 'RON', 'USD')
+
+class SizeSerializer(ModelSerializer):
+  priceEUR = FloatField()
+  priceMDL = FloatField()
+  priceRON = FloatField()
+  priceUSD = FloatField()
+  
   class Meta:
-    exclude = ['id', 'category', 'product']
-    model = models.Size
+    model = Size
+    exclude = ['id', 'product']
   
   def to_representation(self, instance):
-    return self.extract_price(super().to_representation(instance))
+    r = super().to_representation(instance)
+    r['price'] = {curr: r.pop('price' + curr) for curr in CURRENCIES}
+    return r
 
-class BedSheetsSizeSerializer(SizeSerializer):
+class SizePriceSerializer(SizeSerializer):
+  class Meta:
+    model = Size
+    fields = ['priceEUR', 'priceMDL', 'priceRON', 'priceUSD']
+  
+  def to_representation(self, instance):
+    r = super().to_representation(instance)
+    return r['price']
+
+class SizeWithShortcutSerializer(SizeSerializer):
+  shortcut = SerializerMethodField()
+  
+  def get_shortcut(self, obj):
+    return obj.product.shortcut.get_absolute_url()
+
+from .products.best import BestProductSerializer
+
+class SizeWithProductSerializer(SizeSerializer):
+  product = BestProductSerializer()
+  
   class Meta(SizeSerializer.Meta):
-    model = models.BedSheetsSize
+    exclude = ['id']

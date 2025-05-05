@@ -1,7 +1,7 @@
 {
-  "sales": "SALES",
-  "stock": "STOCK",
-  "shops": "SHOPS",
+  "sales": "sales",
+  "shops": "shops",
+  "other": "Other Links",
   "from": "from",
   "order": "Order now",
   "credit": "Buy now,\npay later",
@@ -9,8 +9,6 @@
   "cart": "Cart",
   "months": "Months",
   "call": "Order Call",
-  "error": "Fill in all the fields!",
-  "name": "Your nickname",
   "close": "Close",
-  "submit": "Submit"
+  "submit": "Call"
 }

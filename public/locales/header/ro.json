@@ -1,7 +1,7 @@
 {
-  "sales": "VÂNZĂRI",
-  "stock": "STOC",
-  "shops": "MAGAZINE",
+  "sales": "vănzări",
+  "shops": "magazine",
+  "other": "Alte Linkuri",
   "from": "de la",
   "order": "Comanda acum",
   "credit": "Cumpara acum,\nachita apoi",
@@ -9,8 +9,6 @@
   "cart": "Coş",
   "months": "Luni",
   "call": "Solicitați un apel",
-  "error": "Completați toate intrările!",
-  "name": "Numele dumneavoastră",
   "close": "Închide",
-  "submit": "Trimite"
+  "submit": "Apelați"
 }

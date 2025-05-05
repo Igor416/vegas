@@ -1,18 +1,46 @@
-from rest_framework.views import APIView
+from rest_framework.generics import RetrieveAPIView
+from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from api.detectors import detect_lang, detect_country
-from api.serializers import DetailedProductSerializerFactory
-from api import models
+from api.serializers import DetailedProductSerializer, CharacteristicTypeSerializer
+from api.serializers import BooleanCharacteristicSerializer, IntegerCharacteristicSerializer, StringCharacteristicSerializer
+from api.models import Product
 
-class DetailedProductView(APIView):
-  @detect_country
-  @detect_lang
-  def get(self, request, lang, country, category, name):
-    model = getattr(models, category)
-    if model is models.BedSheets:
-      queryset = model.objects.filter(name_ru=name) | model.objects.filter(name_en=name) | model.objects.filter(name_ro=name)
-      queryset = queryset[0]
-    else:
-      queryset = model.objects.get(name=name)
-    serializer = DetailedProductSerializerFactory(model, lang, country).create(queryset, country=country, lang=lang)
-    return Response(serializer.data)
+class DetailedProductView(RetrieveAPIView):
+  serializer_class = DetailedProductSerializer
+  queryset = Product.objects.select_related('category').prefetch_related(
+    'sizes',
+    'boolean_characteristics',
+    'integer_characteristics',
+    'string_characteristics',
+    'category__characteristic_types'
+  ).filter(category__disabled=False)
+  
+  def get(self, request, category, name):
+    product = get_object_or_404(
+      self.queryset,
+      category__name=category, name_en=name
+    )
+    
+    data = self.serializer_class(product).data
+    
+    data.update({'characteristics': []})
+    mapping = {
+      'B': (product.boolean_characteristics.all(), BooleanCharacteristicSerializer),
+      'I': (product.integer_characteristics.all(), IntegerCharacteristicSerializer),
+      'S': (product.string_characteristics.all(), StringCharacteristicSerializer)
+    }
+    for characteristic_type in product.category.characteristic_types.all():
+      queryset, serializer_class = mapping[characteristic_type.data_type]
+      filtered_queryset = queryset.filter(type=characteristic_type)
+      characteristic_data = {
+        'type': CharacteristicTypeSerializer(characteristic_type).data,
+      }
+      if filtered_queryset.count() == 1:
+        serializer = serializer_class(filtered_queryset.first())
+        characteristic_data.update(serializer.data)
+      else:
+        serializer = serializer_class(filtered_queryset, many=True)
+        characteristic_data.update({'value': [{key.replace('value_', ''): value for key, value in entry.items()} for entry in serializer.data]})
+      
+      data['characteristics'].append(characteristic_data)
+    return Response(data)

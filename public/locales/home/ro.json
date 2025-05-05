@@ -1,6 +1,5 @@
 {
   "category": "Mergi la Сategorie",
-  "is": "este",
   "char1": "Componente europene",
   "char2": "Garanție extinsă până la 25 de ani",
   "char3": "Dimensiuni individuale",
@@ -10,5 +9,7 @@
   "leave": "Lăsați recenzie dvs",
   "title": "Titlu",
   "city": "Oraș",
-  "text": "Text"
+  "text": "Text",
+  "page": "Această pagină este în prezent în construcție, ne cerem scuze pentru inconvenient",
+  "home": "Reveniți la pagina de pornire"
 }

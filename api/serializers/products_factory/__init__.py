@@ -1,4 +1,0 @@
-from .product import ProductSerializerFactory
-from .best import BestProductSerializerFactory
-from .listed import ListedProductsSerializerFactory
-from .detailed import DetailedProductSerializerFactory

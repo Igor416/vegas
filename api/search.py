@@ -1,5 +1,4 @@
-from .import models
-from . import catalog as ct
+from . import models
 
 def isearch(search, lang, objects):
   queryset = objects.none()
@@ -28,6 +27,5 @@ def search_categories(search, lang):
   return isearch(search, lang, models.Category.objects)
 
 def search_products(search, lang):
-  for product_name in ct.get_all_categories():
-    model = getattr(models, product_name)
+  for model in models.product_list:
     yield isearch(search, lang if model is models.BedSheets else '', model.objects)

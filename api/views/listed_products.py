@@ -1,15 +1,26 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from api.detectors import detect_lang, detect_country
-from api.serializers import ListedProductsSerializerFactory
-from api import models
+from rest_framework.generics import ListAPIView
+from django.shortcuts import get_object_or_404
+from api.serializers import ListedProductSerializer
+from api.models import Category, MenuSubCategory
 
-class ListedProductsView(APIView):
-  @detect_country
-  @detect_lang
-  def get(self, request, lang, country, category, sub_category, filter=None):
-    model = getattr(models, category)
-    filter = filter.replace('_', ' ') if filter else None
-    queryset = model.objects.get_filtered(sub_category, filter)
-    serializer = ListedProductsSerializerFactory(model, lang, country).create(queryset, country=country, lang=lang, many=True)
-    return Response(serializer.data)
+class ListedProductsView(ListAPIView):
+  serializer_class = ListedProductSerializer
+  
+  def get_queryset(self):
+    category_name = self.kwargs.get('category')
+    sub_category_val = self.kwargs.get('sub_category')
+    filter_val = self.kwargs.get('filter')
+
+    category_obj = get_object_or_404(Category, name=category_name)
+    sub_category_obj = get_object_or_404(
+      MenuSubCategory.objects.prefetch_related('products', 'filters__products'),
+      category=category_obj, value=sub_category_val
+    )
+
+    if filter_val:
+      product_filter = get_object_or_404(sub_category_obj.filters, value=filter_val)
+      queryset = product_filter.products.all()
+    else:
+      queryset = sub_category_obj.products.all()
+
+    return queryset.exclude(sizes__isnull=True)

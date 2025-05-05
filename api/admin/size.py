@@ -1,15 +1,11 @@
 from django.contrib import admin
-from api.models import Size, BedSheetsSize
-from api.forms import BedSheetsSizeForm
+
+from api.models import Size
 
 @admin.register(Size)
 class SizeAdmin(admin.ModelAdmin):
-  list_filter = ('category', 'product', 'on_sale')
-  exclude = ['category', 'product']
-  ordering = ['on_sale', 'category', 'product', 'length', 'priceEUR']
-  
-@admin.register(BedSheetsSize)
-class BedSheetsSizeAdmin(admin.ModelAdmin):
-  form = BedSheetsSizeForm
-  exclude = ['category', 'product']
-  ordering = ['category', 'product', 'length', 'priceEUR']
+  list_filter = ['product__category', 'product', 'on_sale']
+
+class SizeInline(admin.TabularInline):
+  model = Size
+  extra = 0

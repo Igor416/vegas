@@ -1,10 +1,12 @@
-from .category import CategoryAdmin
-from .choice import ChoiceAdmin
-from .size import SizeAdmin, BedSheetsSizeAdmin
-from .files import ImageAdmin, VideoAdmin
-from .technologies import TechnologyAdmin
-from .marker import MarkerAdmin
-from .product import create_product_admins
-from .stock import StockAdmin
+from django.contrib import admin
+from api.models import Category, BedSheetsSizeAddition, CollectionPrice
 
-create_product_admins()
+admin.site.register((Category, BedSheetsSizeAddition, CollectionPrice))
+
+from .characteristic_type import CharacteristicTypeAdmin
+from .characteristic import StringCharacteristicAdmin, IntegerCharacteristicAdmin, BooleanCharacteristicAdmin
+from .size import SizeAdmin
+from .file import ImageAdmin, VideoAdmin
+from .technology import TechnologyAdmin
+from .product import ProductAdmin
+from .menu import MenuCategoryAdmin, MenuSubCategoryAdmin, MenuFilterAdmin
