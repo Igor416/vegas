@@ -12,7 +12,6 @@ excel-base==1.0.4
 idna==3.10
 inflection==0.5.1
 isoweek==1.3.3
-pillow==11.1.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
 six==1.17.0
