@@ -6,6 +6,7 @@ import shutil
 
 class WorkerView(APIView):
   def get(self, request):
+    return Response()
     images = []
     for product in models.Product.objects.all():
       images.append(product.shortcut.get_name())
