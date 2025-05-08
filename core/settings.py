@@ -120,3 +120,5 @@ CORS_ALLOW_CREDENTIALS = True
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+SECURE_REFERRER_POLICY = "no-referrer-when-downgrade"
