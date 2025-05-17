@@ -16,10 +16,9 @@ class DetailedProductView(RetrieveAPIView):
   ).filter(category__disabled=False)
   
   def get(self, request, category, name):
-    name = name.replace('%20', ' ')
     product = get_object_or_404(
       self.queryset,
-      category__name=category, name_en=name
+      category__name=category, name_en=name.replace('%20', ' ')
     )
     
     data = self.serializer_class(product).data
