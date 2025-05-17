@@ -9,7 +9,7 @@ class SizeView(RetrieveAPIView):
   
   def get_object(self):
     category_name = self.kwargs.get('category')
-    product_name = self.kwargs.get('name')
+    product_name = self.kwargs.get('name').replace('%20', ' ')
     width, length = map(int, self.kwargs.get('dimensions').split('x'))
     queryset = Size.objects.filter(product__category__name=category_name, product__name_en=product_name, width=width)
     if queryset.count() == 0:
