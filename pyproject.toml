@@ -1,0 +1,33 @@
+[project]
+name = "vegas"
+version = "2.0.0"
+description = "Vegas E-commerce Website"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.pylint]
+load-plugins = "pylint_django"
+django-settings-module = "core.settings"
+
+disable = [
+    "invalid-name",
+    "missing-docstring",
+    "bad-indentation",
+    "line-too-long",
+]
+
+enable = [
+    "all",
+]
+
+confidence = "HIGH"
+
+ignore-paths = [
+    "migrations",
+    "venv",
+    ".venv",
+    "node_modules",
+    "__pycache__",
+    ".*\\.pyc$",
+]

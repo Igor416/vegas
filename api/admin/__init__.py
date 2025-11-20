@@ -1,8 +1,9 @@
 from django.contrib import admin
-from api.models import Category, BedSheetsSizeAddition, CollectionPrice
+from api.models import BedSheetsSizeAddition, CollectionPrice
 
-admin.site.register((Category, BedSheetsSizeAddition, CollectionPrice))
+admin.site.register((BedSheetsSizeAddition, CollectionPrice))
 
+from .category import CategoryAdmin
 from .characteristic_type import CharacteristicTypeAdmin
 from .characteristic import StringCharacteristicAdmin, IntegerCharacteristicAdmin, BooleanCharacteristicAdmin
 from .size import SizeAdmin

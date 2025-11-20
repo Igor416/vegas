@@ -1,5 +1,6 @@
 /venv/
 /json/
+/static/
 *.env
 *.pyc
 *.sqlite3

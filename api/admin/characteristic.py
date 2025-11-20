@@ -16,3 +16,24 @@ class IntegerCharacteristicAdmin(CharacteristicAdmin):
 @admin.register(BooleanCharacteristic)
 class BooleanCharacteristicAdmin(CharacteristicAdmin):
   pass
+
+class StringCharacteristicInline(admin.TabularInline):
+  model = StringCharacteristic
+  extra = 0
+  exclude = ['id']
+  ordering = ['value_ru']
+  autocomplete_fields = ['type']
+
+class IntegerCharacteristicInline(admin.TabularInline):
+  model = IntegerCharacteristic
+  extra = 0
+  exclude = ['id']
+  ordering = ['value']
+  autocomplete_fields = ['type']
+  
+class BooleanCharacteristicInline(admin.TabularInline):
+  model = BooleanCharacteristic
+  extra = 0
+  exclude = ['id']
+  ordering = ['value']
+  autocomplete_fields = ['type']

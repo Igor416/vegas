@@ -23,7 +23,7 @@ class Size(models.Model):
   priceEUR = models.SmallIntegerField('Цена (евро)', default=0)
   discount = models.SmallIntegerField('Скидка (%)', default=0)
   on_sale = models.BooleanField('На распродаже', default=False)
-  out_of_stock = models.BooleanField('Отсуствует', default=True)
+  out_of_stock = models.BooleanField('Отсуствует', default=False)
   product = models.ForeignKey(Product, on_delete=models.SET_NULL, blank=True, null=True, related_name='sizes', verbose_name='Товар')
   
   objects = SizeManager()
