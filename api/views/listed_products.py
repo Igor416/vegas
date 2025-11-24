@@ -19,8 +19,8 @@ class ListedProductsView(ListAPIView):
 
     if filter_val:
       product_filter = get_object_or_404(sub_category_obj.filters, value=filter_val)
-      queryset = product_filter.products.all()
+      queryset = product_filter.products.filter(disabled=False)
     else:
-      queryset = sub_category_obj.products.all()
+      queryset = sub_category_obj.products.filter(disabled=False)
 
     return queryset.exclude(sizes__isnull=True)

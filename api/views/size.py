@@ -11,7 +11,7 @@ class SizeView(RetrieveAPIView):
     category_name = self.kwargs.get('category')
     product_name = self.kwargs.get('name').replace('%20', ' ')
     width, length = map(int, self.kwargs.get('dimensions').split('x'))
-    queryset = Size.objects.filter(product__category__name=category_name, product__name_en=product_name, width=width)
+    queryset = Size.objects.filter(product__category__name=category_name, product__name_en=product_name, width=width, disabled=False)
     if queryset.count() == 0:
       raise Http404("No size matches the given query.")
     elif queryset.count() == 1:

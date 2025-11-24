@@ -19,6 +19,7 @@ class Product(models.Model):
   technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
 
   category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+  disabled = models.BooleanField('Отключен', default=False)
   
   @property
   def shortcut(self):

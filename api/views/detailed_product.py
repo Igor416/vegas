@@ -13,7 +13,7 @@ class DetailedProductView(RetrieveAPIView):
     'integer_characteristics',
     'string_characteristics',
     'category__characteristic_types'
-  ).filter(category__disabled=False)
+  ).filter(category__disabled=False, disabled=False)
   
   def get(self, request, category, name):
     product = get_object_or_404(
