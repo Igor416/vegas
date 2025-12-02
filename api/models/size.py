@@ -12,6 +12,8 @@ class SizeManager(models.Manager):
       )
     ).order_by(
       models.F('on_sale').desc(),
+      models.F('product__category__order'),
+      models.F('product__name_en'),
       'discounted_price'
     )
 
@@ -45,6 +47,5 @@ class Size(models.Model):
     return round(self.priceEUR * 1.1, 2)
 
   class Meta:
-    ordering = ['product', '-on_sale']
     verbose_name = 'Размер'
     verbose_name_plural = 'Размеры'

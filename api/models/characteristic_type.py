@@ -24,6 +24,6 @@ class CharacteristicType(models.Model):
 		return f'Вариант выбора для "{self.label_ru}" в категории {self.category}'
 		
 	class Meta:
-		ordering = ['category', 'order']
+		ordering = ['category__order', 'order']
 		verbose_name = 'Тип характеристики'
 		verbose_name_plural = 'Типы характеристик'

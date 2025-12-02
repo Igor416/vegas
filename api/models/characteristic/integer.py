@@ -11,6 +11,6 @@ class IntegerCharacteristic(Characteristic):
 		return f'{self.type}: "{self.value}"'
 		
 	class Meta:
-		ordering = ['type', 'product', 'value']
+		ordering = ['type', 'product__category__order', 'product__name_en', 'value']
 		verbose_name = 'Характиристика (целое число)'
 		verbose_name_plural = 'Характеристики (целые числа)'

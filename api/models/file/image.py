@@ -20,6 +20,6 @@ class Image(File):
     return name
 
   class Meta:
-    ordering = ['product', 'image']
+    ordering = ['product__category__order', 'product__name_en', 'image']
     verbose_name = 'Фотография'
     verbose_name_plural = 'Фотографии'

@@ -14,6 +14,6 @@ class StringCharacteristic(Characteristic):
 		return f'{self.type}: "{self.value_ru}"'
 		
 	class Meta:
-		ordering = ['type', 'product', 'value_ru']
+		ordering = ['type', 'product__category__order', 'product__name_en', 'value_ru']
 		verbose_name = 'Характиристика (строка)'
 		verbose_name_plural = 'Характеристики (строки)'

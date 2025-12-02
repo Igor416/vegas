@@ -39,6 +39,6 @@ class Product(models.Model):
     return hasattr(getattr(model, field), 'rel')
 
   class Meta:
-    ordering = ['category', 'name_en']
+    ordering = ['category__order', 'name_en']
     verbose_name = 'Товары'
     verbose_name_plural = 'Товары'

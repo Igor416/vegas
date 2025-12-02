@@ -25,6 +25,6 @@ class Video(File):
     return f'видео о товаре: {self.product}'
 
   class Meta:
-    ordering = ['product']
+    ordering = ['product__category__order', 'product__name_en']
     verbose_name = 'Видео'
     verbose_name_plural = 'Видео'
