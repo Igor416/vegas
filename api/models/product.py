@@ -15,8 +15,8 @@ class Product(models.Model):
   best = models.BooleanField('Лидер продаж', default=False)
   markers = models.TextField('Маркеры', default='', blank=True)
 
-  structure = models.ManyToManyField(Technology, related_name='structure_%(class)s', verbose_name='Структура', blank=True)
-  technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', verbose_name='Технологии', blank=True)
+  structure = models.ManyToManyField(Technology, related_name='structure_%(class)s', limit_choices_to={"is_technology": False}, verbose_name='Структура', blank=True)
+  technologies = models.ManyToManyField(Technology, related_name='technologies_%(class)s', limit_choices_to={"is_technology": True}, verbose_name='Технологии', blank=True)
 
   category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
   disabled = models.BooleanField('Отключен', default=False)
