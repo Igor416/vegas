@@ -1,6 +1,7 @@
 {
   "opened": "Deschis",
   "closed": "Închis",
+  "temporary_closed": "Magazinul este temporar închis",
   "workday": "Luni - Vineri: ",
   "weekend": "Sâmbătă - Duminică: "
 }

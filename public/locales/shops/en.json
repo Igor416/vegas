@@ -1,6 +1,7 @@
 {
   "opened": "Opened",
   "closed": "Closed",
+  "temporary_closed": "Shop is temporarily closed",
   "workday": "Monday - Friday: ",
   "weekend": "Saturday - Sunday: "
 }
