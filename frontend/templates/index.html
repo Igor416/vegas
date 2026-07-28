@@ -1,30 +1,40 @@
 <!doctype html>
-<html>
+<html lang="{{ html_lang|default:'ro' }}">
   <head>
-    <base href="/">
-    <title>Vegas Shop</title>
-    
+    <base href="/" />
+    <title>{{ meta_title|default:"Vegas Shop" }}</title>
+
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta property="og:site_name" content="Vegas.md Online Mattress Shop">
-    <meta property="og:title" content="Vegas Shop">
-    <meta property="og:image" content="/static/images/favicon.ico">
-    <meta property="og:type" content="online-shop">
-    <meta property="og:description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова">
-    <meta name="robots" content="all">
-    <meta name="last-updated" content="2025-03-31 12:00:00 UTC">
-    <meta name="description" content="Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова Saltea, Perna, Patura etc magazin in Chisinau Moldova">
-    <meta name="keywords" content="матрасы vegas.md vegas Молдова Кишинев подушка кровати одеяло saltele vegas Moldova Chisinau pature plapume perne">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta property="og:site_name" content="Vegas.md Online Mattress Shop" />
+    <meta property="og:title" content="{{ meta_title|default:'Vegas Shop' }}" />
+    <meta property="og:image" content="/static/images/favicon.ico" />
+    <meta property="og:type" content="online-shop" />
+    <meta
+      property="og:description"
+      content="{{ meta_description|default:'Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова' }}"
+    />
+    <meta name="robots" content="{{ meta_robots|default:'all' }}" />
+    <meta name="last-updated" content="2025-03-31 12:00:00 UTC" />
+    <meta
+      name="description"
+      content="{{ meta_description|default:'Матрасы, подушки, одеяла и т. д. магазин vegas.md в Кишиневе Молдова Saltea, Perna, Patura etc magazin in Chisinau Moldova' }}"
+    />
+    <meta
+      name="keywords"
+      content="матрасы vegas.md vegas Молдова Кишинев подушка кровати одеяло saltele vegas Moldova Chisinau pature plapume perne"
+    />
 
-    <link rel="stylesheet" crossorigin href="/static/css/index.css">
-    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <link rel="alternate" hreflang="ro" href="{{ hreflangs.ro }}" />
+    <link rel="alternate" hreflang="ru" href="{{ hreflangs.ru }}" />
+    <link rel="alternate" hreflang="en" href="{{ hreflangs.en }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ x_default_url }}" />
 
-    <link href="/lang=en/" rel="alternate" hreflang="en">
-    <link href="/lang=ru/" rel="alternate" hreflang="ru">
-    <link href="/lang=ro/" rel="alternate" hreflang="ro">
-
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" />
+    <link rel="stylesheet" crossorigin href="/static/css/index.css" />
     <script type="module" crossorigin src="/static/js/index.js"></script>
   </head>
   <body>
