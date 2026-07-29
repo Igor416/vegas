@@ -7,6 +7,9 @@ from .paths import join_lang_path, path_without_lang
 
 
 def redirect_default(request, *args, **kwargs):
+    legacy_path = kwargs.get("legacy_path", "")
+    if legacy_path:
+        return redirect(f"/{DEFAULT_LANG}/{legacy_path}", permanent=True)
     return redirect(f"/{DEFAULT_LANG}/", permanent=True)
 
 
