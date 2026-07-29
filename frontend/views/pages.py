@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from .constants import DEFAULT_LANG, SUPPORTED_LANGS
 from .meta import build_meta
 from .paths import join_lang_path, path_without_lang
+from .schema import build_schema_json
 
 
 def redirect_default(request, *args, **kwargs):
@@ -27,6 +28,7 @@ def index(request, *args, **kwargs):
         for code in SUPPORTED_LANGS
     }
     meta, robots = build_meta(lang, path_suffix, kwargs)
+    schema_json = build_schema_json(lang, path_suffix, kwargs)
 
     context = {
         "html_lang": lang,
@@ -36,5 +38,6 @@ def index(request, *args, **kwargs):
         "meta_title": meta["title"],
         "meta_description": meta["description"],
         "meta_robots": robots,
+        "schema_json": schema_json,
     }
     return render(request, "index.html", context)
