@@ -1,13 +1,16 @@
 from django.contrib import admin
 
-@admin.action(description='Пометить как лучший')
+
+@admin.action(description="Пометить как лучший")
 def set_best(modeladmin, request, queryset):
-  queryset.update(best=True)
+    queryset.update(best=True)
 
-@admin.action(description='Убрать пометку лучших')
+
+@admin.action(description="Убрать пометку лучших")
 def unset_best(modeladmin, request, queryset):
-  queryset.update(best=False)
+    queryset.update(best=False)
 
-@admin.action(description='Убрать скидку')
+
+@admin.action(description="Убрать скидку")
 def remove_discount(modeladmin, request, queryset):
-  queryset.update(discount=0)
+    queryset.update(discount=0)

@@ -23,5 +23,8 @@ urlpatterns = [
     re_path(rf"^{LANG}/(?P<subpath>.+)/?$", index),
     path("", redirect_default),
     # Catch-all: legacy URLs without lang prefix → 301 to /ro/...
-    re_path(r"^(?!ro/|ru/|en/|robots\.txt|sitemap\.xml|static/|media/|public/|api/)(?P<legacy_path>.+)$", redirect_default),
+    re_path(
+        r"^(?!ro/|ru/|en/|robots\.txt|.well-known|sitemap\.xml|static/|media/|public/|api/)(?P<legacy_path>.+)$",
+        redirect_default,
+    ),
 ]

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
+
 class ApiConfig(AppConfig):
-  name = 'api'
-  verbose_name = 'Рабочая среда'
-    
+    name = "api"
+    verbose_name = "Рабочая среда"

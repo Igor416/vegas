@@ -13,4 +13,6 @@ def robots_txt(request, *args, **kwargs):
         "Disallow: /en/cart",
         f"Sitemap: {site_origin}/sitemap.xml",
     ]
-    return HttpResponse("\n".join(lines) + "\n", content_type="text/plain; charset=utf-8")
+    return HttpResponse(
+        "\n".join(lines) + "\n", content_type="text/plain; charset=utf-8"
+    )

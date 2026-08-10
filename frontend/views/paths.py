@@ -17,7 +17,9 @@ def join_lang_path(lang: str, suffix: str) -> str:
     return f"/{lang}{suffix}"
 
 
-def get_localized_attr(obj, lang: str, base_attr: str, fallback_lang: str = DEFAULT_LANG):
+def get_localized_attr(
+    obj, lang: str, base_attr: str, fallback_lang: str = DEFAULT_LANG
+):
     return getattr(obj, f"{base_attr}_{lang}", "") or getattr(
         obj, f"{base_attr}_{fallback_lang}", ""
     )

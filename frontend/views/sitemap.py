@@ -1,8 +1,9 @@
 from urllib.parse import quote
 
-from api.models import MenuFilter, MenuSubCategory, Product
 from django.conf import settings
 from django.http import HttpResponse
+
+from api.models import MenuFilter, MenuSubCategory, Product
 
 from .constants import DEFAULT_LANG, SUPPORTED_LANGS
 from .paths import join_lang_path

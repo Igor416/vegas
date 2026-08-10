@@ -1,26 +1,31 @@
-from rest_framework.generics import ListAPIView
 from django.shortcuts import get_object_or_404
-from api.serializers import ListedProductSerializer
+from rest_framework.generics import ListAPIView
+
 from api.models import Category, MenuSubCategory
+from api.serializers import ListedProductSerializer
+
 
 class ListedProductsView(ListAPIView):
-  serializer_class = ListedProductSerializer
-  
-  def get_queryset(self):
-    category_name = self.kwargs.get('category')
-    sub_category_val = self.kwargs.get('sub_category')
-    filter_val = self.kwargs.get('filter')
+    serializer_class = ListedProductSerializer
 
-    category_obj = get_object_or_404(Category, name=category_name)
-    sub_category_obj = get_object_or_404(
-      MenuSubCategory.objects.prefetch_related('products', 'filters__products'),
-      category=category_obj, value=sub_category_val
-    )
+    def get_queryset(self):
+        category_name = self.kwargs.get("category")
+        sub_category_val = self.kwargs.get("sub_category")
+        filter_val = self.kwargs.get("filter")
 
-    if filter_val:
-      product_filter = get_object_or_404(sub_category_obj.filters, value=filter_val)
-      queryset = product_filter.products.filter(disabled=False)
-    else:
-      queryset = sub_category_obj.products.filter(disabled=False)
+        category_obj = get_object_or_404(Category, name=category_name)
+        sub_category_obj = get_object_or_404(
+            MenuSubCategory.objects.prefetch_related("products", "filters__products"),
+            category=category_obj,
+            value=sub_category_val,
+        )
 
-    return queryset.exclude(sizes__isnull=True)
+        if filter_val:
+            product_filter = get_object_or_404(
+                sub_category_obj.filters, value=filter_val
+            )
+            queryset = product_filter.products.filter(disabled=False)
+        else:
+            queryset = sub_category_obj.products.filter(disabled=False)
+
+        return queryset.exclude(sizes__isnull=True)

@@ -1,25 +1,36 @@
 from django.db import models
-from .file import File
+
 from ..product import Product
+from .file import File
+
 
 class Image(File):
-  folder = 'products'
-  image = models.ImageField('Фото товара', upload_to=folder)
-  is_shortcut = models.BooleanField('Является превью', default=False)
-  product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, default=None, verbose_name='Товар', related_name='images')
+    folder = "products"
+    image = models.ImageField("Фото товара", upload_to=folder)
+    is_shortcut = models.BooleanField("Является превью", default=False)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
+        verbose_name="Товар",
+        related_name="images",
+    )
 
-  def __str__(self):
-    name = self.get_name()
-    if self.is_shortcut:
-      name = name.replace('_', ' ')
-      name += ' Для каталога'
-    else:
-      name = name.replace('_', ' ')
-      name = ' '.join(['№ ' + el if el.isnumeric() else el for el in name.split(' ')])
+    def __str__(self):
+        name = self.get_name()
+        if self.is_shortcut:
+            name = name.replace("_", " ")
+            name += " Для каталога"
+        else:
+            name = name.replace("_", " ")
+            name = " ".join(
+                ["№ " + el if el.isnumeric() else el for el in name.split(" ")]
+            )
 
-    return name
+        return name
 
-  class Meta:
-    ordering = ['product__category__order', 'product__name_en', 'image']
-    verbose_name = 'Фотография'
-    verbose_name_plural = 'Фотографии'
+    class Meta:
+        ordering = ("product__category__order", "product__name_en", "image")
+        verbose_name = "Фотография"
+        verbose_name_plural = "Фотографии"

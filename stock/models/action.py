@@ -1,39 +1,46 @@
 from django.db import models
 from django.utils.timezone import datetime
+
 from .stockable import Stockable
 
-class Action(models.Model):
-  TYPES = (
-    ('H', 'В ожидании действия'),
-    ('A', 'Добавить в систему'),
-    ('O', 'Пометить как бронь'),
-    ('C', 'Отменить бронь'),
-    ('S', 'Отметить как проданный'),
-    ('R', 'Получить возврат'),
-    ('T', 'Переместить')
-  )
-  
-  PLACES = (
-    ('Машина', 'Машина'),
-    ('S1', 'Главный склад'),
-    ('S2', 'Склад 2'),
-    ('J', 'Джамбо'),
-    ('C', 'Чеканы'),
-    ('R', 'Рышкановка'),
-    ('D1', 'Игорь'),
-    ('D2', 'Оргеев'),
-    ('D3', 'Унгены'),
-  )
-  
-  type = models.CharField('Тип действия', max_length=1, choices=TYPES, default='A')
-  person = models.CharField('Деятель', max_length=2)
-  place = models.CharField('Место товара', max_length=6, choices=PLACES)
-  date = models.DateField('Дата', default=datetime.today)
-  stockable = models.ForeignKey(Stockable, on_delete=models.CASCADE, verbose_name='Модель', related_name='actions')
-  
-  def __str__(self):
-    return f'{self.person} сделал действие: "{self.get_type_display()}" над {self.stockable.print_size()} {self.date} и теперь он в месте: {self.get_place_display()}'
 
-  class Meta:
-    verbose_name = 'действие'
-    verbose_name_plural = 'действия'
+class Action(models.Model):
+    TYPES = (
+        ("H", "В ожидании действия"),
+        ("A", "Добавить в систему"),
+        ("O", "Пометить как бронь"),
+        ("C", "Отменить бронь"),
+        ("S", "Отметить как проданный"),
+        ("R", "Получить возврат"),
+        ("T", "Переместить"),
+    )
+
+    PLACES = (
+        ("Машина", "Машина"),
+        ("S1", "Главный склад"),
+        ("S2", "Склад 2"),
+        ("J", "Джамбо"),
+        ("C", "Чеканы"),
+        ("R", "Рышкановка"),
+        ("D1", "Игорь"),
+        ("D2", "Оргеев"),
+        ("D3", "Унгены"),
+    )
+
+    type = models.CharField("Тип действия", max_length=1, choices=TYPES, default="A")
+    person = models.CharField("Деятель", max_length=2)
+    place = models.CharField("Место товара", max_length=6, choices=PLACES)
+    date = models.DateField("Дата", default=datetime.today)
+    stockable = models.ForeignKey(
+        Stockable,
+        on_delete=models.CASCADE,
+        verbose_name="Модель",
+        related_name="actions",
+    )
+
+    def __str__(self):
+        return f'{self.person} сделал действие: "{self.get_type_display()}" над {self.stockable.print_size()} {self.date} и теперь он в месте: {self.get_place_display()}'
+
+    class Meta:
+        verbose_name = "действие"
+        verbose_name_plural = "действия"

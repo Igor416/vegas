@@ -1,7 +1,8 @@
 import json
 
-from api.models import Category, Product
 from django.conf import settings
+
+from api.models import Category, Product
 
 from .paths import get_localized_attr
 
@@ -66,13 +67,13 @@ def _product_schema(product, lang, site_origin):
         schema["image"] = f"{site_origin}{shortcut.image.url}"
 
     if cheapest:
-        price = cheapest.priceEUR
+        price = cheapest.priceMDL
         discount = cheapest.discount
         final_price = round(price * (100 - discount) / 100, 2)
         offer = {
             "@type": "Offer",
             "price": final_price,
-            "priceCurrency": "EUR",
+            "priceCurrency": "MDL",
             "availability": "https://schema.org/OutOfStock"
             if cheapest.out_of_stock
             else "https://schema.org/InStock",
